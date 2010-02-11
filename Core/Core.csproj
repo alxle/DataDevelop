@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DCA7E7DC-93F3-42F9-999F-3935DB3BD249}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DataDevelop</RootNamespace>
+    <AssemblyName>DataDevelop.Core</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkSubset>
+    </TargetFrameworkSubset>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="IronMath, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\IronMath.dll</HintPath>
+    </Reference>
+    <Reference Include="IronPython, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\IronPython.dll</HintPath>
+    </Reference>
+    <Reference Include="Jint, Version=0.8.8.0, Culture=neutral, PublicKeyToken=973cde3f1cafed03, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Jint.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data, Version=5.0.7.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite, Version=1.0.61.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Collections\ReadOnlyDictionary.cs" />
+    <Compile Include="Data\Access\AccessDatabase.cs" />
+    <Compile Include="Data\Access\AccessProvider.cs" />
+    <Compile Include="Data\Access\AccessTable.cs" />
+    <Compile Include="Data\Column.cs" />
+    <Compile Include="Data\ColumnFilter.cs" />
+    <Compile Include="Data\ColumnOrder.cs" />
+    <Compile Include="Data\ConnectionScope.cs" />
+    <Compile Include="Data\ConnectionSettings.cs" />
+    <Compile Include="Data\Database.cs" />
+    <Compile Include="Data\DatabaseEventArgs.cs" />
+    <Compile Include="Data\DbObject.cs" />
+    <Compile Include="Data\DbObjectCollection.cs" />
+    <Compile Include="Data\DbProvider.cs" />
+    <Compile Include="Data\ForeignKey.cs" />
+    <Compile Include="Data\IDbObject.cs" />
+    <Compile Include="Data\ITableObject.cs" />
+    <Compile Include="Data\MySql\MySqlDatabase.cs" />
+    <Compile Include="Data\MySql\MySqlProvider.cs" />
+    <Compile Include="Data\MySql\MySqlStoredProcedure.cs" />
+    <Compile Include="Data\MySql\MySqlTable.cs" />
+    <Compile Include="Data\MySql\MySqlTrigger.cs" />
+    <Compile Include="Data\OrderType.cs" />
+    <Compile Include="Data\Parameter.cs" />
+    <Compile Include="Data\SQLite\SQLiteDatabase.cs" />
+    <Compile Include="Data\SQLite\SQLiteDataTypes.cs" />
+    <Compile Include="Data\SQLite\SQLiteFirstFunction.cs" />
+    <Compile Include="Data\SQLite\SQLiteListFunction.cs" />
+    <Compile Include="Data\SQLite\SQLiteProvider.cs" />
+    <Compile Include="Data\SQLite\SQLiteTable.cs" />
+    <Compile Include="Data\SQLite\SQLiteTrigger.cs" />
+    <Compile Include="Data\SqlServer\SqlDatabase.cs" />
+    <Compile Include="Data\SqlServer\SqlProvider.cs" />
+    <Compile Include="Data\SqlServer\SqlStoredProcedure.cs" />
+    <Compile Include="Data\SqlServer\SqlTable.cs" />
+    <Compile Include="Data\SqlServer\SqlTrigger.cs" />
+    <Compile Include="Data\StoredProcedure.cs" />
+    <Compile Include="Data\Table.cs" />
+    <Compile Include="Data\TableFilter.cs" />
+    <Compile Include="Data\TableSort.cs" />
+    <Compile Include="Data\Trigger.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Scripting\JavascriptEngine.cs" />
+    <Compile Include="Scripting\PythonEngine.cs" />
+    <Compile Include="Scripting\ScriptEngine.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Resources\PythonScript.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

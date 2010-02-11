@@ -1,0 +1,522 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Text;
+using System.Windows.Forms;
+using System.Data.Common;
+using DataDevelop.Data;
+using DataDevelop.Properties;
+using DataDevelop.Dialogs;
+
+namespace DataDevelop
+{
+	public partial class TableDocument : Document, IDbObject
+	{
+		private Table table;
+		private DataTable data;
+		////private DbDataAdapter adapter;
+		private TableFilter filter;
+		private TableSort sort;
+
+		private int count = 0;
+		private int currentPage = 0;
+		private int rowsPerPage = 100;
+
+		private bool refreshDataNeeded = false;
+
+		public TableDocument(Table table)
+		{
+			InitializeComponent();
+
+			this.tableToolStripMenuItem.DropDown = this.dataGridView.MainMenu;
+			this.autoResizeColumnsDropDownButton.DropDown = this.dataGridView.AutoResizeColumnsMenu;
+
+			this.rowsPerPage = Settings.Default.RowsPerPage;
+			this.rowsPerPageButton.Text = this.rowsPerPage.ToString();
+
+			this.table = table;
+			this.tableToolStrip.Renderer = SystemToolStripRenderers.ToolStripSquaredEdgesRenderer;
+
+			////this.adapter = table.Database.CreateAdapter(table);
+			this.filter = new TableFilter(table);
+			this.sort = new TableSort(table);
+
+			////sort.SortPanel.LoadColumns(table.GetColumnNames());
+			////this.sortToolStripButton.DropDown.Items.Add(sort);
+
+			if (table.IsReadOnly) {
+				SetReadOnlyTable();
+			}
+
+			SetupLoadingPanel();
+			HideLoadingPanel();
+			dataGridView.AutoGenerateColumns = true;
+		}
+
+		private void SetupLoadingPanel()
+		{
+			loadingPanel.Location = new Point(0, 0);
+			loadingPanel.Anchor = AnchorStyles.Bottom | AnchorStyles.Top | AnchorStyles.Right | AnchorStyles.Left;
+			loadingPanel.Font = new Font(loadingPanel.Font, FontStyle.Bold);
+		}
+
+		private void ShowLoadingPanel()
+		{
+			this.progressBar1.Show();
+			this.Controls.Add(loadingPanel);
+			loadingPanel.Size = this.ClientSize;
+			loadingPanel.BringToFront();
+			loadingPanel.Focus();
+		}
+
+		private void HideLoadingPanel()
+		{
+			this.Controls.Remove(loadingPanel);
+			this.progressBar1.Hide();
+		}
+
+		private void TableDocument_Load(object sender, EventArgs e)
+		{
+			this.UpdateDataSet();
+		}
+
+		protected override void OnShown(EventArgs e)
+		{
+			base.OnShown(e);
+		}
+
+		private void TableDocument_Shown(object sender, EventArgs e)
+		{
+			dataGridView.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
+			foreach (DataGridViewColumn column in dataGridView.Columns) {
+				if (column.Width > 400) {
+					column.Width = 400;
+				}
+			}
+		}
+
+		private bool IsFiltered
+		{
+			get { return this.filter.IsRowFiltered || this.filter.IsColumnFiltered; }
+		}
+
+		private bool IsSorted
+		{
+			get { return this.sort.IsSorted; }
+		}
+
+		public void UpdateCount()
+		{
+			if (this.filter.IsRowFiltered) {
+				this.count = table.GetRowCount(this.filter);
+			} else {
+				this.count = table.GetRowCount();
+			}
+		}
+
+		public void UpdateDataSet()
+		{
+			this.UpdateDataSet(false);
+		}
+
+		public void UpdateDataSet(bool conserveScroll)
+		{
+			this.UpdateCount();
+			this.ShowLoadingPanel();
+			this.backgroundWorker.RunWorkerAsync();
+		}
+
+		private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+		{
+			////System.Threading.Thread.Sleep(3000);
+			this.data = table.GetData(currentPage * rowsPerPage, rowsPerPage, filter, IsSorted ? sort : null);
+		}
+
+		private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+		{
+			this.HideLoadingPanel();
+			
+			if (e.Error == null) {
+				this.refreshDataNeeded = false;
+				this.dataGridView.DataSource = data;
+				this.UpdateLocation();	
+			} else {
+				throw e.Error;
+			}
+		}
+
+		private int FirstDisplayedRowIndex
+		{
+			get
+			{
+				foreach (DataGridViewRow row in dataGridView.Rows) {
+					if (row.Displayed) {
+						return row.Index;
+					}
+				}
+				return 0;
+			}
+		}
+
+		private void UpdateLocation()
+		{
+			int startRow = currentPage * rowsPerPage + 1;
+			int lastRow = startRow + rowsPerPage - 1;
+			if (lastRow > count) {
+				lastRow = count;
+			}
+
+			if (IsFiltered) {
+				locationLabel.Text = String.Format("{0:0000} to {1:0000} of {2:0000}*", startRow, lastRow, count);
+			} else {
+				locationLabel.Text = String.Format("{0:0000} to {1:0000} of {2:0000}", startRow, lastRow, count);
+			}
+			if (currentPage == 0) {
+				firstButton.Enabled = false;
+				prevButton.Enabled = false;
+			} else {
+				firstButton.Enabled = true;
+				prevButton.Enabled = true;
+			}
+
+			if (lastRow == count) {
+				nextButton.Enabled = false;
+				lastButton.Enabled = false;
+				dataGridView.AllowUserToAddRows = true;
+			} else {
+				nextButton.Enabled = true;
+				lastButton.Enabled = true;
+				dataGridView.AllowUserToAddRows = false;
+			}
+
+			dataGridView.StartRowNumber = startRow;
+		}
+
+		public void SetReadOnlyTable()
+		{
+			saveChangesButton.Enabled = false;
+			discardChangesButton.Enabled = false;
+			dataGridView.ReadOnly = true;
+			dataGridView.AllowUserToAddRows = false;
+		}
+
+		private void saveChangesButton_Click(object sender, EventArgs e)
+		{
+			DataTable changes = this.GetChanges();
+			if (changes != null) {
+				if (SaveChanges(changes)) {
+					UpdateDataSet();
+				}
+			}
+		}
+
+		private DataTable GetChanges()
+		{
+			this.Validate();
+			this.dataGridView.EndEdit();
+			return this.data.GetChanges();
+		}
+
+		/// <summary></summary>
+		/// <returns>Returns True if the program can procced, otherwise False.</returns>
+		private bool AskAndSave(DataTable changes)
+		{
+			this.Activate();
+			DialogResult result = MessageBox.Show(this
+				, Properties.Resources.UnsavedChanges
+				, this.Text
+				, MessageBoxButtons.YesNoCancel);
+			if (result == DialogResult.Yes) {
+				return SaveChanges(changes);
+			} else if (result == DialogResult.No) {
+				return true;
+			}
+			return false;
+		}
+
+		/// <summary></summary>
+		/// <returns>Returns True if updating was succesful, otherwise false.</returns>
+		private bool SaveChanges(DataTable changes)
+		{
+			try {
+				using (DbDataAdapter adapter = table.Database.CreateAdapter(table, filter)) {
+					adapter.ContinueUpdateOnError = false;
+					adapter.Update(changes);
+					this.data.AcceptChanges();
+					this.refreshDataNeeded = true;
+					////UpdateDataSet(true);
+				}
+			} catch (Exception ex) {
+				MessageBox.Show(this, ex.Message, ex.GetType().ToString());
+				return false;
+			}
+			return true;
+		}
+
+		private void discardChangesButton_Click(object sender, EventArgs e)
+		{
+			this.Validate();
+			this.data.RejectChanges();
+		}
+
+		private bool CanContinue()
+		{
+			DataTable changes = this.GetChanges();
+			if (changes != null) {
+				if (!this.AskAndSave(changes)) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		private void firstButton_Click(object sender, EventArgs e)
+		{
+			if (this.CanContinue()) {
+				this.currentPage = 0;
+				this.UpdateDataSet();
+			}
+		}
+
+		private void prevButton_Click(object sender, EventArgs e)
+		{
+			if (this.CanContinue()) {
+				this.currentPage--;
+				this.UpdateDataSet();
+			}
+		}
+
+		private void nextButton_Click(object sender, EventArgs e)
+		{
+			if (this.CanContinue()) {
+				this.currentPage++;
+				this.UpdateDataSet();
+			}
+		}
+
+		private void lastButton_Click(object sender, EventArgs e)
+		{
+			if (this.CanContinue()) {
+				this.currentPage = (count / rowsPerPage);
+				this.UpdateDataSet();
+			}
+		}
+
+		private void refreshButton_Click(object sender, EventArgs e)
+		{
+			if (this.CanContinue()) {
+				this.UpdateDataSet(true);
+			}
+		}
+
+		private void SelectNewRow()
+		{
+			this.dataGridView.ClearSelection();
+			this.dataGridView.Rows[dataGridView.NewRowIndex].Selected = true;
+			this.dataGridView.FirstDisplayedScrollingRowIndex = dataGridView.NewRowIndex;
+		}
+
+		private void SelectNewRow(object sender, RunWorkerCompletedEventArgs e)
+		{
+			SelectNewRow();
+			this.backgroundWorker.RunWorkerCompleted -= SelectNewRow;
+		}
+
+		private void newRowButton_Click(object sender, EventArgs e)
+		{
+			int lastPage = count / rowsPerPage;
+			if (currentPage == lastPage) {
+				SelectNewRow();
+			} else {
+				if (this.CanContinue()) {
+					this.currentPage = lastPage;
+					this.backgroundWorker.RunWorkerCompleted += SelectNewRow;
+					this.UpdateDataSet();
+				}
+			}
+		}
+
+		#region Printing
+
+		private void printPreviewButton_Click(object sender, EventArgs e)
+		{
+			dataTablePrintDocument.DataTable = data;
+
+			Form parent = printPreviewDialog.PrintPreviewControl.Parent as Form;
+			parent.WindowState = FormWindowState.Maximized;
+
+			printPreviewDialog.ShowDialog();
+		}
+
+		private void fontButton_Click(object sender, EventArgs e)
+		{
+			fontDialog.Font = dataTablePrintDocument.Font;
+			if (fontDialog.ShowDialog(this) == DialogResult.OK) {
+				dataTablePrintDocument.Font = fontDialog.Font;
+			}
+		}
+
+		private void pageSetupButton_Click(object sender, EventArgs e)
+		{
+			pageSetupDialog.Document = dataTablePrintDocument;
+			pageSetupDialog.ShowDialog();
+		}
+		
+		#endregion
+
+		private void filterToolStripButton_Click(object sender, EventArgs e)
+		{
+			if (!CanContinue()) {
+				return;
+			}
+			using (FilterDialog filterDialog = new FilterDialog(this.filter.Clone()))
+			{
+				FormExtensions.DownPositionate(filterDialog, filterToolStripButton, this);
+				if (filterDialog.ShowDialog(this) == DialogResult.OK) {
+					TableFilter lastGood = this.filter;
+					this.filter = filterDialog.Filter;
+
+					 if (IsFiltered) {
+						 this.currentPage = 0;
+						 this.filterToolStripButton.Checked = true;
+					 } else {
+						 this.filterToolStripButton.Checked = false;
+					 }
+
+					try {
+						this.UpdateDataSet();
+					} catch (Exception ex) {
+						this.filter = lastGood;
+						MessageBox.Show(this, ex.Message, this.Text, MessageBoxButtons.OK);
+						filterToolStripButton.Checked = this.IsFiltered;
+						this.UpdateDataSet();
+					}
+				} else {
+					if (this.refreshDataNeeded) {
+						this.UpdateDataSet();
+					}
+				}
+			}
+		}
+
+		private void sortToolStripButton_Click(object sender, EventArgs e)
+		{
+			if (!CanContinue()) {
+				return;
+			}
+			using (SortDialog sortDialog = new SortDialog(this.sort)) {
+				FormExtensions.DownPositionate(sortDialog, sortToolStripButton, this);
+				if (sortDialog.ShowDialog(this) == DialogResult.OK) {
+					TableSort lastGood = this.sort;
+					this.sort = sortDialog.Sort;
+					this.sortToolStripButton.Checked = IsSorted;
+					//string orderby = ColumnOrder.GetOrderByStatement(orders);
+					try {
+						UpdateDataSet();
+					} catch (Exception ex) {
+						MessageBox.Show(this, ex.Message, this.Text, MessageBoxButtons.OK);
+						this.sort = lastGood;
+						sortToolStripButton.Checked = IsSorted;
+						UpdateDataSet();
+					}
+				} else {
+					if (this.refreshDataNeeded) {
+						this.UpdateDataSet();
+					}
+				}
+			}
+		}
+
+		private void TableDocument_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			if (e.CloseReason == CloseReason.UserClosing) {
+				DataTable changes = this.GetChanges();
+				if (changes != null){
+					if (!this.AskAndSave(changes)) {
+						e.Cancel = true;
+					}
+				}
+			}
+		}
+
+		private void viewSqlToolStripButton_Click(object sender, EventArgs e)
+		{
+			StringBuilder sql = new StringBuilder();
+			sql.Append("SELECT ");
+			filter.WriteColumnsProjection(sql);
+			sql.AppendLine();
+			sql.Append("FROM ");
+			sql.Append(table.QuotedName);
+			if (filter.IsRowFiltered) {
+				sql.AppendLine();
+				sql.Append("WHERE ");
+				filter.WriteWhereStatement(sql);
+			}
+			if (IsSorted) {
+				sql.AppendLine();
+				sql.Append("ORDER BY ");
+				sort.WriteOrderBy(sql);
+			}
+
+			CommandDocument doc = new CommandDocument(table.Database);
+			doc.Text = String.Format(Resources.QueryDocumentTitle, table.Database.Name);
+			doc.CommandText = sql.ToString();
+			////doc.Show(this.Pane, WeifenLuo.WinFormsUI.Docking.DockAlignment.Bottom, 1 / 3F);
+			doc.Show(this.DockPanel);
+		}
+
+		#region IDbObject Members
+
+		Database IDbObject.Database
+		{
+			get { return table.Database; }
+		}
+
+		#endregion
+
+		private void allCellsToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			this.dataGridView.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
+		}
+
+		private void allCellsButHeadersToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			this.dataGridView.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCellsExceptHeader);
+		}
+
+		private void columnsHeaderToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			this.dataGridView.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.ColumnHeader);
+		}
+
+		private void dataGridView_ColumnAdded(object sender, DataGridViewColumnEventArgs e)
+		{
+			e.Column.SortMode = DataGridViewColumnSortMode.NotSortable;
+		}
+
+		private void rowsPerPageButton_Click(object sender, EventArgs e)
+		{
+			if (!CanContinue()) {
+				return;
+			}
+			using (RowsPerPageDialog dialog = new RowsPerPageDialog()) {
+				dialog.RowsPerPage = rowsPerPage;
+				FormExtensions.DownPositionate(dialog, rowsPerPageButton, this);
+				if (dialog.ShowDialog(this) == DialogResult.OK) {
+					if (rowsPerPage != dialog.RowsPerPage) {
+						rowsPerPage = dialog.RowsPerPage;
+						rowsPerPageButton.Text = rowsPerPage.ToString();
+						this.UpdateDataSet();
+					}
+				} else {
+					if (this.refreshDataNeeded) {
+						this.UpdateDataSet();
+					}
+				}
+			}
+		}
+	}
+}
+

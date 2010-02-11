@@ -1,0 +1,521 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{FA92F479-FF36-4E30-B6E1-BB1AF2BCCAC2}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DataDevelop</RootNamespace>
+    <AssemblyName>DataDevelop</AssemblyName>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <ManifestCertificateThumbprint>898826E6F02970A79E6732F7B92BFE1CA63CE92C</ManifestCertificateThumbprint>
+    <ManifestKeyFile>AlejandroLopez.pfx</ManifestKeyFile>
+    <GenerateManifests>true</GenerateManifests>
+    <SignManifests>false</SignManifests>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <PublishUrl>deploy\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>true</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ProductName>DataDevelop</ProductName>
+    <PublisherName>Alex LE</PublisherName>
+    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
+    <WebPage>default.htm</WebPage>
+    <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>0.1.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug_AllDb|AnyCPU' ">
+    <OutputPath>bin\Debug_AllDb\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;ALL_DB</DefineConstants>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.TextEditor, Version=3.0.0.3800, Culture=neutral, PublicKeyToken=4d61825e8dd49f1a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\ICSharpCode.TextEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.3.1.24483, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AboutBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutBox.Designer.cs">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AssemblyExplorer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AssemblyExplorer.Designer.cs">
+      <DependentUpon>AssemblyExplorer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CommandDocument.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CommandDocument.Designer.cs">
+      <DependentUpon>CommandDocument.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConnectionStringForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConnectionStringForm.Designer.cs">
+      <DependentUpon>ConnectionStringForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\BaseDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\BaseDialog.Designer.cs">
+      <DependentUpon>BaseDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\FindAndReplaceDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\FindAndReplaceDialog.designer.cs">
+      <DependentUpon>FindAndReplaceDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\RowsPerPageDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\RowsPerPageDialog.Designer.cs">
+      <DependentUpon>RowsPerPageDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Services\DatabasesManager.cs" />
+    <Compile Include="OutputWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OutputWindow.Designer.cs">
+      <DependentUpon>OutputWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PreferencesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PreferencesForm.Designer.cs">
+      <DependentUpon>PreferencesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reflection\AssemblyNode.cs" />
+    <Compile Include="Reflection\NamespaceNode.cs" />
+    <Compile Include="Reflection\TypeNode.cs" />
+    <Compile Include="Services\AssembliesManager.cs" />
+    <Compile Include="ScriptDocument.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ScriptDocument.Designer.cs">
+      <DependentUpon>ScriptDocument.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseExplorer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DatabaseExplorer.Designer.cs">
+      <DependentUpon>DatabaseExplorer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Printing\DataTablePrintDocument.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Dialogs\SelectProviderDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\SelectProviderDialog.Designer.cs">
+      <DependentUpon>SelectProviderDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Services\SettingsManager.cs" />
+    <Compile Include="Dialogs\SortDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\SortDialog.Designer.cs">
+      <DependentUpon>SortDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TypeDocument.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TypeDocument.Designer.cs">
+      <DependentUpon>TypeDocument.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIComponents\AlphaPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UIComponents\CalendarColumn.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UIComponents\DateTimeVisualizer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIComponents\DateTimeVisualizer.Designer.cs">
+      <DependentUpon>DateTimeVisualizer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIComponents\FormExtensions.cs" />
+    <Compile Include="UIComponents\ListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UIComponents\ListView.Designer.cs">
+      <DependentUpon>ListView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIComponents\SortPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UIComponents\SortPanel.Designer.cs">
+      <DependentUpon>SortPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIComponents\SortToolStripItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UIComponents\TextEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UIComponents\TextEditor.Designer.cs">
+      <DependentUpon>TextEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIComponents\TextVisualizer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIComponents\TextVisualizer.Designer.cs">
+      <DependentUpon>TextVisualizer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIComponents\TreeNodeController.cs" />
+    <Compile Include="UIComponents\TreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UIComponents\TreeView.Designer.cs">
+      <DependentUpon>TreeView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utils\DataUtils.cs" />
+    <Compile Include="Utils\StreamDelegator.cs" />
+    <Compile Include="Utils\StringStream.cs" />
+    <Compile Include="UIComponents\BinaryVisualizer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIComponents\BinaryVisualizer.Designer.cs">
+      <DependentUpon>BinaryVisualizer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIComponents\DataGridViewBinaryCell.cs">
+    </Compile>
+    <Compile Include="UIComponents\DockPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UIComponents\Highlighters.cs" />
+    <Compile Include="UIComponents\PictureBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UIComponents\TableNode.cs" />
+    <Compile Include="UIComponents\DatabaseNode.cs" />
+    <Compile Include="UIComponents\FolderNode.cs" />
+    <Compile Include="UIComponents\DataGridView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UIComponents\DataGridView.Designer.cs">
+      <DependentUpon>DataGridView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIComponents\Document.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIComponents\Document.Designer.cs">
+      <DependentUpon>Document.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\FilterDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\FilterDialog.Designer.cs">
+      <DependentUpon>FilterDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OpenPropertiesEventArgs.cs" />
+    <Compile Include="UIComponents\ToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UIComponents\ToolStrip.Designer.cs">
+      <DependentUpon>ToolStrip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utils\StringUtils.cs" />
+    <Compile Include="PropertiesToolbox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PropertiesToolbox.Designer.cs">
+      <DependentUpon>PropertiesToolbox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIComponents\PropertyGrid.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AboutBox.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AssemblyExplorer.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AssemblyExplorer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CommandDocument.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CommandDocument.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConnectionStringForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ConnectionStringForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\BaseDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>BaseDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\FindAndReplaceDialog.resx">
+      <DependentUpon>FindAndReplaceDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\RowsPerPageDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>RowsPerPageDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OutputWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>OutputWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PreferencesForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PreferencesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ScriptDocument.resx">
+      <DependentUpon>ScriptDocument.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DatabaseExplorer.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DatabaseExplorer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\SelectProviderDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SelectProviderDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\SortDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SortDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TypeDocument.resx">
+      <DependentUpon>TypeDocument.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIComponents\BinaryVisualizer.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>BinaryVisualizer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIComponents\DataGridView.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DataGridView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIComponents\DateTimeVisualizer.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DateTimeVisualizer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIComponents\Document.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Document.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\FilterDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FilterDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PropertiesToolbox.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PropertiesToolbox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIComponents\PropertyGrid.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PropertyGrid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TableDocument.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TableDocument.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIComponents\SortPanel.resx">
+      <DependentUpon>SortPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIComponents\TextEditor.resx">
+      <DependentUpon>TextEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIComponents\TextVisualizer.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TextVisualizer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIComponents\Toolbox.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Toolbox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WebBrowser.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>WebBrowser.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Properties\DataSources\ColumnFilter.datasource" />
+    <None Include="Properties\DataSources\ColumnOrder.datasource" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Resources\SqlSyntaxDefinition.xml" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="TableDocument.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TableDocument.Designer.cs">
+      <DependentUpon>TableDocument.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIComponents\Toolbox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIComponents\Toolbox.Designer.cs">
+      <DependentUpon>Toolbox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VisualStyles\SystemToolStripRenderers.cs" />
+    <Compile Include="WebBrowser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WebBrowser.Designer.cs">
+      <DependentUpon>WebBrowser.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Resources\binary.png" />
+    <None Include="Resources\undo.png" />
+    <None Include="Resources\redo.png" />
+    <None Include="Resources\clearAll.png" />
+    <None Include="Resources\NavBack.png" />
+    <None Include="Resources\NavForward.png" />
+    <None Include="Resources\0118.png" />
+    <None Include="Resources\1168.png" />
+    <None Include="Resources\0019.png" />
+    <None Include="Resources\0017.png" />
+    <None Include="Resources\0018.png" />
+    <None Include="Resources\AutoResizeRows.png" />
+    <None Include="Resources\JavascriptSyntaxDefinition.xml" />
+    <None Include="Resources\PythonSyntaxDefinition.xml" />
+    <None Include="Resources\RefreshPage.png" />
+    <None Include="Resources\refresh.png" />
+    <None Include="Resources\web.png" />
+    <None Include="Resources\SaveChanges.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <PublishFile Include="Resources\SqlSyntaxDefinition.xml">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Exclude</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{DCA7E7DC-93F3-42F9-999F-3935DB3BD249}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
