@@ -12,6 +12,16 @@ namespace DataDevelop.Scripting
 	{
 		PythonEngine engine = new PythonEngine();
 
+		public override string Name
+		{
+			get { return "IronPython"; }
+		}
+
+		public override string Extension
+		{
+			get { return ".py"; }
+		}
+
 		public override void Initialize(Stream output, IDictionary<string, Database> databases)
 		{
 			engine.SetStandardOutput(output);

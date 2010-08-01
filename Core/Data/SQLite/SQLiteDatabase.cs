@@ -104,24 +104,6 @@ namespace DataDevelop.Data.SQLite
 
 		public override int ExecuteNonQuery(string commandText)
 		{
-			////if (commandText.StartsWith("DELETE", StringComparison.OrdinalIgnoreCase)) {
-			////    string table = GetTableName(command.CommandText);
-			////    if (table != null) {
-			////        DbTransaction transaction = Connection.BeginTransaction();
-			////        int records = SelectCount(table);
-			////        command.ExecuteNonQuery();
-			////        records -= SelectCount(table);
-			////        TransactionDialog dialog = new TransactionDialog(records);
-			////        if (dialog.ShowDialog(this) == DialogResult.OK) {
-			////            transaction.Commit();
-			////        } else {
-			////            transaction.Rollback();
-			////        }
-			////    } else {
-			////        command.ExecuteNonQuery();
-			////    }
-			////}
-
 			using (DbCommand command = this.connection.CreateCommand()) {
 				command.CommandText = commandText;
 				return command.ExecuteNonQuery();

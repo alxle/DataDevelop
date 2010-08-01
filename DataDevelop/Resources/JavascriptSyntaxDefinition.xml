@@ -48,7 +48,7 @@
         <Key word =  "while" />
         <Key word =  "with" />
       </KeyWords>
-      <KeyWords name="FutureKeyWords" bold="false" italic="false" color="LightBlue">
+      <KeyWords name="FutureKeyWords" bold="false" italic="false" color="DarkBlue">
         <!--ECMAScript keywords-->
         <!-- Reserved for future use 
 					(some are already used in some Javascript Engines) 

@@ -111,43 +111,6 @@ namespace DataDevelop
 			get { return output; }
 		}
 
-		//string currentCode = String.Empty;
-
-		//private int HistoryIndex
-		//{
-		//    get { return historyIndex; }
-		//    set
-		//    {
-		//        if (historyIndex != value) {
-		//            if (historyIndex == history.Count) {
-		//                currentCode = textEditorControl.Text;
-		//            }
-		//            historyIndex = value;
-		//            goBackToolStripMenuItem.Enabled = backButton.Enabled = historyIndex > 0;
-		//            goForwardToolStripMenuItem.Enabled = forwardButton.Enabled = historyIndex < history.Count;
-		//            textEditorControl.ResetText();
-		//            if (historyIndex >= 0 && historyIndex < history.Count) {
-		//                textEditorControl.Text = history[historyIndex];
-		//            } else if (value == history.Count) {
-		//                textEditorControl.Text = currentCode;
-		//            }
-		//            textEditorControl.Refresh();
-		//        }
-		//    }
-		//}
-
-		//private void SaveAndClearCode(string code)
-		//{
-		//    history.Add(code);
-		//    currentCode = String.Empty;
-		//    HistoryIndex = history.Count;
-		//}
-
-		private void showResultPanelToolStripButton_CheckedChanged(object sender, EventArgs e)
-		{
-			//ResultsPanelVisible = showResultPanelToolStripButton.Checked;
-		}
-
 		private void editToolStripMenuItem1_DropDownOpening(object sender, EventArgs e)
 		{
 			this.undoToolStripMenuItem.Enabled = textEditorControl.EnableUndo;
@@ -187,7 +150,7 @@ namespace DataDevelop
 		private void openToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			using (OpenFileDialog dialog = new OpenFileDialog()) {
-				dialog.Filter = "IronPython Script (*.py)|*.py|All Files (*.*)|*.*";
+				dialog.Filter = String.Format("{0} Script (*{1})|*{1}|All Files (*.*)|*.*", engine.Name, engine.Extension);
 				dialog.Title = "Select File to open...";
 				dialog.Multiselect = false;
 				if (dialog.ShowDialog(this) == DialogResult.OK) {
@@ -197,10 +160,19 @@ namespace DataDevelop
 			}
 		}
 
-		void SaveAs()
+		private void Save()
+		{
+			if (textEditorControl.FileName != null) {
+				textEditorControl.SaveFile(textEditorControl.FileName);
+			} else {
+				SaveAs();
+			}
+		}
+
+		private void SaveAs()
 		{
 			using (SaveFileDialog dialog = new SaveFileDialog()) {
-				dialog.Filter = "IronPython Script (*.py)|*.py|All Files (*.*)|*.*";
+				dialog.Filter = String.Format("{0} Script (*{1})|*{1}|All Files (*.*)|*.*", engine.Name, engine.Extension);
 				dialog.FilterIndex = 0;
 				if (DialogResult.OK == dialog.ShowDialog()) {
 					textEditorControl.SaveFile(dialog.FileName);
@@ -211,11 +183,7 @@ namespace DataDevelop
 
 		private void saveToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (textEditorControl.FileName != null) {
-				textEditorControl.SaveFile(textEditorControl.FileName);
-			} else {
-				SaveAs();
-			}
+			Save();
 		}
 
 		private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -223,25 +191,10 @@ namespace DataDevelop
 			SaveAs();
 		}
 
-		private void newToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			//if(textEditorControl.ActiveTextAreaControl.Document.
-		}
-
 		private void exitToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			this.Close();
 		}
-
-		//private void backButton_Click(object sender, EventArgs e)
-		//{
-		//    HistoryIndex--;
-		//}
-
-		//private void forwardButton_Click(object sender, EventArgs e)
-		//{
-		//    HistoryIndex++;
-		//}
 
 		private void ScriptDocument_Load(object sender, EventArgs e)
 		{
@@ -258,6 +211,25 @@ namespace DataDevelop
 		private void showResultPanelToolStripButton_Click(object sender, EventArgs e)
 		{
 			this.ShowOutput();
+		}
+
+		private void ScriptDocument_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			if (e.CloseReason == CloseReason.UserClosing) {
+				if (textEditorControl.HasChanges) {
+					this.Activate();
+					switch (MessageBox.Show(this, "Save Changes?", "Confirmation", MessageBoxButtons.YesNoCancel)) {
+						case DialogResult.Yes:
+							Save();
+							e.Cancel = textEditorControl.HasChanges;
+							break;
+
+						case DialogResult.Cancel:
+							e.Cancel = true;
+							break;
+					}
+				}
+			}
 		}
 	}
 }

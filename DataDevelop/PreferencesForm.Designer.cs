@@ -52,6 +52,7 @@ namespace DataDevelop
 			this.label5 = new System.Windows.Forms.Label();
 			this.printingTab = new System.Windows.Forms.TabPage();
 			this.resetButton = new System.Windows.Forms.Button();
+			this.showStartPageCheckBox = new System.Windows.Forms.CheckBox();
 			this.groupBox1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.generalTab.SuspendLayout();
@@ -64,7 +65,7 @@ namespace DataDevelop
 			// dataDirectoryLabel
 			// 
 			this.dataDirectoryLabel.AutoSize = true;
-			this.dataDirectoryLabel.Location = new System.Drawing.Point(15, 56);
+			this.dataDirectoryLabel.Location = new System.Drawing.Point(15, 84);
 			this.dataDirectoryLabel.Name = "dataDirectoryLabel";
 			this.dataDirectoryLabel.Size = new System.Drawing.Size(78, 13);
 			this.dataDirectoryLabel.TabIndex = 0;
@@ -73,7 +74,7 @@ namespace DataDevelop
 			// openDataDirectoryButton
 			// 
 			this.openDataDirectoryButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.openDataDirectoryButton.Location = new System.Drawing.Point(362, 70);
+			this.openDataDirectoryButton.Location = new System.Drawing.Point(362, 98);
 			this.openDataDirectoryButton.Name = "openDataDirectoryButton";
 			this.openDataDirectoryButton.Size = new System.Drawing.Size(54, 23);
 			this.openDataDirectoryButton.TabIndex = 1;
@@ -85,7 +86,7 @@ namespace DataDevelop
 			// 
 			this.dataDirectoryTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
-			this.dataDirectoryTextBox.Location = new System.Drawing.Point(18, 72);
+			this.dataDirectoryTextBox.Location = new System.Drawing.Point(18, 100);
 			this.dataDirectoryTextBox.Name = "dataDirectoryTextBox";
 			this.dataDirectoryTextBox.ReadOnly = true;
 			this.dataDirectoryTextBox.Size = new System.Drawing.Size(338, 20);
@@ -134,7 +135,7 @@ namespace DataDevelop
 			// 
 			this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.okButton.Location = new System.Drawing.Point(297, 173);
+			this.okButton.Location = new System.Drawing.Point(297, 186);
 			this.okButton.Name = "okButton";
 			this.okButton.Size = new System.Drawing.Size(75, 23);
 			this.okButton.TabIndex = 4;
@@ -146,7 +147,7 @@ namespace DataDevelop
 			// 
 			this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.cancelButton.Location = new System.Drawing.Point(378, 173);
+			this.cancelButton.Location = new System.Drawing.Point(378, 186);
 			this.cancelButton.Name = "cancelButton";
 			this.cancelButton.Size = new System.Drawing.Size(75, 23);
 			this.cancelButton.TabIndex = 5;
@@ -158,7 +159,7 @@ namespace DataDevelop
 			// 
 			this.applicationPathTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
-			this.applicationPathTextBox.Location = new System.Drawing.Point(18, 33);
+			this.applicationPathTextBox.Location = new System.Drawing.Point(18, 61);
 			this.applicationPathTextBox.Name = "applicationPathTextBox";
 			this.applicationPathTextBox.ReadOnly = true;
 			this.applicationPathTextBox.Size = new System.Drawing.Size(338, 20);
@@ -167,7 +168,7 @@ namespace DataDevelop
 			// openApplicationPathButton
 			// 
 			this.openApplicationPathButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.openApplicationPathButton.Location = new System.Drawing.Point(362, 31);
+			this.openApplicationPathButton.Location = new System.Drawing.Point(362, 59);
 			this.openApplicationPathButton.Name = "openApplicationPathButton";
 			this.openApplicationPathButton.Size = new System.Drawing.Size(54, 23);
 			this.openApplicationPathButton.TabIndex = 7;
@@ -178,7 +179,7 @@ namespace DataDevelop
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(15, 17);
+			this.label3.Location = new System.Drawing.Point(15, 45);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(87, 13);
 			this.label3.TabIndex = 6;
@@ -196,11 +197,12 @@ namespace DataDevelop
 			this.tabControl1.Location = new System.Drawing.Point(12, 12);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(441, 155);
+			this.tabControl1.Size = new System.Drawing.Size(441, 168);
 			this.tabControl1.TabIndex = 9;
 			// 
 			// generalTab
 			// 
+			this.generalTab.Controls.Add(this.showStartPageCheckBox);
 			this.generalTab.Controls.Add(this.label3);
 			this.generalTab.Controls.Add(this.openApplicationPathButton);
 			this.generalTab.Controls.Add(this.applicationPathTextBox);
@@ -210,7 +212,7 @@ namespace DataDevelop
 			this.generalTab.Location = new System.Drawing.Point(4, 22);
 			this.generalTab.Name = "generalTab";
 			this.generalTab.Padding = new System.Windows.Forms.Padding(3);
-			this.generalTab.Size = new System.Drawing.Size(433, 129);
+			this.generalTab.Size = new System.Drawing.Size(433, 142);
 			this.generalTab.TabIndex = 0;
 			this.generalTab.Text = "General";
 			this.generalTab.UseVisualStyleBackColor = true;
@@ -222,7 +224,7 @@ namespace DataDevelop
 			this.textEditorTab.Controls.Add(this.label4);
 			this.textEditorTab.Location = new System.Drawing.Point(4, 22);
 			this.textEditorTab.Name = "textEditorTab";
-			this.textEditorTab.Size = new System.Drawing.Size(433, 129);
+			this.textEditorTab.Size = new System.Drawing.Size(433, 142);
 			this.textEditorTab.TabIndex = 2;
 			this.textEditorTab.Text = "Text Editor";
 			this.textEditorTab.UseVisualStyleBackColor = true;
@@ -264,7 +266,7 @@ namespace DataDevelop
 			this.tablesTab.Location = new System.Drawing.Point(4, 22);
 			this.tablesTab.Name = "tablesTab";
 			this.tablesTab.Padding = new System.Windows.Forms.Padding(3);
-			this.tablesTab.Size = new System.Drawing.Size(433, 129);
+			this.tablesTab.Size = new System.Drawing.Size(433, 142);
 			this.tablesTab.TabIndex = 1;
 			this.tablesTab.Text = "Tables";
 			this.tablesTab.UseVisualStyleBackColor = true;
@@ -307,7 +309,7 @@ namespace DataDevelop
 			this.printingTab.Location = new System.Drawing.Point(4, 22);
 			this.printingTab.Name = "printingTab";
 			this.printingTab.Padding = new System.Windows.Forms.Padding(3);
-			this.printingTab.Size = new System.Drawing.Size(433, 129);
+			this.printingTab.Size = new System.Drawing.Size(433, 142);
 			this.printingTab.TabIndex = 3;
 			this.printingTab.Text = "Printing";
 			this.printingTab.UseVisualStyleBackColor = true;
@@ -315,7 +317,7 @@ namespace DataDevelop
 			// resetButton
 			// 
 			this.resetButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.resetButton.Location = new System.Drawing.Point(12, 173);
+			this.resetButton.Location = new System.Drawing.Point(12, 186);
 			this.resetButton.Name = "resetButton";
 			this.resetButton.Size = new System.Drawing.Size(75, 23);
 			this.resetButton.TabIndex = 10;
@@ -323,13 +325,26 @@ namespace DataDevelop
 			this.resetButton.UseVisualStyleBackColor = true;
 			this.resetButton.Click += new System.EventHandler(this.resetButton_Click);
 			// 
+			// showStartPageCheckBox
+			// 
+			this.showStartPageCheckBox.AutoSize = true;
+			this.showStartPageCheckBox.Checked = global::DataDevelop.Properties.Settings.Default.OpenStartPage;
+			this.showStartPageCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.showStartPageCheckBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::DataDevelop.Properties.Settings.Default, "OpenStartPage", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+			this.showStartPageCheckBox.Location = new System.Drawing.Point(18, 17);
+			this.showStartPageCheckBox.Name = "showStartPageCheckBox";
+			this.showStartPageCheckBox.Size = new System.Drawing.Size(161, 17);
+			this.showStartPageCheckBox.TabIndex = 9;
+			this.showStartPageCheckBox.Text = "Show Home Page at Startup";
+			this.showStartPageCheckBox.UseVisualStyleBackColor = true;
+			// 
 			// PreferencesForm
 			// 
 			this.AcceptButton = this.okButton;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.cancelButton;
-			this.ClientSize = new System.Drawing.Size(465, 208);
+			this.ClientSize = new System.Drawing.Size(465, 221);
 			this.Controls.Add(this.resetButton);
 			this.Controls.Add(this.tabControl1);
 			this.Controls.Add(this.cancelButton);
@@ -384,5 +399,6 @@ namespace DataDevelop
 		private System.Windows.Forms.NumericUpDown rowsPerPageNumericUpDown;
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.Button resetButton;
+		private System.Windows.Forms.CheckBox showStartPageCheckBox;
 	}
 }

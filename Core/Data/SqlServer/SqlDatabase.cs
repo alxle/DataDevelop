@@ -108,9 +108,9 @@ namespace DataDevelop.Data.SqlServer
 			using (SqlCommand command = this.connection.CreateCommand()) {
 				command.CommandText = commandText;
 				DataTable table = new DataTable();
-				SqlDataReader reader = command.ExecuteReader();
-				table.Load(reader);
-				reader.Close();
+				using (SqlDataReader reader = command.ExecuteReader()) {
+					table.Load(reader);
+				}
 				return table;
 			}
 		}

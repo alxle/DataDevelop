@@ -11,5 +11,8 @@
     <Setting Name="HomeUrl" Type="System.String" Scope="Application">
       <Value Profile="(Default)">http://datadevelop.codeplex.com/</Value>
     </Setting>
+    <Setting Name="OpenStartPage" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
