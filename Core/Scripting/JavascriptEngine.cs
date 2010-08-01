@@ -15,6 +15,16 @@ namespace DataDevelop.Scripting
 		private JintEngine engine = new JintEngine(Options.Ecmascript5);
 		private Stream output;
 
+		public override string Name
+		{
+			get { return "Jint"; }
+		}
+
+		public override string Extension
+		{
+			get { return ".js"; }
+		}
+
 		private void Print(object obj)
 		{
 			string str = (obj == null) ? "null" : obj.ToString();

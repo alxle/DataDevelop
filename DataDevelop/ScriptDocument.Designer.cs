@@ -27,12 +27,15 @@ namespace DataDevelop
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScriptDocument));
 			this.dataSet = new System.Data.DataSet();
 			this.toolStrip = new System.Windows.Forms.ToolStrip();
 			this.executeButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.showResultPanelToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
+			this.statusLabel = new System.Windows.Forms.ToolStripLabel();
 			this.menuStrip = new System.Windows.Forms.MenuStrip();
 			this.fileToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -66,10 +69,8 @@ namespace DataDevelop
 			this.cutToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.copyToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.pasteToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.textEditorControl = new ICSharpCode.TextEditor.TextEditorControl();
+			this.textEditorControl = new DataDevelop.UIComponents.TextEditor();
 			this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
-			this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
-			this.statusLabel = new System.Windows.Forms.ToolStripLabel();
 			((System.ComponentModel.ISupportInitialize)(this.dataSet)).BeginInit();
 			this.toolStrip.SuspendLayout();
 			this.menuStrip.SuspendLayout();
@@ -118,8 +119,18 @@ namespace DataDevelop
 			this.showResultPanelToolStripButton.Name = "showResultPanelToolStripButton";
 			this.showResultPanelToolStripButton.Size = new System.Drawing.Size(65, 22);
 			this.showResultPanelToolStripButton.Text = "Output";
-			this.showResultPanelToolStripButton.CheckedChanged += new System.EventHandler(this.showResultPanelToolStripButton_CheckedChanged);
 			this.showResultPanelToolStripButton.Click += new System.EventHandler(this.showResultPanelToolStripButton_Click);
+			// 
+			// toolStripSeparator8
+			// 
+			this.toolStripSeparator8.Name = "toolStripSeparator8";
+			this.toolStripSeparator8.Size = new System.Drawing.Size(6, 25);
+			// 
+			// statusLabel
+			// 
+			this.statusLabel.Name = "statusLabel";
+			this.statusLabel.Size = new System.Drawing.Size(48, 22);
+			this.statusLabel.Text = "Ready...";
 			// 
 			// menuStrip
 			// 
@@ -162,7 +173,6 @@ namespace DataDevelop
 			this.newToolStripMenuItem.Name = "newToolStripMenuItem";
 			this.newToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
 			this.newToolStripMenuItem.Text = "&New";
-			this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
 			// 
 			// openToolStripMenuItem
 			// 
@@ -451,7 +461,10 @@ namespace DataDevelop
 			// textEditorControl
 			// 
 			this.textEditorControl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.textEditorControl.DataBindings.Add(new System.Windows.Forms.Binding("Font", global::DataDevelop.Properties.Settings.Default, "TextEditorFont", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
 			this.textEditorControl.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.textEditorControl.Font = global::DataDevelop.Properties.Settings.Default.TextEditorFont;
+			this.textEditorControl.HasChanges = false;
 			this.textEditorControl.IsReadOnly = false;
 			this.textEditorControl.Location = new System.Drawing.Point(0, 25);
 			this.textEditorControl.Name = "textEditorControl";
@@ -465,17 +478,6 @@ namespace DataDevelop
 			// 
 			this.backgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_DoWork);
 			this.backgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker_RunWorkerCompleted);
-			// 
-			// toolStripSeparator8
-			// 
-			this.toolStripSeparator8.Name = "toolStripSeparator8";
-			this.toolStripSeparator8.Size = new System.Drawing.Size(6, 25);
-			// 
-			// statusLabel
-			// 
-			this.statusLabel.Name = "statusLabel";
-			this.statusLabel.Size = new System.Drawing.Size(48, 22);
-			this.statusLabel.Text = "Ready...";
 			// 
 			// ScriptDocument
 			// 
@@ -492,6 +494,7 @@ namespace DataDevelop
 			this.Text = "Scripting Console";
 			this.Load += new System.EventHandler(this.ScriptDocument_Load);
 			this.Shown += new System.EventHandler(this.ScriptDocument_Shown);
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ScriptDocument_FormClosing);
 			((System.ComponentModel.ISupportInitialize)(this.dataSet)).EndInit();
 			this.toolStrip.ResumeLayout(false);
 			this.toolStrip.PerformLayout();
@@ -544,7 +547,7 @@ namespace DataDevelop
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
 		private System.Windows.Forms.ToolStripMenuItem scriptToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem executeToolStripMenuItem;
-		private ICSharpCode.TextEditor.TextEditorControl textEditorControl;
+		private DataDevelop.UIComponents.TextEditor textEditorControl;
 		private System.ComponentModel.BackgroundWorker backgroundWorker;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
 		private System.Windows.Forms.ToolStripLabel statusLabel;

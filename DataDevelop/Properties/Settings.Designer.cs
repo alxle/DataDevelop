@@ -55,5 +55,17 @@ namespace DataDevelop.Properties {
                 return ((string)(this["HomeUrl"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool OpenStartPage {
+            get {
+                return ((bool)(this["OpenStartPage"]));
+            }
+            set {
+                this["OpenStartPage"] = value;
+            }
+        }
     }
 }

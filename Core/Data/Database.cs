@@ -137,11 +137,82 @@ namespace DataDevelop.Data
 			return this.QuotePrefix + name + this.QuoteSuffix;
 		}
 
+		public DataTable Query(string commandText)
+		{
+			using (IDbCommand command = DbCommandParser.Parse(this, commandText)) {
+				return ExecuteTable(command);
+			}
+		}
+
+		public DataTable Query(string commandText, params object[] values)
+		{
+			using (IDbCommand command = DbCommandParser.Parse(this, commandText)) {
+				DbCommandParser.BindParameters(command, values);
+				return ExecuteTable(command);
+			}
+		}
+
+		public DataTable Query(string commandText, DataRow row)
+		{
+			using (IDbCommand command = DbCommandParser.Parse(this, commandText)) {
+				DbCommandParser.BindParameters(command, row);
+				return ExecuteTable(command);
+			}
+		}
+
+		public DataTable Query(string commandText, Dictionary<string, object> parameters)
+		{
+			using (IDbCommand command = DbCommandParser.Parse(this, commandText)) {
+				DbCommandParser.BindParameters(command, parameters);
+				return ExecuteTable(command);
+			}
+		}
+
+		public int NonQuery(string commandText)
+		{
+			using (IDbCommand command = DbCommandParser.Parse(this, commandText)) {
+				return command.ExecuteNonQuery();
+			}
+		}
+
+		public int NonQuery(string commandText, params object[] values)
+		{
+			using (IDbCommand command = DbCommandParser.Parse(this, commandText)) {
+				DbCommandParser.BindParameters(command, values);
+				return command.ExecuteNonQuery();
+			}
+		}
+
+		public int NonQuery(string commandText, DataRow row)
+		{
+			using (IDbCommand command = DbCommandParser.Parse(this, commandText)) {
+				DbCommandParser.BindParameters(command, row);
+				return command.ExecuteNonQuery();
+			}
+		}
+
+		public int NonQuery(string commandText, Dictionary<string, object> parameters)
+		{
+			using (IDbCommand command = DbCommandParser.Parse(this, commandText)) {
+				DbCommandParser.BindParameters(command, parameters);
+				return command.ExecuteNonQuery();
+			}
+		}
+
 		public abstract int ExecuteNonQuery(string commandText);
 
 		public abstract int ExecuteNonQuery(string commandText, DbTransaction transaction);
 
 		public abstract DataTable ExecuteTable(string commandText);
+
+		protected static DataTable ExecuteTable(IDbCommand command)
+		{
+			DataTable table = new DataTable();
+			using (IDataReader reader = command.ExecuteReader()) {
+				table.Load(reader);
+			}
+			return table;
+		}
 
 		public virtual DbDataAdapter CreateAdapter(Table table)
 		{

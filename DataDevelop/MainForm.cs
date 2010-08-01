@@ -51,7 +51,10 @@ namespace DataDevelop
 			} else {
 				ShowToolboxes();
 			}
-			this.OpenStartPage();
+			
+			if (Properties.Settings.Default.OpenStartPage) {
+				this.OpenStartPage();
+			}
 		}
 
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)

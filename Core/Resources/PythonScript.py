@@ -108,3 +108,30 @@ class Database:
 				t = Table(table)
 				self.__dict__[tableName] = t
 				return t
+	
+	def Query(self, command, *values):
+		from System.Collections import ArrayList
+		list = ArrayList()
+		for value in values:
+			list.Add(value)
+		if list.Count == 0:
+			for dataRow in self.base.Query(command).Rows:
+				yield Row(dataRow)
+		elif list.Count == 1:
+			for dataRow in self.base.Query(command, list[0]).Rows:
+				yield Row(dataRow)
+		else:
+			for dataRow in self.base.Query(command, list.ToArray()).Rows:
+				yield Row(dataRow)
+	
+	def NonQuery(self, command, *values):
+		from System.Collections import ArrayList
+		list = ArrayList()
+		for value in values:
+			list.Add(value)
+		if list.Count == 0:
+			return self.base.NonQuery(command)
+		elif list.Count == 1:
+			return self.base.NonQuery(command, list[0])
+		else:
+			return self.base.NonQuery(command, list.ToArray())
