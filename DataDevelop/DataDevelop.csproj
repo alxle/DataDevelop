@@ -228,6 +228,12 @@
     <Compile Include="UIComponents\ListView.Designer.cs">
       <DependentUpon>ListView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\ProgressDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\ProgressDialog.Designer.cs">
+      <DependentUpon>ProgressDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="UIComponents\SortPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -408,6 +414,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\ProgressDialog.resx">
+      <DependentUpon>ProgressDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UIComponents\PropertyGrid.resx">
       <SubType>Designer</SubType>
       <DependentUpon>PropertyGrid.cs</DependentUpon>
@@ -532,6 +541,9 @@
       <Project>{DCA7E7DC-93F3-42F9-999F-3935DB3BD249}</Project>
       <Name>Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\ExcelTable.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

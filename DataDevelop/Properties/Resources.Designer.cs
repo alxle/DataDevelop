@@ -128,6 +128,13 @@ namespace DataDevelop.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap ExcelTable {
+            get {
+                object obj = ResourceManager.GetObject("ExcelTable", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap Filter {
             get {
                 object obj = ResourceManager.GetObject("Filter", resourceCulture);
