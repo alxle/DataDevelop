@@ -39,6 +39,7 @@ namespace DataDevelop
 			this.dataGridView = new DataDevelop.DataGridView();
 			this.resultsContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.saveToFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.exportToToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.printPreviewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.messagesTabPage = new System.Windows.Forms.TabPage();
 			this.messageTextBox = new System.Windows.Forms.TextBox();
@@ -75,7 +76,7 @@ namespace DataDevelop
 			this.databaseStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.elapsedTimeStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.totalRowsStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-			this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
+			this.executeWorker = new System.ComponentModel.BackgroundWorker();
 			this.resultSaveFileDialog = new System.Windows.Forms.SaveFileDialog();
 			this.menuStrip = new System.Windows.Forms.MenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -89,6 +90,7 @@ namespace DataDevelop
 			this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
 			this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
 			this.printPreviewDialog = new System.Windows.Forms.PrintPreviewDialog();
+			this.excelWorker = new System.ComponentModel.BackgroundWorker();
 			this.splitContainer.Panel1.SuspendLayout();
 			this.splitContainer.Panel2.SuspendLayout();
 			this.splitContainer.SuspendLayout();
@@ -210,21 +212,32 @@ namespace DataDevelop
 			// 
 			this.resultsContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.saveToFileToolStripMenuItem,
+            this.exportToToolStripMenuItem,
             this.printPreviewToolStripMenuItem});
 			this.resultsContextMenuStrip.Name = "resultsContextMenuStrip";
-			this.resultsContextMenuStrip.Size = new System.Drawing.Size(144, 48);
+			this.resultsContextMenuStrip.Size = new System.Drawing.Size(151, 70);
 			// 
 			// saveToFileToolStripMenuItem
 			// 
+			this.saveToFileToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.SaveChanges;
 			this.saveToFileToolStripMenuItem.Name = "saveToFileToolStripMenuItem";
-			this.saveToFileToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+			this.saveToFileToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
 			this.saveToFileToolStripMenuItem.Text = "Save to file...";
 			this.saveToFileToolStripMenuItem.Click += new System.EventHandler(this.saveToFileToolStripMenuItem_Click);
 			// 
+			// exportToToolStripMenuItem
+			// 
+			this.exportToToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.ExcelTable;
+			this.exportToToolStripMenuItem.Name = "exportToToolStripMenuItem";
+			this.exportToToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+			this.exportToToolStripMenuItem.Text = "Export to Excel";
+			this.exportToToolStripMenuItem.Click += new System.EventHandler(this.exportToToolStripMenuItem_Click);
+			// 
 			// printPreviewToolStripMenuItem
 			// 
+			this.printPreviewToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.PrintPreview;
 			this.printPreviewToolStripMenuItem.Name = "printPreviewToolStripMenuItem";
-			this.printPreviewToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+			this.printPreviewToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
 			this.printPreviewToolStripMenuItem.Text = "Print Preview";
 			this.printPreviewToolStripMenuItem.Click += new System.EventHandler(this.printPreviewToolStripMenuItem_Click);
 			// 
@@ -553,10 +566,10 @@ namespace DataDevelop
 			this.totalRowsStatusLabel.Text = "0 rows";
 			this.totalRowsStatusLabel.Visible = false;
 			// 
-			// backgroundWorker
+			// executeWorker
 			// 
-			this.backgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_DoWork);
-			this.backgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker_RunWorkerCompleted);
+			this.executeWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.executeWorker_DoWork);
+			this.executeWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.executeWorker_RunWorkerCompleted);
 			// 
 			// resultSaveFileDialog
 			// 
@@ -669,6 +682,12 @@ namespace DataDevelop
 			this.printPreviewDialog.Name = "printPreviewDialog";
 			this.printPreviewDialog.Visible = false;
 			// 
+			// excelWorker
+			// 
+			this.excelWorker.WorkerReportsProgress = true;
+			this.excelWorker.WorkerSupportsCancellation = true;
+			this.excelWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.excelWorker_DoWork);
+			// 
 			// CommandDocument
 			// 
 			this.AllowDrop = true;
@@ -722,7 +741,7 @@ namespace DataDevelop
 		private System.Windows.Forms.StatusStrip statusStrip;
 		private System.Windows.Forms.ToolStripStatusLabel statusLabel;
 		private System.Windows.Forms.ToolStripProgressBar progressBar;
-		private System.ComponentModel.BackgroundWorker backgroundWorker;
+		private System.ComponentModel.BackgroundWorker executeWorker;
 		private System.Windows.Forms.ContextMenuStrip resultsContextMenuStrip;
 		private System.Windows.Forms.ToolStripMenuItem saveToFileToolStripMenuItem;
 		private System.Windows.Forms.SaveFileDialog resultSaveFileDialog;
@@ -766,5 +785,7 @@ namespace DataDevelop
 		private System.Windows.Forms.ToolStripMenuItem removeAllTabsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
 		private System.Windows.Forms.ToolStripMenuItem executeEachStatementToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem exportToToolStripMenuItem;
+		private System.ComponentModel.BackgroundWorker excelWorker;
 	}
 }

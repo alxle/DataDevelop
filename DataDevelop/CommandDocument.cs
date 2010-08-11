@@ -108,13 +108,13 @@ namespace DataDevelop
 		{
 			this.commandType = commandType;
 			this.executeEach = executeEach;
-			if (backgroundWorker.IsBusy) {
+			if (executeWorker.IsBusy) {
 				// TODO Show message to tell the user that a command is already in execution
 			} else {
 				ClearMessages();
 				SetEnabled(false);
 				statusLabel.Text = "Executing...";
-				backgroundWorker.RunWorkerAsync(SelectedText);
+				executeWorker.RunWorkerAsync(SelectedText);
 			}
 		}
 
@@ -125,7 +125,7 @@ namespace DataDevelop
 			public DataTable Data;
 		}
 
-		private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+		private void executeWorker_DoWork(object sender, DoWorkEventArgs e)
 		{
 			try {
 				stopwatch.Reset();
@@ -175,7 +175,7 @@ namespace DataDevelop
 			elapsedTimeStatusLabel.Text = String.Format("{0:00}:{1:00}:{2:00}.{3:000}", hours, time.Minutes, time.Seconds, time.Milliseconds);
 		}
 
-		private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+		private void executeWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
 			if (e.Error != null) {
 				ShowMessage(e.Error.Message);
@@ -257,7 +257,7 @@ namespace DataDevelop
 
 		private void saveToFileToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			DataTable table = DataTable;
+			DataTable table = this.DataTable;
 			if (table != null) {
 				if (resultSaveFileDialog.ShowDialog(this) == DialogResult.OK) {
 					string ext = Path.GetExtension(resultSaveFileDialog.FileName).ToLower();
@@ -488,6 +488,26 @@ namespace DataDevelop
 		private void ExecuteEachStatement(object sender, EventArgs e)
 		{
 			this.Execute(CommandType.NonQuery, true);
+		}
+
+		private void exportToToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ProgressDialog.Run(this, "Export to Excel", excelWorker, true);
+		}
+
+		private void excelWorker_DoWork(object sender, DoWorkEventArgs e)
+		{
+			var data = this.DataTable;
+			if (data != null) {
+				using (var sheet = DataDevelop.Core.MSOffice.Excel.CreateWorksheet("", data, excelWorker)) {
+					if (sheet != null) {
+						excelWorker.ReportProgress(100, "Loading Excel...");
+						sheet.OpenInExcel();
+					} else {
+						e.Cancel = true;
+					}
+				}
+			}
 		}
 	}
 }
