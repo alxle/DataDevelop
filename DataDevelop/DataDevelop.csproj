@@ -9,8 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DataDevelop</RootNamespace>
     <AssemblyName>DataDevelop</AssemblyName>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>DataDevelop.ico</ApplicationIcon>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <ManifestCertificateThumbprint>898826E6F02970A79E6732F7B92BFE1CA63CE92C</ManifestCertificateThumbprint>
     <ManifestKeyFile>AlejandroLopez.pfx</ManifestKeyFile>
@@ -543,7 +542,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="DataDevelop.ico" />
     <Content Include="Resources\ExcelTable.png" />
+    <Content Include="Resources\Revert.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
