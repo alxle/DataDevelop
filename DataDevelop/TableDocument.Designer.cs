@@ -187,7 +187,7 @@ namespace DataDevelop
 			// discardChangesButton
 			// 
 			this.discardChangesButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.discardChangesButton.Image = global::DataDevelop.Properties.Resources.RejectChanges;
+			this.discardChangesButton.Image = global::DataDevelop.Properties.Resources.Revert;
 			this.discardChangesButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.discardChangesButton.Name = "discardChangesButton";
 			this.discardChangesButton.Size = new System.Drawing.Size(23, 22);

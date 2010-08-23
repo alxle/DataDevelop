@@ -311,24 +311,6 @@ Do you want to continue?</value>
 			dp637aapbCumil1VRX+Y3s8T+VwXhtJtWyjbs9kg9r8B4LDiPoc3Lh8AAAAASUVORK5CYII=
 		</value>
 	</data>
-	<data name="RejectChanges" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-		<value>
-			iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-			YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAsVJREFUOE+tk2tI
-			U2EYx49mLtMaCUoFFdY+mIOopUgbI7HFEK9pyy4ghYhg0hrllOVtEDaIWDxObchMZLpOw0sDEUs0WkFI
-			YcMLZY55mVMXB3Gueeu43vNKOxTZpw78v5zzPr/nef/P/xDE/3h6ur3AyGLxQId5CUwmClqa3dCod4EO
-			nKB95ABNjR3UVeOgUo1ByZ1hkMttEOjNFPb30QCwCjRNbyvf6gak5vbDldwurADAbF7EAI1m8Z/FbsoH
-			4uweEAgKQSYjWYDJSGGAusr1VwDTmSm2OxchPs0CqjIH5GQbWYDBMI8BSuUEC6isfOmXy1/7vL7aX8W2
-			cTfESs2gUIxBVoaBBdTXOzHgVvHwFmBtrfZHRsan2VDO+kp65seZXmsTU/zO5oRDSUZQXuvWd8RI+jcJ
-			4iL2AbRTGFBY8CEwwdqTxo71hISv6JB/OY7vGG1obe0bnIJ0fqlxJPrE59Hwg3Y/QcRiwEONA/p6abRK
-			Gq7nvwdZnhW7fS7zhY48kvKmjQjanAjZP3vh+N22yX28SUfE0cnLZ6v1gS3cV4+jDNAoAzQYWzbQ3r1Q
-			U/MNm6oqswOZXNW1vCtsaSAomJ6NOOC6J6xulUg0rAflKBwkSUOzYQMFxwupVxW/SSeUdnoQAI3sX+BE
-			UuUC5bOkJDULUJYMo2IatNqtzgyAsSZeJIXR9ldPv4eFeZxc7lzF6VJyPjTSPbiXPyIWV7AAJpZ6PR0Y
-			mwHEi87D40sFbStRURSjZlnec7G4se7mqVKjfXf0zAOetBNNFIR9KC4aQvf24DvzJCTECKRgaWrXU3z+
-			l4HgYHouM+dtVkpWnUBsAKGwQVdxLK99eifXhQBcDCgqGjpZkG/F8WQSxoSkOqHYtMDhUI6IqOkbiQpD
-			MrqzSFSGdSbxdq11z2EbWjFv258ZfQxHSkOKQ51C/zyI3u1ACvkJwOHjJNM31ggAAAAASUVORK5CYII=
-		</value>
-	</data>
 	<data name="SaveChanges" type="System.Resources.ResXFileRef, System.Windows.Forms">
 		<value>..\Resources\SaveChanges.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
 	</data>
@@ -369,6 +351,9 @@ Do you want to continue?</value>
 	</data>
 	<data name="ExcelTable" type="System.Resources.ResXFileRef, System.Windows.Forms">
 		<value>..\Resources\ExcelTable.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+	</data>
+	<data name="Revert" type="System.Resources.ResXFileRef, System.Windows.Forms">
+		<value>..\Resources\Revert.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
 	</data>
 	<data name="JavascriptSyntaxDefinition" type="System.Resources.ResXFileRef, System.Windows.Forms">
 		<value>..\Resources\JavascriptSyntaxDefinition.xml;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
