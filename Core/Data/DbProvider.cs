@@ -43,7 +43,7 @@ namespace DataDevelop.Data
 
 		public abstract Database CreateDatabase(string name, string connectionString);
 
-		public virtual Database CreateDatabaseFromFile(string name, string fileName)
+		public virtual string CreateDatabaseFile(string fileName)
 		{
 			if (this.IsFileBased) {
 				throw new NotImplementedException();
@@ -59,6 +59,7 @@ namespace DataDevelop.Data
 			providers.Add("Access", Access.AccessProvider.Instance);
 			providers.Add("SqlServer", SqlServer.SqlProvider.Instance);
 			providers.Add("MySql", new MySql.MySqlProvider());
+			providers.Add("SqlCe", SqlCe.SqlCeProvider.Instance);
 		}
 	}
 }

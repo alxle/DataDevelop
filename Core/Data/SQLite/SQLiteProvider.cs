@@ -1,6 +1,7 @@
 using System;
 using System.Data.Common;
 using System.Data.SQLite;
+using System.IO;
 
 namespace DataDevelop.Data.SQLite
 {
@@ -28,9 +29,12 @@ namespace DataDevelop.Data.SQLite
 			get { return "SQLite"; }
 		}
 
-		public override Database CreateDatabaseFromFile(string name, string fileName)
+		public override string CreateDatabaseFile(string fileName)
 		{
-			return new SQLiteDatabase(name, "Data Source=" + fileName);
+			using (FileStream db = File.Create(fileName)) {
+				db.Close();
+			}
+			return "Data Source=" + fileName;
 		}
 
 		public override Database CreateDatabase(string name, string connectionString)

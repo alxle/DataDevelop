@@ -251,17 +251,26 @@ namespace DataDevelop
 		{
 			DbProvider provider = SelectProvider();
 			if (provider == null) return;
-			if (!(provider is SQLiteProvider)) {
-				MessageBox.Show(this, "Only SQLite Databases are supported for creation.", "Information");
+			if (!provider.IsFileBased) {
+				MessageBox.Show(this, "Selected Database is not File based, No creation supported.", "Information");
 				return;
 			}
 
 			if (saveFileDialog.ShowDialog(this) == DialogResult.OK) {
 				string fileName = saveFileDialog.FileName;
-				File.Create(fileName).Close();
-				string databaseName = GetDatabaseName(fileName);
-				Database db = SQLiteProvider.Instance.CreateDatabaseFromFile(databaseName, fileName);
-				AddNewDatabase(db);
+				try {
+					string connectionString = provider.CreateDatabaseFile(fileName);
+					using (ConnectionStringForm box = new ConnectionStringForm()) {
+						box.ConnectionStringBuilder = provider.CreateConnectionStringBuilder();
+						box.ConnectionStringBuilder.ConnectionString = connectionString;
+						if (box.ShowDialog(this) == DialogResult.OK) {
+							Database db = provider.CreateDatabase(box.DatabaseName, box.ConnectionString);
+							AddNewDatabase(db);
+						}
+					}
+				} catch (Exception ex) {
+					MessageBox.Show(this, ex.Message, "Error on creating database");
+				}
 			}
 		}
 
