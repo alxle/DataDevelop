@@ -73,6 +73,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\System.Data.SQLite.dll</HintPath>
     </Reference>
+    <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft SQL Server Compact Edition\v4.0\Desktop\System.Data.SqlServerCe.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -85,6 +89,9 @@
     <Compile Include="Data\ColumnOrder.cs" />
     <Compile Include="Data\ConnectionScope.cs" />
     <Compile Include="Data\ConnectionSettings.cs" />
+    <Compile Include="Data\SqlCe\SqlCeDatabase.cs" />
+    <Compile Include="Data\SqlCe\SqlCeProvider.cs" />
+    <Compile Include="Data\SqlCe\SqlCeTable.cs" />
     <Compile Include="Data\Database.cs" />
     <Compile Include="Data\DatabaseEventArgs.cs" />
     <Compile Include="Data\DbCommandParser.cs" />

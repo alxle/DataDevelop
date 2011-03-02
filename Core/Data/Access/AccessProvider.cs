@@ -38,16 +38,18 @@ namespace DataDevelop.Data.Access
 			return new OleDbConnectionStringBuilder();
 		}
 
-		public override Database CreateDatabaseFromFile(string name, string fileName)
+		public override string CreateDatabaseFile(string fileName)
 		{
-			string ext = System.IO.Path.GetExtension(fileName);
-			string connectionString;
-			if (ext.ToLower() == ".accdb") {
-				connectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};User Id=;Password=;";
-			} else {
-				connectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source={0};User Id=;Password=;";
-			}
-			return new AccessDatabase(name, String.Format(connectionString, fileName));
+			throw new NotImplementedException("Access database file cannot be created");
+			// TODO: Creation of Access db file
+			////string ext = System.IO.Path.GetExtension(fileName);
+			////string connectionString;
+			////if (ext.ToLower() == ".accdb") {
+			////    connectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};User Id=;Password=;";
+			////} else {
+			////    connectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source={0};User Id=;Password=;";
+			////}
+			////return new AccessDatabase(name, String.Format(connectionString, fileName));
 		}
 
 		public override string ToString()
