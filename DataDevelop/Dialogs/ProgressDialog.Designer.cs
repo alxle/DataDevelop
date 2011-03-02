@@ -27,8 +27,11 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			this.progressTextBox = new System.Windows.Forms.TextBox();
 			this.progressBar = new System.Windows.Forms.ProgressBar();
+			this.elapsedTimer = new System.Windows.Forms.Timer(this.components);
+			this.elapsedLabel = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// okButton
@@ -61,16 +64,32 @@
 			this.progressBar.Size = new System.Drawing.Size(313, 17);
 			this.progressBar.TabIndex = 3;
 			// 
+			// elapsedTimer
+			// 
+			this.elapsedTimer.Interval = 1000;
+			this.elapsedTimer.Tick += new System.EventHandler(this.RefreshElapsedTime);
+			// 
+			// elapsedLabel
+			// 
+			this.elapsedLabel.AutoSize = true;
+			this.elapsedLabel.Location = new System.Drawing.Point(12, 87);
+			this.elapsedLabel.Name = "elapsedLabel";
+			this.elapsedLabel.Size = new System.Drawing.Size(115, 13);
+			this.elapsedLabel.TabIndex = 4;
+			this.elapsedLabel.Text = "Elapsed time: 00:00:00";
+			// 
 			// ProgressDialog
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.ClientSize = new System.Drawing.Size(338, 117);
 			this.Controls.Add(this.progressTextBox);
 			this.Controls.Add(this.progressBar);
+			this.Controls.Add(this.elapsedLabel);
 			this.Name = "ProgressDialog";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Progress...";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ProgressDialog_FormClosing);
+			this.Controls.SetChildIndex(this.elapsedLabel, 0);
 			this.Controls.SetChildIndex(this.progressBar, 0);
 			this.Controls.SetChildIndex(this.progressTextBox, 0);
 			this.Controls.SetChildIndex(this.okButton, 0);
@@ -84,5 +103,7 @@
 
 		private System.Windows.Forms.TextBox progressTextBox;
 		private System.Windows.Forms.ProgressBar progressBar;
+		private System.Windows.Forms.Timer elapsedTimer;
+		private System.Windows.Forms.Label elapsedLabel;
 	}
 }

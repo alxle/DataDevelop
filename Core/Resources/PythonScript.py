@@ -64,7 +64,11 @@ class Table:
 	def Insert(self, row):
 		dataRow = row._dataRow;
 		if dataRow.RowState.ToString() == "Detached":
-			self._dataTable.Rows.Add(row._dataRow)
+			self._dataTable.Rows.Add(dataRow)
+		else:
+			newRow = self._dataTable.NewRow()
+			newRow.ItemArray = dataRow.ItemArray;
+			self._dataTable.Rows.Add(newRow)
 		if self.AutoSaveChanges:
 			self.SaveChanges()
 	

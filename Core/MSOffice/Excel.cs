@@ -108,7 +108,8 @@ namespace DataDevelop.Core.MSOffice
 			if (worker != null) {
 				worker.ReportProgress(0, "Initializing...");
 			}
-
+			var watch = new System.Diagnostics.Stopwatch();
+			watch.Start();
 			var excel = new Microsoft.Office.Interop.Excel.Application();
 			var book = excel.Workbooks.Add(Missing.Value);
 			var sheet = (ExcelWorksheet)book.Worksheets[1];
@@ -119,20 +120,36 @@ namespace DataDevelop.Core.MSOffice
 				sheet.Name = data.TableName;
 			}
 			excel.Cursor = XlMousePointer.xlWait;
-
+			
+			var titles = new List<object>();
 			for (int i = 0; i < columns.Count; i++) {
-				sheet.Cells[1, i + 1] = columns[i].Title;
+				//sheet.Cells[1, i + 1] = columns[i].Title;
+				titles.Add(columns[i].Title);
 			}
+
+			sheet.get_Range(sheet.Cells[1, 1], sheet.Cells[1, columns.Count]).FormulaArray = titles.ToArray();
+				//.set_Value(Missing.Value, titles.ToArray());
 
 			Range headers = sheet.get_Range(sheet.Cells[1, 1], sheet.Cells[1, columns.Count]);
 			headers.Font.Bold = true;
 
 			GetCell(sheet, 2, 1).Select();
 			excel.ActiveWindow.FreezePanes = true;
+			
+			//var rowValues = new object[columns.Count];
+			var tableValues = new object[data.Rows.Count + 1, columns.Count];
 
+			var chrono = new System.Diagnostics.Stopwatch();
+			if (worker != null) {
+				chrono.Start();
+			}
 			for (int rowIndex = 0; rowIndex < data.Rows.Count + 1; rowIndex++) {
+				
 				if (worker != null) {
-					worker.ReportProgress(100 * rowIndex / data.Rows.Count, String.Format("Exporting Row ({0} of {1})", rowIndex, data.Rows.Count));
+					var milliseconds = chrono.ElapsedMilliseconds;
+					if (chrono.ElapsedMilliseconds - milliseconds > 200) {
+						worker.ReportProgress(100 * rowIndex / data.Rows.Count, String.Format("Exporting Row ({0} of {1})", rowIndex, data.Rows.Count));
+					}
 					if (worker.CancellationPending) {
 						excel.DisplayAlerts = false;
 						excel.ActiveWindow.Close(false, Missing.Value, Missing.Value);
@@ -141,12 +158,14 @@ namespace DataDevelop.Core.MSOffice
 						return null;
 					}
 				}
+				
 				for (int columnIndex = 0; columnIndex < columns.Count; columnIndex++) {
 					var column = columns[columnIndex];
-					var cell = (Range)sheet.Cells[rowIndex + 2, columnIndex + 1];
+					//var cell = (Range)sheet.Cells[rowIndex + 2, columnIndex + 1];
 					object value = null;
 					
 					if (rowIndex == data.Rows.Count) {
+						var cell = (Range)sheet.Cells[rowIndex + 2, columnIndex + 1];
 						cell.Font.Bold = true;
 						if (column.Summary != Agregate.None) {
 							value = String.Format("={0}({1}2:{1}{2})", column.Summary, (char)(columnIndex + 0x41), data.Rows.Count + 1);
@@ -165,21 +184,30 @@ namespace DataDevelop.Core.MSOffice
 							}
 							var error = data.Rows[rowIndex].GetColumnError(column.Column.Ordinal);
 							if (!String.IsNullOrEmpty(error)) {
+								var cell = (Range)sheet.Cells[rowIndex + 2, columnIndex + 1];
 								cell.NoteText(error, Missing.Value, Missing.Value);
 							}
 						}
 					}
-					cell.Formula = value ?? String.Empty;
+					//cell.Formula = value ?? String.Empty;
 					if (!String.IsNullOrEmpty(column.Format)) {
+						var cell = (Range)sheet.Cells[rowIndex + 2, columnIndex + 1];
 						cell.NumberFormat = column.Format;
 					}
 					////cell.Auto = false;
+					//rowValues[columnIndex] = value;
+					tableValues[rowIndex, columnIndex] = value;
 				}
+				//SetRow(sheet, rowIndex + 2, 1, rowValues);
 			}
-
+			if (worker != null) {
+				worker.ReportProgress(0, "Sending data to Excel...");
+			}
+			SetTable(sheet, 2, 1, tableValues);
 			////headers.EntireColumn.AutoFit();
 			excel.Cursor = XlMousePointer.xlDefault;
-
+			watch.Stop();
+			Console.WriteLine("Elapsed: {0}", watch.Elapsed);
 			return new Worksheet(sheet, data.Columns.Count, data.Rows.Count);
 		}
 		
@@ -191,6 +219,26 @@ namespace DataDevelop.Core.MSOffice
 		internal static void SetCell(ExcelWorksheet worksheet, int rowIndex, int columnIndex, object value)
 		{
 			GetCell(worksheet, rowIndex, columnIndex).Formula = value;
+		}
+
+		internal static Range GetRow(ExcelWorksheet worksheet, int rowIndex, int columnIndex, int length)
+		{
+			return worksheet.get_Range(GetCell(worksheet, rowIndex, columnIndex), GetCell(worksheet, rowIndex, columnIndex + length - 1));
+		}
+
+		internal static void SetRow(ExcelWorksheet worksheet, int rowIndex, int columnIndex, object[] values)
+		{
+			GetRow(worksheet, rowIndex, columnIndex, values.Length).FormulaArray = values;
+		}
+
+		internal static Range GetTable(ExcelWorksheet worksheet, int rowIndex, int columnIndex, int rows, int columns)
+		{
+			return worksheet.get_Range(GetCell(worksheet, rowIndex, columnIndex), GetCell(worksheet, rowIndex + rows - 1, columnIndex + columns - 1));
+		}
+
+		internal static void SetTable(ExcelWorksheet worksheet, int rowIndex, int columnIndex, object[,] values)
+		{
+			GetTable(worksheet, rowIndex, columnIndex, values.GetLength(0), values.GetLength(1)).FormulaArray = values;
 		}
 
 		internal static Range FooterFormula(ExcelWorksheet worksheet, DataTable data, int columnIndex, string formula, string format)
