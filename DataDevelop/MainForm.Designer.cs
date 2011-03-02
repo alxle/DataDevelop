@@ -376,7 +376,7 @@ namespace DataDevelop
 			this.IsMdiContainer = true;
 			this.MainMenuStrip = this.menuStrip;
 			this.Name = "MainForm";
-			this.Text = "DataDevelop (alpha)";
+			this.Text = "DataDevelop (beta)";
 			this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
 			this.Load += new System.EventHandler(this.MainForm_Load);
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
