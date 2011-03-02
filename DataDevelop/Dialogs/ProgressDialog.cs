@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace DataDevelop.Dialogs
 {
@@ -14,6 +15,7 @@ namespace DataDevelop.Dialogs
 		private object argument;
 		private object result;
 		private bool closeOnFinish;
+		private Stopwatch stopwatch = new Stopwatch();
 
 		private ProgressDialog(BackgroundWorker worker, object argument)
 		{
@@ -47,6 +49,8 @@ namespace DataDevelop.Dialogs
 		protected override void OnLoad(EventArgs e)
 		{
 			this.worker.RunWorkerAsync(argument);
+			this.stopwatch.Start();
+			this.elapsedTimer.Start();
 			this.argument = null;
 			base.OnLoad(e);
 		}
@@ -85,6 +89,8 @@ namespace DataDevelop.Dialogs
 
 			this.progressBar.Style = ProgressBarStyle.Continuous;
 
+			this.stopwatch.Stop();
+
 			if (e.Error != null) {
 				this.progressTextBox.ForeColor = Color.Red;
 				this.progressTextBox.Text = "Error: " + e.Error.Message;
@@ -103,8 +109,19 @@ namespace DataDevelop.Dialogs
 
 		private void ProgressDialog_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			if (worker.IsBusy) {
+			if (this.worker.IsBusy) {
 				e.Cancel = true;
+			}
+		}
+
+		private void RefreshElapsedTime(object sender, EventArgs e)
+		{
+			if (this.stopwatch.IsRunning) {
+				var elapsed = this.stopwatch.Elapsed;
+				this.elapsedLabel.Text = String.Format("Elapsed time: {0:00}:{1:00}:{2:00}", 
+					Math.Floor(elapsed.TotalHours), elapsed.Minutes, elapsed.Seconds);
+			} else {
+				this.elapsedTimer.Stop();
 			}
 		}
 	}

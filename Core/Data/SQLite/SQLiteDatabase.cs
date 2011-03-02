@@ -114,14 +114,11 @@ namespace DataDevelop.Data.SQLite
 		{
 			using (SQLiteCommand command = this.connection.CreateCommand()) {
 				command.CommandText = commandText;
-				DataTable table = new DataTable();
-				SQLiteDataReader reader = command.ExecuteReader();
-				try {
-					table.Load(reader);
-				} catch (ConstraintException) {
+				using (SQLiteDataAdapter adapter = new SQLiteDataAdapter(command)) {
+					DataTable table = new DataTable();
+					adapter.Fill(table);
+					return table;
 				}
-				reader.Close();
-				return table;
 			}
 		}
 
