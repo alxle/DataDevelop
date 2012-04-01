@@ -67,6 +67,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\MySql.Data.dll</HintPath>
     </Reference>
+    <Reference Include="Npgsql, Version=2.0.11.92, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Code and Libraries\Npgsql2.0.11.92-bin-ms.net\Npgsql.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.SQLite, Version=1.0.61.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
@@ -89,6 +93,11 @@
     <Compile Include="Data\ColumnOrder.cs" />
     <Compile Include="Data\ConnectionScope.cs" />
     <Compile Include="Data\ConnectionSettings.cs" />
+    <Compile Include="Data\PostgreSql\PgSqlDatabase.cs" />
+    <Compile Include="Data\PostgreSql\PgSqlProvider.cs" />
+    <Compile Include="Data\PostgreSql\PgSqlStoredProcedure.cs" />
+    <Compile Include="Data\PostgreSql\PgSqlTable.cs" />
+    <Compile Include="Data\PostgreSql\PgSqlTrigger.cs" />
     <Compile Include="Data\SqlCe\SqlCeDatabase.cs" />
     <Compile Include="Data\SqlCe\SqlCeProvider.cs" />
     <Compile Include="Data\SqlCe\SqlCeTable.cs" />

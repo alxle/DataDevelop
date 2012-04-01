@@ -6,6 +6,8 @@ using System.Reflection;
 using System.Text;
 using Microsoft.Office.Interop.Excel;
 using DataTable = System.Data.DataTable;
+using ExcelApplication = Microsoft.Office.Interop.Excel.Application;
+using ExcelWorkbook = Microsoft.Office.Interop.Excel.Workbook;
 using ExcelWorksheet = Microsoft.Office.Interop.Excel.Worksheet;
 using System.Runtime.InteropServices;
 
@@ -58,12 +60,16 @@ namespace DataDevelop.Core.MSOffice
 
 	public class Worksheet : IDisposable
 	{
+		private ExcelApplication app;
+		private ExcelWorkbook book;
 		private ExcelWorksheet sheet;
 		private int columns;
 		private int rows;
 
-		internal Worksheet(ExcelWorksheet sheet, int columns, int rows)
+		internal Worksheet(ExcelApplication app, ExcelWorkbook book, ExcelWorksheet sheet, int columns, int rows)
 		{
+			this.app = app;
+			this.book = book;
 			this.sheet = sheet;
 			this.columns = columns;
 			this.rows = rows;
@@ -81,12 +87,23 @@ namespace DataDevelop.Core.MSOffice
 			this.sheet.Application.Visible = true;
 		}
 
+		public void SaveAs(string fileName)
+		{
+			this.book.SaveAs(fileName, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value,
+				XlSaveAsAccessMode.xlExclusive, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value);
+		}
+
+		public void Close()
+		{
+			this.app.Quit();
+		}
+
 		#region IDisposable Members
 
 		public void Dispose()
 		{
-			var app = sheet.Application;
-			Marshal.FinalReleaseComObject(app);
+			this.app.Quit();
+			Marshal.FinalReleaseComObject(this.app);
 		}
 
 		#endregion
@@ -110,10 +127,10 @@ namespace DataDevelop.Core.MSOffice
 			}
 			var watch = new System.Diagnostics.Stopwatch();
 			watch.Start();
-			var excel = new Microsoft.Office.Interop.Excel.Application();
+			var excel = new ExcelApplication();
 			var book = excel.Workbooks.Add(Missing.Value);
 			var sheet = (ExcelWorksheet)book.Worksheets[1];
-
+			
 			excel.Visible = (worker == null);
 			excel.Caption = caption;
 			if (!String.IsNullOrEmpty(data.TableName)) {
@@ -136,8 +153,8 @@ namespace DataDevelop.Core.MSOffice
 			GetCell(sheet, 2, 1).Select();
 			excel.ActiveWindow.FreezePanes = true;
 			
-			//var rowValues = new object[columns.Count];
-			var tableValues = new object[data.Rows.Count + 1, columns.Count];
+			var rowValues = new object[columns.Count];
+			//var tableValues = new object[data.Rows.Count + 1, columns.Count];
 
 			var chrono = new System.Diagnostics.Stopwatch();
 			if (worker != null) {
@@ -195,20 +212,20 @@ namespace DataDevelop.Core.MSOffice
 						cell.NumberFormat = column.Format;
 					}
 					////cell.Auto = false;
-					//rowValues[columnIndex] = value;
-					tableValues[rowIndex, columnIndex] = value;
+					rowValues[columnIndex] = value;
+					//tableValues[rowIndex, columnIndex] = value;
 				}
-				//SetRow(sheet, rowIndex + 2, 1, rowValues);
+				SetRow(sheet, rowIndex + 2, 1, rowValues);
 			}
 			if (worker != null) {
 				worker.ReportProgress(0, "Sending data to Excel...");
 			}
-			SetTable(sheet, 2, 1, tableValues);
+			//SetTable(sheet, 2, 1, tableValues);
 			////headers.EntireColumn.AutoFit();
 			excel.Cursor = XlMousePointer.xlDefault;
 			watch.Stop();
 			Console.WriteLine("Elapsed: {0}", watch.Elapsed);
-			return new Worksheet(sheet, data.Columns.Count, data.Rows.Count);
+			return new Worksheet(excel, book, sheet, data.Columns.Count, data.Rows.Count);
 		}
 		
 		internal static Range GetCell(ExcelWorksheet worksheet, int rowIndex, int columnIndex)

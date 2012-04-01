@@ -45,25 +45,20 @@ namespace DataDevelop.Data.SQLite
 		protected override void PopulateColumns(IList<Column> columnsCollection)
 		{
 			using (this.Database.CreateConnectionScope()) {
-				IDbCommand command = Database.CreateCommand();
-				command.CommandText = "SELECT * FROM " + this.QuotedName;
-				using (IDataReader reader = command.ExecuteReader(CommandBehavior.SchemaOnly)) {
-					DataTable columns = this.Connection.GetSchema("Columns", new string[] { null, null, this.Name, null });
-					foreach (DataRow row in columns.Rows) {
-						Column column = new Column(this);
-						column.Name = row["COLUMN_NAME"].ToString();
-						if (!this.IsReadOnly) {
-							column.InPrimaryKey = (bool)row["PRIMARY_KEY"];
-							object type = row["DATA_TYPE"];
-							column.ProviderType = (type == DBNull.Value) ? "OBJECT" : (string)type;
-						}
-						int ordinal = reader.GetOrdinal(column.Name);
-						if (ordinal != -1) {
-							column.Type = reader.GetFieldType(ordinal);
-						}
-						columnsCollection.Add(column);
+
+				DataTable columns = this.Connection.GetSchema("Columns", new string[] { null, null, this.Name, null });
+				foreach (DataRow row in columns.Rows) {
+					Column column = new Column(this);
+					column.Name = row["COLUMN_NAME"].ToString();
+					if (!this.IsReadOnly) {
+						column.InPrimaryKey = (bool)row["PRIMARY_KEY"];
+						object type = row["DATA_TYPE"];
+						column.ProviderType = (type == DBNull.Value) ? "OBJECT" : (string)type;
 					}
+
+					columnsCollection.Add(column);
 				}
+				this.SetColumnTypes();
 			}
 		}
 

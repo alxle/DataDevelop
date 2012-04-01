@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace DataDevelop.Data
 {
-	internal class DbCommandParser
+	public class DbCommandParser
 	{
 		public static DbType GetDbType(object value)
 		{
@@ -108,6 +108,7 @@ namespace DataDevelop.Data
 		{
 			IDbCommand command = database.CreateCommand();
 			StringBuilder result = new StringBuilder(commandText.Length * 2);
+			const char ParamChar = '?';
 
 			using (var reader = new StringReader(commandText)) {
 				State state = State.OnCommandText;
@@ -123,12 +124,39 @@ namespace DataDevelop.Data
 									result.Append((char)@char);
 									state = State.InsideString;
 									break;
-								case '@':
-									if (reader.Peek() == '@') {
+								case ParamChar:
+									if (reader.Peek() == ParamChar) {
 										reader.Read();
-										result.Append('@');
+										result.Append(ParamChar);
 									} else {
-										state = State.OnParameter;
+										DbType dbType = DbType.Object;
+										string paramName = ReadIdentifier(reader);
+										if (paramName.Length == 0) {
+											throw new FormatException("Parameter Name or Index missing.");
+										}
+										if ((char)reader.Peek() == ':') {
+											reader.Read();
+											string dbTypeName = ReadIdentifier(reader);
+											if (dbTypeName.Length == 0) {
+												throw new FormatException("DbType not specified.");
+											} else {
+												dbType = (DbType)Enum.Parse(typeof(DbType), dbTypeName, true);
+											}
+										}
+
+										IDataParameter p = command.CreateParameter();
+										p.ParameterName = database.ParameterPrefix + paramName;
+										if (!command.Parameters.Contains(p.ParameterName)) {
+											p.SourceColumn = paramName;
+											p.DbType = dbType;
+											command.Parameters.Add(p);
+										} else {
+											if (p.DbType != dbType) {
+												throw new FormatException(
+													String.Format("Parameter {0} already declared with diferent DbType", paramName));
+											}
+										}
+										result.Append(p.ParameterName);
 									}
 									break;
 								default:
@@ -150,25 +178,6 @@ namespace DataDevelop.Data
 									break;
 							}
 							break;
-						case State.OnParameter:
-							if (Char.IsLetterOrDigit((char)@char)) {
-								StringBuilder paramName = new StringBuilder();
-								paramName.Append((char)@char);
-								while (Char.IsLetterOrDigit((char)reader.Peek())) {
-									paramName.Append((char)reader.Read());
-								}
-								IDataParameter p = command.CreateParameter();
-								p.ParameterName = database.ParameterPrefix + 'p' + command.Parameters.Count.ToString();
-								if (!command.Parameters.Contains(p.ParameterName)) {
-									p.SourceColumn = paramName.ToString();
-									command.Parameters.Add(p);
-								}
-								result.Append(p.ParameterName);
-								state = State.OnCommandText;
-							} else {
-								throw new FormatException("Parameter index missing.");
-							}
-							break;
 						default:
 							throw new InvalidOperationException("Invalid state.");
 					}
@@ -179,21 +188,35 @@ namespace DataDevelop.Data
 			return command;
 		}
 
+		private static string ReadIdentifier(StringReader reader)
+		{
+			StringBuilder paramName = new StringBuilder();
+			if (IsIdentifierChar((char)reader.Peek(), true)) {
+				do {
+					paramName.Append((char)reader.Read());
+				} while (IsIdentifierChar((char)reader.Peek(), false));
+			}
+			return paramName.ToString();
+		}
+
+		private static bool IsIdentifierChar(char c, bool first)
+		{
+			return (c == '_') || (first ? Char.IsLetter(c) : Char.IsLetterOrDigit(c));
+		}
+
+		private static string ReadWhites(StringReader reader)
+		{
+			while (Char.IsWhiteSpace((char)reader.Peek())) {
+				reader.Read();
+			}
+			return " ";
+		}
+
 		private enum State
 		{
 			OnCommandText,
 			InsideString,
-			OnParameter,
 			End
-		}
-
-		public static void Test()
-		{
-			var db = new DataDevelop.Data.SQLite.SQLiteDatabase("", "");
-			var query1 = Parse(db, "SELECT * FROM Table1 WHERE id = @0");
-			var query2 = Parse(db, "SELECT * FROM Table1 WHERE id = '@0'");
-			var query3 = Parse(db, "SELECT * FROM Table1 WHERE id = ''@@@0");
-			var query4 = Parse(db, "SELECT * FROM Table1 WHERE id = ''@@0");
 		}
 	}
 }

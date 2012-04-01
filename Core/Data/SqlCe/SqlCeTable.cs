@@ -113,6 +113,7 @@ namespace DataDevelop.Data.SqlCe
 					}
 					columnsCollection.Add(column);
 				}
+				this.SetColumnTypes();
 			}
 		}
 

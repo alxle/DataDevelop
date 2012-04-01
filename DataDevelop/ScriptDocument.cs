@@ -26,9 +26,9 @@ namespace DataDevelop
             var highlighter = isPython ? Highlighters.Python : Highlighters.Javascript;
 			var outputStream = new StreamWriteDelegator(this.Output.WriteUTF8);
 			
-			if (!isPython) {
-				outputStream = new StreamWriteDelegator(this.Output.WriteUnicode);
-			}
+			////if (!isPython) {
+			////    outputStream = new StreamWriteDelegator(this.Output.WriteUnicode);
+			////}
 
             textEditorControl.Document.HighlightingStrategy = highlighter;
 			this.Text = String.Concat(highlighter.Name, " Console");

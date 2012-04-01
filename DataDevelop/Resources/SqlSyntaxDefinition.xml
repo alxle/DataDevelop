@@ -5,7 +5,7 @@
     <Property name="LineComment" value="--"/>
   </Properties>
 
-  <Digits name="Digits" bold="false" italic="false" color="DarkBlue"/>
+	<Digits name="Digits" bold="false" italic="false" color="DarkBlue"/>
 
   <RuleSets>
     <RuleSet ignorecase="true">
@@ -25,17 +25,19 @@
         <End>'</End>
       </Span>
 
+			<MarkFollowing name="Parameter" bold="true" italic="false" color="Black" bgcolor="PaleGoldenrod" markmarker="true">?</MarkFollowing>
+
       <Span name = "Char" bold = "false" italic = "false" color = "Magenta" stopateol = "false">
         <Begin>&apos;</Begin>
         <End>&apos;</End>
       </Span>
 
-      <Span name = "Identifier" bold = "false" italic = "false" color = "DarkCyan" stopateol = "false">
+			<!--Span name = "Identifier" bold = "false" italic = "false" color = "Black" stopateol = "false">
         <Begin>[</Begin>
         <End>]</End>
       </Span>
 
-      <MarkPrevious bold = "true" italic = "false" color = "MidnightBlue">(</MarkPrevious>
+      <MarkPrevious bold = "true" italic = "false" color = "MidnightBlue">(</MarkPrevious-->
 
       <KeyWords name = "Punctuation" bold = "false" italic = "false" color = "DarkGreen">
         <Key word = "?" />
@@ -44,8 +46,8 @@
         <Key word = ";" />
         <Key word = "(" />
         <Key word = ")" />
-        <!--Key word = "[" />
-        <Key word = "]" /-->
+        <Key word = "[" />
+        <Key word = "]" />
         <Key word = "{" />
         <Key word = "}" />
         <Key word = "+" />
@@ -199,7 +201,7 @@
       </KeyWords>
     </RuleSet>
 
-    <RuleSet name = "CommentMarkerSet" ignorecase = "true"></RuleSet>
+		<RuleSet name = "CommentMarkerSet" ignorecase = "true"></RuleSet>
     <RuleSet name = "DocCommentSet" ignorecase = "false"></RuleSet>
     <RuleSet name = "XmlDocSet" ignorecase = "false"></RuleSet>
 

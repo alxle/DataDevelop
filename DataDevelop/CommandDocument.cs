@@ -27,10 +27,9 @@ namespace DataDevelop
 		}
 
 		private Database database;
-		////private DbCommand command;
-		////private StringComparer comparer = StringComparer.OrdinalIgnoreCase;
 		private Stopwatch stopwatch = new Stopwatch();
 		private CommandType commandType = CommandType.Unknown;
+		private IList<IDataParameter> parameters = new List<IDataParameter>();
 		private bool executeEach = false;
 		FindAndReplaceDialog findDialog = new FindAndReplaceDialog();
 
@@ -111,10 +110,45 @@ namespace DataDevelop
 			if (executeWorker.IsBusy) {
 				// TODO Show message to tell the user that a command is already in execution
 			} else {
-				ClearMessages();
-				SetEnabled(false);
-				statusLabel.Text = "Executing...";
-				executeWorker.RunWorkerAsync(SelectedText);
+				try {
+					IDbCommand command = DbCommandParser.Parse(this.database, SelectedText);
+					if (command.Parameters.Count > 0) {
+						using (ParamsDialog dialog = new ParamsDialog()) {
+							IList<IDataParameter> newParameters = new List<IDataParameter>(command.Parameters.Count);
+							foreach (IDataParameter p in command.Parameters) {
+								foreach (IDataParameter oldParam in this.parameters) {
+									if (String.Equals(oldParam.ParameterName, p.ParameterName, StringComparison.OrdinalIgnoreCase)) {
+										if (p.DbType == DbType.Object) {
+											p.DbType = oldParam.DbType;
+										}
+										p.Value = oldParam.Value;
+									}
+								}
+								newParameters.Add(p);
+							}
+							dialog.Parameters = newParameters;
+							if (dialog.ShowDialog(this) == DialogResult.OK) {
+								this.parameters = newParameters;
+								command.Parameters.Clear();
+								foreach (IDataParameter p in newParameters) {
+									command.Parameters.Add(p);
+								}
+								ClearMessages();
+								statusLabel.Text = "Executing...";
+								SetEnabled(false);
+								executeWorker.RunWorkerAsync(command);
+							}
+						}
+					} else {
+						ClearMessages();
+						statusLabel.Text = "Executing...";
+						SetEnabled(false);
+						executeWorker.RunWorkerAsync(command);
+					}
+				} catch (Exception ex) {
+					ShowMessage("Exception:");
+					AppendMessage(ex.Message);
+				}
 			}
 		}
 
@@ -131,35 +165,41 @@ namespace DataDevelop
 				stopwatch.Reset();
 				stopwatch.Start();
 				database.Connect();
-				string commandText = (string)e.Argument;
+				IDbCommand command = (IDbCommand)e.Argument;
 				CommandResult result = new CommandResult();
-
+				
 				if (commandType == CommandType.Unknown) {
-					if (IsSelect(commandText)) {
+					if (IsSelect(command.CommandText)) {
 						commandType = CommandType.Query;
 					} else {
 						commandType = CommandType.NonQuery;
 					}
 				}
 
-				if (executeEach) {
+				////if (executeEach) {
 					
-					int startIndex = 0;
-					for (int i = 0; i < commandText.Length; i++) {
-						if (commandText[i] == ';') {
-							string sql = commandText.Substring(startIndex, i - startIndex);
-							result.RowsAffected += database.ExecuteNonQuery(sql);
-							startIndex = i + 1;
-						}
-					}
-				} else {
+				////    int startIndex = 0;
+				////    for (int i = 0; i < command.CommandText.Length; i++) {
+				////        if (command.CommandText[i] == ';') {
+				////            string sql = command.CommandText.Substring(startIndex, i - startIndex);
+				////            result.RowsAffected += database.ExecuteNonQuery(sql);
+				////            startIndex = i + 1;
+				////        }
+				////    }
+				////} else {
 
 					if (commandType == CommandType.Query) {
-						result.Data = database.ExecuteTable(commandText);
+						DataSet set = new DataSet("ResultsSet");
+						DataTable table = set.Tables.Add("Results");
+						set.EnforceConstraints = false;
+						using (IDataReader reader = command.ExecuteReader()) {
+							table.Load(reader, LoadOption.OverwriteChanges, delegate { });
+						}
+						result.Data = table;
 					} else {
-						result.RowsAffected = database.ExecuteNonQuery(commandText);
+						result.RowsAffected = command.ExecuteNonQuery();
 					}
-				}
+				////}
 				e.Result = result;
 			//} catch (Exception ex) {
 				
