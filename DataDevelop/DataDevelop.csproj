@@ -23,6 +23,9 @@
     <OldToolsVersion>2.0</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkSubset>
+    </TargetFrameworkSubset>
     <PublishUrl>deploy\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -145,6 +148,12 @@
     </Compile>
     <Compile Include="Dialogs\FindAndReplaceDialog.designer.cs">
       <DependentUpon>FindAndReplaceDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\ParamsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\ParamsDialog.Designer.cs">
+      <DependentUpon>ParamsDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\RowsPerPageDialog.cs">
       <SubType>Form</SubType>
@@ -347,6 +356,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\FindAndReplaceDialog.resx">
       <DependentUpon>FindAndReplaceDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\ParamsDialog.resx">
+      <DependentUpon>ParamsDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\RowsPerPageDialog.resx">
       <SubType>Designer</SubType>

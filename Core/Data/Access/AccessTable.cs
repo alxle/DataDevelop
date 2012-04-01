@@ -106,28 +106,28 @@ namespace DataDevelop.Data.Access
 
 		protected override void PopulateColumns(IList<Column> columnsCollection)
 		{
-			this.Database.Connect();
-			DataTable columns = this.Connection.GetSchema("Columns", new string[] { null, null, this.Name, null });
+			using (this.Database.CreateConnectionScope()) {
+				DataTable columns = this.Connection.GetSchema("Columns", new string[] { null, null, this.Name, null });
 
-			// Fix because Column are sorted by Name rather than Ordinal Position
-			DataRow[] rows = new DataRow[columns.Rows.Count];
-			foreach (DataRow row in columns.Rows) {
-				int i = Convert.ToInt32(row["ORDINAL_POSITION"]) - 1;
-				rows[i] = row;
-			} // End of Fix
+				// Fix because Column are sorted by Name rather than Ordinal Position
+				DataRow[] rows = new DataRow[columns.Rows.Count];
+				foreach (DataRow row in columns.Rows) {
+					int i = Convert.ToInt32(row["ORDINAL_POSITION"]) - 1;
+					rows[i] = row;
+				} // End of Fix
 
-			string[] primaryKey = this.GetPrimaryKey();
-			foreach (DataRow row in rows) {
-				Column column = new Column(this);
-				column.Name = row["COLUMN_NAME"].ToString();
-				if (InPrimaryKey(primaryKey, column.Name)) {
-					column.InPrimaryKey = true;
+				string[] primaryKey = this.GetPrimaryKey();
+				foreach (DataRow row in rows) {
+					Column column = new Column(this);
+					column.Name = row["COLUMN_NAME"].ToString();
+					if (InPrimaryKey(primaryKey, column.Name)) {
+						column.InPrimaryKey = true;
+					}
+					column.ProviderType = ((OleDbType)row["DATA_TYPE"]).ToString();
+					columnsCollection.Add(column);
 				}
-				column.ProviderType = ((OleDbType)row["DATA_TYPE"]).ToString();
-				columnsCollection.Add(column);
+				this.SetColumnTypes();
 			}
-
-			this.Database.Disconnect();
 		}
 
 		protected override void PopulateForeignKeys(IList<ForeignKey> foreignKeysCollection)

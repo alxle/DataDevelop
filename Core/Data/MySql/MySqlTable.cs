@@ -9,6 +9,7 @@ namespace DataDevelop.Data.MySql
 	internal class MySqlTable : Table
 	{
 		private MySqlDatabase database;
+		private bool isView;
 
 		public MySqlTable(MySqlDatabase database)
 			: base(database)
@@ -21,10 +22,15 @@ namespace DataDevelop.Data.MySql
 			get { return this.database.Connection; }
 		}
 
-		////public override string QuotedName
-		////{
-		////    get { return String.Concat("`", this.Name, "`"); }
-		////}
+		public override bool IsView
+		{
+			get { return this.isView; }
+		}
+
+		public void SetView(bool value)
+		{
+			this.isView = value;
+		}
 
 		public override bool Rename(string newName)
 		{
@@ -88,17 +94,19 @@ namespace DataDevelop.Data.MySql
 
 		protected override void PopulateColumns(IList<Column> columnsCollection)
 		{
-			this.Database.Connect();
-			DataTable columns = this.Connection.GetSchema("Columns", new string[] { null, this.Connection.Database, this.Name, null });
-			foreach (DataRow row in columns.Rows) {
-				Column column = new Column(this);
-				column.Name = row["COLUMN_NAME"].ToString();
-				if (!IsReadOnly) {
-					column.InPrimaryKey = row["COLUMN_KEY"].ToString() == "PRI";
+			using (this.Database.CreateConnectionScope()) {
+				DataTable columns = this.Connection.GetSchema("Columns", new string[] { null, this.Connection.Database, this.Name, null });
+				foreach (DataRow row in columns.Rows) {
+					Column column = new Column(this);
+					column.Name = row["COLUMN_NAME"].ToString();
+					if (!IsReadOnly) {
+						column.InPrimaryKey = row["COLUMN_KEY"].ToString() == "PRI";
+					}
+					column.ProviderType = row["COLUMN_TYPE"].ToString();
+					columnsCollection.Add(column);
 				}
-				columnsCollection.Add(column);
+				this.SetColumnTypes();
 			}
-			this.Database.Disconnect();
 		}
 
 		protected override void PopulateTriggers(IList<Trigger> triggersCollection)
@@ -127,6 +135,17 @@ namespace DataDevelop.Data.MySql
 					key.ChildTableColumns = row["COLUMN_NAME"] as string;
 					foreignKeysCollection.Add(key);
 				}
+			}
+		}
+
+		public override string GenerateCreateStatement()
+		{
+			using (Database.CreateConnectionScope()) {
+				DataTable data = Database.ExecuteTable("SHOW CREATE TABLE " + this.QuotedName);
+				if (data.Rows.Count > 0 && data.Columns.Count >= 2) {
+					return data.Rows[0][1] as string;
+				}
+				return "Error: Query returned 0 rows.";
 			}
 		}
 	}

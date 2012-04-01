@@ -29,6 +29,11 @@ namespace DataDevelop.Data.SQLite
 			get { return "SQLite"; }
 		}
 
+		public override bool IsFileBased
+		{
+			get { return true; }
+		}
+
 		public override string CreateDatabaseFile(string fileName)
 		{
 			using (FileStream db = File.Create(fileName)) {

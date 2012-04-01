@@ -2,19 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Data;
-using MySql.Data.MySqlClient;
+using Npgsql;
 
-namespace DataDevelop.Data.MySql
+namespace DataDevelop.Data.PostgreSql
 {
-	internal sealed class MySqlDatabase : Database, IDisposable
+	internal sealed class PgSqlDatabase : Database, IDisposable
 	{
 		private string name;
-		private MySqlConnection connection;
+		private NpgsqlConnection connection;
 
-		public MySqlDatabase(string name, string connectionString)
+		public PgSqlDatabase(string name, string connectionString)
 		{
 			this.name = name;
-			this.connection = new MySqlConnection(connectionString);
+			this.connection = new NpgsqlConnection(connectionString);
 		}
 
 		public override string Name
@@ -29,22 +29,22 @@ namespace DataDevelop.Data.MySql
 
 		public override string ParameterPrefix
 		{
-			get { return "?"; }
+			get { return ":"; }
 		}
 
 		public override string QuotePrefix
 		{
-			get { return "`"; }
+			get { return "\""; }
 		}
 
 		public override string QuoteSuffix
 		{
-			get { return "`"; }
+			get { return "\""; }
 		}
 
 		public override DbProvider Provider
 		{
-			get { return new MySqlProvider(); }
+			get { return new PgSqlProvider(); }
 		}
 
 		public override string ConnectionString
@@ -52,14 +52,14 @@ namespace DataDevelop.Data.MySql
 			get { return this.connection.ConnectionString; }
 		}
 
-		internal MySqlConnection Connection
+		internal NpgsqlConnection Connection
 		{
 			get { return this.connection; }
 		}
 
 		public override int ExecuteNonQuery(string commandText)
 		{
-			MySqlCommand command = this.connection.CreateCommand();
+			NpgsqlCommand command = this.connection.CreateCommand();
 			command.CommandText = commandText;
 			return command.ExecuteNonQuery();
 		}
@@ -69,8 +69,8 @@ namespace DataDevelop.Data.MySql
 			int rows = 0;
 			try {
 				this.Connect();
-				MySqlCommand command = this.connection.CreateCommand();
-				command.Transaction = (MySqlTransaction)transaction;
+				NpgsqlCommand command = this.connection.CreateCommand();
+				command.Transaction = (NpgsqlTransaction)transaction;
 				command.CommandText = commandText;
 				rows = command.ExecuteNonQuery();
 			} finally {
@@ -82,26 +82,17 @@ namespace DataDevelop.Data.MySql
 		public override DataTable ExecuteTable(string commandText)
 		{
 			DataTable data = new DataTable();
-			using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, this.connection)) {
+			using (NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(commandText, this.connection)) {
 				adapter.Fill(data);
 			}
-			////using (MySqlCommand command = connection.CreateCommand()) {
-			////    command.CommandText = commandText;
-			////    using (MySqlDataReader reader = command.ExecuteReader()) {
-			////        try {
-			////            data.Load(reader);
-			////        } catch (ConstraintException) {
-			////        }
-			////    }
-			////}
 			return data;
 		}
 
 		public override System.Data.Common.DbDataAdapter CreateAdapter(Table table, TableFilter filter)
 		{
-			MySqlDataAdapter adapter = new MySqlDataAdapter(table.GetBaseSelectCommandText(filter), this.connection);
-			MySqlCommandBuilder builder = new MySqlCommandBuilder(adapter);
-			builder.ReturnGeneratedIdentifiers = true;
+			NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(table.GetBaseSelectCommandText(filter), this.connection);
+			NpgsqlCommandBuilder builder = new NpgsqlCommandBuilder(adapter);
+			////builder.ReturnGeneratedIdentifiers = true;
 			try {
 				adapter.InsertCommand = builder.GetInsertCommand();
 				adapter.UpdateCommand = builder.GetUpdateCommand();
@@ -150,29 +141,25 @@ namespace DataDevelop.Data.MySql
 
 		protected override void PopulateTables(DbObjectCollection<Table> tablesCollection)
 		{
-			DataTable tables = this.Connection.GetSchema("Tables", new string[] { null, this.connection.Database });
+			DataTable tables = this.Connection.GetSchema("Tables", new string[] { this.connection.Database, "public" });
 			foreach (DataRow row in tables.Rows) {
-				Table table = new MySqlTable(this);
-				table.Name = row["TABLE_NAME"].ToString();
+				PgSqlTable table = new PgSqlTable(this);
+				table.Name = row["table_name"] as string;
 				tablesCollection.Add(table);
-			}
-
-			DataTable views = this.Connection.GetSchema("Views", new string[] { null, this.connection.Database });
-			foreach (DataRow row in views.Rows) {
-				MySqlTable table = new MySqlTable(this);
-				table.Name = row["TABLE_NAME"].ToString();
-				table.SetView(true);
-				tablesCollection.Add(table);
+				if (row["table_type"] as string == "VIEW") {
+					table.SetView(true);
+				}
 			}
 		}
 
 		protected override void PopulateStoredProcedures(DbObjectCollection<StoredProcedure> storedProceduresCollection)
 		{
-			DataTable procedures = this.Connection.GetSchema("Procedures", new string[] { null, this.connection.Database });
-			foreach (DataRow row in procedures.Rows) {
-				MySqlStoredProcedure sp = new MySqlStoredProcedure(this, row);
-				storedProceduresCollection.Add(sp);
-			}
+			// TODO: Populate PostgreSQL stored procedures
+			////DataTable procedures = this.Connection.GetSchema("Procedures", new string[] { null, this.connection.Database });
+			////foreach (DataRow row in procedures.Rows) {
+			////    PgSqlStoredProcedure sp = new PgSqlStoredProcedure(this, row);
+			////    storedProceduresCollection.Add(sp);
+			////}
 		}
 	}
 }

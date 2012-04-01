@@ -60,6 +60,7 @@ namespace DataDevelop.Data
 			providers.Add("SqlServer", SqlServer.SqlProvider.Instance);
 			providers.Add("MySql", new MySql.MySqlProvider());
 			providers.Add("SqlCe", SqlCe.SqlCeProvider.Instance);
+			providers.Add("PgSql", new PostgreSql.PgSqlProvider());
 		}
 	}
 }

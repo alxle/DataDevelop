@@ -306,6 +306,21 @@ namespace DataDevelop.Data
 			}
 		}
 
+		protected virtual void SetColumnTypes()
+		{
+			using (IDbCommand command = Database.CreateCommand()) {
+				command.CommandText = "SELECT * FROM " + this.QuotedName;
+				using (IDataReader reader = command.ExecuteReader(CommandBehavior.SchemaOnly)) {
+					foreach (Column column in this.Columns) {
+						int ordinal = reader.GetOrdinal(column.Name);
+						if (ordinal != -1) {
+							column.Type = reader.GetFieldType(ordinal);
+						}
+					}
+				}
+			}
+		}
+
 		protected abstract void PopulateColumns(IList<Column> columnsCollection);
 		
 		protected abstract void PopulateTriggers(IList<Trigger> triggersCollection);
