@@ -141,6 +141,20 @@ namespace DataDevelop.Data
 			return count;
 		}
 
+		public DataTable GetData()
+		{
+			return this.GetData(new TableFilter(this));
+		}
+
+		public DataTable GetData(TableFilter filter)
+		{
+			using (var adapter = this.Database.CreateAdapter(this, filter)) {
+				var data = new DataTable(this.Name);
+				adapter.Fill(data);
+				return data;
+			}
+		}
+
 		public DataTable GetData(int startIndex, int count)
 		{
 			return this.GetData(startIndex, count, new TableFilter(this));

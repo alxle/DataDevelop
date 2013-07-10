@@ -63,9 +63,13 @@ namespace DataDevelop
 		}
 
 		//static Regex regex = new Regex(@"^\s*(--.*\$|/\*.\*/)*\s*(?<query>)\s+.*", RegexOptions.Multiline | RegexOptions.Compiled);
+		private static Regex matchSelectCommand = null;
 
 		private static bool IsSelect(string commandText)
 		{
+			if (commandText == null) {
+				return false;
+			}
 			//Match match = regex.Match(commandText);
 			//if (match.Success) {
 			//    return true;
@@ -73,7 +77,21 @@ namespace DataDevelop
 			//}
 			//return false;
 			//return commandText.StartsWith("SELECT", StringComparison.OrdinalIgnoreCase);
-			return Regex.IsMatch(commandText, @"^\s*SELECT\s+", RegexOptions.IgnoreCase);
+
+			if (matchSelectCommand == null) {
+				matchSelectCommand = new Regex(@"^\s*SELECT\s+", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+			}
+
+			var commands = commandText.Split(';');
+			var lastCommand = commands[commands.Length - 1].Trim();
+
+			if (lastCommand.Length == 0) {
+				if (commands.Length >= 2) {
+					lastCommand = commands[commands.Length - 2];
+				}
+			}
+
+			return matchSelectCommand.IsMatch(lastCommand);
 		}
 
 		private void SetEnabled(bool value)
@@ -539,13 +557,12 @@ namespace DataDevelop
 		{
 			var data = this.DataTable;
 			if (data != null) {
-				using (var sheet = DataDevelop.Core.MSOffice.Excel.CreateWorksheet("", data, excelWorker)) {
-					if (sheet != null) {
-						excelWorker.ReportProgress(100, "Loading Excel...");
-						sheet.OpenInExcel();
-					} else {
-						e.Cancel = true;
-					}
+				var sheet = DataDevelop.Core.MSOffice.Excel.CreateWorksheet("", data, excelWorker);
+				if (sheet != null) {
+					excelWorker.ReportProgress(100, "Loading Excel...");
+					sheet.OpenInExcel();
+				} else {
+					e.Cancel = true;
 				}
 			}
 		}

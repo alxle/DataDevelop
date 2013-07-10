@@ -517,6 +517,38 @@ namespace DataDevelop
 				}
 			}
 		}
+
+		private void exportAllToExcelToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ProgressDialog.Run(this, "Export to Excel", excelWorker, true, true);
+		}
+
+		private void exportCurrentPageToExcelToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ProgressDialog.Run(this, "Export to Excel", excelWorker, true, false);
+		}
+
+		private void excelWorker_DoWork(object sender, DoWorkEventArgs e)
+		{
+			var allData = (bool)e.Argument;
+			DataTable dataToExport;
+
+			if (allData) {
+				dataToExport = table.GetData(this.filter);
+			} else {
+				dataToExport = this.data;
+			}
+
+			if (dataToExport != null) {
+				var sheet = DataDevelop.Core.MSOffice.Excel.CreateWorksheet("", dataToExport, excelWorker);
+				if (sheet != null) {
+					excelWorker.ReportProgress(100, "Loading Excel...");
+					sheet.OpenInExcel();
+				} else {
+					e.Cancel = true;
+				}
+			}
+		}
 	}
 }
 

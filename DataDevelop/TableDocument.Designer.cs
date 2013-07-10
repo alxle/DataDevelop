@@ -65,6 +65,10 @@ namespace DataDevelop
 			this.loadingLabel = new System.Windows.Forms.Label();
 			this.progressBar1 = new System.Windows.Forms.ProgressBar();
 			this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
+			this.exportToExcelToolStripDropDownButton = new System.Windows.Forms.ToolStripDropDownButton();
+			this.exportAllToExcelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.exportCurrentPageToExcelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.excelWorker = new System.ComponentModel.BackgroundWorker();
 			this.tableToolStrip.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
 			this.menuStrip.SuspendLayout();
@@ -94,6 +98,7 @@ namespace DataDevelop
             this.autoResizeColumnsDropDownButton,
             this.rowsPerPageButton,
             this.toolStripSeparator3,
+            this.exportToExcelToolStripDropDownButton,
             this.toolStripDropDownButton1,
             this.toolStripSeparator5,
             this.viewSqlToolStripButton});
@@ -399,6 +404,38 @@ namespace DataDevelop
 			this.backgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_DoWork);
 			this.backgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker_RunWorkerCompleted);
 			// 
+			// exportToExcelToolStripDropDownButton
+			// 
+			this.exportToExcelToolStripDropDownButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.exportToExcelToolStripDropDownButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exportAllToExcelToolStripMenuItem,
+            this.exportCurrentPageToExcelToolStripMenuItem});
+			this.exportToExcelToolStripDropDownButton.Image = global::DataDevelop.Properties.Resources.ExcelTable;
+			this.exportToExcelToolStripDropDownButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.exportToExcelToolStripDropDownButton.Name = "exportToExcelToolStripDropDownButton";
+			this.exportToExcelToolStripDropDownButton.Size = new System.Drawing.Size(29, 22);
+			this.exportToExcelToolStripDropDownButton.Text = "Export to Excel";
+			// 
+			// exportAllToExcelToolStripMenuItem
+			// 
+			this.exportAllToExcelToolStripMenuItem.Name = "exportAllToExcelToolStripMenuItem";
+			this.exportAllToExcelToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+			this.exportAllToExcelToolStripMenuItem.Text = "Export All to Excel";
+			this.exportAllToExcelToolStripMenuItem.Click += new System.EventHandler(this.exportAllToExcelToolStripMenuItem_Click);
+			// 
+			// exportCurrentPageToExcelToolStripMenuItem
+			// 
+			this.exportCurrentPageToExcelToolStripMenuItem.Name = "exportCurrentPageToExcelToolStripMenuItem";
+			this.exportCurrentPageToExcelToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+			this.exportCurrentPageToExcelToolStripMenuItem.Text = "Export Page to Excel";
+			this.exportCurrentPageToExcelToolStripMenuItem.Click += new System.EventHandler(this.exportCurrentPageToExcelToolStripMenuItem_Click);
+			// 
+			// excelWorker
+			// 
+			this.excelWorker.WorkerReportsProgress = true;
+			this.excelWorker.WorkerSupportsCancellation = true;
+			this.excelWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.excelWorker_DoWork);
+			// 
 			// TableDocument
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -464,5 +501,9 @@ namespace DataDevelop
 		private System.Windows.Forms.ProgressBar progressBar1;
 		private System.ComponentModel.BackgroundWorker backgroundWorker;
 		private System.Windows.Forms.ToolStripSplitButton autoResizeColumnsDropDownButton;
+		private System.Windows.Forms.ToolStripDropDownButton exportToExcelToolStripDropDownButton;
+		private System.Windows.Forms.ToolStripMenuItem exportAllToExcelToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem exportCurrentPageToExcelToolStripMenuItem;
+		private System.ComponentModel.BackgroundWorker excelWorker;
 	}
 }

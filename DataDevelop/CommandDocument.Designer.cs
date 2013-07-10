@@ -215,13 +215,13 @@ namespace DataDevelop
             this.exportToToolStripMenuItem,
             this.printPreviewToolStripMenuItem});
 			this.resultsContextMenuStrip.Name = "resultsContextMenuStrip";
-			this.resultsContextMenuStrip.Size = new System.Drawing.Size(151, 70);
+			this.resultsContextMenuStrip.Size = new System.Drawing.Size(153, 92);
 			// 
 			// saveToFileToolStripMenuItem
 			// 
 			this.saveToFileToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.SaveChanges;
 			this.saveToFileToolStripMenuItem.Name = "saveToFileToolStripMenuItem";
-			this.saveToFileToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+			this.saveToFileToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.saveToFileToolStripMenuItem.Text = "Save to file...";
 			this.saveToFileToolStripMenuItem.Click += new System.EventHandler(this.saveToFileToolStripMenuItem_Click);
 			// 
@@ -229,7 +229,7 @@ namespace DataDevelop
 			// 
 			this.exportToToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.ExcelTable;
 			this.exportToToolStripMenuItem.Name = "exportToToolStripMenuItem";
-			this.exportToToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+			this.exportToToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.exportToToolStripMenuItem.Text = "Export to Excel";
 			this.exportToToolStripMenuItem.Click += new System.EventHandler(this.exportToToolStripMenuItem_Click);
 			// 
@@ -237,7 +237,7 @@ namespace DataDevelop
 			// 
 			this.printPreviewToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.PrintPreview;
 			this.printPreviewToolStripMenuItem.Name = "printPreviewToolStripMenuItem";
-			this.printPreviewToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+			this.printPreviewToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.printPreviewToolStripMenuItem.Text = "Print Preview";
 			this.printPreviewToolStripMenuItem.Click += new System.EventHandler(this.printPreviewToolStripMenuItem_Click);
 			// 
