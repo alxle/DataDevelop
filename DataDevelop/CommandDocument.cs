@@ -132,18 +132,7 @@ namespace DataDevelop
 					IDbCommand command = DbCommandParser.Parse(this.database, SelectedText);
 					if (command.Parameters.Count > 0) {
 						using (ParamsDialog dialog = new ParamsDialog()) {
-							IList<IDataParameter> newParameters = new List<IDataParameter>(command.Parameters.Count);
-							foreach (IDataParameter p in command.Parameters) {
-								foreach (IDataParameter oldParam in this.parameters) {
-									if (String.Equals(oldParam.ParameterName, p.ParameterName, StringComparison.OrdinalIgnoreCase)) {
-										if (p.DbType == DbType.Object) {
-											p.DbType = oldParam.DbType;
-										}
-										p.Value = oldParam.Value;
-									}
-								}
-								newParameters.Add(p);
-							}
+							IList<IDataParameter> newParameters = MergeParameters(command.Parameters);
 							dialog.Parameters = newParameters;
 							if (dialog.ShowDialog(this) == DialogResult.OK) {
 								this.parameters = newParameters;
@@ -151,23 +140,40 @@ namespace DataDevelop
 								foreach (IDataParameter p in newParameters) {
 									command.Parameters.Add(p);
 								}
-								ClearMessages();
-								statusLabel.Text = "Executing...";
-								SetEnabled(false);
-								executeWorker.RunWorkerAsync(command);
+							} else {
+								return;
 							}
 						}
-					} else {
-						ClearMessages();
-						statusLabel.Text = "Executing...";
-						SetEnabled(false);
-						executeWorker.RunWorkerAsync(command);
 					}
+					ClearMessages();
+					statusLabel.Text = "Executing...";
+					SetEnabled(false);
+					stopwatch.Reset();
+					executingTimer.Start();
+					executeWorker.RunWorkerAsync(command);
 				} catch (Exception ex) {
 					ShowMessage("Exception:");
 					AppendMessage(ex.Message);
+					executingTimer.Stop();
 				}
 			}
+		}
+
+		private IList<IDataParameter> MergeParameters(IDataParameterCollection newParameters)
+		{
+			IList<IDataParameter> mergedParameters = new List<IDataParameter>(newParameters.Count);
+			foreach (IDataParameter p in newParameters) {
+				foreach (IDataParameter oldParam in this.parameters) {
+					if (String.Equals(oldParam.ParameterName, p.ParameterName, StringComparison.OrdinalIgnoreCase)) {
+						if (p.DbType == DbType.Object) {
+							p.DbType = oldParam.DbType;
+						}
+						p.Value = oldParam.Value;
+					}
+				}
+				mergedParameters.Add(p);
+			}
+			return mergedParameters;
 		}
 
 		private class CommandResult
@@ -182,6 +188,7 @@ namespace DataDevelop
 			try {
 				stopwatch.Reset();
 				stopwatch.Start();
+
 				database.Connect();
 				IDbCommand command = (IDbCommand)e.Argument;
 				CommandResult result = new CommandResult();
@@ -227,16 +234,28 @@ namespace DataDevelop
 			}
 		}
 
-		private void ShowElapsedTime(TimeSpan time)
+		private void ShowFullElapsedTime(TimeSpan time)
 		{
 			int hours = time.Days * 24 + time.Hours;
 			elapsedTimeStatusLabel.Text = String.Format("{0:00}:{1:00}:{2:00}.{3:000}", hours, time.Minutes, time.Seconds, time.Milliseconds);
 		}
 
+		private void ShowElapsedTime(TimeSpan time)
+		{
+			int hours = time.Days * 24 + time.Hours;
+			elapsedTimeStatusLabel.Text = String.Format("{0:00}:{1:00}:{2:00}", hours, time.Minutes, time.Seconds);
+		}
+
 		private void executeWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
+			executingTimer.Stop();
+			ShowFullElapsedTime(stopwatch.Elapsed);
+
 			if (e.Error != null) {
 				ShowMessage(e.Error.Message);
+				statusLabel.Text = "Error.";
+				AppendMessage(String.Format("Elapsed time: {0}", stopwatch.Elapsed));
+
 			} else {
 				CommandResult result = e.Result as CommandResult;
 				if (e.Cancelled) {
@@ -250,17 +269,15 @@ namespace DataDevelop
 						statusLabel.Text = String.Format("Rows returned: {0}", result.Data.Rows.Count);
 						//tabControl1.SelectedTab = resultsTabPage;
 						tabControl1.SelectedIndex = 0;
-						SetEnabled(true);
-						ShowElapsedTime(stopwatch.Elapsed);
-						return;
 					} else {
 						ShowMessage(String.Format("Success: {0} rows affected.", result.RowsAffected));
+						statusLabel.Text = "Ready.";
+						AppendMessage(String.Format("Elapsed time: {0}", stopwatch.Elapsed));
 					}
 				}
 			}
+
 			SetEnabled(true);
-			statusLabel.Text = "Ready.";
-			AppendMessage(String.Format("Elapsed time: {0}", stopwatch.Elapsed));
 		}
 
 		////private bool UseTransaction
@@ -565,6 +582,11 @@ namespace DataDevelop
 					e.Cancel = true;
 				}
 			}
+		}
+
+		private void executingTimer_Tick(object sender, EventArgs e)
+		{
+			ShowElapsedTime(stopwatch.Elapsed);
 		}
 	}
 }
