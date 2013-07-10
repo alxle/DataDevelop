@@ -83,6 +83,11 @@ namespace DataDevelop.Data
 			get { return false; }
 		}
 
+		public virtual string DisplayName
+		{
+			get { return this.Name; }
+		}
+
 		public virtual string QuotedName
 		{
 			get { return this.Database.QuoteObjectName(this.Name); }
@@ -152,7 +157,7 @@ namespace DataDevelop.Data
 		{
 			StringBuilder select = new StringBuilder();
 			select.Append("SELECT ");
-			if (filter == null) {
+			if (filter != null || filter.IsColumnFiltered) {
 				filter.WriteColumnsProjection(select);
 			} else {
 				select.Append('*');
@@ -179,10 +184,10 @@ namespace DataDevelop.Data
 				} else {
 					select.Append(',');
 				}
-				select.AppendLine(column.Name);
+				select.AppendLine(column.QuotedName);
 			}
 			select.Append("FROM ");
-			select.Append(this.Name);
+			select.Append(this.QuotedName);
 			if (singleResult) {
 				select.Append(" WHERE ");
 				this.InsertWhere(select);
