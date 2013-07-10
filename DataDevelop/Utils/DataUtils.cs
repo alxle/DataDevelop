@@ -5,10 +5,16 @@ using System.Data;
 
 namespace DataDevelop.Utils
 {
-	static class DataUtils
+	public static class DataUtils
 	{
 		public static void WriteToFile(string fileName, DataTable dataTable, char rowSeparator)
 		{
+			WriteToFile(fileName, dataTable, rowSeparator, '"');
+		}
+
+		public static void WriteToFile(string fileName, DataTable dataTable, char rowSeparator, char textQualifier)
+		{
+			string rowSep = rowSeparator.ToString();
 			using (FileStream file = File.OpenWrite(fileName)) {
 				using (StreamWriter stream = new StreamWriter(file, Encoding.Default)) {
 					bool first = true;
@@ -18,7 +24,13 @@ namespace DataDevelop.Utils
 						} else {
 							stream.Write(rowSeparator);
 						}
-						stream.Write(column.ColumnName);
+						if (column.ColumnName.Contains(rowSep)) {
+							stream.Write(textQualifier);
+							stream.Write(column.ColumnName);
+							stream.Write(textQualifier);
+						} else {
+							stream.Write(column.ColumnName);
+						}
 					}
 					stream.WriteLine();
 					foreach (DataRow row in dataTable.Rows) {
@@ -27,7 +39,14 @@ namespace DataDevelop.Utils
 							if (i != 0) {
 								stream.Write(rowSeparator);
 							}
-							stream.Write(values[i].ToString());
+							var value = values[i].ToString();
+							if (value.Contains(rowSep)) {
+								stream.Write(textQualifier);
+								stream.Write(value);
+								stream.Write(textQualifier);
+							} else {
+								stream.Write(value);
+							}
 						}
 						stream.WriteLine();
 					}
