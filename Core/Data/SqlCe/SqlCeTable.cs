@@ -123,8 +123,8 @@ namespace DataDevelop.Data.SqlCe
 				string[] restrictions = new string[] { null, null, this.Name, null };
 				DataTable schema = this.Connection.GetSchema("ForeignKeys", restrictions);
 				foreach (DataRow row in schema.Rows) {
-					ForeignKey key = new ForeignKey();
-					key.Name = (string)row["CONSTRAINT_NAME"];
+					var name = (string)row["CONSTRAINT_NAME"];
+					ForeignKey key = new ForeignKey(name, this);
 					key.ChildTable = this.Name;
 					////key.ChildTableColumns = (string)row["COLUMN_NAME"];
 					foreignKeysCollection.Add(key);

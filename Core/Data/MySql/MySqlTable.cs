@@ -127,12 +127,12 @@ namespace DataDevelop.Data.MySql
 				////DataTable schema = this.Connection.GetSchema();
 				DataTable keys = this.Connection.GetSchema("Foreign Keys", new string[] { null, this.Connection.Database, this.Name, null });
 				foreach (DataRow row in keys.Rows) {
-					ForeignKey key = new ForeignKey();
-					key.Name = row["CONSTRAINT_NAME"] as string;
+					var name = row["CONSTRAINT_NAME"] as string;
+					ForeignKey key = new ForeignKey(name, this);
 					key.PrimaryTable = row["REFERENCED_TABLE_NAME"] as string;
-					key.PrimaryTableColumns = row["REFERENCED_COLUMN_NAME"] as string;
+					//key.PrimaryTableColumns = row["REFERENCED_COLUMN_NAME"] as string;
 					key.ChildTable = row["TABLE_NAME"] as string;
-					key.ChildTableColumns = row["COLUMN_NAME"] as string;
+					//key.ChildTableColumns = row["COLUMN_NAME"] as string;
 					foreignKeysCollection.Add(key);
 				}
 			}

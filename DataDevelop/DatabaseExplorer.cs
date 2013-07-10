@@ -226,6 +226,7 @@ namespace DataDevelop
 					keys.SelectedImageKey = keys.ImageKey = "folder";
 					foreach (ForeignKey key in node.Table.ForeignKeys) {
 						TreeNode keyNode = CreateKeyNode(key);
+						keyNode.ContextMenuStrip = this.foreignKeyMenuStrip;
 						keys.Nodes.Add(keyNode);
 					}
 				}
@@ -684,6 +685,16 @@ namespace DataDevelop
 			OpenQuery(table.Database, table.GenerateSelectStatement());
 		}
 
+		private void joinToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Table table = this.SelectedTable;
+			if (table.ForeignKeys.Count > 0) {
+				OpenQuery(table.Database, ForeignKey.GenerateSelectStatement(table));
+			} else {
+				MessageBox.Show(this, "This table does not contains Foreign Keys", this.ProductName);
+			}
+		}
+
 		private void insertToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			Table table = this.SelectedTable;
@@ -777,6 +788,11 @@ namespace DataDevelop
 			get { return (StoredProcedure)((TreeNodeController)treeView.SelectedNode.Tag).Tag; }
 		}
 
+		private T GetSelectedNode<T>()
+		{
+			return (T)((TreeNodeController)treeView.SelectedNode.Tag).Tag;
+		}
+
 		private void scriptAsExecuteToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			StoredProcedure storedProdecure = SelectedStoredProcedure;
@@ -834,6 +850,12 @@ namespace DataDevelop
 		{
 			DatabasesManager.Sort();
 			this.LoadDatabases(false);
+		}
+
+		private void joinQueryMenuItem_Click(object sender, EventArgs e)
+		{
+			var foreignKey = this.GetSelectedNode<ForeignKey>();
+			OpenQuery(foreignKey.Database, foreignKey.GenerateSelectStatement());
 		}
 	}
 }
