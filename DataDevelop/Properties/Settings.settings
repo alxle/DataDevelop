@@ -12,7 +12,7 @@
       <Value Profile="(Default)">http://datadevelop.codeplex.com/</Value>
     </Setting>
     <Setting Name="OpenStartPage" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

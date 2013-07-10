@@ -91,6 +91,7 @@ namespace DataDevelop
 			this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
 			this.printPreviewDialog = new System.Windows.Forms.PrintPreviewDialog();
 			this.excelWorker = new System.ComponentModel.BackgroundWorker();
+			this.executingTimer = new System.Windows.Forms.Timer(this.components);
 			this.splitContainer.Panel1.SuspendLayout();
 			this.splitContainer.Panel2.SuspendLayout();
 			this.splitContainer.SuspendLayout();
@@ -215,13 +216,13 @@ namespace DataDevelop
             this.exportToToolStripMenuItem,
             this.printPreviewToolStripMenuItem});
 			this.resultsContextMenuStrip.Name = "resultsContextMenuStrip";
-			this.resultsContextMenuStrip.Size = new System.Drawing.Size(153, 92);
+			this.resultsContextMenuStrip.Size = new System.Drawing.Size(151, 70);
 			// 
 			// saveToFileToolStripMenuItem
 			// 
 			this.saveToFileToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.SaveChanges;
 			this.saveToFileToolStripMenuItem.Name = "saveToFileToolStripMenuItem";
-			this.saveToFileToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.saveToFileToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
 			this.saveToFileToolStripMenuItem.Text = "Save to file...";
 			this.saveToFileToolStripMenuItem.Click += new System.EventHandler(this.saveToFileToolStripMenuItem_Click);
 			// 
@@ -229,7 +230,7 @@ namespace DataDevelop
 			// 
 			this.exportToToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.ExcelTable;
 			this.exportToToolStripMenuItem.Name = "exportToToolStripMenuItem";
-			this.exportToToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.exportToToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
 			this.exportToToolStripMenuItem.Text = "Export to Excel";
 			this.exportToToolStripMenuItem.Click += new System.EventHandler(this.exportToToolStripMenuItem_Click);
 			// 
@@ -237,7 +238,7 @@ namespace DataDevelop
 			// 
 			this.printPreviewToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.PrintPreview;
 			this.printPreviewToolStripMenuItem.Name = "printPreviewToolStripMenuItem";
-			this.printPreviewToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.printPreviewToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
 			this.printPreviewToolStripMenuItem.Text = "Print Preview";
 			this.printPreviewToolStripMenuItem.Click += new System.EventHandler(this.printPreviewToolStripMenuItem_Click);
 			// 
@@ -476,6 +477,7 @@ namespace DataDevelop
 			// 
 			// executeEachStatementToolStripMenuItem
 			// 
+			this.executeEachStatementToolStripMenuItem.Enabled = false;
 			this.executeEachStatementToolStripMenuItem.Name = "executeEachStatementToolStripMenuItem";
 			this.executeEachStatementToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
 			this.executeEachStatementToolStripMenuItem.Text = "Execute &Each Statement";
@@ -688,6 +690,11 @@ namespace DataDevelop
 			this.excelWorker.WorkerSupportsCancellation = true;
 			this.excelWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.excelWorker_DoWork);
 			// 
+			// executingTimer
+			// 
+			this.executingTimer.Interval = 1000;
+			this.executingTimer.Tick += new System.EventHandler(this.executingTimer_Tick);
+			// 
 			// CommandDocument
 			// 
 			this.AllowDrop = true;
@@ -787,5 +794,6 @@ namespace DataDevelop
 		private System.Windows.Forms.ToolStripMenuItem executeEachStatementToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem exportToToolStripMenuItem;
 		private System.ComponentModel.BackgroundWorker excelWorker;
+		private System.Windows.Forms.Timer executingTimer;
 	}
 }
