@@ -63,32 +63,113 @@ namespace DataDevelop.Core.MSOffice
 		private ExcelApplication app;
 		private ExcelWorkbook book;
 		private ExcelWorksheet sheet;
-		private int columns;
-		private int rows;
 
-		internal Worksheet(ExcelApplication app, ExcelWorkbook book, ExcelWorksheet sheet, int columns, int rows)
+		private List<object[]> rowsBuffer;
+		private int lastRowIndex;
+		private int columnsCount;
+
+		public Worksheet(ExcelApplication app, ExcelWorkbook book, ExcelWorksheet sheet)
 		{
 			this.app = app;
 			this.book = book;
 			this.sheet = sheet;
-			this.columns = columns;
-			this.rows = rows;
+			this.RowsBufferSize = 100;
+			this.rowsBuffer = new List<object[]>(this.RowsBufferSize);
+		}
+
+		public int RowsBufferSize { get; set; }
+		public int ColumnOffset { get; set; }
+		public int RowOffset { get; set; }
+
+		public string Name
+		{
+			get { return this.sheet.Name; }
+			set { this.sheet.Name = value; }
+		}
+
+		public Range GetCell(int rowIndex, int columnIndex)
+		{
+			return (Range)sheet.Cells[rowIndex + 1, columnIndex + 1];
+		}
+
+		public void SetCell(int rowIndex, int columnIndex, object value)
+		{
+			GetCell(rowIndex, columnIndex).Formula = value;
+		}
+
+		public Range GetRow(int rowIndex, int columnIndex, int length)
+		{
+			return sheet.get_Range(GetCell(rowIndex, columnIndex), GetCell(rowIndex, columnIndex + length - 1));
+		}
+
+		public void SetRow(int rowIndex, int columnIndex, object[] values)
+		{
+			GetRow(rowIndex, columnIndex, values.Length).FormulaArray = values;
+		}
+
+		private Range GetTable(int rowIndex, int columnIndex, int rows, int columns)
+		{
+			return sheet.get_Range(GetCell(rowIndex, columnIndex), GetCell(rowIndex + rows - 1, columnIndex + columns - 1));
+		}
+
+		private void SetTable(int rowIndex, int columnIndex, object[,] values)
+		{
+			GetTable(rowIndex, columnIndex, values.GetLength(0), values.GetLength(1)).FormulaArray = values;
+		}
+
+		public void AddRow(object[] values)
+		{
+			this.rowsBuffer.Add(values);
+
+			if (values.Length > this.columnsCount) {
+				this.columnsCount = values.Length;
+			}
+
+			if (this.rowsBuffer.Count >= this.RowsBufferSize) {
+				this.Flush();
+			}
+		}
+
+		public void Flush()
+		{
+			if (this.rowsBuffer.Count > 0 && this.columnsCount > 0) {
+
+				var table = new object[this.rowsBuffer.Count, this.columnsCount];
+				this.columnsCount = 0;
+
+				for (var i = 0; i < this.rowsBuffer.Count; i++) {
+					var row = this.rowsBuffer[i];
+					for (var j = 0; j < row.Length; j++) {
+						table[i, j] = row[j];
+					}
+				}
+
+				if (this.lastRowIndex == 0) {
+					this.lastRowIndex = this.RowOffset;
+				}
+
+				SetTable(this.lastRowIndex, this.ColumnOffset, table);
+				this.lastRowIndex += this.rowsBuffer.Count;
+				this.rowsBuffer.Clear();
+			}
 		}
 
 		internal Range this[int rowIndex, int columnIndex]
 		{
-			get { return Excel.GetCell(this.sheet, rowIndex, columnIndex); }
-			set { Excel.SetCell(this.sheet, rowIndex, columnIndex, value); }
+			get { return this.GetCell(rowIndex, columnIndex); }
+			set { this.SetCell(rowIndex, columnIndex, value); }
 		}
 
 		public void OpenInExcel()
 		{
+			this.Flush();
 			this.sheet.Application.UserControl = true;
 			this.sheet.Application.Visible = true;
 		}
 
 		public void SaveAs(string fileName)
 		{
+			this.Flush();
 			this.book.SaveAs(fileName, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value,
 				XlSaveAsAccessMode.xlExclusive, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value);
 		}
@@ -127,41 +208,42 @@ namespace DataDevelop.Core.MSOffice
 			}
 			var watch = new System.Diagnostics.Stopwatch();
 			watch.Start();
+
+			
 			var excel = new ExcelApplication();
 			var book = excel.Workbooks.Add(Missing.Value);
-			var sheet = (ExcelWorksheet)book.Worksheets[1];
+			var worksheet = new Worksheet(excel, book, (ExcelWorksheet)book.Worksheets[1]);
 			
 			excel.Visible = (worker == null);
 			excel.Caption = caption;
 			if (!String.IsNullOrEmpty(data.TableName)) {
-				sheet.Name = data.TableName;
+				worksheet.Name = data.TableName;
 			}
 			excel.Cursor = XlMousePointer.xlWait;
 			
 			var titles = new List<object>();
 			for (int i = 0; i < columns.Count; i++) {
-				//sheet.Cells[1, i + 1] = columns[i].Title;
 				titles.Add(columns[i].Title);
 			}
 
-			sheet.get_Range(sheet.Cells[1, 1], sheet.Cells[1, columns.Count]).FormulaArray = titles.ToArray();
-				//.set_Value(Missing.Value, titles.ToArray());
+			var headerRow = worksheet.GetRow(0, 0, columns.Count);
+			headerRow.FormulaArray = titles.ToArray();
+			headerRow.Font.Bold = true;
 
-			Range headers = sheet.get_Range(sheet.Cells[1, 1], sheet.Cells[1, columns.Count]);
-			headers.Font.Bold = true;
-
-			GetCell(sheet, 2, 1).Select();
+			worksheet.GetCell(1, 0).Select();
 			excel.ActiveWindow.FreezePanes = true;
-			
-			var rowValues = new object[columns.Count];
-			//var tableValues = new object[data.Rows.Count + 1, columns.Count];
 
+			worksheet.RowOffset = 1;
+			
 			var chrono = new System.Diagnostics.Stopwatch();
 			if (worker != null) {
 				chrono.Start();
 			}
+
 			for (int rowIndex = 0; rowIndex < data.Rows.Count + 1; rowIndex++) {
 				
+				var rowValues = new object[data.Columns.Count];
+
 				if (worker != null) {
 					var milliseconds = chrono.ElapsedMilliseconds;
 					if (chrono.ElapsedMilliseconds - milliseconds > 200) {
@@ -178,11 +260,10 @@ namespace DataDevelop.Core.MSOffice
 				
 				for (int columnIndex = 0; columnIndex < columns.Count; columnIndex++) {
 					var column = columns[columnIndex];
-					//var cell = (Range)sheet.Cells[rowIndex + 2, columnIndex + 1];
 					object value = null;
 					
 					if (rowIndex == data.Rows.Count) {
-						var cell = (Range)sheet.Cells[rowIndex + 2, columnIndex + 1];
+						var cell = worksheet.GetCell(rowIndex + 1, columnIndex);
 						cell.Font.Bold = true;
 						if (column.Summary != Agregate.None) {
 							value = String.Format("={0}({1}2:{1}{2})", column.Summary, (char)(columnIndex + 0x41), data.Rows.Count + 1);
@@ -201,31 +282,33 @@ namespace DataDevelop.Core.MSOffice
 							}
 							var error = data.Rows[rowIndex].GetColumnError(column.Column.Ordinal);
 							if (!String.IsNullOrEmpty(error)) {
-								var cell = (Range)sheet.Cells[rowIndex + 2, columnIndex + 1];
+								var cell = worksheet.GetCell(rowIndex + 1, columnIndex);
 								cell.NoteText(error, Missing.Value, Missing.Value);
 							}
 						}
 					}
 					//cell.Formula = value ?? String.Empty;
 					if (!String.IsNullOrEmpty(column.Format)) {
-						var cell = (Range)sheet.Cells[rowIndex + 2, columnIndex + 1];
+						var cell = worksheet.GetCell(rowIndex + 1, columnIndex);
 						cell.NumberFormat = column.Format;
 					}
 					////cell.Auto = false;
 					rowValues[columnIndex] = value;
 					//tableValues[rowIndex, columnIndex] = value;
 				}
-				SetRow(sheet, rowIndex + 2, 1, rowValues);
+				worksheet.AddRow(rowValues);
 			}
 			if (worker != null) {
 				worker.ReportProgress(0, "Sending data to Excel...");
 			}
+
+			worksheet.Flush();
 			//SetTable(sheet, 2, 1, tableValues);
 			////headers.EntireColumn.AutoFit();
 			excel.Cursor = XlMousePointer.xlDefault;
 			watch.Stop();
 			Console.WriteLine("Elapsed: {0}", watch.Elapsed);
-			return new Worksheet(excel, book, sheet, data.Columns.Count, data.Rows.Count);
+			return worksheet;
 		}
 		
 		internal static Range GetCell(ExcelWorksheet worksheet, int rowIndex, int columnIndex)
