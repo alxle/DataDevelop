@@ -13,7 +13,7 @@ namespace DataDevelop
 		const string viewImageKey = "view";
 
 		public TableNode(Table table)
-			: base(table.Name)
+			: base(table.DisplayName)
 		{
 			this.table = table;
 			if (table.IsView) {

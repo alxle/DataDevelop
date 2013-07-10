@@ -17,6 +17,22 @@ namespace DataDevelop.Data.SqlServer
 		{
 		}
 
+		public override string DisplayName
+		{
+			get
+			{
+				return String.Format("{0}.{1}", this.Schema, base.Name);
+			}
+		}
+
+		public override string QuotedName
+		{
+			get
+			{
+				return String.Format("[{0}].[{1}]", this.Schema, base.Name);
+			}
+		}
+
 		public string Schema
 		{
 			get { return this.schema; }

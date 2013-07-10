@@ -53,6 +53,8 @@ class Table:
 				yield row
 			if dataRow.RowState.ToString() == "Unchanged":
 				self._dataTable.Rows.Remove(dataRow)
+			elif self.AutoSaveChanges:
+				self.SaveChanges()
 		reader.Close()
 		reader.Dispose()
 		select.Dispose()
@@ -83,6 +85,15 @@ class Table:
 		row._dataRow.Delete()
 		if self.AutoSaveChanges:
 			self.SaveChanges()
+	
+	def Import(self, row):
+		newRow = self.NewRow()
+		newRow._dataRow.ItemArray = row._dataRow.ItemArray
+		self.Insert(newRow)
+	
+	def ImportAll(fromTable):
+		for row in fromTable:
+			self.Import(row)
 	
 	def SaveChanges(self):
 		self._adapter.Update(self._dataTable)
