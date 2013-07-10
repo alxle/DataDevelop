@@ -137,15 +137,49 @@ namespace DataDevelop.Data.SqlServer
 
 		protected override void PopulateForeignKeys(IList<ForeignKey> foreignKeysCollection)
 		{
+			////using (this.Database.CreateConnectionScope()) {
+			////    string[] restrictions = new string[] { null, null, this.Name, null };
+			////    DataTable schema = this.Connection.GetSchema("ForeignKeys", restrictions);
+			////    foreach (DataRow row in schema.Rows) {
+			////        ForeignKey key = new ForeignKey(this.Database);
+			////        key.Name = (string)row["CONSTRAINT_NAME"];
+			////        key.ChildTable = this.Name;
+			////        ////key.ChildTableColumns = (string)row["COLUMN_NAME"];
+			////        foreignKeysCollection.Add(key);
+			////    }
+			////}
+
 			using (this.Database.CreateConnectionScope()) {
-				string[] restrictions = new string[] { null, null, this.Name, null };
-				DataTable schema = this.Connection.GetSchema("ForeignKeys", restrictions);
-				foreach (DataRow row in schema.Rows) {
-					ForeignKey key = new ForeignKey();
-					key.Name = (string)row["CONSTRAINT_NAME"];
-					key.ChildTable = this.Name;
-					////key.ChildTableColumns = (string)row["COLUMN_NAME"];
-					foreignKeysCollection.Add(key);
+				using (SqlCommand select = this.Connection.CreateCommand()) {
+					select.CommandText =
+						"select object_name(fk.constraint_object_id) as ForeignKeyName, " +
+						"       t1.name as ParentTable, "+
+						"       c1.name as ParentColumn, " +
+						"       t.name as ChildTable, "+
+						"       c.name AS ChildColumn " +
+						"from sys.foreign_key_columns as fk " +
+						"inner join sys.tables as t on fk.parent_object_id = t.object_id " +
+						"inner join sys.columns as c on fk.parent_object_id = c.object_id and fk.parent_column_id = c.column_id " +
+						"inner join sys.tables as t1 on fk.referenced_object_id = t1.object_id " +
+						"inner join sys.columns as c1 on fk.referenced_object_id = c1.object_id and fk.referenced_column_id = c1.column_id " +
+						"where t.name = @TableName " +
+						"order by fk.constraint_object_id, fk.constraint_column_id";
+
+					select.Parameters.AddWithValue("@TableName", this.Name);
+					using (SqlDataReader reader = select.ExecuteReader()) {
+						ForeignKey key = null;
+						while (reader.Read()) {
+							string name = reader.GetString(0);
+							if (key == null || key.Name != name) {
+								key = new ForeignKey(name, this);
+								key.Name = name;
+								key.PrimaryTable = reader.GetString(1);
+								key.ChildTable = reader.GetString(3);
+								foreignKeysCollection.Add(key);
+							}
+							key.Columns.Add(new ColumnsPair(reader.GetString(2), reader.GetString(4)));
+						}
+					}
 				}
 			}
 		}

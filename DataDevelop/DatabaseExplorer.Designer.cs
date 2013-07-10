@@ -74,10 +74,14 @@ namespace DataDevelop
 			this.scriptAsCreateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.scriptAsAlterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.scriptAsDropToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.foreignKeyMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.joinQueryMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.joinToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStrip.SuspendLayout();
 			this.databaseContextMenu.SuspendLayout();
 			this.tableContextMenu.SuspendLayout();
 			this.procedureContextMenu.SuspendLayout();
+			this.foreignKeyMenuStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// toolStrip
@@ -320,7 +324,7 @@ namespace DataDevelop
             this.scriptAsToolStripMenuItem,
             this.renameToolStripMenuItem});
 			this.tableContextMenu.Name = "tableContextMenu";
-			this.tableContextMenu.Size = new System.Drawing.Size(163, 92);
+			this.tableContextMenu.Size = new System.Drawing.Size(163, 114);
 			// 
 			// openTableDataMenuItem
 			// 
@@ -340,6 +344,7 @@ namespace DataDevelop
 			// 
 			this.scriptAsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.selectToolStripMenuItem,
+            this.joinToolStripMenuItem,
             this.insertToolStripMenuItem,
             this.updateToolStripMenuItem,
             this.deleteToolStripMenuItem,
@@ -455,6 +460,27 @@ namespace DataDevelop
 			this.scriptAsDropToolStripMenuItem.Text = "Script as Drop";
 			this.scriptAsDropToolStripMenuItem.Click += new System.EventHandler(this.scriptAsDropToolStripMenuItem_Click);
 			// 
+			// foreignKeyMenuStrip
+			// 
+			this.foreignKeyMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.joinQueryMenuItem});
+			this.foreignKeyMenuStrip.Name = "procedureContextMenu";
+			this.foreignKeyMenuStrip.Size = new System.Drawing.Size(163, 26);
+			// 
+			// joinQueryMenuItem
+			// 
+			this.joinQueryMenuItem.Name = "joinQueryMenuItem";
+			this.joinQueryMenuItem.Size = new System.Drawing.Size(162, 22);
+			this.joinQueryMenuItem.Text = "Open Join Query";
+			this.joinQueryMenuItem.Click += new System.EventHandler(this.joinQueryMenuItem_Click);
+			// 
+			// joinToolStripMenuItem
+			// 
+			this.joinToolStripMenuItem.Name = "joinToolStripMenuItem";
+			this.joinToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.joinToolStripMenuItem.Text = "JOIN";
+			this.joinToolStripMenuItem.Click += new System.EventHandler(this.joinToolStripMenuItem_Click);
+			// 
 			// DatabaseExplorer
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -473,6 +499,7 @@ namespace DataDevelop
 			this.databaseContextMenu.ResumeLayout(false);
 			this.tableContextMenu.ResumeLayout(false);
 			this.procedureContextMenu.ResumeLayout(false);
+			this.foreignKeyMenuStrip.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -525,6 +552,9 @@ namespace DataDevelop
 		private System.Windows.Forms.ToolStripMenuItem saveConnectionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadConnectionsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem sortDatabasesToolStripMenuItem;
+		private System.Windows.Forms.ContextMenuStrip foreignKeyMenuStrip;
+		private System.Windows.Forms.ToolStripMenuItem joinQueryMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem joinToolStripMenuItem;
 
 	}
 }
