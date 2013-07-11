@@ -91,7 +91,7 @@ class Table:
 		newRow._dataRow.ItemArray = row._dataRow.ItemArray
 		self.Insert(newRow)
 	
-	def ImportAll(fromTable):
+	def ImportAll(self, fromTable):
 		for row in fromTable:
 			self.Import(row)
 	
