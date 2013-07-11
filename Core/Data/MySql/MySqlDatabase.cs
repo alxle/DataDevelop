@@ -101,7 +101,7 @@ namespace DataDevelop.Data.MySql
 		{
 			MySqlDataAdapter adapter = new MySqlDataAdapter(table.GetBaseSelectCommandText(filter), this.connection);
 			MySqlCommandBuilder builder = new MySqlCommandBuilder(adapter);
-			builder.ReturnGeneratedIdentifiers = true;
+			////builder.ReturnGeneratedIdentifiers = true;
 			try {
 				adapter.InsertCommand = builder.GetInsertCommand();
 				adapter.UpdateCommand = builder.GetUpdateCommand();

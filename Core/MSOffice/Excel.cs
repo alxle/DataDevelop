@@ -277,8 +277,20 @@ namespace DataDevelop.Core.MSOffice
 							if (value == null || value == DBNull.Value) {
 								value = String.Empty;
 							}
+							
 							if (value is string) {
-								value = "'" + (string)value;
+								var strValue = (string)value;
+								if (strValue.Length > 255) {
+									value = "'" + strValue.Substring(0, 251) + "...";
+
+									var cell = worksheet.GetCell(rowIndex + 1, columnIndex);
+									cell.NoteText(strValue, Missing.Value, Missing.Value);
+
+								} else {
+									value = "'" + strValue;
+								}
+
+								
 							}
 							var error = data.Rows[rowIndex].GetColumnError(column.Column.Ordinal);
 							if (!String.IsNullOrEmpty(error)) {
