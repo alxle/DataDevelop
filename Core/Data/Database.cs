@@ -66,18 +66,6 @@ namespace DataDevelop.Data
 			get;
 		}
 
-		public ConnectionSettings ConnectionSettings
-		{
-			get
-			{
-				ConnectionSettings settings = new ConnectionSettings();
-				settings.ProviderName = this.Provider.Name;
-				settings.DatabaseName = this.Name;
-				settings.ConnectionString = this.ConnectionString;
-				return settings;
-			}
-		}
-
 		public virtual bool SupportStoredProcedures
 		{
 			get { return false; }

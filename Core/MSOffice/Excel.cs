@@ -282,16 +282,17 @@ namespace DataDevelop.Core.MSOffice
 								var strValue = (string)value;
 								if (strValue.Length > 255) {
 									value = "'" + strValue.Substring(0, 251) + "...";
-
-									var cell = worksheet.GetCell(rowIndex + 1, columnIndex);
-									cell.NoteText(strValue, Missing.Value, Missing.Value);
-
+									// TODO: Show a warning that the string was cutted
 								} else {
 									value = "'" + strValue;
 								}
-
-								
 							}
+
+							if (value is byte[]) {
+								// TODO: Show more explicit error messages
+								value = "'";
+							}
+
 							var error = data.Rows[rowIndex].GetColumnError(column.Column.Ordinal);
 							if (!String.IsNullOrEmpty(error)) {
 								var cell = worksheet.GetCell(rowIndex + 1, columnIndex);

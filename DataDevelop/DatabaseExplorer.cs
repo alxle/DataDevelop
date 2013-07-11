@@ -85,7 +85,7 @@ namespace DataDevelop
 			controller.Populate += delegate { AddTables(node); };
 			controller.Refresh += delegate { db.RefreshTables(); Unpopulate(node); };
 			controller.DoubleClick += delegate { if (!node.IsExpanded) { node.Expand(); } };
-			controller.Tag = db.ConnectionSettings;
+			controller.Tag = new ConnectionSettings(db);
 			node.Tag = controller;
 
 			return node;
@@ -598,8 +598,13 @@ namespace DataDevelop
 
 		private void treeView_AfterSelect(object sender, TreeViewEventArgs e)
 		{
+			ShowNodeProperties(e.Node);
+		}
+
+		private void ShowNodeProperties(TreeNode node)
+		{
 			object obj = null;
-			TreeNodeController controller = e.Node.Tag as TreeNodeController;
+			TreeNodeController controller = node.Tag as TreeNodeController;
 			if (controller != null) {
 				refreshToolStripButton.Enabled = controller.SupportsRefresh;
 				obj = controller.Tag;
@@ -636,10 +641,7 @@ namespace DataDevelop
 
 		private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			DatabaseNode dbNode = treeView.SelectedNode as DatabaseNode;
-			if (dbNode != null && ShowProperties != null) {
-				ShowProperties(this, new OpenPropertiesEventArgs(dbNode.Database.ConnectionSettings, true));
-			}
+			ShowNodeProperties(treeView.SelectedNode);
 		}
 
 		private void databaseContextMenu_Opened(object sender, EventArgs e)
@@ -778,6 +780,7 @@ namespace DataDevelop
 						////DisconnectSelectedDatabase();
 						db.ChangeConnectionString(box.ConnectionString);
 						DatabasesManager.IsCollectionDirty = true;
+						ShowNodeProperties(treeView.SelectedNode);
 					}
 				}
 			}
