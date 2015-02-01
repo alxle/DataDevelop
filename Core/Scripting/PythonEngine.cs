@@ -24,6 +24,7 @@ namespace DataDevelop.Scripting
 
 		public override void Initialize(Stream output, IDictionary<string, Database> databases)
 		{
+			engine.Sys.DefaultEncoding = Encoding.Unicode;
 			engine.SetStandardOutput(output);
 			engine.Globals["_dbs"] = databases;
 			engine.Execute(Properties.Resources.PythonScript);
