@@ -51,10 +51,6 @@ namespace DataDevelop
 			} else {
 				ShowToolboxes();
 			}
-			
-			if (Properties.Settings.Default.OpenStartPage) {
-				this.OpenStartPage();
-			}
 		}
 
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -91,13 +87,6 @@ namespace DataDevelop
 			} else {
 				toolbox.Show();
 			}
-		}
-
-		private void OpenStartPage()
-		{
-			WebBrowser browser = new WebBrowser();
-			browser.Show(this.dockPanel);
-			browser.Navigate(Properties.Settings.Default.HomeUrl);
 		}
 
 		private IDockContent GetContentFromPersistString(string name)
@@ -175,12 +164,6 @@ namespace DataDevelop
 			using (AboutBox aboutBox = new AboutBox()) {
 				aboutBox.ShowDialog(this);
 			}
-		}
-
-		private void webBrowserToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			WebBrowser browser = new WebBrowser();
-			browser.Show(dockPanel);
 		}
 
 		private void newDatabaseToolStripMenuItem_Click(object sender, EventArgs e)

@@ -6,6 +6,8 @@ namespace DataDevelop
 {
 	static class Program
 	{
+		internal const string Homepage = "http://datadevelop.codeplex.com/";
+		
 		/// <summary>
 		/// The main entry point for the application.
 		/// </summary>

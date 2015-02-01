@@ -8,11 +8,5 @@
     <Setting Name="RowsPerPage" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">100</Value>
     </Setting>
-    <Setting Name="HomeUrl" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://datadevelop.codeplex.com/</Value>
-    </Setting>
-    <Setting Name="OpenStartPage" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
   </Settings>
 </SettingsFile>
