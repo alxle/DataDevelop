@@ -124,6 +124,10 @@ namespace DataDevelop.Data.SQLite
 			filter.WriteColumnsProjection(select);
 			select.Append(" FROM ");
 			select.Append(this.QuotedName);
+			if (filter.IsRowFiltered) {
+				select.Append(" WHERE ");
+				filter.WriteWhereStatement(select);
+			}
 			return select.ToString();
 		}
 
@@ -194,13 +198,22 @@ namespace DataDevelop.Data.SQLite
 				statement.Append("ALTER TABLE ");
 				statement.Append(QuotedName);
 				statement.Append(" RENAME TO ");
-				statement.AppendLine("[tmp_AlterTable];");
+				statement.AppendLine("[" + this.Name + "_AlterTableTemp];");
 				statement.Append(this.GenerateCreateStatement());
 				statement.AppendLine(";");
+				statement.AppendLine();
 				statement.Append("INSERT INTO ");
-				statement.Append(this.QuotedName);
-				statement.AppendLine(" SELECT * FROM [tmp_AlterTable];");
-				statement.AppendLine("DROP TABLE [tmp_AlterTable];");
+				statement.AppendLine(this.QuotedName);
+				statement.Append("      (");
+				var filter = new TableFilter(this);
+				filter.WriteColumnsProjection(statement);
+				statement.AppendLine(")");
+				statement.Append("SELECT ");
+				filter.WriteColumnsProjection(statement);
+				statement.AppendLine();
+				statement.AppendLine("FROM [" + this.Name + "_AlterTableTemp];");
+				statement.AppendLine();
+				statement.AppendLine("DROP TABLE [" + this.Name + "_AlterTableTemp];");
 			}
 			if (Triggers.Count > 0) {
 				statement.AppendLine("/* RESTORE TRIGGERS */");

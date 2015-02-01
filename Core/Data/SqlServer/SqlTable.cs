@@ -290,5 +290,19 @@ namespace DataDevelop.Data.SqlServer
 			select.Append(")");
 			return select.ToString();
 		}
+
+		public override string GenerateCreateStatement()
+		{
+			if (this.IsView) {
+				using (var select = this.Connection.CreateCommand()) {
+					select.CommandText = "SELECT Definition FROM sys.sql_modules " +
+						"WHERE object_id = OBJECT_ID(@name)";
+					select.Parameters.AddWithValue("@name", this.QuotedName);
+					return select.ExecuteScalar() as string;
+				}
+			} else {
+				return null;
+			}
+		}
 	}
 }
