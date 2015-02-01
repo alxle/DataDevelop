@@ -178,6 +178,10 @@ namespace DataDevelop.Data
 			}
 			select.Append(" FROM ");
 			select.Append(this.QuotedName);
+			if (filter.IsRowFiltered) {
+				select.Append(" WHERE ");
+				filter.WriteWhereStatement(select);
+			}
 			return select.ToString();
 		}
 

@@ -61,7 +61,7 @@ namespace DataDevelop.Data
 		public static void BindParameters(IDbCommand command, params object[] values)
 		{
 			foreach (IDataParameter parameter in command.Parameters) {
-				int index = Convert.ToInt32(parameter.SourceColumn);
+				int index = Convert.ToInt32(parameter.SourceColumn.Substring(1));
 				object value = values[index];
 
 				if (value == null) {
@@ -156,7 +156,8 @@ namespace DataDevelop.Data
 													String.Format("Parameter {0} already declared with diferent DbType", paramName));
 											}
 										}
-										result.Append(p.ParameterName);
+										// Do not use p.ParameterName since some providers remove the prefix
+										result.Append(database.ParameterPrefix + paramName);
 									}
 									break;
 								default:
@@ -191,7 +192,10 @@ namespace DataDevelop.Data
 		private static string ReadIdentifier(StringReader reader)
 		{
 			StringBuilder paramName = new StringBuilder();
-			if (IsIdentifierChar((char)reader.Peek(), true)) {
+			if (IsIdentifierChar((char)reader.Peek(), false)) {
+				if (Char.IsDigit((char)reader.Peek())) {
+					paramName.Append('p');
+				}
 				do {
 					paramName.Append((char)reader.Read());
 				} while (IsIdentifierChar((char)reader.Peek(), false));
