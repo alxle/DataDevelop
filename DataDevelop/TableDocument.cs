@@ -79,7 +79,12 @@ namespace DataDevelop
 
 		private void TableDocument_Load(object sender, EventArgs e)
 		{
-			this.UpdateDataSet();
+			try {
+				this.UpdateDataSet();
+			} catch (Exception ex) {
+				MessageBox.Show(this, ex.Message, "Error opening table", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				this.Enabled = false;
+			}
 		}
 
 		protected override void OnShown(EventArgs e)
@@ -216,6 +221,10 @@ namespace DataDevelop
 		{
 			this.Validate();
 			this.dataGridView.EndEdit();
+			// data can be null if an error ocurred
+			if (this.data == null) {
+				return null;
+			}
 			return this.data.GetChanges();
 		}
 
