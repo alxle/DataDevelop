@@ -24,7 +24,7 @@ namespace DataDevelop
 
 			var isPython = (engine is PythonScriptEngine);
             var highlighter = isPython ? Highlighters.Python : Highlighters.Javascript;
-			var outputStream = new StreamWriteDelegator(this.Output.WriteUTF8);
+			var outputStream = new StreamWriteDelegator(this.Output.WriteUnicode);
 			
 			////if (!isPython) {
 			////    outputStream = new StreamWriteDelegator(this.Output.WriteUnicode);
@@ -91,7 +91,7 @@ namespace DataDevelop
 			if (e.Error != null) {
 				output.CurrentTextColor = Color.Red;
 				//output.AppendMessage("IronPython engine complained: ");
-				output.AppendMessage(e.Error.Message);
+				output.AppendMessage(e.Error.ToString());
 				output.ResetTextColor();
 			}
 			output.Show();
