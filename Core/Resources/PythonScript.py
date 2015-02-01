@@ -150,3 +150,11 @@ class Database:
 			return self.base.NonQuery(command, list[0])
 		else:
 			return self.base.NonQuery(command, list.ToArray())
+	
+	def Scalar(self, command, *values):
+		from System.Collections import ArrayList
+		list = ArrayList()
+		for value in values:
+			list.Add(value)
+		table = self.base.Query(command, list.ToArray())
+		return table.Rows[0][0]
