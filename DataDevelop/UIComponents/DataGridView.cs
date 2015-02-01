@@ -21,6 +21,8 @@ namespace DataDevelop
 			//nullStyle.ForeColor = SystemColors.InfoText;
 			//this.DefaultCellStyle.NullValue = "NULL";
 
+			this.DoubleBuffered = true;
+
 			this.resizeColumnsAllCellsMenuItem.Click += delegate { this.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells); };
 			this.resizeColumnsAllCellsExceptHeaderMenuItem.Click += delegate { this.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCellsExceptHeader); };
 			this.resizeColumnsColumnHeaderMenuItem.Click += delegate { this.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.ColumnHeader); };
