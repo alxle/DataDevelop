@@ -33,8 +33,6 @@ namespace DataDevelop
 			this.createDatabaseToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.addDatabaseToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-			this.createFolderToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.refreshToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.actionsButton = new System.Windows.Forms.ToolStripDropDownButton();
 			this.disconnectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -59,6 +57,7 @@ namespace DataDevelop
 			this.exportDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.scriptAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.selectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.joinToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.insertToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.updateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -76,7 +75,7 @@ namespace DataDevelop
 			this.scriptAsDropToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.foreignKeyMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.joinQueryMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.joinToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStrip.SuspendLayout();
 			this.databaseContextMenu.SuspendLayout();
 			this.tableContextMenu.SuspendLayout();
@@ -92,9 +91,8 @@ namespace DataDevelop
             this.createDatabaseToolStripButton,
             this.addDatabaseToolStripButton,
             this.toolStripSeparator2,
-            this.createFolderToolStripButton,
-            this.toolStripSeparator3,
             this.refreshToolStripButton,
+            this.toolStripSeparator3,
             this.actionsButton});
 			this.toolStrip.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip.Name = "toolStrip";
@@ -129,23 +127,6 @@ namespace DataDevelop
 			this.toolStripSeparator2.MergeAction = System.Windows.Forms.MergeAction.Replace;
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
 			this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
-			// 
-			// createFolderToolStripButton
-			// 
-			this.createFolderToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.createFolderToolStripButton.Enabled = false;
-			this.createFolderToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("createFolderToolStripButton.Image")));
-			this.createFolderToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.createFolderToolStripButton.MergeAction = System.Windows.Forms.MergeAction.Replace;
-			this.createFolderToolStripButton.Name = "createFolderToolStripButton";
-			this.createFolderToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.createFolderToolStripButton.Text = "Create Folder";
-			// 
-			// toolStripSeparator3
-			// 
-			this.toolStripSeparator3.MergeAction = System.Windows.Forms.MergeAction.Replace;
-			this.toolStripSeparator3.Name = "toolStripSeparator3";
-			this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
 			// 
 			// refreshToolStripButton
 			// 
@@ -237,15 +218,11 @@ namespace DataDevelop
 			this.treeView.SelectedImageIndex = 0;
 			this.treeView.Size = new System.Drawing.Size(236, 241);
 			this.treeView.TabIndex = 2;
-			this.treeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView_NodeMouseDoubleClick);
 			this.treeView.TreeNodePopulate += new System.Windows.Forms.TreeViewEventHandler(this.treeView_TreeNodePopulate);
-			this.treeView.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.treeView_AfterLabelEdit);
-			this.treeView.DragDrop += new System.Windows.Forms.DragEventHandler(this.treeView_DragDrop);
-			this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterSelect);
-			this.treeView.DragEnter += new System.Windows.Forms.DragEventHandler(this.treeView_DragEnter);
 			this.treeView.BeforeLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.treeView_BeforeLabelEdit);
-			this.treeView.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.treeView_ItemDrag);
-			this.treeView.DragOver += new System.Windows.Forms.DragEventHandler(this.treeView_DragOver);
+			this.treeView.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.treeView_AfterLabelEdit);
+			this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterSelect);
+			this.treeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView_NodeMouseDoubleClick);
 			// 
 			// nodesImageList
 			// 
@@ -324,7 +301,7 @@ namespace DataDevelop
             this.scriptAsToolStripMenuItem,
             this.renameToolStripMenuItem});
 			this.tableContextMenu.Name = "tableContextMenu";
-			this.tableContextMenu.Size = new System.Drawing.Size(163, 114);
+			this.tableContextMenu.Size = new System.Drawing.Size(163, 92);
 			// 
 			// openTableDataMenuItem
 			// 
@@ -359,54 +336,61 @@ namespace DataDevelop
 			// selectToolStripMenuItem
 			// 
 			this.selectToolStripMenuItem.Name = "selectToolStripMenuItem";
-			this.selectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.selectToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
 			this.selectToolStripMenuItem.Text = "SELECT";
 			this.selectToolStripMenuItem.Click += new System.EventHandler(this.selectToolStripMenuItem_Click);
+			// 
+			// joinToolStripMenuItem
+			// 
+			this.joinToolStripMenuItem.Name = "joinToolStripMenuItem";
+			this.joinToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
+			this.joinToolStripMenuItem.Text = "JOIN";
+			this.joinToolStripMenuItem.Click += new System.EventHandler(this.joinToolStripMenuItem_Click);
 			// 
 			// insertToolStripMenuItem
 			// 
 			this.insertToolStripMenuItem.Name = "insertToolStripMenuItem";
-			this.insertToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.insertToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
 			this.insertToolStripMenuItem.Text = "INSERT";
 			this.insertToolStripMenuItem.Click += new System.EventHandler(this.insertToolStripMenuItem_Click);
 			// 
 			// updateToolStripMenuItem
 			// 
 			this.updateToolStripMenuItem.Name = "updateToolStripMenuItem";
-			this.updateToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.updateToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
 			this.updateToolStripMenuItem.Text = "UPDATE";
 			this.updateToolStripMenuItem.Click += new System.EventHandler(this.updateToolStripMenuItem_Click);
 			// 
 			// deleteToolStripMenuItem
 			// 
 			this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-			this.deleteToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.deleteToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
 			this.deleteToolStripMenuItem.Text = "DELETE";
 			this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator6
 			// 
 			this.toolStripSeparator6.Name = "toolStripSeparator6";
-			this.toolStripSeparator6.Size = new System.Drawing.Size(149, 6);
+			this.toolStripSeparator6.Size = new System.Drawing.Size(115, 6);
 			// 
 			// createToolStripMenuItem
 			// 
 			this.createToolStripMenuItem.Name = "createToolStripMenuItem";
-			this.createToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.createToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
 			this.createToolStripMenuItem.Text = "CREATE";
 			this.createToolStripMenuItem.Click += new System.EventHandler(this.createToolStripMenuItem_Click);
 			// 
 			// alterToolStripMenuItem
 			// 
 			this.alterToolStripMenuItem.Name = "alterToolStripMenuItem";
-			this.alterToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.alterToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
 			this.alterToolStripMenuItem.Text = "ALTER";
 			this.alterToolStripMenuItem.Click += new System.EventHandler(this.alterToolStripMenuItem_Click);
 			// 
 			// dropToolStripMenuItem
 			// 
 			this.dropToolStripMenuItem.Name = "dropToolStripMenuItem";
-			this.dropToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.dropToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
 			this.dropToolStripMenuItem.Text = "DROP";
 			this.dropToolStripMenuItem.Click += new System.EventHandler(this.dropToolStripMenuItem_Click);
 			// 
@@ -474,12 +458,11 @@ namespace DataDevelop
 			this.joinQueryMenuItem.Text = "Open Join Query";
 			this.joinQueryMenuItem.Click += new System.EventHandler(this.joinQueryMenuItem_Click);
 			// 
-			// joinToolStripMenuItem
+			// toolStripSeparator3
 			// 
-			this.joinToolStripMenuItem.Name = "joinToolStripMenuItem";
-			this.joinToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.joinToolStripMenuItem.Text = "JOIN";
-			this.joinToolStripMenuItem.Click += new System.EventHandler(this.joinToolStripMenuItem_Click);
+			this.toolStripSeparator3.MergeAction = System.Windows.Forms.MergeAction.Replace;
+			this.toolStripSeparator3.Name = "toolStripSeparator3";
+			this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
 			// 
 			// DatabaseExplorer
 			// 
@@ -527,8 +510,6 @@ namespace DataDevelop
 		private System.Windows.Forms.ToolStripButton addDatabaseToolStripButton;
 		private System.Windows.Forms.ToolStripButton createDatabaseToolStripButton;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-		private System.Windows.Forms.ToolStripButton createFolderToolStripButton;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.ToolStripButton refreshToolStripButton;
 		private System.Windows.Forms.ToolStripMenuItem scriptAsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem selectToolStripMenuItem;
@@ -555,6 +536,7 @@ namespace DataDevelop
 		private System.Windows.Forms.ContextMenuStrip foreignKeyMenuStrip;
 		private System.Windows.Forms.ToolStripMenuItem joinQueryMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem joinToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 
 	}
 }

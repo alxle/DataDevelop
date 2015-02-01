@@ -46,26 +46,5 @@ namespace DataDevelop.Properties {
                 this["RowsPerPage"] = value;
             }
         }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://datadevelop.codeplex.com/")]
-        public string HomeUrl {
-            get {
-                return ((string)(this["HomeUrl"]));
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool OpenStartPage {
-            get {
-                return ((bool)(this["OpenStartPage"]));
-            }
-            set {
-                this["OpenStartPage"] = value;
-            }
-        }
     }
 }

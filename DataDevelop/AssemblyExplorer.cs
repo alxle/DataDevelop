@@ -22,14 +22,29 @@ namespace DataDevelop
 
 		private void AssemblyExplorer_Load(object sender, EventArgs e)
 		{
-			AddAssembly(new AssemblyNode(Assembly.LoadWithPartialName("mscorlib")));
-			AddAssembly(new AssemblyNode(Assembly.LoadWithPartialName("System")));
-			AddAssembly(new AssemblyNode(Assembly.LoadWithPartialName("System.Data")));
-			AddAssembly(new AssemblyNode(Assembly.LoadWithPartialName("System.Drawing")));
-			AddAssembly(new AssemblyNode(Assembly.LoadWithPartialName("System.Windows.Forms")));
-			AddAssembly(new AssemblyNode(Assembly.LoadWithPartialName("System.Xml")));
-			////AddAssembly(new AssemblyNode(Assembly.LoadWithPartialName("System.Web")));
+			var list = new List<AssemblyName>();
+			var runningAssembly = Assembly.GetExecutingAssembly();
+			list.Add(runningAssembly.GetName());
+			foreach (var assyName in runningAssembly.GetReferencedAssemblies()) {
+				list.Add(assyName);
+			}
+
+			TryAddAssembly("mscorlib", list);
+			TryAddAssembly("System", list);
+			TryAddAssembly("System.Data", list);
+			TryAddAssembly("System.Drawing", list);
+			TryAddAssembly("System.Windows.Forms", list);
+			TryAddAssembly("System.Xml", list);
 			addAssemblyButton.Enabled = false;
+		}
+
+		private void TryAddAssembly(string partialName, IEnumerable<AssemblyName> assemblies)
+		{
+			foreach (var assyName in assemblies) {
+				if (String.Equals(assyName.Name, partialName, StringComparison.OrdinalIgnoreCase)) {
+					AddAssembly(new AssemblyNode(Assembly.Load(assyName.FullName)));
+				}
+			}
 		}
 
 		private void addAssemblyButton_Click(object sender, EventArgs e)

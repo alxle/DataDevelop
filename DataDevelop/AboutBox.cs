@@ -22,9 +22,29 @@ namespace DataDevelop
 			this.labelProductName.Text = AssemblyProduct;
 			this.labelVersion.Text = String.Format("Version {0}", AssemblyVersion);
 			this.labelCopyright.Text = AssemblyCopyright;
-			this.labelCompanyName.Text = AssemblyCompany;
-			this.textBoxDescription.Text = AssemblyDescription;
+			this.homepageLinkLabel.Text = Program.Homepage;
+
+			this.componentsListView.Items.Add(new ListViewItem(new string[] { "Operating System: " + Environment.OSVersion.Platform.ToString(), Environment.OSVersion.Version.ToString() }));
+			this.componentsListView.Items.Add(new ListViewItem(new string[] { ".NET Framework", Environment.Version.ToString() }));
+
+			var list = new List<AssemblyName>();
+			foreach (var assy in new Assembly[] { Assembly.GetExecutingAssembly(), typeof(DataDevelop.Data.DbProvider).Assembly }) {
+				foreach (var assyName in assy.GetReferencedAssemblies()) {
+					if (!list.Exists(i => i.Name == assyName.Name)) {
+						list.Add(assyName);
+					}
+				}
+			}
+
+			list.Sort(new Comparison<AssemblyName>((x, y) => String.Compare(x.Name, y.Name)));
+
+			foreach (var assyName in list) {
+				var item = new ListViewItem(new string[] { assyName.Name, assyName.Version.ToString() });
+				this.componentsListView.Items.Add(item);
+			}
 		}
+
+
 		
 		#region Assembly Attribute Accessors
 
@@ -115,5 +135,10 @@ namespace DataDevelop
 			}
 		}
 		#endregion
+
+		private void homepageLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		{
+			System.Diagnostics.Process.Start(Program.Homepage);
+		}
 	}
 }

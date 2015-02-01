@@ -55,9 +55,6 @@ namespace DataDevelop
 			this.propertiesWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.assemblyExplorerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-			this.startPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.webBrowserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.scriptWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.javascriptConsoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.outputWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -144,9 +141,6 @@ namespace DataDevelop
             this.propertiesWindowToolStripMenuItem,
             this.assemblyExplorerToolStripMenuItem,
             this.toolStripSeparator1,
-            this.startPageToolStripMenuItem,
-            this.webBrowserToolStripMenuItem,
-            this.toolStripSeparator4,
             this.scriptWindowToolStripMenuItem,
             this.javascriptConsoleToolStripMenuItem,
             this.outputWindowToolStripMenuItem,
@@ -184,26 +178,6 @@ namespace DataDevelop
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
 			this.toolStripSeparator1.Size = new System.Drawing.Size(201, 6);
-			// 
-			// startPageToolStripMenuItem
-			// 
-			this.startPageToolStripMenuItem.Name = "startPageToolStripMenuItem";
-			this.startPageToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
-			this.startPageToolStripMenuItem.Text = "&Start Page";
-			this.startPageToolStripMenuItem.Visible = false;
-			// 
-			// webBrowserToolStripMenuItem
-			// 
-			this.webBrowserToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.web;
-			this.webBrowserToolStripMenuItem.Name = "webBrowserToolStripMenuItem";
-			this.webBrowserToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
-			this.webBrowserToolStripMenuItem.Text = "&Web Browser";
-			this.webBrowserToolStripMenuItem.Click += new System.EventHandler(this.webBrowserToolStripMenuItem_Click);
-			// 
-			// toolStripSeparator4
-			// 
-			this.toolStripSeparator4.Name = "toolStripSeparator4";
-			this.toolStripSeparator4.Size = new System.Drawing.Size(201, 6);
 			// 
 			// scriptWindowToolStripMenuItem
 			// 
@@ -308,7 +282,6 @@ namespace DataDevelop
 			// 
 			// dockPanel
 			// 
-			this.dockPanel.ActiveAutoHideContent = null;
 			this.dockPanel.BackColor = System.Drawing.SystemColors.Control;
 			this.dockPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.dockPanel.DockBackColor = System.Drawing.SystemColors.AppWorkspace;
@@ -323,6 +296,7 @@ namespace DataDevelop
 			tabGradient1.StartColor = System.Drawing.SystemColors.Control;
 			tabGradient1.TextColor = System.Drawing.SystemColors.ControlDarkDark;
 			autoHideStripSkin1.TabGradient = tabGradient1;
+			autoHideStripSkin1.TextFont = new System.Drawing.Font("Segoe UI", 9F);
 			dockPanelSkin1.AutoHideStripSkin = autoHideStripSkin1;
 			tabGradient2.EndColor = System.Drawing.SystemColors.Control;
 			tabGradient2.LinearGradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
@@ -338,6 +312,7 @@ namespace DataDevelop
 			tabGradient3.TextColor = System.Drawing.SystemColors.ControlText;
 			dockPaneStripGradient1.InactiveTabGradient = tabGradient3;
 			dockPaneStripSkin1.DocumentGradient = dockPaneStripGradient1;
+			dockPaneStripSkin1.TextFont = new System.Drawing.Font("Segoe UI", 9F);
 			tabGradient4.EndColor = System.Drawing.SystemColors.ActiveCaption;
 			tabGradient4.LinearGradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
 			tabGradient4.StartColor = System.Drawing.SystemColors.GradientActiveCaption;
@@ -378,8 +353,8 @@ namespace DataDevelop
 			this.Name = "MainForm";
 			this.Text = "DataDevelop (beta)";
 			this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-			this.Load += new System.EventHandler(this.MainForm_Load);
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+			this.Load += new System.EventHandler(this.MainForm_Load);
 			this.menuStrip.ResumeLayout(false);
 			this.menuStrip.PerformLayout();
 			this.ResumeLayout(false);
@@ -397,8 +372,6 @@ namespace DataDevelop
 		private System.Windows.Forms.ToolStripMenuItem databaseExplorerToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem propertiesWindowToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-		private System.Windows.Forms.ToolStripMenuItem startPageToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem webBrowserToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem1;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
@@ -406,7 +379,6 @@ namespace DataDevelop
 		private System.Windows.Forms.ToolStripMenuItem documentationToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem newDatabaseToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem openDatabaseToolStripMenuItem;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
 		private System.Windows.Forms.ToolStripMenuItem preferencesToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem scriptWindowToolStripMenuItem;
 		private WeifenLuo.WinFormsUI.Docking.DockPanel dockPanel;
