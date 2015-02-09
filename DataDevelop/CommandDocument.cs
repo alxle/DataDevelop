@@ -552,11 +552,13 @@ namespace DataDevelop
 
 		private void Find(object sender, EventArgs e)
 		{
+			FormExtensions.DownPositionate(this.findDialog, this.findToolStripButton, this);
 			this.findDialog.ShowFor(this.textEditorControl, false);
 		}
 
 		private void Replace(object sender, EventArgs e)
 		{
+			FormExtensions.DownPositionate(this.findDialog, this.findToolStripButton, this);
 			this.findDialog.ShowFor(this.textEditorControl, true);
 		}
 

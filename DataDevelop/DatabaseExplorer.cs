@@ -241,6 +241,7 @@ namespace DataDevelop
 		{
 			DbProvider provider = null;
 			using (SelectProviderDialog providerDialog = new SelectProviderDialog()) {
+				FormExtensions.DownPositionate(providerDialog, this.toolStrip);
 				if (providerDialog.ShowDialog(this) == DialogResult.OK) {
 					provider = providerDialog.Provider;
 				}
