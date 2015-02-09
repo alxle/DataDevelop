@@ -33,7 +33,6 @@ namespace DataDevelop.UIComponents
 			this.newToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.openToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.printToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
 			this.copyToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.pasteToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -62,7 +61,7 @@ namespace DataDevelop.UIComponents
 			this.hexTextBox.Name = "hexTextBox";
 			this.hexTextBox.ReadOnly = true;
 			this.hexTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-			this.hexTextBox.Size = new System.Drawing.Size(342, 277);
+			this.hexTextBox.Size = new System.Drawing.Size(384, 319);
 			this.hexTextBox.TabIndex = 0;
 			this.hexTextBox.Text = "";
 			this.hexTextBox.Visible = false;
@@ -73,7 +72,6 @@ namespace DataDevelop.UIComponents
             this.newToolStripButton,
             this.openToolStripButton,
             this.saveToolStripButton,
-            this.printToolStripButton,
             this.toolStripSeparator,
             this.copyToolStripButton,
             this.pasteToolStripButton,
@@ -81,7 +79,7 @@ namespace DataDevelop.UIComponents
             this.sizeModeToolStripDropDownButton});
 			this.toolStrip.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip.Name = "toolStrip";
-			this.toolStrip.Size = new System.Drawing.Size(342, 25);
+			this.toolStrip.Size = new System.Drawing.Size(384, 25);
 			this.toolStrip.TabIndex = 2;
 			// 
 			// newToolStripButton
@@ -113,16 +111,6 @@ namespace DataDevelop.UIComponents
 			this.saveToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.saveToolStripButton.Text = "&Save";
 			this.saveToolStripButton.Click += new System.EventHandler(this.saveToolStripButton_Click);
-			// 
-			// printToolStripButton
-			// 
-			this.printToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.printToolStripButton.Enabled = false;
-			this.printToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("printToolStripButton.Image")));
-			this.printToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.printToolStripButton.Name = "printToolStripButton";
-			this.printToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.printToolStripButton.Text = "&Print";
 			// 
 			// toolStripSeparator
 			// 
@@ -171,14 +159,14 @@ namespace DataDevelop.UIComponents
 			this.normalToolStripMenuItem.Checked = true;
 			this.normalToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.normalToolStripMenuItem.Name = "normalToolStripMenuItem";
-			this.normalToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
+			this.normalToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
 			this.normalToolStripMenuItem.Text = "Normal";
 			this.normalToolStripMenuItem.Click += new System.EventHandler(this.normalToolStripMenuItem_Click);
 			// 
 			// stretchToolStripMenuItem
 			// 
 			this.stretchToolStripMenuItem.Name = "stretchToolStripMenuItem";
-			this.stretchToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
+			this.stretchToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
 			this.stretchToolStripMenuItem.Text = "Stretch";
 			this.stretchToolStripMenuItem.Click += new System.EventHandler(this.stretchToolStripMenuItem_Click);
 			// 
@@ -186,16 +174,16 @@ namespace DataDevelop.UIComponents
 			// 
 			this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusLabel});
-			this.statusStrip.Location = new System.Drawing.Point(0, 302);
+			this.statusStrip.Location = new System.Drawing.Point(0, 344);
 			this.statusStrip.Name = "statusStrip";
 			this.statusStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.ManagerRenderMode;
-			this.statusStrip.Size = new System.Drawing.Size(342, 22);
+			this.statusStrip.Size = new System.Drawing.Size(384, 22);
 			this.statusStrip.TabIndex = 3;
 			// 
 			// statusLabel
 			// 
 			this.statusLabel.Name = "statusLabel";
-			this.statusLabel.Size = new System.Drawing.Size(327, 17);
+			this.statusLabel.Size = new System.Drawing.Size(369, 17);
 			this.statusLabel.Spring = true;
 			this.statusLabel.Text = "[Status]";
 			// 
@@ -214,7 +202,7 @@ namespace DataDevelop.UIComponents
 			this.picturePanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.picturePanel.Location = new System.Drawing.Point(0, 25);
 			this.picturePanel.Name = "picturePanel";
-			this.picturePanel.Size = new System.Drawing.Size(342, 277);
+			this.picturePanel.Size = new System.Drawing.Size(384, 319);
 			this.picturePanel.TabIndex = 5;
 			this.picturePanel.VisibleChanged += new System.EventHandler(this.picturePanel_VisibleChanged);
 			this.picturePanel.Resize += new System.EventHandler(this.picturePanel_Resize);
@@ -235,7 +223,7 @@ namespace DataDevelop.UIComponents
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.SystemColors.AppWorkspace;
-			this.ClientSize = new System.Drawing.Size(342, 324);
+			this.ClientSize = new System.Drawing.Size(384, 366);
 			this.Controls.Add(this.picturePanel);
 			this.Controls.Add(this.hexTextBox);
 			this.Controls.Add(this.toolStrip);
@@ -270,7 +258,6 @@ namespace DataDevelop.UIComponents
 		private System.Windows.Forms.ToolStripButton newToolStripButton;
 		private System.Windows.Forms.ToolStripButton openToolStripButton;
 		private System.Windows.Forms.ToolStripButton saveToolStripButton;
-		private System.Windows.Forms.ToolStripButton printToolStripButton;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator;
 		private System.Windows.Forms.ToolStripButton copyToolStripButton;
 		private System.Windows.Forms.ToolStripButton pasteToolStripButton;
