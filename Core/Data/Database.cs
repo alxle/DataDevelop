@@ -102,6 +102,28 @@ namespace DataDevelop.Data
 			}
 		}
 
+		public void DisconnectAll()
+		{
+			lock (this) {
+				this.DoDisconnect();
+				this.tablesCollection = null;
+				this.storedProceduresCollection = null;
+				this.connectionCount = 0;
+			}
+		}
+
+		public void Reconnect()
+		{
+			lock (this) {
+				try {
+					this.DoDisconnect();
+				} catch (Exception) {
+					// Ignore error because we will try to reconnect
+				}
+				this.DoConnect();
+			}
+		}
+
 		public IEnumerable<Table> GetViews()
 		{
 			foreach (Table t in this.Tables) {
