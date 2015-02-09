@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
@@ -98,13 +99,14 @@ namespace DataDevelop.UIComponents
 
 		private void openToolStripButton_Click(object sender, EventArgs e)
 		{
+			const long MaxLength = (2L * 1024 * 1024); // 2MB
 			if (openFileDialog.ShowDialog(this) == DialogResult.OK) {
-				System.IO.FileInfo info = new System.IO.FileInfo(openFileDialog.FileName);
-				if (info.Length <= (2L * 1024 * 1024)) { // 2MB
-					cell.Value = System.IO.File.ReadAllBytes(info.FullName);
+				var info = new FileInfo(openFileDialog.FileName);
+				if (info.Length <= MaxLength) {
+					cell.Value = File.ReadAllBytes(info.FullName);
 					ShowValue();
 				} else {
-					MessageBox.Show(this, "File Too Large");
+					MessageBox.Show(this, "File Exceeds the Max Length allowed (2MB)");
 				}
 			}
 		}
@@ -112,7 +114,7 @@ namespace DataDevelop.UIComponents
 		private void saveToolStripButton_Click(object sender, EventArgs e)
 		{
 			if (saveFileDialog.ShowDialog(this) == DialogResult.OK) {
-				System.IO.File.WriteAllBytes(saveFileDialog.FileName, cell.BinaryData);
+				File.WriteAllBytes(saveFileDialog.FileName, cell.BinaryData);
 			}
 		}
 
@@ -151,7 +153,7 @@ namespace DataDevelop.UIComponents
 		{
 			sizeModeToolStripDropDownButton.Visible = picturePanel.Visible;
 			copyToolStripButton.Visible = picturePanel.Visible;
-			pasteToolStripButton.Visible = picturePanel.Visible;
+			//pasteToolStripButton.Visible = picturePanel.Visible;
 			toolStripSeparator.Visible = picturePanel.Visible;
 			toolStripSeparator1.Visible = picturePanel.Visible;
 		}
