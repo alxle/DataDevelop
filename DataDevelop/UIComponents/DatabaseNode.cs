@@ -35,7 +35,7 @@ namespace DataDevelop
 
 		public void Disconnect()
 		{
-			database.Disconnect();
+			database.DisconnectAll();
 			if (!database.IsConnected) {
 				SetImage(false);
 			}

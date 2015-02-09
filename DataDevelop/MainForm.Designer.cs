@@ -109,7 +109,6 @@ namespace DataDevelop
 			// 
 			// newDatabaseToolStripMenuItem
 			// 
-			this.newDatabaseToolStripMenuItem.Enabled = false;
 			this.newDatabaseToolStripMenuItem.Name = "newDatabaseToolStripMenuItem";
 			this.newDatabaseToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
 			this.newDatabaseToolStripMenuItem.Text = "&New Database";
@@ -353,8 +352,8 @@ namespace DataDevelop
 			this.Name = "MainForm";
 			this.Text = "DataDevelop (beta)";
 			this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
 			this.Load += new System.EventHandler(this.MainForm_Load);
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
 			this.menuStrip.ResumeLayout(false);
 			this.menuStrip.PerformLayout();
 			this.ResumeLayout(false);

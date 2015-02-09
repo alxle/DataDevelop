@@ -34,6 +34,7 @@ namespace DataDevelop
 			this.addDatabaseToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.refreshToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.actionsButton = new System.Windows.Forms.ToolStripDropDownButton();
 			this.disconnectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.saveConnectionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -47,6 +48,7 @@ namespace DataDevelop
 			this.nodesImageList = new System.Windows.Forms.ImageList(this.components);
 			this.databaseContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.newQueryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.connectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.disconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.modifyConnectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.removeDatabaseMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -75,7 +77,7 @@ namespace DataDevelop
 			this.scriptAsDropToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.foreignKeyMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.joinQueryMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+			this.reconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStrip.SuspendLayout();
 			this.databaseContextMenu.SuspendLayout();
 			this.tableContextMenu.SuspendLayout();
@@ -139,6 +141,12 @@ namespace DataDevelop
 			this.refreshToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.refreshToolStripButton.Text = "Refresh";
 			this.refreshToolStripButton.Click += new System.EventHandler(this.refreshToolStripButton_Click);
+			// 
+			// toolStripSeparator3
+			// 
+			this.toolStripSeparator3.MergeAction = System.Windows.Forms.MergeAction.Replace;
+			this.toolStripSeparator3.Name = "toolStripSeparator3";
+			this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
 			// 
 			// actionsButton
 			// 
@@ -218,11 +226,11 @@ namespace DataDevelop
 			this.treeView.SelectedImageIndex = 0;
 			this.treeView.Size = new System.Drawing.Size(236, 241);
 			this.treeView.TabIndex = 2;
+			this.treeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView_NodeMouseDoubleClick);
 			this.treeView.TreeNodePopulate += new System.Windows.Forms.TreeViewEventHandler(this.treeView_TreeNodePopulate);
-			this.treeView.BeforeLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.treeView_BeforeLabelEdit);
 			this.treeView.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.treeView_AfterLabelEdit);
 			this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterSelect);
-			this.treeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView_NodeMouseDoubleClick);
+			this.treeView.BeforeLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.treeView_BeforeLabelEdit);
 			// 
 			// nodesImageList
 			// 
@@ -243,13 +251,15 @@ namespace DataDevelop
 			// 
 			this.databaseContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newQueryToolStripMenuItem,
+            this.connectToolStripMenuItem,
+            this.reconnectToolStripMenuItem,
             this.disconnectToolStripMenuItem,
             this.modifyConnectionToolStripMenuItem,
             this.removeDatabaseMenuItem,
             this.toolStripSeparator5,
             this.propertiesToolStripMenuItem});
 			this.databaseContextMenu.Name = "dbContextMenu";
-			this.databaseContextMenu.Size = new System.Drawing.Size(178, 120);
+			this.databaseContextMenu.Size = new System.Drawing.Size(178, 186);
 			this.databaseContextMenu.Opened += new System.EventHandler(this.databaseContextMenu_Opened);
 			// 
 			// newQueryToolStripMenuItem
@@ -258,6 +268,13 @@ namespace DataDevelop
 			this.newQueryToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
 			this.newQueryToolStripMenuItem.Text = "New Query";
 			this.newQueryToolStripMenuItem.Click += new System.EventHandler(this.newQueryToolStripMenuItem_Click);
+			// 
+			// connectToolStripMenuItem
+			// 
+			this.connectToolStripMenuItem.Name = "connectToolStripMenuItem";
+			this.connectToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+			this.connectToolStripMenuItem.Text = "Connect";
+			this.connectToolStripMenuItem.Click += new System.EventHandler(this.connectToolStripMenuItem_Click);
 			// 
 			// disconnectToolStripMenuItem
 			// 
@@ -458,11 +475,12 @@ namespace DataDevelop
 			this.joinQueryMenuItem.Text = "Open Join Query";
 			this.joinQueryMenuItem.Click += new System.EventHandler(this.joinQueryMenuItem_Click);
 			// 
-			// toolStripSeparator3
+			// reconnectToolStripMenuItem
 			// 
-			this.toolStripSeparator3.MergeAction = System.Windows.Forms.MergeAction.Replace;
-			this.toolStripSeparator3.Name = "toolStripSeparator3";
-			this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+			this.reconnectToolStripMenuItem.Name = "reconnectToolStripMenuItem";
+			this.reconnectToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+			this.reconnectToolStripMenuItem.Text = "Reconnect";
+			this.reconnectToolStripMenuItem.Click += new System.EventHandler(this.reconnectToolStripMenuItem_Click);
 			// 
 			// DatabaseExplorer
 			// 
@@ -537,6 +555,8 @@ namespace DataDevelop
 		private System.Windows.Forms.ToolStripMenuItem joinQueryMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem joinToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+		private System.Windows.Forms.ToolStripMenuItem connectToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem reconnectToolStripMenuItem;
 
 	}
 }

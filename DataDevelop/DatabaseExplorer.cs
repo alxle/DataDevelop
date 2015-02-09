@@ -353,6 +353,11 @@ namespace DataDevelop
 
 		private bool ConnectDatabase(DatabaseNode node)
 		{
+			return this.ConnectDatabase(node, false);
+		}
+
+		private bool ConnectDatabase(DatabaseNode node, bool reconnect)
+		{
 			try {
 				node.Connect();
 			} catch (Exception e) {
@@ -557,6 +562,8 @@ namespace DataDevelop
 		private void databaseContextMenu_Opened(object sender, EventArgs e)
 		{
 			Database db = this.SelectedDatabase;
+			connectToolStripMenuItem.Enabled = !db.IsConnected;
+			reconnectToolStripMenuItem.Enabled = db.IsConnected;
 			disconnectToolStripMenuItem.Enabled = db.IsConnected;
 		}
 
@@ -579,13 +586,9 @@ namespace DataDevelop
 					return false;
 				}
 			}
-			int i = 0;
-			while (dbNode.Database.IsConnected) {
-				dbNode.Disconnect();
-				i++;
-				if (i > 100) {
-					return false;
-				}
+			dbNode.Disconnect();
+			if (dbNode.Database.IsConnected) {
+				return false;
 			}
 			Unpopulate(dbNode);
 			return true;
@@ -769,6 +772,16 @@ namespace DataDevelop
 		{
 			var foreignKey = this.GetSelectedNode<ForeignKey>();
 			OpenQuery(foreignKey.Database, foreignKey.GenerateSelectStatement());
+		}
+
+		private void connectToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			this.ConnectDatabase(this.SelectedDatabaseNode);
+		}
+
+		private void reconnectToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			this.ConnectDatabase(this.SelectedDatabaseNode, true);	
 		}
 	}
 }
