@@ -57,7 +57,7 @@ namespace DataDevelop
 			this.copyToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.pasteToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-			this.toolStripButton1 = new System.Windows.Forms.ToolStripSplitButton();
+			this.findToolStripButton = new System.Windows.Forms.ToolStripSplitButton();
 			this.findToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.replaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.removeAllTabsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -290,7 +290,7 @@ namespace DataDevelop
             this.copyToolStripButton,
             this.pasteToolStripButton,
             this.toolStripSeparator5,
-            this.toolStripButton1,
+            this.findToolStripButton,
             this.toolStripSeparator4,
             this.executeButton,
             this.showResultPanelToolStripButton,
@@ -408,19 +408,20 @@ namespace DataDevelop
 			this.toolStripSeparator5.Name = "toolStripSeparator5";
 			this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
 			// 
-			// toolStripButton1
+			// findToolStripButton
 			// 
-			this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toolStripButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.findToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.findToolStripButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.findToolStripMenuItem,
             this.replaceToolStripMenuItem,
             this.removeAllTabsToolStripMenuItem});
-			this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-			this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripButton1.Name = "toolStripButton1";
-			this.toolStripButton1.Size = new System.Drawing.Size(32, 22);
-			this.toolStripButton1.Text = "toolStripButton1";
-			this.toolStripButton1.ButtonClick += new System.EventHandler(this.Find);
+			this.findToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("findToolStripButton.Image")));
+			this.findToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.findToolStripButton.Name = "findToolStripButton";
+			this.findToolStripButton.Size = new System.Drawing.Size(32, 22);
+			this.findToolStripButton.Text = "Find";
+			this.findToolStripButton.ToolTipText = "Find";
+			this.findToolStripButton.ButtonClick += new System.EventHandler(this.Find);
 			// 
 			// findToolStripMenuItem
 			// 
@@ -786,7 +787,7 @@ namespace DataDevelop
 		private System.Windows.Forms.ToolStripButton undoButton;
 		private System.Windows.Forms.ToolStripButton redoButton;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-		private System.Windows.Forms.ToolStripSplitButton toolStripButton1;
+		private System.Windows.Forms.ToolStripSplitButton findToolStripButton;
 		private System.Windows.Forms.ToolStripMenuItem findToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem replaceToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem removeAllTabsToolStripMenuItem;
