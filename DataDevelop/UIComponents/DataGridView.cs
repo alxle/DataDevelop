@@ -274,6 +274,10 @@ namespace DataDevelop
 			protected override void OnDoubleClick(DataGridViewCellEventArgs e)
 			{
 				base.OnDoubleClick(e);
+				var cell = this.DataGridView[e.ColumnIndex, e.RowIndex];
+				if (cell.IsInEditMode) {
+					this.DataGridView.EndEdit();
+				}
 				using (TextVisualizer dialog = new TextVisualizer()) {
 					dialog.TextValue = this.Value as string;
 					dialog.ReadOnly = this.DataGridView.ReadOnly || this.OwningColumn.ReadOnly;

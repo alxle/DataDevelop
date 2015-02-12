@@ -359,7 +359,11 @@ namespace DataDevelop
 		private bool ConnectDatabase(DatabaseNode node, bool reconnect)
 		{
 			try {
-				node.Connect();
+				if (reconnect && node.Database.IsConnected) {
+					node.Database.Reconnect();
+				} else {
+					node.Connect();
+				}
 			} catch (Exception e) {
 				MessageBox.Show(this, e.Message, "Error Connecting", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return false;

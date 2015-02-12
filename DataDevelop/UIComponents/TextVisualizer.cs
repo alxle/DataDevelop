@@ -29,7 +29,15 @@ namespace DataDevelop.UIComponents
 		public bool ReadOnly
 		{
 			get { return this.textBox.ReadOnly; }
-			set { this.textBox.ReadOnly = value; }
+			set
+			{
+				this.textBox.ReadOnly = value;
+				this.newToolStripButton.Enabled = !value;
+				this.openToolStripButton.Enabled = !value;
+				this.formatXmlToolStripMenuItem.Enabled = !value;
+				this.cutToolStripButton.Enabled = !value;
+				this.pasteToolStripButton.Enabled = !value;
+			}
 		}
 
 		public string TextValue
