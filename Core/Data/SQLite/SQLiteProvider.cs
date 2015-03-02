@@ -54,7 +54,7 @@ namespace DataDevelop.Data.SQLite
 
 		public override string ToString()
 		{
-			return "SQLite 3.8.6";
+			return "SQLite " + SQLiteConnection.SQLiteVersion;
 		}
 	}
 }
