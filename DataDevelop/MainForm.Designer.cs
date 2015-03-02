@@ -284,7 +284,7 @@ namespace DataDevelop
 			this.dockPanel.BackColor = System.Drawing.SystemColors.Control;
 			this.dockPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.dockPanel.DockBackColor = System.Drawing.SystemColors.AppWorkspace;
-			this.dockPanel.Font = new System.Drawing.Font("Tahoma", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World);
+			this.dockPanel.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.dockPanel.Location = new System.Drawing.Point(0, 24);
 			this.dockPanel.Name = "dockPanel";
 			this.dockPanel.Size = new System.Drawing.Size(600, 354);
