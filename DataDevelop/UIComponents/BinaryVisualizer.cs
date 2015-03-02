@@ -11,6 +11,8 @@ namespace DataDevelop.UIComponents
 {
 	public partial class BinaryVisualizer : Form
 	{
+		private bool readOnly = false;
+
 		private BinaryVisualizer()
 		{
 			InitializeComponent();
@@ -25,10 +27,23 @@ namespace DataDevelop.UIComponents
 			set { cell = value; }
 		}
 
+		public bool ReadOnly
+		{
+			get { return this.readOnly; }
+			set
+			{
+				this.readOnly = value;
+				this.newToolStripButton.Enabled = !value;
+				this.openToolStripButton.Enabled = !value;
+				this.pasteToolStripButton.Enabled = !value;
+			}
+		}
+
 		public static void Show(IWin32Window owner, DataGridViewBinaryCell cell)
 		{
 			using (BinaryVisualizer bv = new BinaryVisualizer()) {
 				bv.BinaryCell = cell;
+				bv.ReadOnly = cell.ReadOnly || cell.DataGridView.ReadOnly;
 				bv.ShowDialog(owner);
 			}
 		}
