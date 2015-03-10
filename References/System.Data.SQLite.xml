@@ -2690,6 +2690,16 @@
             <description>N</description>
             <description>True</description>
             </item>
+            <item>
+            <description>PrepareRetries</description>
+            <description>
+            The maximum number of retries when preparing SQL to be executed.  This
+            normally only applies to preparation errors resulting from the database
+            schema being changed.
+            </description>
+            <description>N</description>
+            <description>3</description>
+            </item>
             </list>
             </remarks>
         </member>
@@ -3946,6 +3956,16 @@
             </description>
             <description>N</description>
             <description>True</description>
+            </item>
+            <item>
+            <description>PrepareRetries</description>
+            <description>
+            The maximum number of retries when preparing SQL to be executed.  This
+            normally only applies to preparation errors resulting from the database
+            schema being changed.
+            </description>
+            <description>N</description>
+            <description>3</description>
             </item>
             </list>
             </remarks>

@@ -233,23 +233,5 @@ namespace DataDevelop.Data.SQLite
 			}
 			return "DROP TABLE " + this.QuotedName;
 		}
-
-		protected override void SetColumnTypes()
-		{
-			using (IDbCommand command = Database.CreateCommand()) {
-				command.CommandText = "SELECT * FROM " + this.QuotedName;
-				using (IDataReader reader = command.ExecuteReader(CommandBehavior.SchemaOnly)) {
-					var schema = reader.GetSchemaTable();
-					foreach (Column column in this.Columns) {
-						foreach (DataRow row in schema.Rows) {
-							var name = row["ColumnName"] as string;
-							if (String.Equals(name, column.Name, StringComparison.InvariantCultureIgnoreCase)) {
-								column.Type = (Type)row["DataType"];
-							}
-						}
-					}
-				}
-			}
-		}
 	}
 }
