@@ -441,6 +441,11 @@ namespace DataDevelop
 		private void TableDocument_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			if (e.CloseReason == CloseReason.UserClosing) {
+				if (this.backgroundWorker.IsBusy) {
+					MessageBox.Show(this, "Reading table data, please wait...", this.ProductName);
+					e.Cancel = true;
+					return;
+				}
 				DataTable changes = this.GetChanges();
 				if (changes != null){
 					if (!this.AskAndSave(changes)) {
