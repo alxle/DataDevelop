@@ -126,7 +126,7 @@ namespace DataDevelop
 			this.commandType = commandType;
 			this.executeEach = executeEach;
 			if (executeWorker.IsBusy) {
-				// TODO Show message to tell the user that a command is already in execution
+				MessageBox.Show(this, "A command is already in execution, please wait...", this.ProductName);
 			} else {
 				try {
 					IDbCommand command = DbCommandParser.Parse(this.database, SelectedText);
@@ -509,6 +509,11 @@ namespace DataDevelop
 		private void CommandDocument_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			if (e.CloseReason == CloseReason.UserClosing) {
+				if (this.executeWorker.IsBusy) {
+					MessageBox.Show(this, "Command is executing, please wait...", this.ProductName);
+					e.Cancel = true;
+					return;
+				}
 				if (textEditorControl.HasChanges) {
 					this.Activate();
 					switch (MessageBox.Show(this, "Save Changes?", "Confirmation", MessageBoxButtons.YesNoCancel)) {

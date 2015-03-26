@@ -216,6 +216,11 @@ namespace DataDevelop
 		private void ScriptDocument_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			if (e.CloseReason == CloseReason.UserClosing) {
+				if (this.backgroundWorker.IsBusy) {
+					MessageBox.Show(this, "Script is executing, please wait...", this.ProductName);
+					e.Cancel = true;
+					return;
+				}
 				if (textEditorControl.HasChanges) {
 					this.Activate();
 					switch (MessageBox.Show(this, "Save Changes?", "Confirmation", MessageBoxButtons.YesNoCancel)) {
