@@ -70,6 +70,7 @@ namespace DataDevelop
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.aboutSQLiteStudioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
+			this.closeAllButCurrentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -216,6 +217,7 @@ namespace DataDevelop
 			// 
 			this.windowToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.closeAllDocumentToolStripMenuItem,
+            this.closeAllButCurrentToolStripMenuItem,
             this.resetWindowLayoutToolStripMenuItem,
             this.toolStripSeparator6});
 			this.windowToolStripMenuItem.Name = "windowToolStripMenuItem";
@@ -257,26 +259,26 @@ namespace DataDevelop
 			// 
 			this.documentationToolStripMenuItem.Enabled = false;
 			this.documentationToolStripMenuItem.Name = "documentationToolStripMenuItem";
-			this.documentationToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+			this.documentationToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
 			this.documentationToolStripMenuItem.Text = "&Documentation";
 			// 
 			// checkForUpdatesToolStripMenuItem
 			// 
 			this.checkForUpdatesToolStripMenuItem.Enabled = false;
 			this.checkForUpdatesToolStripMenuItem.Name = "checkForUpdatesToolStripMenuItem";
-			this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+			this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
 			this.checkForUpdatesToolStripMenuItem.Text = "Check for updates...";
 			// 
 			// toolStripSeparator3
 			// 
 			this.toolStripSeparator3.Name = "toolStripSeparator3";
-			this.toolStripSeparator3.Size = new System.Drawing.Size(178, 6);
+			this.toolStripSeparator3.Size = new System.Drawing.Size(176, 6);
 			// 
 			// aboutSQLiteStudioToolStripMenuItem
 			// 
 			this.aboutSQLiteStudioToolStripMenuItem.Name = "aboutSQLiteStudioToolStripMenuItem";
-			this.aboutSQLiteStudioToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
-			this.aboutSQLiteStudioToolStripMenuItem.Text = "&About SQLite Studio";
+			this.aboutSQLiteStudioToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+			this.aboutSQLiteStudioToolStripMenuItem.Text = "&About DataDevelop";
 			this.aboutSQLiteStudioToolStripMenuItem.Click += new System.EventHandler(this.aboutSQLiteStudioToolStripMenuItem_Click);
 			// 
 			// dockPanel
@@ -338,6 +340,13 @@ namespace DataDevelop
 			this.dockPanel.Skin = dockPanelSkin1;
 			this.dockPanel.TabIndex = 2;
 			// 
+			// closeAllButCurrentToolStripMenuItem
+			// 
+			this.closeAllButCurrentToolStripMenuItem.Name = "closeAllButCurrentToolStripMenuItem";
+			this.closeAllButCurrentToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+			this.closeAllButCurrentToolStripMenuItem.Text = "Close All &But Current";
+			this.closeAllButCurrentToolStripMenuItem.Click += new System.EventHandler(this.closeAllButCurrentToolStripMenuItem_Click);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -390,6 +399,7 @@ namespace DataDevelop
 		private System.Windows.Forms.ToolStripMenuItem resetWindowLayoutToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripMenuItem javascriptConsoleToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem closeAllButCurrentToolStripMenuItem;
 	}
 }
 

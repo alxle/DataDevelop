@@ -106,12 +106,26 @@ namespace DataDevelop
 			return null;
 		}
 
-		private IEnumerable<Document> GetDocuments()
+		private Document[] GetDocuments()
 		{
+			var documents = new List<Document>(dockPanel.DocumentsCount);
 			foreach (object obj in dockPanel.Contents) {
 				Document doc = obj as Document;
 				if (doc != null) {
-					yield return doc;
+					documents.Add(doc);
+				}
+			}
+			return documents.ToArray();
+		}
+
+		private void CloseAllButCurrent()
+		{
+			var current = dockPanel.ActiveDocument as Document;
+			if (current != null) {
+				foreach (var document in this.GetDocuments()) {
+					if (document != current) {
+						document.Close();
+					}
 				}
 			}
 		}
@@ -155,8 +169,11 @@ namespace DataDevelop
 
 		private void exitToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			this.Close();
-			Application.Exit();
+			if (CloseAllDocuments()) {
+				databaseExplorer.SaveDatabases();
+				dockPanel.SaveAsXml(SettingsManager.DockPropertiesFileName);
+				Application.Exit();
+			}
 		}
 
 		private void aboutSQLiteStudioToolStripMenuItem_Click(object sender, EventArgs e)
@@ -218,6 +235,11 @@ namespace DataDevelop
 		private void resetWindowLayoutToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			ShowToolboxes();
+		}
+
+		private void closeAllButCurrentToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			CloseAllButCurrent();
 		}
 	}
 }
