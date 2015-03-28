@@ -112,15 +112,6 @@ namespace DataDevelop
 			get { return this.sort.IsSorted; }
 		}
 
-		public void UpdateCount()
-		{
-			if (this.filter.IsRowFiltered) {
-				this.count = table.GetRowCount(this.filter);
-			} else {
-				this.count = table.GetRowCount();
-			}
-		}
-
 		public void UpdateDataSet()
 		{
 			this.UpdateDataSet(false);
@@ -128,14 +119,20 @@ namespace DataDevelop
 
 		public void UpdateDataSet(bool conserveScroll)
 		{
-			this.UpdateCount();
 			this.ShowLoadingPanel();
 			this.backgroundWorker.RunWorkerAsync();
 		}
 
 		private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
 		{
-			////System.Threading.Thread.Sleep(3000);
+			if (this.filter.IsRowFiltered) {
+				this.count = table.GetRowCount(this.filter);
+			} else {
+				this.count = table.GetRowCount();
+			}
+			if (currentPage * rowsPerPage >= count) {
+				currentPage = 0;
+			}
 			this.data = table.GetData(currentPage * rowsPerPage, rowsPerPage, filter, IsSorted ? sort : null);
 		}
 
