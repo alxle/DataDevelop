@@ -270,6 +270,9 @@
     <Compile Include="UIComponents\TreeView.Designer.cs">
       <DependentUpon>TreeView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utils\BackgroundWorkerEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Utils\DataUtils.cs" />
     <Compile Include="Utils\StreamDelegator.cs" />
     <Compile Include="Utils\StringStream.cs" />
@@ -547,6 +550,7 @@
     <Content Include="DataDevelop.ico" />
     <Content Include="Resources\ExcelTable.png" />
     <Content Include="Resources\Revert.png" />
+    <None Include="Resources\Stop.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
