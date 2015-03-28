@@ -94,10 +94,11 @@ namespace DataDevelop
 			return matchSelectCommand.IsMatch(lastCommand);
 		}
 
-		private void SetEnabled(bool value)
+		private void EnableUI(bool value)
 		{
 			executeButton.Enabled = value;
-			//cancelButton.Enabled = !value;
+			abortButton.Enabled = !value;
+			abortButton.Visible = !value;
 			//useTransactionToolStripButton.Enabled = value;
 			textEditorControl.IsReadOnly = !value;
 			progressBar.Visible = !value;
@@ -145,9 +146,10 @@ namespace DataDevelop
 							}
 						}
 					}
+					dataGridView.DataSource = null;
 					ClearMessages();
 					statusLabel.Text = "Executing...";
-					SetEnabled(false);
+					EnableUI(false);
 					stopwatch.Reset();
 					executingTimer.Start();
 					executeWorker.RunWorkerAsync(command);
@@ -254,30 +256,31 @@ namespace DataDevelop
 			if (e.Error != null) {
 				ShowMessage(e.Error.Message);
 				statusLabel.Text = "Error.";
-				AppendMessage(String.Format("Elapsed time: {0}", stopwatch.Elapsed));
-
+			} else if (e.Cancelled) { // Aborted
+				ShowMessage("Execution was aborted.");
+				statusLabel.Text = "Aborted.";
+				this.database.Reconnect();
+				messagesTabPage.Select();
 			} else {
 				CommandResult result = e.Result as CommandResult;
-				if (e.Cancelled) {
-					ShowMessage("Cancelled by user.");
-				}
 				if (result != null) {
 					ResultsPanelVisible = true;
 					if (result.Data != null) {
 						dataGridView.Columns.Clear();
 						dataGridView.DataSource = result.Data;
 						statusLabel.Text = String.Format("Rows returned: {0}", result.Data.Rows.Count);
-						//tabControl1.SelectedTab = resultsTabPage;
-						tabControl1.SelectedIndex = 0;
+						
 					} else {
 						ShowMessage(String.Format("Success: {0} rows affected.", result.RowsAffected));
 						statusLabel.Text = "Ready.";
-						AppendMessage(String.Format("Elapsed time: {0}", stopwatch.Elapsed));
+						messagesTabPage.Select();
 					}
 				}
+				
 			}
-
-			SetEnabled(true);
+			outputTabControl.SelectTab((dataGridView.DataSource == null) ? messagesTabPage : resultsTabPage);
+			AppendMessage(String.Format("Elapsed time: {0}", stopwatch.Elapsed));
+			EnableUI(true);
 		}
 
 		////private bool UseTransaction
@@ -300,8 +303,7 @@ namespace DataDevelop
 		{
 			messageTextBox.Text = message;
 			ResultsPanelVisible = true;
-			//tabControl1.SelectedTab = messagesTabPage;
-			tabControl1.SelectedIndex = 1;
+			outputTabControl.SelectedIndex = 1;
 			messageTextBox.DeselectAll();
 		}
 
@@ -315,8 +317,6 @@ namespace DataDevelop
 			messageTextBox.AppendText(Environment.NewLine);
 			messageTextBox.AppendText(message);
 			ResultsPanelVisible = true;
-			//tabControl1.SelectedTab = messagesTabPage;
-			tabControl1.SelectedIndex = 1;
 			messageTextBox.DeselectAll();
 		}
 
@@ -512,7 +512,6 @@ namespace DataDevelop
 				if (this.executeWorker.IsBusy) {
 					MessageBox.Show(this, "Command is executing, please wait...", this.ProductName);
 					e.Cancel = true;
-					return;
 				}
 				if (textEditorControl.HasChanges) {
 					this.Activate();
@@ -594,6 +593,25 @@ namespace DataDevelop
 		private void executingTimer_Tick(object sender, EventArgs e)
 		{
 			ShowElapsedTime(stopwatch.Elapsed);
+		}
+
+		private void abortButton_Click(object sender, EventArgs e)
+		{
+			var result = MessageBox.Show(this, "Aborting may cause losing of data and disconnection from database." + "\r\n"
+				+ "Are you sure you want to abort execution?", "Confirmation",
+				MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+			if (result == DialogResult.Yes) {
+				Abort();
+			}
+		}
+
+		private void Abort()
+		{
+			if (this.executeWorker.IsBusy) {
+				this.abortButton.Enabled = false;
+				this.statusLabel.Text = "Aborting...";
+				this.executeWorker.AbortAsync();
+			}
 		}
 	}
 }

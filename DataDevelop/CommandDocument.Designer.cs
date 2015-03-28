@@ -34,7 +34,7 @@ namespace DataDevelop
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CommandDocument));
 			this.textEditorControl = new DataDevelop.UIComponents.TextEditor();
 			this.splitContainer = new System.Windows.Forms.SplitContainer();
-			this.tabControl1 = new System.Windows.Forms.TabControl();
+			this.outputTabControl = new System.Windows.Forms.TabControl();
 			this.resultsTabPage = new System.Windows.Forms.TabPage();
 			this.dataGridView = new DataDevelop.DataGridView();
 			this.resultsContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -66,9 +66,9 @@ namespace DataDevelop
 			this.executeQueryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.executeNonQueryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.executeEachStatementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.showResultPanelToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.abortButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-			this.helpToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.showResultPanelToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.statusStrip = new System.Windows.Forms.StatusStrip();
 			this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.progressBar = new System.Windows.Forms.ToolStripProgressBar();
@@ -76,7 +76,7 @@ namespace DataDevelop
 			this.databaseStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.elapsedTimeStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.totalRowsStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-			this.executeWorker = new System.ComponentModel.BackgroundWorker();
+			this.executeWorker = new DataDevelop.Utils.BackgroundWorkerEx();
 			this.resultSaveFileDialog = new System.Windows.Forms.SaveFileDialog();
 			this.menuStrip = new System.Windows.Forms.MenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -95,7 +95,7 @@ namespace DataDevelop
 			this.splitContainer.Panel1.SuspendLayout();
 			this.splitContainer.Panel2.SuspendLayout();
 			this.splitContainer.SuspendLayout();
-			this.tabControl1.SuspendLayout();
+			this.outputTabControl.SuspendLayout();
 			this.resultsTabPage.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
 			this.resultsContextMenuStrip.SuspendLayout();
@@ -138,22 +138,22 @@ namespace DataDevelop
 			// 
 			// splitContainer.Panel2
 			// 
-			this.splitContainer.Panel2.Controls.Add(this.tabControl1);
+			this.splitContainer.Panel2.Controls.Add(this.outputTabControl);
 			this.splitContainer.Size = new System.Drawing.Size(473, 348);
 			this.splitContainer.SplitterDistance = 174;
 			this.splitContainer.TabIndex = 1;
 			// 
-			// tabControl1
+			// outputTabControl
 			// 
-			this.tabControl1.Controls.Add(this.resultsTabPage);
-			this.tabControl1.Controls.Add(this.messagesTabPage);
-			this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tabControl1.ImageList = this.tabImageList;
-			this.tabControl1.Location = new System.Drawing.Point(0, 0);
-			this.tabControl1.Name = "tabControl1";
-			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(473, 170);
-			this.tabControl1.TabIndex = 4;
+			this.outputTabControl.Controls.Add(this.resultsTabPage);
+			this.outputTabControl.Controls.Add(this.messagesTabPage);
+			this.outputTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.outputTabControl.ImageList = this.tabImageList;
+			this.outputTabControl.Location = new System.Drawing.Point(0, 0);
+			this.outputTabControl.Name = "outputTabControl";
+			this.outputTabControl.SelectedIndex = 0;
+			this.outputTabControl.Size = new System.Drawing.Size(473, 170);
+			this.outputTabControl.TabIndex = 4;
 			// 
 			// resultsTabPage
 			// 
@@ -293,9 +293,9 @@ namespace DataDevelop
             this.findToolStripButton,
             this.toolStripSeparator4,
             this.executeButton,
-            this.showResultPanelToolStripButton,
+            this.abortButton,
             this.toolStripSeparator1,
-            this.helpToolStripButton});
+            this.showResultPanelToolStripButton});
 			this.toolStrip.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip.Name = "toolStrip";
 			this.toolStrip.Padding = new System.Windows.Forms.Padding(4, 0, 4, 0);
@@ -484,6 +484,22 @@ namespace DataDevelop
 			this.executeEachStatementToolStripMenuItem.Text = "Execute &Each Statement";
 			this.executeEachStatementToolStripMenuItem.Click += new System.EventHandler(this.ExecuteEachStatement);
 			// 
+			// abortButton
+			// 
+			this.abortButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.abortButton.Image = global::DataDevelop.Properties.Resources.Stop;
+			this.abortButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.abortButton.Name = "abortButton";
+			this.abortButton.Size = new System.Drawing.Size(23, 22);
+			this.abortButton.Text = "Abort";
+			this.abortButton.Visible = false;
+			this.abortButton.Click += new System.EventHandler(this.abortButton_Click);
+			// 
+			// toolStripSeparator1
+			// 
+			this.toolStripSeparator1.Name = "toolStripSeparator1";
+			this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+			// 
 			// showResultPanelToolStripButton
 			// 
 			this.showResultPanelToolStripButton.CheckOnClick = true;
@@ -494,21 +510,6 @@ namespace DataDevelop
 			this.showResultPanelToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.showResultPanelToolStripButton.Text = "Show Results Panel";
 			this.showResultPanelToolStripButton.CheckedChanged += new System.EventHandler(this.showResultPanelToolStripButton_CheckedChanged);
-			// 
-			// toolStripSeparator1
-			// 
-			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
-			// 
-			// helpToolStripButton
-			// 
-			this.helpToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.helpToolStripButton.Enabled = false;
-			this.helpToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("helpToolStripButton.Image")));
-			this.helpToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.helpToolStripButton.Name = "helpToolStripButton";
-			this.helpToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.helpToolStripButton.Text = "He&lp";
 			// 
 			// statusStrip
 			// 
@@ -571,6 +572,8 @@ namespace DataDevelop
 			// 
 			// executeWorker
 			// 
+			this.executeWorker.AbortEnabled = true;
+			this.executeWorker.WorkerSupportsCancellation = true;
 			this.executeWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.executeWorker_DoWork);
 			this.executeWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.executeWorker_RunWorkerCompleted);
 			// 
@@ -717,7 +720,7 @@ namespace DataDevelop
 			this.splitContainer.Panel1.ResumeLayout(false);
 			this.splitContainer.Panel2.ResumeLayout(false);
 			this.splitContainer.ResumeLayout(false);
-			this.tabControl1.ResumeLayout(false);
+			this.outputTabControl.ResumeLayout(false);
 			this.resultsTabPage.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
 			this.resultsContextMenuStrip.ResumeLayout(false);
@@ -741,7 +744,7 @@ namespace DataDevelop
 		private System.Windows.Forms.ToolStrip toolStrip;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripButton showResultPanelToolStripButton;
-		private System.Windows.Forms.TabControl tabControl1;
+		private System.Windows.Forms.TabControl outputTabControl;
 		private System.Windows.Forms.TabPage resultsTabPage;
 		private System.Windows.Forms.TabPage messagesTabPage;
 		private System.Windows.Forms.TextBox messageTextBox;
@@ -749,7 +752,7 @@ namespace DataDevelop
 		private System.Windows.Forms.StatusStrip statusStrip;
 		private System.Windows.Forms.ToolStripStatusLabel statusLabel;
 		private System.Windows.Forms.ToolStripProgressBar progressBar;
-		private System.ComponentModel.BackgroundWorker executeWorker;
+		private DataDevelop.Utils.BackgroundWorkerEx executeWorker;
 		private System.Windows.Forms.ContextMenuStrip resultsContextMenuStrip;
 		private System.Windows.Forms.ToolStripMenuItem saveToFileToolStripMenuItem;
 		private System.Windows.Forms.SaveFileDialog resultSaveFileDialog;
@@ -782,7 +785,6 @@ namespace DataDevelop
 		private System.Windows.Forms.ToolStripButton copyToolStripButton;
 		private System.Windows.Forms.ToolStripButton pasteToolStripButton;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-		private System.Windows.Forms.ToolStripButton helpToolStripButton;
 		private System.Windows.Forms.PrintPreviewDialog printPreviewDialog;
 		private System.Windows.Forms.ToolStripButton undoButton;
 		private System.Windows.Forms.ToolStripButton redoButton;
@@ -796,5 +798,6 @@ namespace DataDevelop
 		private System.Windows.Forms.ToolStripMenuItem exportToToolStripMenuItem;
 		private System.ComponentModel.BackgroundWorker excelWorker;
 		private System.Windows.Forms.Timer executingTimer;
+		private System.Windows.Forms.ToolStripButton abortButton;
 	}
 }
