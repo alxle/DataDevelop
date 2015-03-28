@@ -59,10 +59,7 @@ namespace DataDevelop
 		{
 			string code = SelectedText;
 			if (code.Length > 0) {
-				executeToolStripMenuItem.Enabled = false;
-				executeButton.Enabled = false;
-				textEditorControl.IsReadOnly = true;
-				statusLabel.Text = "Executing...";
+				EnableUI(false, "Executing...");
 
 				output.CurrentTextColor = Color.DarkBlue;
 				foreach (string line in StringUtils.GetLines(code)) {
@@ -75,6 +72,16 @@ namespace DataDevelop
 			}
 		}
 
+		private void EnableUI(bool value, string status)
+		{
+			executeToolStripMenuItem.Enabled = value;
+			executeButton.Enabled = value;
+			stopButton.Enabled = !value;
+			stopButton.Visible = !value;
+			textEditorControl.IsReadOnly = !value;
+			statusLabel.Text = status;
+		}
+
 		private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
 		{
 			string code = (string)e.Argument;
@@ -83,15 +90,16 @@ namespace DataDevelop
 
 		private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
-			executeToolStripMenuItem.Enabled = true;
-			executeButton.Enabled = true;
-			textEditorControl.IsReadOnly = false;
-			statusLabel.Text = "Ready...";
+			EnableUI(true, "Ready...");
 
-			if (e.Error != null) {
+			if (e.Error != null || e.Cancelled) {
 				output.CurrentTextColor = Color.Red;
-				//output.AppendMessage("IronPython engine complained: ");
-				output.AppendMessage(e.Error.ToString());
+				output.AppendMessage(Environment.NewLine);
+				if (e.Error != null) {
+					output.AppendMessage(e.Error.ToString());
+				} else {
+					output.AppendMessage("Script execution was cancelled.");
+				}
 				output.ResetTextColor();
 			}
 			output.Show();
@@ -235,6 +243,13 @@ namespace DataDevelop
 					}
 				}
 			}
+		}
+
+		private void stopButton_Click(object sender, EventArgs e)
+		{
+			this.stopButton.Enabled = false;
+			this.statusLabel.Text = "Aborting...";
+			this.backgroundWorker.AbortAsync();
 		}
 	}
 }

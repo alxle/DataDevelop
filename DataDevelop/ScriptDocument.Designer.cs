@@ -32,6 +32,7 @@ namespace DataDevelop
 			this.dataSet = new System.Data.DataSet();
 			this.toolStrip = new System.Windows.Forms.ToolStrip();
 			this.executeButton = new System.Windows.Forms.ToolStripButton();
+			this.stopButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.showResultPanelToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
@@ -70,7 +71,7 @@ namespace DataDevelop
 			this.copyToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.pasteToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.textEditorControl = new DataDevelop.UIComponents.TextEditor();
-			this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
+			this.backgroundWorker = new DataDevelop.Utils.BackgroundWorkerEx();
 			((System.ComponentModel.ISupportInitialize)(this.dataSet)).BeginInit();
 			this.toolStrip.SuspendLayout();
 			this.menuStrip.SuspendLayout();
@@ -87,6 +88,7 @@ namespace DataDevelop
 			this.toolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
 			this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.executeButton,
+            this.stopButton,
             this.toolStripSeparator1,
             this.showResultPanelToolStripButton,
             this.toolStripSeparator8,
@@ -106,6 +108,18 @@ namespace DataDevelop
 			this.executeButton.Size = new System.Drawing.Size(67, 22);
 			this.executeButton.Text = "Execute";
 			this.executeButton.Click += new System.EventHandler(this.executeButton_Click);
+			// 
+			// stopButton
+			// 
+			this.stopButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.stopButton.Enabled = false;
+			this.stopButton.Image = global::DataDevelop.Properties.Resources.Stop;
+			this.stopButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.stopButton.Name = "stopButton";
+			this.stopButton.Size = new System.Drawing.Size(23, 22);
+			this.stopButton.Text = "Abort";
+			this.stopButton.Visible = false;
+			this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
 			// 
 			// toolStripSeparator1
 			// 
@@ -476,6 +490,8 @@ namespace DataDevelop
 			// 
 			// backgroundWorker
 			// 
+			this.backgroundWorker.AbortEnabled = true;
+			this.backgroundWorker.WorkerSupportsCancellation = true;
 			this.backgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_DoWork);
 			this.backgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker_RunWorkerCompleted);
 			// 
@@ -548,8 +564,9 @@ namespace DataDevelop
 		private System.Windows.Forms.ToolStripMenuItem scriptToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem executeToolStripMenuItem;
 		private DataDevelop.UIComponents.TextEditor textEditorControl;
-		private System.ComponentModel.BackgroundWorker backgroundWorker;
+		private DataDevelop.Utils.BackgroundWorkerEx backgroundWorker;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
 		private System.Windows.Forms.ToolStripLabel statusLabel;
+		private System.Windows.Forms.ToolStripButton stopButton;
 	}
 }
