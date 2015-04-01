@@ -21,4 +21,6 @@ namespace DataDevelop
 			Application.Run(MainForm.Instance);
 		}
 	}
+
+	public delegate void Action();
 }

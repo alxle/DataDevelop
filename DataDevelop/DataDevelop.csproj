@@ -220,6 +220,7 @@
     <Compile Include="UIComponents\AlphaPanel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="UIComponents\AsyncTreeNode.cs" />
     <Compile Include="UIComponents\CalendarColumn.cs">
       <SubType>Component</SubType>
     </Compile>

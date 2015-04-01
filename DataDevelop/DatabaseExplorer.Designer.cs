@@ -49,6 +49,7 @@ namespace DataDevelop
 			this.databaseContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.newQueryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.connectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.reconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.disconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.modifyConnectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.removeDatabaseMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -77,7 +78,6 @@ namespace DataDevelop
 			this.scriptAsDropToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.foreignKeyMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.joinQueryMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.reconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStrip.SuspendLayout();
 			this.databaseContextMenu.SuspendLayout();
 			this.tableContextMenu.SuspendLayout();
@@ -261,6 +261,7 @@ namespace DataDevelop
 			this.databaseContextMenu.Name = "dbContextMenu";
 			this.databaseContextMenu.Size = new System.Drawing.Size(178, 186);
 			this.databaseContextMenu.Opened += new System.EventHandler(this.databaseContextMenu_Opened);
+			this.databaseContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.databaseContextMenu_Opening);
 			// 
 			// newQueryToolStripMenuItem
 			// 
@@ -275,6 +276,13 @@ namespace DataDevelop
 			this.connectToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
 			this.connectToolStripMenuItem.Text = "Connect";
 			this.connectToolStripMenuItem.Click += new System.EventHandler(this.connectToolStripMenuItem_Click);
+			// 
+			// reconnectToolStripMenuItem
+			// 
+			this.reconnectToolStripMenuItem.Name = "reconnectToolStripMenuItem";
+			this.reconnectToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+			this.reconnectToolStripMenuItem.Text = "Reconnect";
+			this.reconnectToolStripMenuItem.Click += new System.EventHandler(this.reconnectToolStripMenuItem_Click);
 			// 
 			// disconnectToolStripMenuItem
 			// 
@@ -474,13 +482,6 @@ namespace DataDevelop
 			this.joinQueryMenuItem.Size = new System.Drawing.Size(162, 22);
 			this.joinQueryMenuItem.Text = "Open Join Query";
 			this.joinQueryMenuItem.Click += new System.EventHandler(this.joinQueryMenuItem_Click);
-			// 
-			// reconnectToolStripMenuItem
-			// 
-			this.reconnectToolStripMenuItem.Name = "reconnectToolStripMenuItem";
-			this.reconnectToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
-			this.reconnectToolStripMenuItem.Text = "Reconnect";
-			this.reconnectToolStripMenuItem.Click += new System.EventHandler(this.reconnectToolStripMenuItem_Click);
 			// 
 			// DatabaseExplorer
 			// 

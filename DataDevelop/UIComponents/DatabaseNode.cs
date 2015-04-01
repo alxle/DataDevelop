@@ -1,15 +1,16 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Windows.Forms;
+using System.ComponentModel;
 using System.Data;
 using System.Data.Common;
+using System.Text;
+using System.Windows.Forms;
 using DataDevelop.Data;
-
+using DataDevelop.UIComponents;
 
 namespace DataDevelop
 {
-	class DatabaseNode : TreeNode
+	class DatabaseNode : AsyncTreeNode
 	{
 		const string dbOnImageKey = "db";
 		const string dbOffImageKey = "db2";
@@ -31,6 +32,7 @@ namespace DataDevelop
 		{
 			database.Connect();
 			SetImage(true);
+			OnConnected(EventArgs.Empty);
 		}
 
 		public void Disconnect()
@@ -41,7 +43,7 @@ namespace DataDevelop
 			}
 		}
 
-		protected void SetImage(bool isConnected)
+		internal void SetImage(bool isConnected)
 		{
 			if (isConnected) {
 				ImageKey = SelectedImageKey = dbOnImageKey;
@@ -49,6 +51,35 @@ namespace DataDevelop
 				ImageKey = SelectedImageKey = dbOffImageKey;
 			}
 		}
-		
+
+		public void ConnectAsync(bool reconnect, Action onConnected)
+		{
+			if (!this.IsBusy) {
+				this.RunAsyncOperation("Connecting",
+					delegate
+					{
+						this.Database.Connect();
+					},
+					delegate
+					{
+						this.SetImage(true);
+						if (onConnected != null) {
+							onConnected();
+						}
+						this.OnConnected(EventArgs.Empty);
+					},
+					null);
+			}
+		}
+
+		public event EventHandler Connected;
+
+		public virtual void OnConnected(EventArgs e)
+		{
+			this.SetImage(this.database.IsConnected);
+			if (Connected != null) {
+				Connected(this, e);
+			}
+		}
 	}
 }
