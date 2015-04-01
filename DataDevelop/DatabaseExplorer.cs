@@ -1,20 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using System.IO;
 using System.Data.Common;
+using System.Windows.Forms;
 using DataDevelop.Data;
-using System.Xml.Serialization;
-using System.Xml;
-using DataDevelop.Data.SQLite;
-using DataDevelop.Data.Access;
-using DataDevelop.Properties;
-using TreeNodeController = DataDevelop.UIComponents.TreeNodeController;
 using DataDevelop.Dialogs;
+using DataDevelop.Properties;
+using DataDevelop.UIComponents;
 
 namespace DataDevelop
 {
@@ -78,6 +70,7 @@ namespace DataDevelop
 		private DatabaseNode CreateDatabaseNode(Database db)
 		{
 			DatabaseNode node = new DatabaseNode(db);
+			node.AsyncException += DatabaseConnect_AsyncException;
 			node.ContextMenuStrip = databaseContextMenu;
 			node.Nodes.Add(String.Empty);
 
@@ -164,44 +157,54 @@ namespace DataDevelop
 
 		private void AddTables(DatabaseNode node)
 		{
-			Cursor normal = treeView.Cursor;
-			treeView.Cursor = Cursors.WaitCursor;
-
-			if (!node.Database.IsConnected) {
-				if (!ConnectDatabase(node)) {
-					treeView.Cursor = normal;
-					return;
+			node.Nodes.Clear();
+			node.RunAsyncOperation("expanding",
+			delegate
+			{
+				if (!node.Database.IsConnected) {
+					node.Database.Connect();
 				}
-			}
+				foreach (var table in node.Database.Tables) {
+					break;
+				}
+			},
+			delegate
+			{
+				if (!node.Database.IsConnected) return;
+				node.SetImage(true);
+				Cursor normal = treeView.Cursor;
+				treeView.Cursor = Cursors.WaitCursor;
 
-			try {
-				treeView.BeginUpdate();
-				TreeNode views = null;
-				foreach (Table table in node.Database.Tables) {
-					TableNode tableNode = CreateTableNode(table);
-					tableNode.Nodes.Add(String.Empty);
-					if (table.IsView) {
-						if (views == null) {
-							views = CreateFolderNode("Views");
+				try {
+					treeView.BeginUpdate();
+					TreeNode views = null;
+					foreach (Table table in node.Database.Tables) {
+						TableNode tableNode = CreateTableNode(table);
+						tableNode.Nodes.Add(String.Empty);
+						if (table.IsView) {
+							if (views == null) {
+								views = CreateFolderNode("Views");
+							}
+							views.Nodes.Add(tableNode);
+						} else {
+							node.Nodes.Add(tableNode);
 						}
-						views.Nodes.Add(tableNode);
-					} else {
-						node.Nodes.Add(tableNode);
 					}
+					if (views != null) {
+						node.Nodes.Add(views);
+					}
+					if (node.Database.SupportStoredProcedures) {// && node.Database.StoredProcedures.Count > 0) {
+						node.Nodes.Add(CreateStoredProceduresFolderNode(node.Database));
+					}
+				} catch (Exception ex) {
+					MessageBox.Show(this, ex.Message, this.ProductName);
+					node.Nodes.Clear();
+				} finally {
+					treeView.EndUpdate();
+					treeView.Cursor = normal;
+					node.Expand();
 				}
-				if (views != null) {
-					node.Nodes.Add(views);
-				}
-				if (node.Database.SupportStoredProcedures){// && node.Database.StoredProcedures.Count > 0) {
-					node.Nodes.Add(CreateStoredProceduresFolderNode(node.Database));
-				}
-			} catch (DbException) {
-				MessageBox.Show(Resources.ConnectFailed, Text);
-				node.Nodes.Clear();
-			} finally {
-				treeView.EndUpdate();
-				treeView.Cursor = normal;
-			}
+			}, null);
 		}
 
 		private void AddColumns(TableNode node)
@@ -351,9 +354,9 @@ namespace DataDevelop
 			}
 		}
 
-		private bool ConnectDatabase(DatabaseNode node)
+		private void DatabaseConnect_AsyncException(object sender, AsyncCompletedEventArgs e)
 		{
-			return this.ConnectDatabase(node, false);
+			MessageBox.Show(this, e.Error.Message, "Error Connecting", MessageBoxButtons.OK, MessageBoxIcon.Error);
 		}
 
 		private bool ConnectDatabase(DatabaseNode node, bool reconnect)
@@ -417,8 +420,10 @@ namespace DataDevelop
 			DatabaseNode dbNode = (DatabaseNode)treeView.SelectedNode;
 			string key = dbNode.Text;
 
-			if (dbNode.Database.IsConnected || ConnectDatabase(dbNode)) {
+			if (dbNode.Database.IsConnected) {
 				OpenQuery(dbNode.Database, String.Empty);
+			} else {
+				dbNode.ConnectAsync(false, delegate { OpenQuery(dbNode.Database, String.Empty); });
 			}
 		}
 
@@ -780,12 +785,17 @@ namespace DataDevelop
 
 		private void connectToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			this.ConnectDatabase(this.SelectedDatabaseNode);
+			this.SelectedDatabaseNode.ConnectAsync(false, null);
 		}
 
 		private void reconnectToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			this.ConnectDatabase(this.SelectedDatabaseNode, true);	
+			this.SelectedDatabaseNode.ConnectAsync(true, null);	
+		}
+
+		private void databaseContextMenu_Opening(object sender, CancelEventArgs e)
+		{
+			e.Cancel = this.SelectedDatabaseNode.IsBusy;
 		}
 	}
 }
