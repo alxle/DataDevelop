@@ -23,7 +23,7 @@ namespace DataDevelop.Data.PostgreSql
 
 		public override string ToString()
 		{
-			return "PostreSQL";
+			return "PostgreSQL";
 		}
 	}
 }
