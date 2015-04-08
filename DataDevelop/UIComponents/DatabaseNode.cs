@@ -58,7 +58,11 @@ namespace DataDevelop
 				this.RunAsyncOperation("Connecting",
 					delegate
 					{
-						this.Database.Connect();
+						if (reconnect) {
+							this.Database.Reconnect();
+						} else {
+							this.Database.Connect();
+						}
 					},
 					delegate
 					{
