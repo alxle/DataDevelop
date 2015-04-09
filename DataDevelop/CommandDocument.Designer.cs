@@ -306,7 +306,7 @@ namespace DataDevelop
 			// newToolStripButton
 			// 
 			this.newToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.newToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("newToolStripButton.Image")));
+			this.newToolStripButton.Image = global::DataDevelop.Properties.Resources.NewDocument;
 			this.newToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.newToolStripButton.Name = "newToolStripButton";
 			this.newToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -316,7 +316,7 @@ namespace DataDevelop
 			// openToolStripButton
 			// 
 			this.openToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.openToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("openToolStripButton.Image")));
+			this.openToolStripButton.Image = global::DataDevelop.Properties.Resources.Open;
 			this.openToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.openToolStripButton.Name = "openToolStripButton";
 			this.openToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -326,7 +326,7 @@ namespace DataDevelop
 			// saveToolStripButton
 			// 
 			this.saveToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.saveToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("saveToolStripButton.Image")));
+			this.saveToolStripButton.Image = global::DataDevelop.Properties.Resources.SaveChanges;
 			this.saveToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.saveToolStripButton.Name = "saveToolStripButton";
 			this.saveToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -336,7 +336,7 @@ namespace DataDevelop
 			// printToolStripButton
 			// 
 			this.printToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.printToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("printToolStripButton.Image")));
+			this.printToolStripButton.Image = global::DataDevelop.Properties.Resources.Print;
 			this.printToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.printToolStripButton.Name = "printToolStripButton";
 			this.printToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -351,7 +351,7 @@ namespace DataDevelop
 			// undoButton
 			// 
 			this.undoButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.undoButton.Image = ((System.Drawing.Image)(resources.GetObject("undoButton.Image")));
+			this.undoButton.Image = global::DataDevelop.Properties.Resources.Undo;
 			this.undoButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.undoButton.Name = "undoButton";
 			this.undoButton.Size = new System.Drawing.Size(23, 22);
@@ -361,7 +361,7 @@ namespace DataDevelop
 			// redoButton
 			// 
 			this.redoButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.redoButton.Image = ((System.Drawing.Image)(resources.GetObject("redoButton.Image")));
+			this.redoButton.Image = global::DataDevelop.Properties.Resources.Redo;
 			this.redoButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.redoButton.Name = "redoButton";
 			this.redoButton.Size = new System.Drawing.Size(23, 22);
@@ -376,7 +376,7 @@ namespace DataDevelop
 			// cutToolStripButton
 			// 
 			this.cutToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.cutToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("cutToolStripButton.Image")));
+			this.cutToolStripButton.Image = global::DataDevelop.Properties.Resources.Cut;
 			this.cutToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.cutToolStripButton.Name = "cutToolStripButton";
 			this.cutToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -386,7 +386,7 @@ namespace DataDevelop
 			// copyToolStripButton
 			// 
 			this.copyToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.copyToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("copyToolStripButton.Image")));
+			this.copyToolStripButton.Image = global::DataDevelop.Properties.Resources.Copy;
 			this.copyToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.copyToolStripButton.Name = "copyToolStripButton";
 			this.copyToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -396,7 +396,7 @@ namespace DataDevelop
 			// pasteToolStripButton
 			// 
 			this.pasteToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.pasteToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("pasteToolStripButton.Image")));
+			this.pasteToolStripButton.Image = global::DataDevelop.Properties.Resources.Paste;
 			this.pasteToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.pasteToolStripButton.Name = "pasteToolStripButton";
 			this.pasteToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -415,7 +415,7 @@ namespace DataDevelop
             this.findToolStripMenuItem,
             this.replaceToolStripMenuItem,
             this.removeAllTabsToolStripMenuItem});
-			this.findToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("findToolStripButton.Image")));
+			this.findToolStripButton.Image = global::DataDevelop.Properties.Resources.Find;
 			this.findToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.findToolStripButton.Name = "findToolStripButton";
 			this.findToolStripButton.Size = new System.Drawing.Size(32, 22);
@@ -455,7 +455,7 @@ namespace DataDevelop
             this.executeQueryToolStripMenuItem,
             this.executeNonQueryToolStripMenuItem,
             this.executeEachStatementToolStripMenuItem});
-			this.executeButton.Image = ((System.Drawing.Image)(resources.GetObject("executeButton.Image")));
+			this.executeButton.Image = global::DataDevelop.Properties.Resources.Start;
 			this.executeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.executeButton.Name = "executeButton";
 			this.executeButton.Size = new System.Drawing.Size(79, 22);
@@ -504,7 +504,7 @@ namespace DataDevelop
 			// 
 			this.showResultPanelToolStripButton.CheckOnClick = true;
 			this.showResultPanelToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.showResultPanelToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("showResultPanelToolStripButton.Image")));
+			this.showResultPanelToolStripButton.Image = global::DataDevelop.Properties.Resources.Output;
 			this.showResultPanelToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.showResultPanelToolStripButton.Name = "showResultPanelToolStripButton";
 			this.showResultPanelToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -609,6 +609,7 @@ namespace DataDevelop
 			// 
 			// openToolStripMenuItem
 			// 
+			this.openToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Open;
 			this.openToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
 			this.openToolStripMenuItem.MergeIndex = 3;
 			this.openToolStripMenuItem.Name = "openToolStripMenuItem";
@@ -618,6 +619,7 @@ namespace DataDevelop
 			// 
 			// saveToolStripMenuItem
 			// 
+			this.saveToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.SaveChanges;
 			this.saveToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
 			this.saveToolStripMenuItem.MergeIndex = 4;
 			this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
@@ -662,9 +664,10 @@ namespace DataDevelop
 			// 
 			// executeToolStripMenuItem
 			// 
+			this.executeToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Start;
 			this.executeToolStripMenuItem.Name = "executeToolStripMenuItem";
 			this.executeToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-			this.executeToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+			this.executeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.executeToolStripMenuItem.Text = "Execute";
 			this.executeToolStripMenuItem.Click += new System.EventHandler(this.executeButton_Click);
 			// 

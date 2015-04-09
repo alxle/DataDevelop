@@ -61,7 +61,7 @@ namespace DataDevelop
 			// 
 			// clearAllButton
 			// 
-			this.clearAllButton.Image = ((System.Drawing.Image)(resources.GetObject("clearAllButton.Image")));
+			this.clearAllButton.Image = global::DataDevelop.Properties.Resources.ClearAll;
 			this.clearAllButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.clearAllButton.MergeAction = System.Windows.Forms.MergeAction.Replace;
 			this.clearAllButton.Name = "clearAllButton";
@@ -72,7 +72,7 @@ namespace DataDevelop
 			// toggleWordWrapButton
 			// 
 			this.toggleWordWrapButton.CheckOnClick = true;
-			this.toggleWordWrapButton.Image = ((System.Drawing.Image)(resources.GetObject("toggleWordWrapButton.Image")));
+			this.toggleWordWrapButton.Image = global::DataDevelop.Properties.Resources.WordWrap;
 			this.toggleWordWrapButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toggleWordWrapButton.MergeAction = System.Windows.Forms.MergeAction.Replace;
 			this.toggleWordWrapButton.Name = "toggleWordWrapButton";
@@ -88,10 +88,10 @@ namespace DataDevelop
 			this.ClientSize = new System.Drawing.Size(490, 170);
 			this.Controls.Add(this.results);
 			this.Controls.Add(this.mainToolStrip);
-			this.DockAreas = ((WeifenLuo.WinFormsUI.Docking.DockAreas)(((((WeifenLuo.WinFormsUI.Docking.DockAreas.Float | WeifenLuo.WinFormsUI.Docking.DockAreas.DockLeft) 
-            | WeifenLuo.WinFormsUI.Docking.DockAreas.DockRight) 
-            | WeifenLuo.WinFormsUI.Docking.DockAreas.DockTop) 
-            | WeifenLuo.WinFormsUI.Docking.DockAreas.DockBottom)));
+			this.DockAreas = ((WeifenLuo.WinFormsUI.Docking.DockAreas)(((((WeifenLuo.WinFormsUI.Docking.DockAreas.Float | WeifenLuo.WinFormsUI.Docking.DockAreas.DockLeft)
+						| WeifenLuo.WinFormsUI.Docking.DockAreas.DockRight)
+						| WeifenLuo.WinFormsUI.Docking.DockAreas.DockTop)
+						| WeifenLuo.WinFormsUI.Docking.DockAreas.DockBottom)));
 			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "OutputWindow";
