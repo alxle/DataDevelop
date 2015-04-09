@@ -60,9 +60,9 @@ namespace DataDevelop.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap _0118 {
+        internal static System.Drawing.Bitmap AutoResizeColumns {
             get {
-                object obj = ResourceManager.GetObject("_0118", resourceCulture);
+                object obj = ResourceManager.GetObject("AutoResizeColumns", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -70,13 +70,6 @@ namespace DataDevelop.Properties {
         internal static System.Drawing.Bitmap AutoResizeRows {
             get {
                 object obj = ResourceManager.GetObject("AutoResizeRows", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap AutoSizeColumns {
-            get {
-                object obj = ResourceManager.GetObject("AutoSizeColumns", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -138,6 +131,13 @@ namespace DataDevelop.Properties {
         internal static System.Drawing.Bitmap Filter {
             get {
                 object obj = ResourceManager.GetObject("Filter", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Find {
+            get {
+                object obj = ResourceManager.GetObject("Find", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -222,6 +222,13 @@ namespace DataDevelop.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap NewDocument {
+            get {
+                object obj = ResourceManager.GetObject("NewDocument", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap NewRow {
             get {
                 object obj = ResourceManager.GetObject("NewRow", resourceCulture);
@@ -232,6 +239,20 @@ namespace DataDevelop.Properties {
         internal static System.Drawing.Bitmap Next {
             get {
                 object obj = ResourceManager.GetObject("Next", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Open {
+            get {
+                object obj = ResourceManager.GetObject("Open", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Output {
+            get {
+                object obj = ResourceManager.GetObject("Output", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -304,6 +325,13 @@ namespace DataDevelop.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap Redo {
+            get {
+                object obj = ResourceManager.GetObject("Redo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap Refresh {
             get {
                 object obj = ResourceManager.GetObject("Refresh", resourceCulture);
@@ -363,9 +391,23 @@ namespace DataDevelop.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap Start {
+            get {
+                object obj = ResourceManager.GetObject("Start", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap Stop {
             get {
                 object obj = ResourceManager.GetObject("Stop", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Undo {
+            get {
+                object obj = ResourceManager.GetObject("Undo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -408,6 +450,13 @@ namespace DataDevelop.Properties {
         internal static System.Drawing.Bitmap web {
             get {
                 object obj = ResourceManager.GetObject("web", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap WordWrap {
+            get {
+                object obj = ResourceManager.GetObject("WordWrap", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

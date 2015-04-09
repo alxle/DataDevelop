@@ -161,6 +161,11 @@
     <Compile Include="Dialogs\RowsPerPageDialog.Designer.cs">
       <DependentUpon>RowsPerPageDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Services\DatabasesManager.cs" />
     <Compile Include="OutputWindow.cs">
       <SubType>Form</SubType>
@@ -183,11 +188,6 @@
     </Compile>
     <Compile Include="ScriptDocument.Designer.cs">
       <DependentUpon>ScriptDocument.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="DatabaseExplorer.cs">
       <SubType>Form</SubType>
@@ -483,24 +483,35 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Resources\binary.png" />
-    <None Include="Resources\undo.png" />
-    <None Include="Resources\redo.png" />
-    <None Include="Resources\clearAll.png" />
+    <Content Include="DataDevelop.ico" />
+    <None Include="Resources\AutoResizeColumns.png" />
+    <None Include="Resources\AutoResizeRows.png" />
+    <None Include="Resources\BinaryImage.png" />
+    <None Include="Resources\ClearAll.png" />
+    <None Include="Resources\Copy.png" />
+    <None Include="Resources\Cut.png" />
+    <None Include="Resources\ExcelTable.png" />
+    <None Include="Resources\Find.png" />
+    <None Include="Resources\JavascriptSyntaxDefinition.xml" />
     <None Include="Resources\NavBack.png" />
     <None Include="Resources\NavForward.png" />
-    <None Include="Resources\0118.png" />
-    <None Include="Resources\1168.png" />
-    <None Include="Resources\0019.png" />
-    <None Include="Resources\0017.png" />
-    <None Include="Resources\0018.png" />
-    <None Include="Resources\AutoResizeRows.png" />
-    <None Include="Resources\JavascriptSyntaxDefinition.xml" />
+    <None Include="Resources\NewDocument.png" />
+    <None Include="Resources\Open.png" />
+    <None Include="Resources\Output.png" />
+    <None Include="Resources\Paste.png" />
+    <None Include="Resources\Print.png" />
+    <None Include="Resources\PrintPreview.png" />
     <None Include="Resources\PythonSyntaxDefinition.xml" />
+    <None Include="Resources\Redo.png" />
+    <None Include="Resources\Refresh.png" />
     <None Include="Resources\RefreshPage.png" />
-    <None Include="Resources\refresh.png" />
-    <None Include="Resources\web.png" />
+    <None Include="Resources\Revert.png" />
     <None Include="Resources\SaveChanges.png" />
+    <None Include="Resources\Start.png" />
+    <None Include="Resources\Stop.png" />
+    <None Include="Resources\Undo.png" />
+    <None Include="Resources\Web.png" />
+    <None Include="Resources\WordWrap.png" />
   </ItemGroup>
   <ItemGroup>
     <PublishFile Include="Resources\SqlSyntaxDefinition.xml">
@@ -548,10 +559,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DataDevelop.ico" />
-    <Content Include="Resources\ExcelTable.png" />
-    <Content Include="Resources\Revert.png" />
-    <None Include="Resources\Stop.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

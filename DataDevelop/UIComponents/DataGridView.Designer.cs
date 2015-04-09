@@ -55,7 +55,7 @@ namespace DataDevelop
 			// autoSizeColumnsMenuItem
 			// 
 			this.autoSizeColumnsMenuItem.DropDown = this.autoSizeColumnsContextMenuStrip;
-			this.autoSizeColumnsMenuItem.Image = global::DataDevelop.Properties.Resources.AutoSizeColumns;
+			this.autoSizeColumnsMenuItem.Image = global::DataDevelop.Properties.Resources.AutoResizeColumns;
 			this.autoSizeColumnsMenuItem.Name = "autoSizeColumnsMenuItem";
 			this.autoSizeColumnsMenuItem.Size = new System.Drawing.Size(174, 22);
 			this.autoSizeColumnsMenuItem.Text = "Auto Size Columns";

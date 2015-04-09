@@ -47,6 +47,9 @@ namespace DataDevelop
 			this.autoResizeColumnsDropDownButton = new System.Windows.Forms.ToolStripSplitButton();
 			this.rowsPerPageButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+			this.exportToExcelToolStripDropDownButton = new System.Windows.Forms.ToolStripDropDownButton();
+			this.exportAllToExcelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.exportCurrentPageToExcelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
 			this.printPreviewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.changeFontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -65,9 +68,6 @@ namespace DataDevelop
 			this.loadingLabel = new System.Windows.Forms.Label();
 			this.progressBar1 = new System.Windows.Forms.ProgressBar();
 			this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
-			this.exportToExcelToolStripDropDownButton = new System.Windows.Forms.ToolStripDropDownButton();
-			this.exportAllToExcelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.exportCurrentPageToExcelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.excelWorker = new System.ComponentModel.BackgroundWorker();
 			this.tableToolStrip.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
@@ -232,7 +232,7 @@ namespace DataDevelop
 			// autoResizeColumnsDropDownButton
 			// 
 			this.autoResizeColumnsDropDownButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.autoResizeColumnsDropDownButton.Image = global::DataDevelop.Properties.Resources.AutoSizeColumns;
+			this.autoResizeColumnsDropDownButton.Image = global::DataDevelop.Properties.Resources.AutoResizeColumns;
 			this.autoResizeColumnsDropDownButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.autoResizeColumnsDropDownButton.Name = "autoResizeColumnsDropDownButton";
 			this.autoResizeColumnsDropDownButton.Size = new System.Drawing.Size(32, 22);
@@ -253,6 +253,32 @@ namespace DataDevelop
 			// 
 			this.toolStripSeparator3.Name = "toolStripSeparator3";
 			this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+			// 
+			// exportToExcelToolStripDropDownButton
+			// 
+			this.exportToExcelToolStripDropDownButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.exportToExcelToolStripDropDownButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exportAllToExcelToolStripMenuItem,
+            this.exportCurrentPageToExcelToolStripMenuItem});
+			this.exportToExcelToolStripDropDownButton.Image = global::DataDevelop.Properties.Resources.ExcelTable;
+			this.exportToExcelToolStripDropDownButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.exportToExcelToolStripDropDownButton.Name = "exportToExcelToolStripDropDownButton";
+			this.exportToExcelToolStripDropDownButton.Size = new System.Drawing.Size(29, 22);
+			this.exportToExcelToolStripDropDownButton.Text = "Export to Excel";
+			// 
+			// exportAllToExcelToolStripMenuItem
+			// 
+			this.exportAllToExcelToolStripMenuItem.Name = "exportAllToExcelToolStripMenuItem";
+			this.exportAllToExcelToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+			this.exportAllToExcelToolStripMenuItem.Text = "Export All to Excel";
+			this.exportAllToExcelToolStripMenuItem.Click += new System.EventHandler(this.exportAllToExcelToolStripMenuItem_Click);
+			// 
+			// exportCurrentPageToExcelToolStripMenuItem
+			// 
+			this.exportCurrentPageToExcelToolStripMenuItem.Name = "exportCurrentPageToExcelToolStripMenuItem";
+			this.exportCurrentPageToExcelToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+			this.exportCurrentPageToExcelToolStripMenuItem.Text = "Export Page to Excel";
+			this.exportCurrentPageToExcelToolStripMenuItem.Click += new System.EventHandler(this.exportCurrentPageToExcelToolStripMenuItem_Click);
 			// 
 			// toolStripDropDownButton1
 			// 
@@ -403,32 +429,6 @@ namespace DataDevelop
 			// 
 			this.backgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_DoWork);
 			this.backgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker_RunWorkerCompleted);
-			// 
-			// exportToExcelToolStripDropDownButton
-			// 
-			this.exportToExcelToolStripDropDownButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.exportToExcelToolStripDropDownButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.exportAllToExcelToolStripMenuItem,
-            this.exportCurrentPageToExcelToolStripMenuItem});
-			this.exportToExcelToolStripDropDownButton.Image = global::DataDevelop.Properties.Resources.ExcelTable;
-			this.exportToExcelToolStripDropDownButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.exportToExcelToolStripDropDownButton.Name = "exportToExcelToolStripDropDownButton";
-			this.exportToExcelToolStripDropDownButton.Size = new System.Drawing.Size(29, 22);
-			this.exportToExcelToolStripDropDownButton.Text = "Export to Excel";
-			// 
-			// exportAllToExcelToolStripMenuItem
-			// 
-			this.exportAllToExcelToolStripMenuItem.Name = "exportAllToExcelToolStripMenuItem";
-			this.exportAllToExcelToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
-			this.exportAllToExcelToolStripMenuItem.Text = "Export All to Excel";
-			this.exportAllToExcelToolStripMenuItem.Click += new System.EventHandler(this.exportAllToExcelToolStripMenuItem_Click);
-			// 
-			// exportCurrentPageToExcelToolStripMenuItem
-			// 
-			this.exportCurrentPageToExcelToolStripMenuItem.Name = "exportCurrentPageToExcelToolStripMenuItem";
-			this.exportCurrentPageToExcelToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
-			this.exportCurrentPageToExcelToolStripMenuItem.Text = "Export Page to Excel";
-			this.exportCurrentPageToExcelToolStripMenuItem.Click += new System.EventHandler(this.exportCurrentPageToExcelToolStripMenuItem_Click);
 			// 
 			// excelWorker
 			// 

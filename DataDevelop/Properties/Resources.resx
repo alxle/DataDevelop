@@ -118,26 +118,19 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="AutoSizeColumns" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\1168.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="AutoResizeColumns" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\AutoResizeColumns.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Start" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Start.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="UpdateToVersion" xml:space="preserve">
     <value>There is a new version available (Size: {0}).
 Will you like to update?</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="PageSetup" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-			iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-			YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALDwAA
-			Cw8BkvkDpQAAAX1JREFUOE+lkstLQkEUxmtXiza1CIIWtWoVbYp2LaOIFhEE0SLQf0Z7QIpS9jBSKTUs
-			DAyttCwjNSvJC1a0kBYilqVhaj6+mom5aF216MDhDDPz/Wa+OVMLoOZfQQAkzc4gvqfJHoDeegntjpvk
-			FNtbXKmYAT4rbsQcKSWxZDxEz6BYEMIDthwcgqIAuEk//BMX8I154B45xcnQERRaK2yuAINMC97AuOen
-			p16N+37cQL62S8UsBQHrlnMq9I6e/QCYe7dBIAwkCNCYv4SuYWcJoFAoYLPLgMhTkgK6B0RknbfOD1ZM
-			x1To6N8vAWTec9B1aBAKxysDVHo7FVr7LDwgly8gkcxA3baM21CsMkCps1Eh8csilc4i+vyGhZZ5XN9F
-			KwOIPxLEL4lsLo+X1zQeIgnIm2TwcuHqAEPnBvW72q7GYqsKymYFZI1zmG2YgbReWh1ATiZ+ycPF4in6
-			cNz9IyR1Ehx4Qr8DsH6Xq2XbyHpMNlRLwX9QPPmX8QfNX9oIXrkagAAAAABJRU5ErkJggg==
-		</value>
+  <data name="PageSetup" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PageSetup.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Revert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Revert.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -145,43 +138,29 @@ Will you like to update?</value>
   <data name="JavascriptSyntaxDefinition" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\JavascriptSyntaxDefinition.xml;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="_0118" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\0118.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ExcelTable" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ExcelTable.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="web" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\web.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Web" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Web.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Cut" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\0018.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\Resources\Cut.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ConnectFailed" xml:space="preserve">
     <value>Connection to database failed</value>
   </data>
-  <data name="Sort" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-			iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-			YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAYpJREFUOE9jZIAC
-			r/qTEl8/frv7681jxeNL4l7BxLHQ/4FijBjinkUHV7lmb/9vFT6tFI9mkBTIAEzglrv1nn3iuofGwT0v
-			STbAteCgk2v2+u+W8fM1jAM6/1tGzgwg4AVUadfM7acdk9fdMgubNM0ksP6Lecikg0QbEBq6itk+ZftH
-			+6wtEiBNFpEzfI39O/6bRU/XwmEIahi4ZG49ZhZa/8MibHKKsc9MLmP39vcgA4z92y8SZQCBAMMmjRkL
-			kyPy1k4OTd85PbJw7tSogl0TXb0u9hhppBDtgsnugdtAimdHJItP9fB4UauldI/oQAQpnObqKgaiZwbG
-			zqzTV/1fr68WhsWARqCYNzQhuQLpLhQ1c8KznCe5+/6v01NdhcN2Y6hmUBiAsBOKuqnR+Q+6DNVetJrr
-			iIMkpjg6amMxaAtU8zEUuWlhWb399nb/O4w0UkESEz1sRDsNNZZiMQDmCoTtU9x9teuNlb4UqSl9rdVT
-			md1koLKiWEvuVbWu8lwcXqkmI+pxawEA+PiMCtHQmpoAAAAASUVORK5CYII=
-		</value>
+  <data name="Sort" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Sort.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Copy" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\0017.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\Resources\Copy.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ViewSql" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-			iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-			YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAMBJREFUOE/tkFEN
-			wzAMRAuhEAZhEAKhEAohEAohEAKhEAIhEAIhDLp7ky1ZqrSPfU6z9OTYOZ+jLMs/+IFNnCKLLop9C3UV
-			TRxiNc1lvYd/3whDNDHbxRRJ0EODGYFB9mFysSaDiKGLFkRovL4ZMMAwF0MkMa3nHmzknrgZbHZRgwlG
-			vMKjBMNowPL31qegwIT6ENP6aJrAhMCA8+qmFAgYOkUyYVUeBn0Gshl05SnIH2M3IYMYfBWY8Bq2cf61
-			eAGB1Dm2metfuQAAAABJRU5ErkJggg==
-		</value>
+  <data name="Stop" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Stop.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ViewSql" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ViewSql.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="SaveChanges" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SaveChanges.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -190,20 +169,10 @@ Will you like to update?</value>
     <value>You have unsaved changes in your table, you want you persist them?</value>
   </data>
   <data name="ClearAll" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\clearAll.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\Resources\ClearAll.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Last" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-			iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-			YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAXJJREFUOE9jYMAC
-			QuuvsGETJ1osofuRaX39fxaiNaArLJz1/H/sxHf26IaAxOvnPf0V3nH3DV7Dc2c++5/Qfe9/7IRXXsje
-			AYmvOvL+f3j7g/94DciY8vT/vP2//9s37P8b3/MkG2YISHzhvg//gxuu4TcgoefJ/9n7fv3v3Pr3v1vp
-			5f/x3Y/zQIaAxKdtef/fv/oCfgMiux79n7Lt1/+SpX//J0z/+98m9yzYEJB47+oP/71KT+A3ILD54f/W
-			te/Bmo1LvvyXjr723zhy2X+QeN38d/9d8g/gN8Cj6v7/krnv4JoVXXr+S/ms6gCJ5097898+Yzt+A+xL
-			7/4PbHkGthmieUU9KNRB4tmTX/+3SFiP3wCLvDv/bQquwDRnwaIMJJ7a/xrsHbzRaJh1G6xZ0mt5ObJC
-			kHhYy8v/usHz8Bugk3bjv7T36mZ0W0DiftUP/2v4TsNvgKT32hat0FUYGcou6/IvFY8J/0GY7HxCdY0A
-			3KfhOvCx9GUAAAAASUVORK5CYII=
-		</value>
+  <data name="Last" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Last.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="LoadConnections" xml:space="preserve">
     <value>You will lose all the unsaved changes in the connection list.
@@ -212,153 +181,89 @@ Do you want to continue?</value>
   <data name="NavBack" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\NavBack.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Font" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-			iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-			YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALDwAA
-			Cw8BkvkDpQAAAXxJREFUOE9j/P//PwNFAGQAJRin5tDizW4BhZv2EzIcpwEZrfv+BxZu/N+28FoIPkOw
-			GuCXv17UN3fNf9+cdf9t4+a+JdkAt4xVsx2Tl8+2iFn43zigH4j7/HEZgtUFjknLvljFLhQ1C5t22si/
-			77+BX/cNog1wTVuaaBe78ARIg2n4LDeT0Kn/9Xw6/+n5dLhgMwTDBY6JC69aRs3Wgik2Dp38CmjAf13P
-			1l0EDXCIm6tsFT3rv2FA/wU97/arBv59V/X8er/oeLb+V7LO+atolaWCbgiKC2xjZm8E+nufun2RiYpN
-			rpWmU4WVplujlqZrw38VmwKQIRtxGmAXM4PbOGTaF03nClF0ReqOFVOAtv9XsMjAiFKwCyzCp0kZBU3a
-			rula89UhpPQlsgHKdiUR8mZJ/5WBLlCxLfivaJH+QcEsjRumBmyAvl+3KFCzlpJVppa8SQI8AEFySjYF
-			orJAMUntQC1xTV8tSZ0gLVnjBFQDCKV3klMiKQYCAB3VbEwY42kyAAAAAElFTkSuQmCC
-		</value>
+  <data name="UpdateAvailable" xml:space="preserve">
+    <value>Update Available</value>
+  </data>
+  <data name="Font" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Font.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="AutoResizeRows" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\AutoResizeRows.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ExcelTable" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ExcelTable.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="NavForward" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\NavForward.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="UpdateAvailable" xml:space="preserve">
-    <value>Update Available</value>
+  <data name="Paste" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Paste.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="NewRow" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-			iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-			YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAXNJREFUOE9jYBgU
-			oGDWU9v6+v9MZDsmrOzE//hJrzVCV/1nJsuQjClP/wc13Hyd0PnUFt2QG+s0lr4/7Tjl76uKHbfny//+
-			+yxv99crni231mnUwS1L7H36v3Pr3/9upZf/J/Y+skc25NdN/6q2esN//z/2/H98KOL//48T/rfW6/37
-			fMmjFW5AVPfj/7Vr/v5Pnf33v03uWRRDQDb//zzt///fx/9/froWSB/+D+KDxOEGBLc8+p+3EOiCpm//
-			ZWKu/TeOXPbfoeB0PEjBTaCzH+4P/v/lxfr/f/9/+P/t9Zb/IP6TTZK/4AZ41Tz479P+/b909LX/ii49
-			/2W8VwbCJMEu+Dj5//8f+8GGgFwC4qO4wKHs3n+97LtgzdLeK7yQY+LXrYCK1nqDf39f1v5/diz2//8P
-			kzHDwCLvDlizhN9KLfRovLleYxo4Fp5m7Hm+3+wnyGZQAKLEgkHW7U1SXksMyEoDIE2aKVe1ydY89DUC
-			AChj76A65b2XAAAAAElFTkSuQmCC
-		</value>
+  <data name="NewRow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NewRow.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Information" xml:space="preserve">
     <value>Information</value>
   </data>
-  <data name="PrintPreview" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-			iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-			YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALDwAA
-			Cw8BkvkDpQAAAfZJREFUOE+l099Lk1EYwPH6D/onoqsuoqwIbyIoEy2k5ZzphU1cxCQoVOhmN1qBmq2h
-			W1Kr1SJNeot3/XBWLjetBUUFi2lQQqibLLUonG5z33beWOz13UsXHXguzsN5Pufh4ZyNwIb/WgKQg5Os
-			D2k0wqD/HV7faxGd4lyxUJKiWG9dHXrBzvJGXUQB7gc+6gK9Xj8jE5E80rW+CwUYevpBF3DcfKIU56Mo
-			cOfxGw2QTi0zNjGG87qH9m47F+y9lFaaxTnVLJTNLTmsAlZWlpGHh3kWHCeW+MbXeAKvJGO2tlBvPbup
-			EFEAtxRSAYHxEP5AUMmlM/AzucbcYgaH+y6mBst5DdA/OKoC+tweZucTf4vj39NMzabwhSapqav7rAH6
-			bo+ogB5nPzPzC8rN8aVMrniV8FSSK/fCHKmu1gJi0oVLkn3I/gCxpdzNcylefUry6O0vmtts1NTWOu0d
-			Le35LpQZFALZbJYv09N09ji4NvCQB6EoLilMc6sNo+koA5fqkV2nsnlEA6ymMiz+SBKJRrnsdGI5aeV4
-			YxPHjFU4zuwjduMAay8b8Fw8LZBDKkB0ohcd57o4UbmD97YSZlx7WfAZabUc/vMoRFHJQfM/Y3+5AUvF
-			dp637aapbCumil1VRX+Y3s8T+VwXhtJtWyjbs9kg9r8B4LDiPoc3Lh8AAAAASUVORK5CYII=
-		</value>
+  <data name="PrintPreview" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PrintPreview.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="DisconnectDatabase" xml:space="preserve">
     <value>Are you sure you want to disconnect the selected database?
 This will close all open tables from this database.</value>
   </data>
   <data name="Refresh" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\refresh.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\Resources\Refresh.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="First" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-			iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-			YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAXVJREFUOE9jYCAS
-			hK76z0ykUkxl9fX/mVI6HsvgNaBw1vP/9fOe/grvuPsGWSFIc+K0D0rh7Q/+4zUgd+az/6uOvP+PrBDk
-			7PhJrzXiux/8D264ht+AjClP/y/c9wGuEKQ5ofOprU/9g19L9///7199Ab8BCT1P/k/b8h6sEKQ5sfeR
-			fUT7/f8gzZmz/v/3Kj2B34DIrkf/e1d/ACsEaQ5tvQfW3LoOaHvn3/8u+QfwGxDY/PB/3fx3YIXBLXf/
-			L9r7/38HUHPGnJ//7ep+/rfP2I7fAI+q+//zp70BK5TxXhloV3z7f/qc3//9u7791yl8998iYT1+A+xL
-			7/7PnvwarlDae4WXfsr5/yZFL/6rZH36bxy5DL8BFnl3/qf2v0ZRKOmzysYg6cR/2bSv/3WD5+E3wDDr
-			9v+wlpcYCiU9l7nqp17+r+E7Db8BOmk3/vtVP8SqUMpnja+KxwT8BthlXf4FUoRVYegqZinvtX5kZyaa
-			agQAdiHhbQ5xYNYAAAAASUVORK5CYII=
-		</value>
+  <data name="First" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\First.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Paste" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\0019.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="NewDocument" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NewDocument.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="PythonLexer" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\pythonsyntaxdefinition.xml;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="Next" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-			iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-			YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAP5JREFUOE9jYMAC
-			Qlf9Z8YmTrRYSsdjmfr6/0xEa0BXWDjr+f/EaR+UyDYkd+az/wnd9/7HT3qtQZZ3MqY8/T9v/+//QQ03
-			Xyd0PrUl2ZCEnif/Z+/79b9z69//bqWX/yf2PrInyZDIrkf/p2z79b9k6d//CdP//rfJPUuaIYHND/+3
-			rn0P1mxc8uW/dPS1/8aRy/47FJyOJ8olHlX3/5fMfQfXrOjS81/Ge2Ug0dFqX3r3f2DLM7DNIM3S3iu8
-			iNYMUmiRd+e/TcEVsGZJn1U2JGkGKTbMug3R7LnMlWTNIA06aTf+S/ms8SVLM0iTlPdaP4bQVZRlKLJt
-			J1UjAMpVhoKAxERCAAAAAElFTkSuQmCC
-		</value>
+  <data name="Next" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Next.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Output" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Output.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="QueryDocumentTitle" xml:space="preserve">
     <value>Query on {0}</value>
   </data>
-  <data name="Filter" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-			iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-			YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAYlJREFUOE/NkktL
-			AlEcxf0aTdEi+gLRB2htwQxJYC+KwlIIgog2iSUFYU/yVZDQQyKI0qjoYamUghXUprBctOxhNTNO5ihN
-			i9NMYQ/pMdKmC3d3z+9//udcheJfHO0Yi2YbiyYbgwYzjfqRO9QOR6E2XUCpP0dJ+ymKmo9QoA4gT+VD
-			XrkXBLWNN/ONFhbBMwGhyBN2w6/XfyJg41DAfDAFh4eHeSWBflccnc57aK0scsn1d4BEqh6isR8RsHyQ
-			wrSPh2U1AdNCHIZZDm2OGLR2Fg2jDNT9NAhy47M4bUXVRyMQFjDl5THofoBxLo6OSQ4t47EXcdWAJM6Y
-			nFkC1XsD//Ej7GsJ6J0cWidi0FgY1IgOCXLz68mZkDJjFK5QStyXg060XjfCiKHJFKdhSsMlZvz8C4Cg
-			tuRN/uhE2XWFxVASGiuDHMqbPaC0+xquvaRonxYBHzqX+3OlHJb2Uqjou/2+tp9gZcYbuEUA2SMBfqnu
-			K1Cx7gSFlTvIL18XQ/Rkn4HcVf/87hkq+fvMmHiQWQAAAABJRU5ErkJggg==
-		</value>
+  <data name="Filter" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Filter.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="RefreshPage" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\RefreshPage.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Print" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-			iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-			YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAlxJREFUOE+tk+tP
-			kmEYxlnrU39Cfe9zfXBtreNmS8RDWi08E0xWUjTQAkFlGVBpTjtYS3L06pyiQy10Dk1xLJ1ATuZh6XJT
-			IcFCIQEJ43AFL6nztPXBe7u293m2+/rdz/U8L4Vy0KXT6Q639poL2wcmsZ/U/RPYl6vSmvkGw5wHO2r9
-			TxALNhfaekaQlFccpuYIj+8yUX0aO6bSjiEUCsPhdENv+kqqs8+IFs0wTJMWZHPluHxD4NpzgkaN8d3c
-			onMbO0pe9fgxNbsEtdYIWq4wTM0WcHYZ1HV8PqFQDyMYoVvsy9voPfpxGCcWkFEgRWqW2P9M8QEvG3q2
-			ciipas6MNvcbZ0h6lLpBti97MTO/jLqWPiQzRJBUN6FePYTkm+KYgeAxkSp907ZIaL7grUqPxo8GvCC0
-			ePhcBV65Agx+JdJYpUjMESDzjgw1yi4USRVIzBXGDKre98Lt9e8MnVwHgiH4/AEyg59OH77/8EBcQYAt
-			qI5MIIoZSF+3QzNoRkefCUS7Dq8auiGvbYWoQgluWS2YhZWgF5TjClOMhKwi3I3sZXAe4cI1bsxAUtMK
-			q82x5wTutXUs2FdxBBRShwgKGLynSMoVII7K2sig2TU+PY9IbpsV/V7xBDBtXcPQlJNs7vpncDW/FOfS
-			OVsGZRWETFKn9lkcfji9Ydh+hTG7FMLIt9/oHvWgSe8iyRu6ROeRzXEJzE7yCGz+kzNCuXJlYNRK3u3/
-			KGpwMp55dPMx3ZfVn09nS5DCLAEtrxgJ2Q8QT+fj4vV7OJvGwemUWzhFy4+RSTrr9oH9xH8BhYkmHMIu
-			kfkAAAAASUVORK5CYII=
-		</value>
+  <data name="Print" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Print.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="SqlLexer" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\sqlsyntaxdefinition.xml;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="BinaryImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\binary.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\Resources\BinaryImage.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Previous" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-			iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-			YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAQhJREFUOE9jYKAX
-			CF31n5ksu+rr/zPFTHmpEt7+4D/JBoBsjZ/0WiO++8H/4IZrpBkA0pzQ+dTWp/7Br6X7///3r75AvAEg
-			zYm9j+wj2u//B2nOnPX/v1fpCeIMgGkObb0H1ty6Dmh759//LvkHiDPAsfiMU3DL3f+L9v7/3wHUnDHn
-			53+7up//7TO2E2cAKKRlvFcG2hXf/p8+5/d//65v/3UK3/23SFhPvAEgQ6S9V3jpp5z/b1L04r9K1qf/
-			xpHLSDMAZIikzyobg6QT/2XTvv7XDZ5HugFgQzyXueqnXv6v4TsNtwH/6xmY8KUyKZ81vioeE8hzAdjg
-			0FXMUt5r/UhOynTRAAAZL4L0D95coQAAAABJRU5ErkJggg==
-		</value>
+  <data name="Previous" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Previous.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Stop" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Stop.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Open" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Open.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Find" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Find.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Undo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Undo.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+    <data name="Redo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Redo.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ClearAll" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ClearAll.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="WordWrap" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\WordWrap.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
