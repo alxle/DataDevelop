@@ -80,18 +80,27 @@ namespace DataDevelop.Data.SQLite
 
 		protected override void PopulateForeignKeys(IList<ForeignKey> foreignKeysCollection)
 		{
-			////using (this.Database.CreateConnectionScope()) {
-			////    SQLiteCommand command = this.Connection.CreateCommand();
-			////    command.CommandText = "SELECT name FROM sqlite_master WHERE type = 'index' AND tbl_name = @tbl_name";
-			////    command.Parameters.AddWithValue("@tbl_name", this.Name);
-			////    using (SQLiteDataReader reader = command.ExecuteReader()) {
-			////        while (reader.Read()) {
-			////            Key key = new Key(this);
-			////            key.Name = reader.GetString(0);
-			////            foreignKeysCollection.Add(key);
-			////        }
-			////    }
-			////}
+			var ids = new Dictionary<int, ForeignKey>();
+			using (this.Database.CreateConnectionScope()) {
+				DataTable keys = this.Connection.GetSchema("ForeignKeys", new string[] { null, null, this.Name, null });
+				foreach (DataRow row in keys.Rows) {
+					var name = row["CONSTRAINT_NAME"] as string;
+					if (name != null) {
+						var id = (int)row["FKEY_ID"];
+						ForeignKey key;
+						if (!ids.TryGetValue(id, out key)) {
+							key = new ForeignKey(String.Format("FK_{0}_{1}", this.Name, id), this);
+							key.PrimaryTable = row["FKEY_TO_TABLE"] as string;
+							key.ChildTable = row["TABLE_NAME"] as string;
+							foreignKeysCollection.Add(key);
+							ids.Add(id, key);
+						}
+						var fromColumn = row["FKEY_FROM_COLUMN"] as string;
+						var toColumn = row["FKEY_TO_COLUMN"] as string;
+						key.Columns.Add(new ColumnsPair(toColumn, fromColumn));
+					}
+				}
+			}
 		}
 
 		public override bool Rename(string newName)
