@@ -56,6 +56,7 @@ namespace DataDevelop.Data
 			set { this.childTable = value; }
 		}
 
+		[Browsable(false)]
 		public IList<ColumnsPair> Columns
 		{
 			get
@@ -64,6 +65,35 @@ namespace DataDevelop.Data
 					this.columns = new List<ColumnsPair>();
 				}
 				return this.columns;
+			}
+		}
+
+		[Browsable(true)]
+		public string ForeignKeyColumns
+		{
+			get
+			{
+				var str = new StringBuilder();
+				str.Append(this.ChildTable);
+				str.Append('(');
+				for (int i = 0; i < this.Columns.Count; i++) {
+					if (i > 0) {
+						str.Append(',');
+					}
+					str.Append(this.Columns[i].ChildColumn);
+				}
+				str.Append(')');
+				str.Append("->");
+				str.Append(this.PrimaryTable);
+				str.Append('(');
+				for (int i = 0; i < this.Columns.Count; i++) {
+					if (i > 0) {
+						str.Append(',');
+					}
+					str.Append(this.Columns[i].ParentColumn);
+				}
+				str.Append(')');
+				return str.ToString();
 			}
 		}
 
