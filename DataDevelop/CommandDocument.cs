@@ -26,11 +26,23 @@ namespace DataDevelop
 			Unknown, Query, NonQuery
 		}
 
+		private class CommandArgs
+		{
+			public CommandType CommandType = CommandType.Unknown;
+			public bool ExecuteEach = false;
+			public string RawCommandText;
+			public IDbCommand DbCommand;
+		}
+
+		private class CommandResult
+		{
+			public int RowsAffected;
+			public DataTable Data;
+		}
+
 		private Database database;
 		private Stopwatch stopwatch = new Stopwatch();
-		private CommandType commandType = CommandType.Unknown;
-		private IList<IDataParameter> parameters = new List<IDataParameter>();
-		private bool executeEach = false;
+		private IList<IDataParameter> parameters = new List<IDataParameter>();		
 		FindAndReplaceDialog findDialog = new FindAndReplaceDialog();
 
 		public CommandDocument(Database database)
@@ -124,12 +136,14 @@ namespace DataDevelop
 
 		private void Execute(CommandType commandType, bool executeEach)
 		{
-			this.commandType = commandType;
-			this.executeEach = executeEach;
 			if (executeWorker.IsBusy) {
 				MessageBox.Show(this, "A command is already in execution, please wait...", this.ProductName);
 			} else {
 				try {
+					var args = new CommandArgs();
+					args.CommandType = commandType;
+					args.ExecuteEach = executeEach;
+
 					IDbCommand command = DbCommandParser.Parse(this.database, SelectedText);
 					if (command.Parameters.Count > 0) {
 						using (ParamsDialog dialog = new ParamsDialog()) {
@@ -146,13 +160,16 @@ namespace DataDevelop
 							}
 						}
 					}
+					args.DbCommand = command;
+					args.RawCommandText = this.SelectedText;
+
 					dataGridView.DataSource = null;
 					ClearMessages();
 					statusLabel.Text = "Executing...";
 					EnableUI(false);
 					stopwatch.Reset();
 					executingTimer.Start();
-					executeWorker.RunWorkerAsync(command);
+					executeWorker.RunWorkerAsync(args);
 				} catch (Exception ex) {
 					ShowMessage("Exception:");
 					AppendMessage(ex.Message);
@@ -178,11 +195,24 @@ namespace DataDevelop
 			return mergedParameters;
 		}
 
-		private class CommandResult
+		private int ExecuteSubcommand(StringBuilder lines)
 		{
-			public int RowsAffected;
-			public DbTransaction Transaction;
-			public DataTable Data;
+			var sql = lines.ToString().Trim();
+			lines.Length = 0;
+			if (sql.Length > 0) {
+				IDbCommand command = DbCommandParser.Parse(this.database, sql);
+				foreach (IDataParameter p in command.Parameters) {
+					foreach (IDataParameter parameter in this.parameters) {
+						if (p.ParameterName == parameter.ParameterName) {
+							p.DbType = parameter.DbType;
+							p.Value = parameter.Value;
+							break;
+						}
+					}
+				}
+				return command.ExecuteNonQuery();
+			}
+			return 0;
 		}
 
 		private void executeWorker_DoWork(object sender, DoWorkEventArgs e)
@@ -192,44 +222,46 @@ namespace DataDevelop
 				stopwatch.Start();
 
 				database.Connect();
-				IDbCommand command = (IDbCommand)e.Argument;
+				CommandArgs args = (CommandArgs)e.Argument;
 				CommandResult result = new CommandResult();
-				
+
+				var commandType = args.CommandType;
 				if (commandType == CommandType.Unknown) {
-					if (IsSelect(command.CommandText)) {
+					if (IsSelect(args.RawCommandText)) {
 						commandType = CommandType.Query;
 					} else {
 						commandType = CommandType.NonQuery;
 					}
 				}
 
-				////if (executeEach) {
-					
-				////    int startIndex = 0;
-				////    for (int i = 0; i < command.CommandText.Length; i++) {
-				////        if (command.CommandText[i] == ';') {
-				////            string sql = command.CommandText.Substring(startIndex, i - startIndex);
-				////            result.RowsAffected += database.ExecuteNonQuery(sql);
-				////            startIndex = i + 1;
-				////        }
-				////    }
-				////} else {
-
+				if (args.ExecuteEach) {
+					var reader = new StringReader(args.RawCommandText);
+					var lines = new StringBuilder();
+					string line;
+					while ((line = reader.ReadLine()) != null) {
+						if (line.Trim() == "GO") {
+							result.RowsAffected += ExecuteSubcommand(lines);
+						} else {
+							lines.AppendLine(line);
+						}
+					}
+					if (lines.Length > 0) {
+						result.RowsAffected += ExecuteSubcommand(lines);
+					}
+				} else {
 					if (commandType == CommandType.Query) {
 						DataSet set = new DataSet("ResultsSet");
 						DataTable table = set.Tables.Add("Results");
 						set.EnforceConstraints = false;
-						using (IDataReader reader = command.ExecuteReader()) {
+						using (IDataReader reader = args.DbCommand.ExecuteReader()) {
 							table.Load(reader, LoadOption.OverwriteChanges, delegate { });
 						}
 						result.Data = table;
 					} else {
-						result.RowsAffected = command.ExecuteNonQuery();
+						result.RowsAffected = args.DbCommand.ExecuteNonQuery();
 					}
-				////}
+				}
 				e.Result = result;
-			//} catch (Exception ex) {
-				
 			} finally {
 				database.Disconnect();
 				stopwatch.Stop();
