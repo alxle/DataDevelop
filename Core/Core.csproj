@@ -131,11 +131,15 @@
     <Compile Include="Data\SqlServer\SqlStoredProcedure.cs" />
     <Compile Include="Data\SqlServer\SqlTable.cs" />
     <Compile Include="Data\SqlServer\SqlTrigger.cs" />
+    <Compile Include="Data\SqlServer\SqlUserDefinedFunction.cs" />
     <Compile Include="Data\StoredProcedure.cs" />
     <Compile Include="Data\Table.cs" />
     <Compile Include="Data\TableFilter.cs" />
     <Compile Include="Data\TableSort.cs" />
     <Compile Include="Data\Trigger.cs" />
+    <Compile Include="Data\UserDefinedFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="MSOffice\Excel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

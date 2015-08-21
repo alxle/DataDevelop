@@ -42,6 +42,11 @@ namespace DataDevelop.Data.SqlServer
 			get { return true; }
 		}
 
+		public override bool SupportUserDefinedFunctions
+		{
+			get { return true; }
+		}
+
 		public override System.Data.Common.DbDataAdapter CreateAdapter(Table table, TableFilter filter)
 		{
 			SqlTable sqlTable = table as SqlTable;
@@ -190,6 +195,27 @@ namespace DataDevelop.Data.SqlServer
 				sp.Schema = (string)row["SPECIFIC_SCHEMA"];
 				sp.Name = (string)row["SPECIFIC_NAME"];
 				storedProceduresCollection.Add(sp);
+			}
+		}
+
+		protected override void PopulateUserDefinedFunctions(DbObjectCollection<UserDefinedFunction> userDefinedFunctionsCollection)
+		{
+			using (var select = this.Connection.CreateCommand()) {
+				select.CommandText = 
+					"SELECT b.Name AS [Schema], a.Name, type_name(p.system_type_id) " + 
+					"FROM sys.objects a " +
+					"INNER JOIN sys.schemas b ON a.schema_id = b.schema_id " +
+					"INNER JOIN sys.parameters p ON p.object_id = a.object_id " +
+					"WHERE a.type in ('FN', 'IF', 'TF') AND p.parameter_id = 0";
+				using (var reader = select.ExecuteReader()) {
+					while (reader.Read()) {
+						var fn = new SqlUserDefinedFunction(this);
+						fn.Schema = reader.GetString(0);
+						fn.Name = reader.GetString(1);
+						fn.ReturnType = reader.GetString(2);
+						userDefinedFunctionsCollection.Add(fn);
+					}
+				}
 			}
 		}
 	}
