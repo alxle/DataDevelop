@@ -246,6 +246,7 @@ namespace DataDevelop
 			this.nodesImageList.Images.SetKeyName(7, "trigger");
 			this.nodesImageList.Images.SetKeyName(8, "storedProcedure");
 			this.nodesImageList.Images.SetKeyName(9, "foreingKey");
+			this.nodesImageList.Images.SetKeyName(10, "function");
 			// 
 			// databaseContextMenu
 			// 
@@ -259,7 +260,7 @@ namespace DataDevelop
             this.toolStripSeparator5,
             this.propertiesToolStripMenuItem});
 			this.databaseContextMenu.Name = "dbContextMenu";
-			this.databaseContextMenu.Size = new System.Drawing.Size(178, 186);
+			this.databaseContextMenu.Size = new System.Drawing.Size(178, 164);
 			this.databaseContextMenu.Opened += new System.EventHandler(this.databaseContextMenu_Opened);
 			this.databaseContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.databaseContextMenu_Opening);
 			// 

@@ -60,6 +60,37 @@ namespace DataDevelop
 			return node;
 		}
 
+		private TreeNode CreateUserDefinedFunctionsFolderNode(Database db)
+		{
+			TreeNode node = CreateFolderNode("User Defined Functions");
+			node.Nodes.Add(String.Empty);
+
+			TreeNodeController controller = new TreeNodeController();
+			controller.Populate += delegate
+			{
+				foreach (UserDefinedFunction fn in db.UserDefinedFunctions) {
+					node.Nodes.Add(CreateUserDefinedFunctionNode(fn));
+				}
+			};
+			controller.Refresh += delegate { db.RefreshUserDefinedFunctions(); Unpopulate(node); };
+			node.Tag = controller;
+			return node;
+		}
+
+		private TreeNode CreateUserDefinedFunctionNode(UserDefinedFunction userDefinedFunction)
+		{
+			TreeNode node = CreateTreeNode(userDefinedFunction.Name, "function", procedureContextMenu);
+			node.Nodes.Add(String.Empty);
+
+			TreeNodeController controller = new TreeNodeController();
+			controller.Populate += delegate { AddParameters(node, userDefinedFunction); };
+			controller.Refresh += delegate { userDefinedFunction.RefreshParameters(); };
+			controller.Tag = userDefinedFunction;
+			node.Tag = controller;
+
+			return node;
+		}
+
 		private void Unpopulate(TreeNode node)
 		{
 			node.Nodes.Clear();
@@ -195,6 +226,9 @@ namespace DataDevelop
 					}
 					if (node.Database.SupportStoredProcedures) {// && node.Database.StoredProcedures.Count > 0) {
 						node.Nodes.Add(CreateStoredProceduresFolderNode(node.Database));
+					}
+					if (node.Database.SupportUserDefinedFunctions) {
+						node.Nodes.Add(CreateUserDefinedFunctionsFolderNode(node.Database));
 					}
 				} catch (Exception ex) {
 					MessageBox.Show(this, ex.Message, this.ProductName);
