@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Collections;
 
 namespace DataDevelop.Data
 {
@@ -8,27 +9,11 @@ namespace DataDevelop.Data
 		where T : DbObject
 	{
 		private SortedList<string, T> objects;
-		////private Database database;
-
-		////private DbObjectCollection(/*Database database, */bool sorted)
-		////{
-		////	//this.database = database;
-		////    if (sorted) {
-		////        this.objects = new SortedList<string, T>();
-		////    } else {
-		////        this.objects = new Dictionary<string, T>();
-		////    }
-		////}
 
 		public DbObjectCollection()
 		{
 			this.objects = new SortedList<string, T>();
 		}
-
-		////public Database Database
-		////{
-		////    get { return this.database; }
-		////}
 
 		public int Count
 		{
@@ -57,9 +42,9 @@ namespace DataDevelop.Data
 			return this.objects.IndexOfValue(item);
 		}
 
-		public void Insert(int index, T item)
+		void IList<T>.Insert(int index, T item)
 		{
-			throw new NotImplementedException("The method or operation is not implemented.");
+			throw new NotSupportedException("This is an automatically sorted collection, inserting is not supported.");
 		}
 
 		public void RemoveAt(int index)
@@ -89,7 +74,7 @@ namespace DataDevelop.Data
 
 		public void CopyTo(T[] array, int arrayIndex)
 		{
-			////this.objects.CopyTo(array, arrayIndex);
+			this.objects.Values.CopyTo(array, arrayIndex);
 		}
 
 		public bool Remove(T item)
@@ -102,7 +87,7 @@ namespace DataDevelop.Data
 			return this.objects.Values.GetEnumerator();
 		}
 
-		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+		IEnumerator IEnumerable.GetEnumerator()
 		{
 			return this.GetEnumerator();
 		}

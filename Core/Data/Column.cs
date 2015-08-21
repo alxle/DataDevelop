@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Data;
+using System.ComponentModel;
 
 namespace DataDevelop.Data
 {
-	[System.ComponentModel.ReadOnly(true)]
+	[ReadOnly(true)]
 	public class Column : ITableObject
 	{
 		private Table table;
@@ -21,6 +22,7 @@ namespace DataDevelop.Data
 			this.table = table;
 		}
 
+		[Browsable(false)]
 		public Table Table
 		{
 			get { return this.table; }

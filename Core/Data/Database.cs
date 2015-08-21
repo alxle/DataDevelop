@@ -9,8 +9,9 @@ namespace DataDevelop.Data
 	public abstract class Database
 	{
 		private int connectionCount;
-		private DbObjectCollection<StoredProcedure> storedProceduresCollection;
 		private DbObjectCollection<Table> tablesCollection;
+		private DbObjectCollection<StoredProcedure> storedProceduresCollection;
+		private DbObjectCollection<UserDefinedFunction> userDefinedFunctionsCollection;
 
 		public abstract string Name
 		{
@@ -41,6 +42,18 @@ namespace DataDevelop.Data
 			}
 		}
 
+		public DbObjectCollection<UserDefinedFunction> UserDefinedFunctions
+		{
+			get
+			{
+				if (this.userDefinedFunctionsCollection == null) {
+					this.userDefinedFunctionsCollection = new DbObjectCollection<UserDefinedFunction>();
+					this.PopulateUserDefinedFunctions(this.userDefinedFunctionsCollection);
+				}
+				return this.userDefinedFunctionsCollection;
+			}
+		}
+
 		public virtual string ParameterPrefix
 		{
 			get { return "@"; }
@@ -67,6 +80,11 @@ namespace DataDevelop.Data
 		}
 
 		public virtual bool SupportStoredProcedures
+		{
+			get { return false; }
+		}
+
+		public virtual bool SupportUserDefinedFunctions
 		{
 			get { return false; }
 		}
@@ -247,6 +265,11 @@ namespace DataDevelop.Data
 			this.storedProceduresCollection = null;
 		}
 
+		public void RefreshUserDefinedFunctions()
+		{
+			this.userDefinedFunctionsCollection = null;
+		}
+
 		public IDisposable CreateConnectionScope()
 		{
 			return new ConnectionScope(this);
@@ -259,6 +282,14 @@ namespace DataDevelop.Data
 		protected abstract void PopulateTables(DbObjectCollection<Table> tablesCollection);
 
 		protected abstract void PopulateStoredProcedures(DbObjectCollection<StoredProcedure> storedProceduresCollection);
+
+		protected virtual void PopulateUserDefinedFunctions(DbObjectCollection<UserDefinedFunction> userDefinedFunctionsCollection)
+		{
+			if (this.SupportUserDefinedFunctions) {
+				throw new NotSupportedException();
+			}
+			throw new NotImplementedException();
+		}
 
 		public event EventHandler<DatabaseEventArgs> Connected;
 

@@ -22,12 +22,14 @@ namespace DataDevelop.Data
 			set { this.name = value; }
 		}
 
+		[Browsable(false)]
 		public Table Table
 		{
 			get { return this.table; }
 			set { this.table = value; }
 		}
 
+		[Browsable(false)]
 		public Database Database
 		{
 			get { return this.table.Database; }
