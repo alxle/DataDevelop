@@ -484,6 +484,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <Content Include="DataDevelop.ico" />
+    <None Include="app.manifest" />
     <None Include="Resources\AutoResizeColumns.png" />
     <None Include="Resources\AutoResizeRows.png" />
     <None Include="Resources\BinaryImage.png" />
