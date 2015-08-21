@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.ComponentModel;
 
 namespace DataDevelop.Data
 {
@@ -14,6 +15,7 @@ namespace DataDevelop.Data
 			this.database = database;
 		}
 
+		[Browsable(false)]
 		public Database Database
 		{
 			get { return this.database; }
@@ -24,10 +26,5 @@ namespace DataDevelop.Data
 			get { return this.name; }
 			internal set { this.name = value; }
 		}
-
-		////internal KeyValuePair<string, DbObject> GetKeyValuePair()
-		////{
-		////    return new KeyValuePair<string, DbObject>(this.Name, this);
-		////}
 	}
 }

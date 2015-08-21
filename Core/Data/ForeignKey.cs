@@ -28,11 +28,13 @@ namespace DataDevelop.Data
 			this.table = table;
 		}
 
+		[Browsable(false)]
 		public Table Table
 		{
 			get { return this.table; }
 		}
 
+		[Browsable(false)]
 		public Database Database
 		{
 			get { return this.table.Database; }
@@ -69,29 +71,51 @@ namespace DataDevelop.Data
 		}
 
 		[Browsable(true)]
-		public string ForeignKeyColumns
+		public string PrimaryColumns
 		{
 			get
 			{
 				var str = new StringBuilder();
-				str.Append(this.ChildTable);
-				str.Append('(');
-				for (int i = 0; i < this.Columns.Count; i++) {
-					if (i > 0) {
-						str.Append(',');
-					}
-					str.Append(this.Columns[i].ChildColumn);
-				}
-				str.Append(')');
-				str.Append("->");
-				str.Append(this.PrimaryTable);
-				str.Append('(');
 				for (int i = 0; i < this.Columns.Count; i++) {
 					if (i > 0) {
 						str.Append(',');
 					}
 					str.Append(this.Columns[i].ParentColumn);
 				}
+				return str.ToString();
+			}
+		}
+
+		[Browsable(true)]
+		public string ChildColumns
+		{
+			get
+			{
+				var str = new StringBuilder();
+				for (int i = 0; i < this.Columns.Count; i++) {
+					if (i > 0) {
+						str.Append(',');
+					}
+					str.Append(this.Columns[i].ChildColumn);
+				}
+				return str.ToString();
+			}
+		}
+
+		[Browsable(true)]
+		public string ForeignKeyDetails
+		{
+			get
+			{
+				var str = new StringBuilder();
+				str.Append(this.ChildTable);
+				str.Append('(');
+				str.Append(this.ChildColumns);
+				str.Append(')');
+				str.Append("->");
+				str.Append(this.PrimaryTable);
+				str.Append('(');
+				str.Append(this.PrimaryColumns);
 				str.Append(')');
 				return str.ToString();
 			}
