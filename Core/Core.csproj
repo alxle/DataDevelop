@@ -93,6 +93,9 @@
     <Compile Include="Data\ColumnOrder.cs" />
     <Compile Include="Data\ConnectionScope.cs" />
     <Compile Include="Data\ConnectionSettings.cs" />
+    <Compile Include="Data\OleDb\OleDbDatabase.cs" />
+    <Compile Include="Data\OleDb\OleDbProvider.cs" />
+    <Compile Include="Data\OleDb\OleDbTable.cs" />
     <Compile Include="Data\PostgreSql\PgSqlDatabase.cs" />
     <Compile Include="Data\PostgreSql\PgSqlProvider.cs" />
     <Compile Include="Data\PostgreSql\PgSqlStoredProcedure.cs" />

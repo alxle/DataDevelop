@@ -56,10 +56,11 @@ namespace DataDevelop.Data
 		private static void LoadProviders()
 		{
 			providers.Add("SQLite", SQLite.SQLiteProvider.Instance);
-			providers.Add("Access", Access.AccessProvider.Instance);
 			providers.Add("SqlServer", SqlServer.SqlProvider.Instance);
-			providers.Add("MySql", new MySql.MySqlProvider());
 			providers.Add("SqlCe", SqlCe.SqlCeProvider.Instance);
+			providers.Add("OleDb", OleDb.OleDbProvider.Instance);
+			providers.Add("Access", Access.AccessProvider.Instance);
+			providers.Add("MySql", new MySql.MySqlProvider());
 			providers.Add("PgSql", new PostgreSql.PgSqlProvider());
 		}
 	}
