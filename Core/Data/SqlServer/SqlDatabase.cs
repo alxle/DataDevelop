@@ -63,29 +63,9 @@ namespace DataDevelop.Data.SqlServer
 					sqlTable.SetReadOnly(true);
 					return adapter;
 				}
-				SqlCommand insertCommand = builder.GetInsertCommand();
-				SqlCommand deleteCommand = builder.GetDeleteCommand();
-				SqlCommand updateCommand = builder.GetUpdateCommand();
-				/*foreach (Column column in table.Columns) {
-					if (column.IsIdentity) {
-						insertCommand.CommandText = insertCommand.CommandText + "; SELECT @rowId = last_insert_rowid()";
-						insertCommand.UpdatedRowSource = UpdateRowSource.OutputParameters;
-						SQLiteParameter parameter = new SQLiteParameter();
-						parameter.ParameterName = "@rowId";
-						//parameter.DbType = column.DbType;
-						//parameter.Size = column.Size;
-						parameter.Direction = ParameterDirection.Output;
-						//parameter.IsNullable = column.AllowNulls;
-						parameter.SourceColumn = column.Name;
-						parameter.SourceVersion = DataRowVersion.Current;
-						parameter.Value = DBNull.Value;
-						insertCommand.Parameters.Add(parameter);
-						break;
-					}
-				}*/
-				adapter.DeleteCommand = deleteCommand;
-				adapter.UpdateCommand = updateCommand;
-				adapter.InsertCommand = insertCommand;
+				adapter.InsertCommand = builder.GetInsertCommand();
+				adapter.UpdateCommand = builder.GetUpdateCommand();
+				adapter.DeleteCommand = builder.GetDeleteCommand();
 			}
 			return adapter;
 		}
@@ -165,24 +145,64 @@ namespace DataDevelop.Data.SqlServer
 
 		protected override void PopulateTables(DbObjectCollection<Table> tablesCollection)
 		{
-			string[] restrictions = new string[4];
-			restrictions[3] = "Base Table";
-			using (DataTable tables = this.Connection.GetSchema("Tables", restrictions)) {
-				foreach (DataRow row in tables.Rows) {
-					SqlTable table = new SqlTable(this);
-					table.Schema = (string)row["TABLE_SCHEMA"];
-					table.Name = (string)row["TABLE_NAME"];
-					tablesCollection.Add(table);
+			using (this.CreateConnectionScope()) {
+				string[] restrictions = new string[4];
+				restrictions[3] = "Base Table";
+				using (DataTable tables = this.Connection.GetSchema("Tables", restrictions)) {
+					foreach (DataRow row in tables.Rows) {
+						SqlTable table = new SqlTable(this);
+						table.Schema = (string)row["TABLE_SCHEMA"];
+						table.Name = (string)row["TABLE_NAME"];
+						tablesCollection.Add(table);
+					}
 				}
-			}
-			restrictions[3] = "View";
-			using (DataTable views = this.Connection.GetSchema("Tables", restrictions)) {
-				foreach (DataRow row in views.Rows) {
-					SqlTable table = new SqlTable(this);
-					table.Schema = (string)row["TABLE_SCHEMA"];
-					table.Name = (string)row["TABLE_NAME"];
-					table.SetView(true);
-					tablesCollection.Add(table);
+
+				var dataTable = this.ExecuteTable(@"
+SELECT 
+    t.NAME AS TableName,
+    s.Name AS SchemaName,
+    p.rows AS RowCounts,
+    (SUM(a.total_pages) * 8) AS TotalSpaceKB, 
+    (SUM(a.used_pages) * 8) AS UsedSpaceKB
+FROM 
+    sys.tables t
+INNER JOIN      
+    sys.indexes i ON t.OBJECT_ID = i.object_id
+INNER JOIN 
+    sys.partitions p ON i.object_id = p.OBJECT_ID AND i.index_id = p.index_id
+INNER JOIN 
+    sys.allocation_units a ON p.partition_id = a.container_id
+LEFT OUTER JOIN 
+    sys.schemas s ON t.schema_id = s.schema_id
+WHERE 
+    t.NAME NOT LIKE 'dt%' 
+    AND t.is_ms_shipped = 0
+    AND i.OBJECT_ID > 255 
+GROUP BY 
+    t.Name, s.Name, p.Rows");
+
+				foreach (DataRow row in dataTable.Rows) {
+					var schema = (string)row["SchemaName"];
+					var name = (string)row["TableName"];
+					foreach (SqlTable table in tablesCollection) {
+						if (table.Schema == schema && table.Name == name) {
+							table.TotalRows = Convert.ToInt64(row["RowCounts"]);
+							table.TotalSizeKB = Convert.ToDecimal(row["TotalSpaceKB"]);
+							table.TotalUsedKB = Convert.ToDecimal(row["UsedSpaceKB"]);
+							break;
+						}
+					}
+				}
+
+				restrictions[3] = "View";
+				using (DataTable views = this.Connection.GetSchema("Tables", restrictions)) {
+					foreach (DataRow row in views.Rows) {
+						SqlTable table = new SqlTable(this);
+						table.Schema = (string)row["TABLE_SCHEMA"];
+						table.Name = (string)row["TABLE_NAME"];
+						table.SetView(true);
+						tablesCollection.Add(table);
+					}
 				}
 			}
 		}
