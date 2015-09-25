@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data.SqlClient;
 using System.Data;
+using System.ComponentModel;
 
 namespace DataDevelop.Data.SqlServer
 {
@@ -48,6 +49,18 @@ namespace DataDevelop.Data.SqlServer
 		{
 			get { return this.isReadOnly; }
 		}
+
+		[ReadOnly(true)]
+		public long TotalRows { get; set; }
+
+		[ReadOnly(true)]
+		public decimal TotalSizeKB { get; set; }
+
+		[ReadOnly(true)]
+		public decimal TotalUsedKB { get; set; }
+
+		[ReadOnly(true)]
+		public decimal TotalUnusedKB { get { return TotalSizeKB - TotalUsedKB; } }
 
 		public new SqlDatabase Database
 		{
