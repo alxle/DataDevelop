@@ -26,7 +26,12 @@ namespace DataDevelop
 
 		private bool refreshDataNeeded = false;
 
-		public TableDocument(Table table)
+		public TableDocument(Table table) :
+			this(table, null)
+		{
+		}
+
+		public TableDocument(Table table, TableFilter filter)
 		{
 			InitializeComponent();
 
@@ -40,7 +45,7 @@ namespace DataDevelop
 			this.tableToolStrip.Renderer = SystemToolStripRenderers.ToolStripSquaredEdgesRenderer;
 
 			////this.adapter = table.Database.CreateAdapter(table);
-			this.filter = new TableFilter(table);
+			this.filter = filter ?? new TableFilter(table);
 			this.sort = new TableSort(table);
 
 			////sort.SortPanel.LoadColumns(table.GetColumnNames());
@@ -170,11 +175,15 @@ namespace DataDevelop
 				lastRow = count;
 			}
 
+			filterToolStripButton.Checked = IsFiltered;
+			sortToolStripButton.Checked = IsSorted;
+
 			if (IsFiltered) {
 				locationLabel.Text = String.Format("{0:0000} to {1:0000} of {2:0000}*", startRow, lastRow, count);
 			} else {
 				locationLabel.Text = String.Format("{0:0000} to {1:0000} of {2:0000}", startRow, lastRow, count);
 			}
+
 			if (currentPage == 0) {
 				firstButton.Enabled = false;
 				prevButton.Enabled = false;
@@ -396,7 +405,6 @@ namespace DataDevelop
 					} catch (Exception ex) {
 						this.filter = lastGood;
 						MessageBox.Show(this, ex.Message, this.Text, MessageBoxButtons.OK);
-						filterToolStripButton.Checked = this.IsFiltered;
 						this.UpdateDataSet();
 					}
 				} else {
@@ -424,7 +432,6 @@ namespace DataDevelop
 					} catch (Exception ex) {
 						MessageBox.Show(this, ex.Message, this.Text, MessageBoxButtons.OK);
 						this.sort = lastGood;
-						sortToolStripButton.Checked = IsSorted;
 						UpdateDataSet();
 					}
 				} else {
