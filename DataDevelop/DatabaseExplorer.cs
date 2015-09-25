@@ -421,21 +421,45 @@ namespace DataDevelop
 
 		private void openTableDataMenuItem_Click(object sender, EventArgs e)
 		{
-			TableNode tableNode = (TableNode)treeView.SelectedNode;
-			string key = tableNode.Parent.Text + '.' + tableNode.Text;
-			Document document = GetDocument(key);
+			var tableNode = (TableNode)treeView.SelectedNode;
+			if (tableNode != null) {
+				var table = tableNode.Table;
+				var key = table.Database.Name + '.' + table.Name;
+				Document document = GetDocument(key);
 
-			if (document != null) {
-				document.Activate();
-				if (MessageBox.Show(this, "A copy of this table is already open.\r\nDo you want to open another copy?",
-					"Table: " + key, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) {
-					return;
+				if (document != null) {
+					document.Activate();
+					if (MessageBox.Show(this, "A copy of this table is already open.\r\nDo you want to open another copy?",
+						"Table: " + key, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) {
+						return;
+					}
+				}
+
+				document = new TableDocument(table);
+				document.Text = key;
+				document.Show(this.DockPanel);
+			}
+		}
+
+		private void openDataWithFilterToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var tableNode = (TableNode)treeView.SelectedNode;
+			if (tableNode != null) {
+				var table = tableNode.Table;
+				var key = table.Database.Name + '.' + table.Name;
+
+				using (FilterDialog filterDialog = new FilterDialog(new TableFilter(table))) {
+					filterDialog.Text = "Open with filter: " + key;
+					filterDialog.ControlBox = true;
+					filterDialog.StartPosition = FormStartPosition.CenterParent;
+					if (filterDialog.ShowDialog(this) == DialogResult.OK) {
+						var filter = filterDialog.Filter;
+						var document = new TableDocument(table, filter);
+						document.Text = key;
+						document.Show(this.DockPanel);
+					}
 				}
 			}
-
-			document = new TableDocument(tableNode.Table);
-			document.Text = key;
-			document.Show(this.DockPanel);
 		}
 
 		private Document GetDocument(string text)

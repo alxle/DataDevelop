@@ -57,6 +57,7 @@ namespace DataDevelop
 			this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tableContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.openTableDataMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.openDataWithFilterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.exportDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.scriptAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.selectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -323,24 +324,32 @@ namespace DataDevelop
 			// 
 			this.tableContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openTableDataMenuItem,
+            this.openDataWithFilterToolStripMenuItem,
             this.exportDataToolStripMenuItem,
             this.scriptAsToolStripMenuItem,
             this.renameToolStripMenuItem});
 			this.tableContextMenu.Name = "tableContextMenu";
-			this.tableContextMenu.Size = new System.Drawing.Size(163, 92);
+			this.tableContextMenu.Size = new System.Drawing.Size(195, 136);
 			// 
 			// openTableDataMenuItem
 			// 
 			this.openTableDataMenuItem.Name = "openTableDataMenuItem";
-			this.openTableDataMenuItem.Size = new System.Drawing.Size(162, 22);
+			this.openTableDataMenuItem.Size = new System.Drawing.Size(181, 22);
 			this.openTableDataMenuItem.Text = "Open Table Data";
 			this.openTableDataMenuItem.Click += new System.EventHandler(this.openTableDataMenuItem_Click);
+			// 
+			// openDataWithFilterToolStripMenuItem
+			// 
+			this.openDataWithFilterToolStripMenuItem.Name = "openDataWithFilterToolStripMenuItem";
+			this.openDataWithFilterToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+			this.openDataWithFilterToolStripMenuItem.Text = "Open Data with Filter...";
+			this.openDataWithFilterToolStripMenuItem.Click += new System.EventHandler(this.openDataWithFilterToolStripMenuItem_Click);
 			// 
 			// exportDataToolStripMenuItem
 			// 
 			this.exportDataToolStripMenuItem.Enabled = false;
 			this.exportDataToolStripMenuItem.Name = "exportDataToolStripMenuItem";
-			this.exportDataToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+			this.exportDataToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
 			this.exportDataToolStripMenuItem.Text = "Export Data...";
 			// 
 			// scriptAsToolStripMenuItem
@@ -356,7 +365,7 @@ namespace DataDevelop
             this.alterToolStripMenuItem,
             this.dropToolStripMenuItem});
 			this.scriptAsToolStripMenuItem.Name = "scriptAsToolStripMenuItem";
-			this.scriptAsToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+			this.scriptAsToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
 			this.scriptAsToolStripMenuItem.Text = "Script Table as";
 			// 
 			// selectToolStripMenuItem
@@ -423,7 +432,7 @@ namespace DataDevelop
 			// renameToolStripMenuItem
 			// 
 			this.renameToolStripMenuItem.Name = "renameToolStripMenuItem";
-			this.renameToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+			this.renameToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
 			this.renameToolStripMenuItem.Text = "Rename";
 			this.renameToolStripMenuItem.Click += new System.EventHandler(this.renameToolStripMenuItem_Click);
 			// 
@@ -559,6 +568,7 @@ namespace DataDevelop
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.ToolStripMenuItem connectToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem reconnectToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem openDataWithFilterToolStripMenuItem;
 
 	}
 }
