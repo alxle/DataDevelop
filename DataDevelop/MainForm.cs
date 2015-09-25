@@ -46,10 +46,10 @@ namespace DataDevelop
 				try {
 					dockPanel.LoadFromXml(SettingsManager.DockPropertiesFileName, GetContentFromPersistString);
 				} catch {
-					ShowToolboxes();
+					ShowDefaultToolboxes();
 				}
 			} else {
-				ShowToolboxes();
+				ShowDefaultToolboxes();
 			}
 		}
 
@@ -71,10 +71,9 @@ namespace DataDevelop
 			}
 		}
 
-		private void ShowToolboxes()
+		private void ShowDefaultToolboxes()
 		{
 			ShowToolbox(databaseExplorer, DockState.DockLeft);
-			ShowToolbox(assemblyExplorer, DockState.DockLeft);
 			databaseExplorer.Show();
 			propertiesToolbox.Show(databaseExplorer.Pane, DockAlignment.Bottom, 0.25);
 			ShowToolbox(outputWindow, DockState.DockBottomAutoHide);
@@ -234,7 +233,7 @@ namespace DataDevelop
 
 		private void resetWindowLayoutToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ShowToolboxes();
+			ShowDefaultToolboxes();
 		}
 
 		private void closeAllButCurrentToolStripMenuItem_Click(object sender, EventArgs e)
