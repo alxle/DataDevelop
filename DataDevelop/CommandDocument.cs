@@ -160,6 +160,7 @@ namespace DataDevelop
 							}
 						}
 					}
+					command.CommandTimeout = 0;
 					args.DbCommand = command;
 					args.RawCommandText = this.SelectedText;
 
