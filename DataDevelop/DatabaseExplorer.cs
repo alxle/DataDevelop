@@ -516,28 +516,39 @@ namespace DataDevelop
 			return false;
 		}
 
+		private void renameToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var tableNode = treeView.SelectedNode as TableNode;
+			if (tableNode != null) {
+				tableNode.Text = tableNode.Table.Name;
+				treeView.LabelEdit = true;
+				treeView.SelectedNode.BeginEdit();
+			}
+		}
+
 		private void treeView_BeforeLabelEdit(object sender, NodeLabelEditEventArgs e)
 		{
-			if (!(e.Node is TableNode)) {
-				e.CancelEdit = true;
-			}
+			
 		}
 
 		private void treeView_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
 		{
-			//DatabasesDataSet.FoldersRow folder = DatabasesDataSet.Folders.FindByName(e.Node.Text);
-			//folder.Name = e.Label;
+			e.CancelEdit = true; // Cancel assigning e.Label to e.Node.Text
+			treeView.LabelEdit = false;
+
+			var table = SelectedTable;
 			if (e.Label == null) {
+				e.Node.Text = table.DisplayName;
 				return;
 			}
-			Table table = SelectedTable;
+			
 			try {
-				if (!table.Rename(e.Label)) {
-					e.CancelEdit = true;
+				if (table.Rename(e.Label)) {
+					e.Node.Text = table.DisplayName;
+				} else {
 					MessageBox.Show(this, "Couldn't rename table", "Error");
 				}
 			} catch (Exception ex) {
-				e.CancelEdit = true;
 				MessageBox.Show(this, ex.Message, "Exception throwed!");
 			}
 		}
@@ -735,11 +746,6 @@ namespace DataDevelop
 
 		private void generateClassesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-		}
-
-		private void renameToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			treeView.SelectedNode.BeginEdit();
 		}
 
 		private DatabaseNode SelectedDatabaseNode
