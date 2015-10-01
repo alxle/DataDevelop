@@ -219,7 +219,6 @@ namespace DataDevelop
 			this.treeView.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.treeView.ImageIndex = 0;
 			this.treeView.ImageList = this.nodesImageList;
-			this.treeView.LabelEdit = true;
 			this.treeView.LoadOnDemand = true;
 			this.treeView.Location = new System.Drawing.Point(0, 25);
 			this.treeView.Margin = new System.Windows.Forms.Padding(0);
@@ -329,12 +328,12 @@ namespace DataDevelop
             this.scriptAsToolStripMenuItem,
             this.renameToolStripMenuItem});
 			this.tableContextMenu.Name = "tableContextMenu";
-			this.tableContextMenu.Size = new System.Drawing.Size(195, 136);
+			this.tableContextMenu.Size = new System.Drawing.Size(195, 114);
 			// 
 			// openTableDataMenuItem
 			// 
 			this.openTableDataMenuItem.Name = "openTableDataMenuItem";
-			this.openTableDataMenuItem.Size = new System.Drawing.Size(181, 22);
+			this.openTableDataMenuItem.Size = new System.Drawing.Size(194, 22);
 			this.openTableDataMenuItem.Text = "Open Table Data";
 			this.openTableDataMenuItem.Click += new System.EventHandler(this.openTableDataMenuItem_Click);
 			// 
@@ -349,7 +348,7 @@ namespace DataDevelop
 			// 
 			this.exportDataToolStripMenuItem.Enabled = false;
 			this.exportDataToolStripMenuItem.Name = "exportDataToolStripMenuItem";
-			this.exportDataToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+			this.exportDataToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
 			this.exportDataToolStripMenuItem.Text = "Export Data...";
 			// 
 			// scriptAsToolStripMenuItem
@@ -365,7 +364,7 @@ namespace DataDevelop
             this.alterToolStripMenuItem,
             this.dropToolStripMenuItem});
 			this.scriptAsToolStripMenuItem.Name = "scriptAsToolStripMenuItem";
-			this.scriptAsToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+			this.scriptAsToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
 			this.scriptAsToolStripMenuItem.Text = "Script Table as";
 			// 
 			// selectToolStripMenuItem
@@ -432,7 +431,7 @@ namespace DataDevelop
 			// renameToolStripMenuItem
 			// 
 			this.renameToolStripMenuItem.Name = "renameToolStripMenuItem";
-			this.renameToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+			this.renameToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
 			this.renameToolStripMenuItem.Text = "Rename";
 			this.renameToolStripMenuItem.Click += new System.EventHandler(this.renameToolStripMenuItem_Click);
 			// 
