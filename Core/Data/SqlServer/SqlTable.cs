@@ -89,9 +89,9 @@ namespace DataDevelop.Data.SqlServer
 				using (SqlCommand command = this.Database.Connection.CreateCommand()) {
 					command.CommandText = "sp_rename";
 					command.CommandType = CommandType.StoredProcedure;
-					command.Parameters.AddWithValue("@objname", this.Name);
+					command.Parameters.AddWithValue("@objname", this.QuotedName);
 					command.Parameters.AddWithValue("@newname", newName);
-					////command.Parameters.AddWithValue("@objtype", "Table");
+					command.Parameters.AddWithValue("@objtype", "OBJECT");
 					try {
 						command.ExecuteNonQuery();
 					} catch (SqlException) {
