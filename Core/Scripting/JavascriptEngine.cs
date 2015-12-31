@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Jint;
 using System.IO;
 using DataDevelop.Data;
-using Jint.Delegates;
 using System.Data.Common;
 using System.Data;
 
@@ -12,7 +10,7 @@ namespace DataDevelop.Scripting
 {
 	public class JavascriptEngine : ScriptEngine
 	{
-		private JintEngine engine = new JintEngine(Options.Ecmascript5);
+		private Jint.Engine engine = new Jint.Engine(cfg => cfg.AllowClr());
 		private Stream output;
 
 		public override string Name
@@ -132,22 +130,21 @@ namespace DataDevelop.Scripting
 				Table table = this.database.Tables[name];
 				return new JTableAdapter(table);
 			}
-		}
+        }
 
 		public override void Initialize(Stream output, IDictionary<string, Database> databases)
 		{
 			this.output = output;
-			this.engine.DisableSecurity();
-			this.engine.SetFunction("print", new Action<object>(Print));
-			this.engine.SetFunction("dir", new Func<object, string>(Dir));
-			this.engine.SetFunction("Database", new Func<string, JDatabase>(name => new JDatabase(databases[name])));
-			this.engine.SetFunction("get", new Func<DataRow, string, object>((row, column) => row[column]));
-			this.engine.SetFunction("set", new Action<DataRow, string, object>((row, column, value) => row[column] = value));
+			this.engine.SetValue("print", new Action<object>(Print));
+			this.engine.SetValue("dir", new Func<object, string>(Dir));
+			this.engine.SetValue("Database", new Func<string, JDatabase>(name => new JDatabase(databases[name])));
+			this.engine.SetValue("get", new Func<DataRow, string, object>((row, column) => row[column]));
+			this.engine.SetValue("set", new Action<DataRow, string, object>((row, column, value) => row[column] = value));
 		}
 
 		public override void Execute(string scriptCode)
 		{
-			object result = engine.Run(scriptCode);
+			object result = engine.Execute(scriptCode);
 			if (output != null) {
 				Print(result);
 			}
