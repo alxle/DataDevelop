@@ -65,8 +65,8 @@ namespace DataDevelop
 			this.clearAllButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.clearAllButton.MergeAction = System.Windows.Forms.MergeAction.Replace;
 			this.clearAllButton.Name = "clearAllButton";
-			this.clearAllButton.Size = new System.Drawing.Size(112, 22);
-			this.clearAllButton.Text = "Clear All Output";
+			this.clearAllButton.Size = new System.Drawing.Size(71, 22);
+			this.clearAllButton.Text = "Clear All";
 			this.clearAllButton.Click += new System.EventHandler(this.clearAllButton_Click);
 			// 
 			// toggleWordWrapButton
@@ -76,8 +76,8 @@ namespace DataDevelop
 			this.toggleWordWrapButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toggleWordWrapButton.MergeAction = System.Windows.Forms.MergeAction.Replace;
 			this.toggleWordWrapButton.Name = "toggleWordWrapButton";
-			this.toggleWordWrapButton.Size = new System.Drawing.Size(127, 22);
-			this.toggleWordWrapButton.Text = "Toggle Word Wrap";
+			this.toggleWordWrapButton.Size = new System.Drawing.Size(87, 22);
+			this.toggleWordWrapButton.Text = "Word Wrap";
 			this.toggleWordWrapButton.CheckedChanged += new System.EventHandler(this.toggleWordWrapButton_CheckedChanged);
 			// 
 			// OutputWindow
@@ -88,10 +88,10 @@ namespace DataDevelop
 			this.ClientSize = new System.Drawing.Size(490, 170);
 			this.Controls.Add(this.results);
 			this.Controls.Add(this.mainToolStrip);
-			this.DockAreas = ((WeifenLuo.WinFormsUI.Docking.DockAreas)(((((WeifenLuo.WinFormsUI.Docking.DockAreas.Float | WeifenLuo.WinFormsUI.Docking.DockAreas.DockLeft)
-						| WeifenLuo.WinFormsUI.Docking.DockAreas.DockRight)
-						| WeifenLuo.WinFormsUI.Docking.DockAreas.DockTop)
-						| WeifenLuo.WinFormsUI.Docking.DockAreas.DockBottom)));
+			this.DockAreas = ((WeifenLuo.WinFormsUI.Docking.DockAreas)(((((WeifenLuo.WinFormsUI.Docking.DockAreas.Float | WeifenLuo.WinFormsUI.Docking.DockAreas.DockLeft) 
+            | WeifenLuo.WinFormsUI.Docking.DockAreas.DockRight) 
+            | WeifenLuo.WinFormsUI.Docking.DockAreas.DockTop) 
+            | WeifenLuo.WinFormsUI.Docking.DockAreas.DockBottom)));
 			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "OutputWindow";

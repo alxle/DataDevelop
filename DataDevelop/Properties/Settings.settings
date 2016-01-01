@@ -11,5 +11,11 @@
     <Setting Name="TextVisualizerFont" Type="System.Drawing.Font" Scope="User">
       <Value Profile="(Default)">Courier New, 9.75pt</Value>
     </Setting>
+    <Setting Name="VisualStyle" Type="System.String" Scope="User">
+      <Value Profile="(Default)">VS2015 Blue</Value>
+    </Setting>
+    <Setting Name="CallUpgrade" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -17,7 +17,6 @@ namespace DataDevelop.UIComponents
 		public TextVisualizer()
 		{
 			InitializeComponent();
-			this.toolStrip.Renderer = SystemToolStripRenderers.ToolStripSquaredEdgesRenderer;
 			this.textBox.Font = Properties.Settings.Default.TextVisualizerFont;
 		}
 

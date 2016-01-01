@@ -16,7 +16,6 @@ namespace DataDevelop.UIComponents
 		private BinaryVisualizer()
 		{
 			InitializeComponent();
-			this.toolStrip.Renderer = SystemToolStripRenderers.ToolStripSquaredEdgesRenderer;
 		}
 
 		private DataGridViewBinaryCell cell;

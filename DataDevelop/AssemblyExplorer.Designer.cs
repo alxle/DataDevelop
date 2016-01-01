@@ -38,7 +38,6 @@ namespace DataDevelop
 			// 
 			// toolStrip
 			// 
-			this.toolStrip.DrawVerticalMargin = true;
 			this.toolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
 			this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addAssemblyButton});
@@ -56,12 +55,13 @@ namespace DataDevelop
 			this.addAssemblyButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.addAssemblyButton.MergeAction = System.Windows.Forms.MergeAction.Replace;
 			this.addAssemblyButton.Name = "addAssemblyButton";
-			this.addAssemblyButton.Size = new System.Drawing.Size(78, 22);
+			this.addAssemblyButton.Size = new System.Drawing.Size(87, 22);
 			this.addAssemblyButton.Text = "Add Assembly";
 			this.addAssemblyButton.Click += new System.EventHandler(this.addAssemblyButton_Click);
 			// 
 			// mainTreeView
 			// 
+			this.mainTreeView.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.mainTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.mainTreeView.ImageIndex = 0;
 			this.mainTreeView.ImageList = this.imageList;
@@ -71,9 +71,9 @@ namespace DataDevelop
 			this.mainTreeView.SelectedImageIndex = 0;
 			this.mainTreeView.Size = new System.Drawing.Size(254, 241);
 			this.mainTreeView.TabIndex = 1;
-			this.mainTreeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.mainTreeView_NodeMouseDoubleClick);
-			this.mainTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.mainTreeView_AfterSelect);
 			this.mainTreeView.TreeNodePopulate += new System.Windows.Forms.TreeViewEventHandler(this.mainTreeView_TreeNodePopulate);
+			this.mainTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.mainTreeView_AfterSelect);
+			this.mainTreeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.mainTreeView_NodeMouseDoubleClick);
 			// 
 			// imageList
 			// 
@@ -94,6 +94,7 @@ namespace DataDevelop
 			this.ClientSize = new System.Drawing.Size(254, 266);
 			this.Controls.Add(this.mainTreeView);
 			this.Controls.Add(this.toolStrip);
+			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "AssemblyExplorer";
 			this.TabText = "Assembly Explorer";

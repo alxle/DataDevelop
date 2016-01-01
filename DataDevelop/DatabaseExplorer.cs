@@ -15,7 +15,6 @@ namespace DataDevelop
 		public DatabaseExplorer()
 		{
 			InitializeComponent();
-			toolStrip.Renderer = SystemToolStripRenderers.ToolStripSquaredEdgesRenderer;
 		}
 
 		private void DatabaseExplorer_Load(object sender, EventArgs e)

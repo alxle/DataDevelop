@@ -39,25 +39,29 @@ namespace DataDevelop
 			this.label3 = new System.Windows.Forms.Label();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.generalTab = new System.Windows.Forms.TabPage();
-			this.textEditorTab = new System.Windows.Forms.TabPage();
+			this.rowsPerPageNumericUpDown = new System.Windows.Forms.NumericUpDown();
+			this.label2 = new System.Windows.Forms.Label();
+			this.appearanceTab = new System.Windows.Forms.TabPage();
+			this.requiresRestartLabel = new System.Windows.Forms.Label();
+			this.visualStyleComboBox = new System.Windows.Forms.ComboBox();
+			this.label5 = new System.Windows.Forms.Label();
+			this.changeVisualizerFontButton = new System.Windows.Forms.Button();
+			this.visualizerFontTextBox = new System.Windows.Forms.TextBox();
+			this.label1 = new System.Windows.Forms.Label();
 			this.changeEditorFontButton = new System.Windows.Forms.Button();
 			this.editorFontTextBox = new System.Windows.Forms.TextBox();
 			this.label4 = new System.Windows.Forms.Label();
-			this.tablesTab = new System.Windows.Forms.TabPage();
-			this.rowsPerPageNumericUpDown = new System.Windows.Forms.NumericUpDown();
-			this.label5 = new System.Windows.Forms.Label();
 			this.resetButton = new System.Windows.Forms.Button();
 			this.tabControl1.SuspendLayout();
 			this.generalTab.SuspendLayout();
-			this.textEditorTab.SuspendLayout();
-			this.tablesTab.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.rowsPerPageNumericUpDown)).BeginInit();
+			this.appearanceTab.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// dataDirectoryLabel
 			// 
 			this.dataDirectoryLabel.AutoSize = true;
-			this.dataDirectoryLabel.Location = new System.Drawing.Point(15, 54);
+			this.dataDirectoryLabel.Location = new System.Drawing.Point(14, 92);
 			this.dataDirectoryLabel.Name = "dataDirectoryLabel";
 			this.dataDirectoryLabel.Size = new System.Drawing.Size(78, 13);
 			this.dataDirectoryLabel.TabIndex = 0;
@@ -66,7 +70,7 @@ namespace DataDevelop
 			// openDataDirectoryButton
 			// 
 			this.openDataDirectoryButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.openDataDirectoryButton.Location = new System.Drawing.Point(362, 68);
+			this.openDataDirectoryButton.Location = new System.Drawing.Point(361, 106);
 			this.openDataDirectoryButton.Name = "openDataDirectoryButton";
 			this.openDataDirectoryButton.Size = new System.Drawing.Size(54, 23);
 			this.openDataDirectoryButton.TabIndex = 1;
@@ -78,7 +82,7 @@ namespace DataDevelop
 			// 
 			this.dataDirectoryTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.dataDirectoryTextBox.Location = new System.Drawing.Point(18, 70);
+			this.dataDirectoryTextBox.Location = new System.Drawing.Point(17, 108);
 			this.dataDirectoryTextBox.Name = "dataDirectoryTextBox";
 			this.dataDirectoryTextBox.ReadOnly = true;
 			this.dataDirectoryTextBox.Size = new System.Drawing.Size(338, 20);
@@ -88,7 +92,7 @@ namespace DataDevelop
 			// 
 			this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.okButton.Location = new System.Drawing.Point(297, 155);
+			this.okButton.Location = new System.Drawing.Point(297, 189);
 			this.okButton.Name = "okButton";
 			this.okButton.Size = new System.Drawing.Size(75, 23);
 			this.okButton.TabIndex = 4;
@@ -100,7 +104,7 @@ namespace DataDevelop
 			// 
 			this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.cancelButton.Location = new System.Drawing.Point(378, 155);
+			this.cancelButton.Location = new System.Drawing.Point(378, 189);
 			this.cancelButton.Name = "cancelButton";
 			this.cancelButton.Size = new System.Drawing.Size(75, 23);
 			this.cancelButton.TabIndex = 5;
@@ -112,7 +116,7 @@ namespace DataDevelop
 			// 
 			this.applicationPathTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.applicationPathTextBox.Location = new System.Drawing.Point(18, 31);
+			this.applicationPathTextBox.Location = new System.Drawing.Point(17, 69);
 			this.applicationPathTextBox.Name = "applicationPathTextBox";
 			this.applicationPathTextBox.ReadOnly = true;
 			this.applicationPathTextBox.Size = new System.Drawing.Size(338, 20);
@@ -121,7 +125,7 @@ namespace DataDevelop
 			// openApplicationPathButton
 			// 
 			this.openApplicationPathButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.openApplicationPathButton.Location = new System.Drawing.Point(362, 29);
+			this.openApplicationPathButton.Location = new System.Drawing.Point(361, 67);
 			this.openApplicationPathButton.Name = "openApplicationPathButton";
 			this.openApplicationPathButton.Size = new System.Drawing.Size(54, 23);
 			this.openApplicationPathButton.TabIndex = 7;
@@ -132,7 +136,7 @@ namespace DataDevelop
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(15, 15);
+			this.label3.Location = new System.Drawing.Point(14, 53);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(87, 13);
 			this.label3.TabIndex = 6;
@@ -144,16 +148,17 @@ namespace DataDevelop
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.tabControl1.Controls.Add(this.generalTab);
-			this.tabControl1.Controls.Add(this.textEditorTab);
-			this.tabControl1.Controls.Add(this.tablesTab);
+			this.tabControl1.Controls.Add(this.appearanceTab);
 			this.tabControl1.Location = new System.Drawing.Point(12, 12);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(441, 137);
+			this.tabControl1.Size = new System.Drawing.Size(441, 171);
 			this.tabControl1.TabIndex = 9;
 			// 
 			// generalTab
 			// 
+			this.generalTab.Controls.Add(this.rowsPerPageNumericUpDown);
+			this.generalTab.Controls.Add(this.label2);
 			this.generalTab.Controls.Add(this.label3);
 			this.generalTab.Controls.Add(this.openApplicationPathButton);
 			this.generalTab.Controls.Add(this.applicationPathTextBox);
@@ -163,68 +168,14 @@ namespace DataDevelop
 			this.generalTab.Location = new System.Drawing.Point(4, 22);
 			this.generalTab.Name = "generalTab";
 			this.generalTab.Padding = new System.Windows.Forms.Padding(3);
-			this.generalTab.Size = new System.Drawing.Size(433, 111);
+			this.generalTab.Size = new System.Drawing.Size(433, 145);
 			this.generalTab.TabIndex = 0;
 			this.generalTab.Text = "General";
 			this.generalTab.UseVisualStyleBackColor = true;
 			// 
-			// textEditorTab
-			// 
-			this.textEditorTab.Controls.Add(this.changeEditorFontButton);
-			this.textEditorTab.Controls.Add(this.editorFontTextBox);
-			this.textEditorTab.Controls.Add(this.label4);
-			this.textEditorTab.Location = new System.Drawing.Point(4, 22);
-			this.textEditorTab.Name = "textEditorTab";
-			this.textEditorTab.Size = new System.Drawing.Size(433, 111);
-			this.textEditorTab.TabIndex = 2;
-			this.textEditorTab.Text = "Text Editor";
-			this.textEditorTab.UseVisualStyleBackColor = true;
-			// 
-			// changeEditorFontButton
-			// 
-			this.changeEditorFontButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.changeEditorFontButton.Location = new System.Drawing.Point(341, 31);
-			this.changeEditorFontButton.Name = "changeEditorFontButton";
-			this.changeEditorFontButton.Size = new System.Drawing.Size(75, 23);
-			this.changeEditorFontButton.TabIndex = 10;
-			this.changeEditorFontButton.Text = "Change...";
-			this.changeEditorFontButton.UseVisualStyleBackColor = true;
-			this.changeEditorFontButton.Click += new System.EventHandler(this.changeEditorFontButton_Click);
-			// 
-			// editorFontTextBox
-			// 
-			this.editorFontTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.editorFontTextBox.Location = new System.Drawing.Point(18, 33);
-			this.editorFontTextBox.Name = "editorFontTextBox";
-			this.editorFontTextBox.ReadOnly = true;
-			this.editorFontTextBox.Size = new System.Drawing.Size(317, 20);
-			this.editorFontTextBox.TabIndex = 9;
-			// 
-			// label4
-			// 
-			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(15, 17);
-			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(85, 13);
-			this.label4.TabIndex = 0;
-			this.label4.Text = "Text Editor Font:";
-			// 
-			// tablesTab
-			// 
-			this.tablesTab.Controls.Add(this.rowsPerPageNumericUpDown);
-			this.tablesTab.Controls.Add(this.label5);
-			this.tablesTab.Location = new System.Drawing.Point(4, 22);
-			this.tablesTab.Name = "tablesTab";
-			this.tablesTab.Padding = new System.Windows.Forms.Padding(3);
-			this.tablesTab.Size = new System.Drawing.Size(433, 111);
-			this.tablesTab.TabIndex = 1;
-			this.tablesTab.Text = "Tables";
-			this.tablesTab.UseVisualStyleBackColor = true;
-			// 
 			// rowsPerPageNumericUpDown
 			// 
-			this.rowsPerPageNumericUpDown.Location = new System.Drawing.Point(105, 15);
+			this.rowsPerPageNumericUpDown.Location = new System.Drawing.Point(104, 21);
 			this.rowsPerPageNumericUpDown.Maximum = new decimal(new int[] {
             1000000,
             0,
@@ -237,7 +188,7 @@ namespace DataDevelop
             0});
 			this.rowsPerPageNumericUpDown.Name = "rowsPerPageNumericUpDown";
 			this.rowsPerPageNumericUpDown.Size = new System.Drawing.Size(96, 20);
-			this.rowsPerPageNumericUpDown.TabIndex = 1;
+			this.rowsPerPageNumericUpDown.TabIndex = 10;
 			this.rowsPerPageNumericUpDown.Value = new decimal(new int[] {
             100,
             0,
@@ -245,19 +196,130 @@ namespace DataDevelop
             0});
 			this.rowsPerPageNumericUpDown.ValueChanged += new System.EventHandler(this.rowsPerPageNumericUpDown_ValueChanged);
 			// 
+			// label2
+			// 
+			this.label2.AutoSize = true;
+			this.label2.Location = new System.Drawing.Point(14, 23);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(84, 13);
+			this.label2.TabIndex = 9;
+			this.label2.Text = "Rows Per Page:";
+			// 
+			// appearanceTab
+			// 
+			this.appearanceTab.Controls.Add(this.requiresRestartLabel);
+			this.appearanceTab.Controls.Add(this.visualStyleComboBox);
+			this.appearanceTab.Controls.Add(this.label5);
+			this.appearanceTab.Controls.Add(this.changeVisualizerFontButton);
+			this.appearanceTab.Controls.Add(this.visualizerFontTextBox);
+			this.appearanceTab.Controls.Add(this.label1);
+			this.appearanceTab.Controls.Add(this.changeEditorFontButton);
+			this.appearanceTab.Controls.Add(this.editorFontTextBox);
+			this.appearanceTab.Controls.Add(this.label4);
+			this.appearanceTab.Location = new System.Drawing.Point(4, 22);
+			this.appearanceTab.Name = "appearanceTab";
+			this.appearanceTab.Size = new System.Drawing.Size(433, 145);
+			this.appearanceTab.TabIndex = 2;
+			this.appearanceTab.Text = "Appearance";
+			this.appearanceTab.UseVisualStyleBackColor = true;
+			// 
+			// requiresRestartLabel
+			// 
+			this.requiresRestartLabel.AutoSize = true;
+			this.requiresRestartLabel.Location = new System.Drawing.Point(211, 23);
+			this.requiresRestartLabel.Name = "requiresRestartLabel";
+			this.requiresRestartLabel.Size = new System.Drawing.Size(175, 13);
+			this.requiresRestartLabel.TabIndex = 16;
+			this.requiresRestartLabel.Text = "(change requires restart application)";
+			// 
+			// visualStyleComboBox
+			// 
+			this.visualStyleComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.visualStyleComboBox.FormattingEnabled = true;
+			this.visualStyleComboBox.Items.AddRange(new object[] {
+            "VS2003",
+            "VS2005",
+            "VS2012 Light",
+            "VS2015 Blue"});
+			this.visualStyleComboBox.Location = new System.Drawing.Point(84, 20);
+			this.visualStyleComboBox.Name = "visualStyleComboBox";
+			this.visualStyleComboBox.Size = new System.Drawing.Size(121, 21);
+			this.visualStyleComboBox.TabIndex = 15;
+			this.visualStyleComboBox.SelectedIndexChanged += new System.EventHandler(this.visualStyleComboBox_SelectedIndexChanged);
+			// 
 			// label5
 			// 
 			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(15, 17);
+			this.label5.Location = new System.Drawing.Point(14, 23);
 			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(84, 13);
-			this.label5.TabIndex = 0;
-			this.label5.Text = "Rows Per Page:";
+			this.label5.Size = new System.Drawing.Size(64, 13);
+			this.label5.TabIndex = 14;
+			this.label5.Text = "Visual Style:";
+			// 
+			// changeVisualizerFontButton
+			// 
+			this.changeVisualizerFontButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.changeVisualizerFontButton.Location = new System.Drawing.Point(340, 106);
+			this.changeVisualizerFontButton.Name = "changeVisualizerFontButton";
+			this.changeVisualizerFontButton.Size = new System.Drawing.Size(75, 23);
+			this.changeVisualizerFontButton.TabIndex = 13;
+			this.changeVisualizerFontButton.Text = "Change...";
+			this.changeVisualizerFontButton.UseVisualStyleBackColor = true;
+			this.changeVisualizerFontButton.Click += new System.EventHandler(this.changeVisualizerFontButton_Click);
+			// 
+			// visualizerFontTextBox
+			// 
+			this.visualizerFontTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.visualizerFontTextBox.Location = new System.Drawing.Point(17, 108);
+			this.visualizerFontTextBox.Name = "visualizerFontTextBox";
+			this.visualizerFontTextBox.ReadOnly = true;
+			this.visualizerFontTextBox.Size = new System.Drawing.Size(317, 20);
+			this.visualizerFontTextBox.TabIndex = 12;
+			// 
+			// label1
+			// 
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(14, 92);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(102, 13);
+			this.label1.TabIndex = 11;
+			this.label1.Text = "Text Visualizer Font:";
+			// 
+			// changeEditorFontButton
+			// 
+			this.changeEditorFontButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.changeEditorFontButton.Location = new System.Drawing.Point(340, 67);
+			this.changeEditorFontButton.Name = "changeEditorFontButton";
+			this.changeEditorFontButton.Size = new System.Drawing.Size(75, 23);
+			this.changeEditorFontButton.TabIndex = 10;
+			this.changeEditorFontButton.Text = "Change...";
+			this.changeEditorFontButton.UseVisualStyleBackColor = true;
+			this.changeEditorFontButton.Click += new System.EventHandler(this.changeEditorFontButton_Click);
+			// 
+			// editorFontTextBox
+			// 
+			this.editorFontTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.editorFontTextBox.Location = new System.Drawing.Point(17, 69);
+			this.editorFontTextBox.Name = "editorFontTextBox";
+			this.editorFontTextBox.ReadOnly = true;
+			this.editorFontTextBox.Size = new System.Drawing.Size(317, 20);
+			this.editorFontTextBox.TabIndex = 9;
+			// 
+			// label4
+			// 
+			this.label4.AutoSize = true;
+			this.label4.Location = new System.Drawing.Point(14, 53);
+			this.label4.Name = "label4";
+			this.label4.Size = new System.Drawing.Size(85, 13);
+			this.label4.TabIndex = 0;
+			this.label4.Text = "Text Editor Font:";
 			// 
 			// resetButton
 			// 
 			this.resetButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.resetButton.Location = new System.Drawing.Point(12, 155);
+			this.resetButton.Location = new System.Drawing.Point(12, 189);
 			this.resetButton.Name = "resetButton";
 			this.resetButton.Size = new System.Drawing.Size(75, 23);
 			this.resetButton.TabIndex = 10;
@@ -271,7 +333,7 @@ namespace DataDevelop
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.cancelButton;
-			this.ClientSize = new System.Drawing.Size(465, 190);
+			this.ClientSize = new System.Drawing.Size(465, 224);
 			this.Controls.Add(this.resetButton);
 			this.Controls.Add(this.tabControl1);
 			this.Controls.Add(this.cancelButton);
@@ -287,11 +349,9 @@ namespace DataDevelop
 			this.tabControl1.ResumeLayout(false);
 			this.generalTab.ResumeLayout(false);
 			this.generalTab.PerformLayout();
-			this.textEditorTab.ResumeLayout(false);
-			this.textEditorTab.PerformLayout();
-			this.tablesTab.ResumeLayout(false);
-			this.tablesTab.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.rowsPerPageNumericUpDown)).EndInit();
+			this.appearanceTab.ResumeLayout(false);
+			this.appearanceTab.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -310,13 +370,18 @@ namespace DataDevelop
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.TabControl tabControl1;
 		private System.Windows.Forms.TabPage generalTab;
-		private System.Windows.Forms.TabPage tablesTab;
-		private System.Windows.Forms.TabPage textEditorTab;
+		private System.Windows.Forms.TabPage appearanceTab;
 		private System.Windows.Forms.Button changeEditorFontButton;
 		private System.Windows.Forms.TextBox editorFontTextBox;
 		private System.Windows.Forms.Label label4;
-		private System.Windows.Forms.NumericUpDown rowsPerPageNumericUpDown;
-		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.Button resetButton;
+		private System.Windows.Forms.NumericUpDown rowsPerPageNumericUpDown;
+		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.ComboBox visualStyleComboBox;
+		private System.Windows.Forms.Button changeVisualizerFontButton;
+		private System.Windows.Forms.TextBox visualizerFontTextBox;
+		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.Label label5;
+		private System.Windows.Forms.Label requiresRestartLabel;
 	}
 }
