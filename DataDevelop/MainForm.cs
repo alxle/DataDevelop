@@ -21,6 +21,7 @@ namespace DataDevelop
 		private MainForm()
 		{
 			InitializeComponent();
+			this.ApplyVisualStyle(Properties.Settings.Default.VisualStyle);
 			this.databaseExplorer = new DatabaseExplorer();
 			this.assemblyExplorer = new AssemblyExplorer();
 			this.propertiesToolbox = new PropertiesToolbox();
@@ -28,11 +29,49 @@ namespace DataDevelop
 			this.databaseExplorer.ShowProperties += ShowProperties;
 			this.assemblyExplorer.ShowProperties += ShowProperties;
 			this.checkForUpdatesToolStripMenuItem.Enabled = ApplicationDeployment.IsNetworkDeployed;
-			this.dockPanel.Skin.DockPaneStripSkin.DocumentGradient.DockStripGradient.StartColor
-				= Color.FromArgb(
-				(SystemColors.Control.R + SystemColors.ControlDark.R) / 2,
-				(SystemColors.Control.G + SystemColors.ControlDark.G) / 2,
-				(SystemColors.Control.B + SystemColors.ControlDark.B) / 2);
+		}
+
+		public void ApplyVisualStyle(string visualStyle)
+		{
+			if (visualStyle == "VS2005") {
+				this.dockPanel.Theme = new VS2005Theme();
+				this.dockPanel.Skin.DockPaneStripSkin.DocumentGradient.DockStripGradient.LinearGradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
+				this.dockPanel.Skin.DockPaneStripSkin.DocumentGradient.DockStripGradient.StartColor
+					= Color.FromArgb(
+					(SystemColors.Control.R + SystemColors.ControlDark.R) / 2,
+					(SystemColors.Control.G + SystemColors.ControlDark.G) / 2,
+					(SystemColors.Control.B + SystemColors.ControlDark.B) / 2);
+				topBar.Visible = bottomBar.Visible = false;
+				topBar.BackColor = bottomBar.BackColor = SystemColors.Control;
+				ToolStripManager.Renderer = VisualStyles.SystemToolStripRenderers.ToolStripSquaredEdgesRenderer;
+				ToolStripManager.VisualStylesEnabled = false;
+			} if (visualStyle == "VS2003") {
+				this.dockPanel.Theme = new VS2003Theme();
+				topBar.Visible = bottomBar.Visible = false;
+				topBar.BackColor = bottomBar.BackColor = SystemColors.Control;
+				ToolStripManager.Renderer = VisualStyles.SystemToolStripRenderers.ToolStripSquaredEdgesRenderer;
+				ToolStripManager.VisualStylesEnabled = false;
+
+			} else if (visualStyle == "VS2012 Light") {
+				this.dockPanel.Theme = new VS2012LightTheme();
+				topBar.Visible = bottomBar.Visible = false;
+				topBar.BackColor = bottomBar.BackColor = SystemColors.Control;
+				ToolStripManager.VisualStylesEnabled = true;
+				ToolStripManager.Renderer = new VisualStyles.VS2012ToolStripRenderer();
+
+			} else {
+				this.dockPanel.Theme = new VS2015BlueTheme();
+				var darkBlue = Color.FromArgb(0xFF, 41, 57, 85);
+				dockPanel.BackColor = topBar.BackColor = bottomBar.BackColor = darkBlue;
+				dockPanel.Skin.AutoHideStripSkin.DockStripBackground.StartColor = darkBlue;
+				dockPanel.Skin.AutoHideStripSkin.DockStripBackground.EndColor = darkBlue;
+				dockPanel.Skin.AutoHideStripSkin.DockStripGradient.StartColor = darkBlue;
+				dockPanel.Skin.AutoHideStripSkin.DockStripGradient.EndColor = darkBlue;
+				topBar.Visible = bottomBar.Visible = true;
+				topBar.BackColor = bottomBar.BackColor = darkBlue;
+				ToolStripManager.VisualStylesEnabled = true;
+				ToolStripManager.Renderer = new VisualStyles.VS2015ToolStripRenderer();
+			} 
 		}
 
 		public static MainForm Instance

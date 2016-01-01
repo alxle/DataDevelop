@@ -21,7 +21,10 @@ namespace DataDevelop
 			applicationPathTextBox.Text = Application.ExecutablePath;
 			dataDirectoryTextBox.Text = SettingsManager.GetDataDirectory();
 			editorFontTextBox.Text = Settings.Default.TextEditorFont.ToString();
+			visualizerFontTextBox.Text = Settings.Default.TextVisualizerFont.ToString();
 			rowsPerPageNumericUpDown.Value = Settings.Default.RowsPerPage;
+			visualStyleComboBox.SelectedItem = Settings.Default.VisualStyle;
+			requiresRestartLabel.Visible = false;
 		}
 
 		protected override void OnLoad(EventArgs e)
@@ -76,6 +79,15 @@ namespace DataDevelop
 			}
 		}
 
+		private void changeVisualizerFontButton_Click(object sender, EventArgs e)
+		{
+			fontDialog.Font = Settings.Default.TextVisualizerFont;
+			if (fontDialog.ShowDialog(this) == DialogResult.OK) {
+				Settings.Default.TextVisualizerFont = fontDialog.Font;
+				visualizerFontTextBox.Text = fontDialog.Font.ToString();
+			}
+		}
+
 		private void okButton_Click(object sender, EventArgs e)
 		{
 			if (this.changed) {
@@ -98,6 +110,12 @@ namespace DataDevelop
 		private void rowsPerPageNumericUpDown_ValueChanged(object sender, EventArgs e)
 		{
 			Settings.Default.RowsPerPage = Decimal.ToInt32(rowsPerPageNumericUpDown.Value);
+		}
+
+		private void visualStyleComboBox_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			requiresRestartLabel.Visible = true;
+			Settings.Default.VisualStyle = visualStyleComboBox.SelectedItem.ToString();
 		}
 	}
 }

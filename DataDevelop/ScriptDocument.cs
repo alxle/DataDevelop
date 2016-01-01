@@ -20,8 +20,6 @@ namespace DataDevelop
 			InitializeComponent();
 			this.output = output;
 			
-			this.toolStrip.Renderer = SystemToolStripRenderers.ToolStripSquaredEdgesRenderer;
-
 			var isPython = (engine is PythonScriptEngine);
             var highlighter = isPython ? Highlighters.Python : Highlighters.Javascript;
 			var outputStream = new StreamWriteDelegator(this.Output.WriteUnicode);

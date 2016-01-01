@@ -88,7 +88,6 @@ namespace DataDevelop
 			// 
 			// toolStrip
 			// 
-			this.toolStrip.DrawVerticalMargin = true;
 			this.toolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
 			this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.createDatabaseToolStripButton,
@@ -97,10 +96,10 @@ namespace DataDevelop
             this.refreshToolStripButton,
             this.toolStripSeparator3,
             this.actionsButton});
-			this.toolStrip.Location = new System.Drawing.Point(0, 0);
+			this.toolStrip.Location = new System.Drawing.Point(1, 1);
 			this.toolStrip.Name = "toolStrip";
 			this.toolStrip.Padding = new System.Windows.Forms.Padding(4, 0, 1, 0);
-			this.toolStrip.Size = new System.Drawing.Size(236, 25);
+			this.toolStrip.Size = new System.Drawing.Size(234, 25);
 			this.toolStrip.TabIndex = 0;
 			// 
 			// createDatabaseToolStripButton
@@ -216,21 +215,22 @@ namespace DataDevelop
 			// treeView
 			// 
 			this.treeView.AllowDrop = true;
+			this.treeView.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.treeView.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.treeView.ImageIndex = 0;
 			this.treeView.ImageList = this.nodesImageList;
 			this.treeView.LoadOnDemand = true;
-			this.treeView.Location = new System.Drawing.Point(0, 25);
+			this.treeView.Location = new System.Drawing.Point(1, 26);
 			this.treeView.Margin = new System.Windows.Forms.Padding(0);
 			this.treeView.Name = "treeView";
 			this.treeView.SelectedImageIndex = 0;
-			this.treeView.Size = new System.Drawing.Size(236, 241);
+			this.treeView.Size = new System.Drawing.Size(234, 239);
 			this.treeView.TabIndex = 2;
-			this.treeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView_NodeMouseDoubleClick);
 			this.treeView.TreeNodePopulate += new System.Windows.Forms.TreeViewEventHandler(this.treeView_TreeNodePopulate);
+			this.treeView.BeforeLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.treeView_BeforeLabelEdit);
 			this.treeView.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.treeView_AfterLabelEdit);
 			this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterSelect);
-			this.treeView.BeforeLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.treeView_BeforeLabelEdit);
+			this.treeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView_NodeMouseDoubleClick);
 			// 
 			// nodesImageList
 			// 
@@ -261,8 +261,8 @@ namespace DataDevelop
             this.propertiesToolStripMenuItem});
 			this.databaseContextMenu.Name = "dbContextMenu";
 			this.databaseContextMenu.Size = new System.Drawing.Size(178, 164);
-			this.databaseContextMenu.Opened += new System.EventHandler(this.databaseContextMenu_Opened);
 			this.databaseContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.databaseContextMenu_Opening);
+			this.databaseContextMenu.Opened += new System.EventHandler(this.databaseContextMenu_Opened);
 			// 
 			// newQueryToolStripMenuItem
 			// 
@@ -370,61 +370,61 @@ namespace DataDevelop
 			// selectToolStripMenuItem
 			// 
 			this.selectToolStripMenuItem.Name = "selectToolStripMenuItem";
-			this.selectToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
+			this.selectToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
 			this.selectToolStripMenuItem.Text = "SELECT";
 			this.selectToolStripMenuItem.Click += new System.EventHandler(this.selectToolStripMenuItem_Click);
 			// 
 			// joinToolStripMenuItem
 			// 
 			this.joinToolStripMenuItem.Name = "joinToolStripMenuItem";
-			this.joinToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
+			this.joinToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
 			this.joinToolStripMenuItem.Text = "JOIN";
 			this.joinToolStripMenuItem.Click += new System.EventHandler(this.joinToolStripMenuItem_Click);
 			// 
 			// insertToolStripMenuItem
 			// 
 			this.insertToolStripMenuItem.Name = "insertToolStripMenuItem";
-			this.insertToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
+			this.insertToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
 			this.insertToolStripMenuItem.Text = "INSERT";
 			this.insertToolStripMenuItem.Click += new System.EventHandler(this.insertToolStripMenuItem_Click);
 			// 
 			// updateToolStripMenuItem
 			// 
 			this.updateToolStripMenuItem.Name = "updateToolStripMenuItem";
-			this.updateToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
+			this.updateToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
 			this.updateToolStripMenuItem.Text = "UPDATE";
 			this.updateToolStripMenuItem.Click += new System.EventHandler(this.updateToolStripMenuItem_Click);
 			// 
 			// deleteToolStripMenuItem
 			// 
 			this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-			this.deleteToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
+			this.deleteToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
 			this.deleteToolStripMenuItem.Text = "DELETE";
 			this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator6
 			// 
 			this.toolStripSeparator6.Name = "toolStripSeparator6";
-			this.toolStripSeparator6.Size = new System.Drawing.Size(115, 6);
+			this.toolStripSeparator6.Size = new System.Drawing.Size(114, 6);
 			// 
 			// createToolStripMenuItem
 			// 
 			this.createToolStripMenuItem.Name = "createToolStripMenuItem";
-			this.createToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
+			this.createToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
 			this.createToolStripMenuItem.Text = "CREATE";
 			this.createToolStripMenuItem.Click += new System.EventHandler(this.createToolStripMenuItem_Click);
 			// 
 			// alterToolStripMenuItem
 			// 
 			this.alterToolStripMenuItem.Name = "alterToolStripMenuItem";
-			this.alterToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
+			this.alterToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
 			this.alterToolStripMenuItem.Text = "ALTER";
 			this.alterToolStripMenuItem.Click += new System.EventHandler(this.alterToolStripMenuItem_Click);
 			// 
 			// dropToolStripMenuItem
 			// 
 			this.dropToolStripMenuItem.Name = "dropToolStripMenuItem";
-			this.dropToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
+			this.dropToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
 			this.dropToolStripMenuItem.Text = "DROP";
 			this.dropToolStripMenuItem.Click += new System.EventHandler(this.dropToolStripMenuItem_Click);
 			// 
@@ -496,12 +496,14 @@ namespace DataDevelop
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.BackColor = System.Drawing.SystemColors.ControlDark;
 			this.ClientSize = new System.Drawing.Size(236, 266);
 			this.Controls.Add(this.treeView);
 			this.Controls.Add(this.toolStrip);
 			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "DatabaseExplorer";
+			this.Padding = new System.Windows.Forms.Padding(1);
 			this.TabText = "Database Explorer";
 			this.Text = "Database Explorer";
 			this.Load += new System.EventHandler(this.DatabaseExplorer_Load);

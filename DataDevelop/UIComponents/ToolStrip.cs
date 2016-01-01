@@ -13,7 +13,6 @@ namespace DataDevelop.UIComponents
 		public ToolStrip()
 		{
 			InitializeComponent();
-			this.Renderer = SystemToolStripRenderers.ToolStripSquaredEdgesRenderer;
 		}
 
 		private bool drawHorizontalMargin;

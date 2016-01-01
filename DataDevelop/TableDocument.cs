@@ -42,7 +42,6 @@ namespace DataDevelop
 			this.rowsPerPageButton.Text = this.rowsPerPage.ToString();
 
 			this.table = table;
-			this.tableToolStrip.Renderer = SystemToolStripRenderers.ToolStripSquaredEdgesRenderer;
 
 			////this.adapter = table.Database.CreateAdapter(table);
 			this.filter = filter ?? new TableFilter(table);
