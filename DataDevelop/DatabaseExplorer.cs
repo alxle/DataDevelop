@@ -450,6 +450,7 @@ namespace DataDevelop
 				using (FilterDialog filterDialog = new FilterDialog(new TableFilter(table))) {
 					filterDialog.Text = "Open with filter: " + key;
 					filterDialog.ControlBox = true;
+					filterDialog.ShowIcon = false;
 					filterDialog.StartPosition = FormStartPosition.CenterParent;
 					if (filterDialog.ShowDialog(this) == DialogResult.OK) {
 						var filter = filterDialog.Filter;
