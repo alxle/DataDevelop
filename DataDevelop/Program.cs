@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace DataDevelop
@@ -7,15 +6,18 @@ namespace DataDevelop
 	static class Program
 	{
 		internal const string Homepage = "http://datadevelop.codeplex.com/";
-		
+
 		/// <summary>
 		/// The main entry point for the application.
 		/// </summary>
 		[STAThread]
 		static void Main()
 		{
-			////ToolStripManager.Renderer = SystemToolStripRenderers.ToolStripSquaredEdgesRenderer;//.ToolStripProfessionalRenderer;
-			ToolStripManager.VisualStylesEnabled = false;
+			if (Properties.Settings.Default.CallUpgrade) {
+				Properties.Settings.Default.Upgrade();
+				Properties.Settings.Default.CallUpgrade = false;
+				Properties.Settings.Default.Save();
+			}
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 			Application.Run(MainForm.Instance);
