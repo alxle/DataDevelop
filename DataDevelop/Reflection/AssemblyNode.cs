@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Reflection;
 
 namespace DataDevelop.Reflection
@@ -7,6 +8,7 @@ namespace DataDevelop.Reflection
 	class AssemblyNode
 	{
 		Assembly assembly;
+		AssemblyName assemblyName;
 		List<NamespaceNode> namespaces;
 
 		public AssemblyNode(Assembly assembly)
@@ -16,9 +18,27 @@ namespace DataDevelop.Reflection
 
 		public string Name
 		{
-			get { return assembly.GetName().Name; }
+			get
+			{
+				if (assemblyName == null) {
+					assemblyName = assembly.GetName();
+				}
+				return assemblyName.Name;
+			}
 		}
 
+		public Version Version
+		{
+			get
+			{
+				if (assemblyName == null) {
+					assemblyName = assembly.GetName();
+				}
+				return assemblyName.Version;
+			}
+		}
+
+		[Browsable(false)]
 		public ICollection<NamespaceNode> Namespaces
 		{
 			get
