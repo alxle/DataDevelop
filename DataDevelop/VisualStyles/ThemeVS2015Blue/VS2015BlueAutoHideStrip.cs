@@ -324,12 +324,6 @@ namespace WeifenLuo.WinFormsUI.Docking
             DockState dockState = tab.Content.DockHandler.DockState;
             IDockContent content = tab.Content;
 
-            Color textColor;
-            if (tab.Content.DockHandler.IsActivated || tab.IsMouseOver)
-                textColor = DockPanel.Skin.AutoHideStripSkin.DockStripGradient.StartColor;
-            else
-                textColor = DockPanel.Skin.AutoHideStripSkin.DockStripGradient.EndColor;
-
             Rectangle rectThickLine = rectTabOrigin;
             rectThickLine.X += _TabGapLeft + _TextGapLeft + _ImageGapLeft + _ImageWidth;
             rectThickLine.Width = TextRenderer.MeasureText(tab.Content.DockHandler.TabText, TextFont).Width - 8;
@@ -388,15 +382,12 @@ namespace WeifenLuo.WinFormsUI.Docking
             rectText.Width -= ImageGapLeft + imageWidth + ImageGapRight + TextGapLeft;
             rectText = RtlTransform(GetTransformedRectangle(dockState, rectText), dockState);
 
-            if (DockPanel.ActiveContent == content || tab.IsMouseOver)
-                textColor = DockPanel.Skin.DockPaneStripSkin.ToolWindowGradient.ActiveTabGradient.TextColor;
-            else
-                textColor = DockPanel.Skin.DockPaneStripSkin.ToolWindowGradient.InactiveTabGradient.TextColor;
+			var textBrush = Brushes.White;
 
             if (dockState == DockState.DockLeftAutoHide || dockState == DockState.DockRightAutoHide)
-                g.DrawString(content.DockHandler.TabText, TextFont, new SolidBrush(textColor), rectText, StringFormatTabVertical);
+                g.DrawString(content.DockHandler.TabText, TextFont, textBrush, rectText, StringFormatTabVertical);
             else
-                g.DrawString(content.DockHandler.TabText, TextFont, new SolidBrush(textColor), rectText, StringFormatTabHorizontal);
+                g.DrawString(content.DockHandler.TabText, TextFont, textBrush, rectText, StringFormatTabHorizontal);
 
             // Set rotate back
             g.Transform = matrixRotate;

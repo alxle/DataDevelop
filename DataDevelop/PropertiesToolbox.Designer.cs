@@ -49,6 +49,7 @@ namespace DataDevelop
 			this.Controls.Add(this.propertyGrid);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "PropertiesToolbox";
+			this.Padding = new System.Windows.Forms.Padding(0);
 			this.TabText = "Properties";
 			this.Text = "Properties";
 			this.ResumeLayout(false);

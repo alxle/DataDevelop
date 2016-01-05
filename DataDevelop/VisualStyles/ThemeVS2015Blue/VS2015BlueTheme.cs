@@ -484,7 +484,7 @@ namespace WeifenLuo.WinFormsUI.Docking
 
             skin.DockPaneStripSkin.ToolWindowGradient.ActiveTabGradient.StartColor = Color.White;
             skin.DockPaneStripSkin.ToolWindowGradient.ActiveTabGradient.EndColor = Color.White;
-            skin.DockPaneStripSkin.ToolWindowGradient.ActiveTabGradient.TextColor = Color.White;
+            skin.DockPaneStripSkin.ToolWindowGradient.ActiveTabGradient.TextColor = Color.Black;
 
             skin.DockPaneStripSkin.ToolWindowGradient.InactiveTabGradient.StartColor = inactiveTab;
             skin.DockPaneStripSkin.ToolWindowGradient.InactiveTabGradient.EndColor = inactiveTab;
