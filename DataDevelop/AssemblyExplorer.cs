@@ -35,6 +35,7 @@ namespace DataDevelop
 			TryAddAssembly("System.Drawing", list);
 			TryAddAssembly("System.Windows.Forms", list);
 			TryAddAssembly("System.Xml", list);
+			TryAddAssembly("DataDevelop.Core", list);
 			addAssemblyButton.Enabled = false;
 		}
 
