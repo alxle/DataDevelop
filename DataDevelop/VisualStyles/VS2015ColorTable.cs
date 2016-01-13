@@ -217,12 +217,12 @@ namespace DataDevelop.VisualStyles
 
 		public override Color StatusStripGradientBegin
 		{
-			get { return Color.FromArgb(255, 0, 122, 204); }
+			get { return Color.FromArgb(255, 214, 219, 233); }
 		}
 
 		public override Color StatusStripGradientEnd
 		{
-			get { return Color.FromArgb(255, 0, 122, 204); }
+			get { return Color.FromArgb(255, 214, 219, 233); }
 		}
 
 		public override Color ToolStripBorder
