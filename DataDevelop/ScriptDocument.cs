@@ -1,12 +1,12 @@
+using DataDevelop.Data;
+using DataDevelop.Dialogs;
+using DataDevelop.Scripting;
+using DataDevelop.UIComponents;
+using DataDevelop.Utils;
 using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using DataDevelop.Scripting;
-using DataDevelop.UIComponents;
-using DataDevelop.Utils;
-using WeifenLuo.WinFormsUI.Docking;
-using DataDevelop.Data;
 
 namespace DataDevelop
 {
@@ -14,6 +14,7 @@ namespace DataDevelop
 	{
 		private ScriptEngine engine;
 		private OutputWindow output;
+		private FindAndReplaceDialog findDialog = new FindAndReplaceDialog();
 
 		public ScriptDocument(OutputWindow output, ScriptEngine engine)
 		{
@@ -248,6 +249,16 @@ namespace DataDevelop
 			this.stopButton.Enabled = false;
 			this.statusLabel.Text = "Aborting...";
 			this.backgroundWorker.AbortAsync();
+		}
+
+		private void findToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			findDialog.ShowFor(this.textEditorControl, false);
+		}
+
+		private void replaceToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			findDialog.ShowFor(this.textEditorControl, true);
 		}
 	}
 }

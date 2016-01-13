@@ -117,8 +117,8 @@ namespace DataDevelop.Dialogs
 			FindNext(false, false, "Text not found");
 		}
 
-		public bool _lastSearchWasBackward = false;
-		public bool _lastSearchLoopedAround;
+		public bool lastSearchWasBackward = false;
+		public bool lastSearchLoopedAround;
 
 		public TextRange FindNext(bool viaF3, bool searchBackward, string messageIfNotFound)
 		{
@@ -127,7 +127,7 @@ namespace DataDevelop.Dialogs
 				MessageBox.Show("No string specified to look for!");
 				return null;
 			}
-			_lastSearchWasBackward = searchBackward;
+			lastSearchWasBackward = searchBackward;
 			_search.LookFor = txtLookFor.Text;
 			_search.MatchCase = chkMatchCase.Checked;
 			_search.MatchWholeWordOnly = chkMatchWholeWord.Checked;
@@ -141,7 +141,7 @@ namespace DataDevelop.Dialogs
 			}
 
 			int startFrom = caret.Offset - (searchBackward ? 1 : 0);
-			TextRange range = _search.FindNext(startFrom, searchBackward, out _lastSearchLoopedAround);
+			TextRange range = _search.FindNext(startFrom, searchBackward, out lastSearchLoopedAround);
 			if (range != null)
 				SelectResult(range);
 			else if (messageIfNotFound != null)
@@ -223,7 +223,7 @@ namespace DataDevelop.Dialogs
 			var sm = _editor.ActiveTextAreaControl.SelectionManager;
 			if (string.Equals(sm.SelectedText, txtLookFor.Text, StringComparison.OrdinalIgnoreCase))
 				InsertText(txtReplaceWith.Text);
-			FindNext(false, _lastSearchWasBackward, "Text not found.");
+			FindNext(false, lastSearchWasBackward, "Text not found.");
 		}
 
 		private void btnReplaceAll_Click(object sender, EventArgs e)
@@ -240,7 +240,7 @@ namespace DataDevelop.Dialogs
 			try {
 				while (FindNext(false, false, null) != null)
 				{
-					if (_lastSearchLoopedAround)
+					if (lastSearchLoopedAround)
 						break;
 
 					// Replace
