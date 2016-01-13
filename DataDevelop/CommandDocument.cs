@@ -65,15 +65,6 @@ namespace DataDevelop
 
 			//this.textEditorControl.HasChangesChanged += delegate { statusLabel.Text = textEditorControl.HasChanges ? "Changes" : "No changes"; };
 			messageTextBox.Font = new Font(FontFamily.GenericMonospace, 10F);
-
-			if (ToolStripManager.Renderer is VisualStyles.VS2015ToolStripRenderer) {
-				foreach (var item in statusStrip.Items) {
-					var label = item as ToolStripStatusLabel;
-					if (label != null) {
-						label.ForeColor = Color.White;
-					}
-				}
-			}
 		}
 
 		public string CommandText
