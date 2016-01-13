@@ -45,10 +45,9 @@ namespace DataDevelop.Data.SQLite
 		protected override void PopulateColumns(IList<Column> columnsCollection)
 		{
 			using (this.Database.CreateConnectionScope()) {
-
-				DataTable columns = this.Connection.GetSchema("Columns", new string[] { null, null, this.Name, null });
+				var columns = this.Connection.GetSchema("Columns", new string[] { null, null, this.Name, null });
 				foreach (DataRow row in columns.Rows) {
-					Column column = new Column(this);
+					var column = new Column(this);
 					column.Name = row["COLUMN_NAME"].ToString();
 					if (!this.IsReadOnly) {
 						column.InPrimaryKey = (bool)row["PRIMARY_KEY"];
@@ -65,14 +64,15 @@ namespace DataDevelop.Data.SQLite
 		protected override void PopulateTriggers(IList<Trigger> triggersCollection)
 		{
 			using (this.Database.CreateConnectionScope()) {
-				SQLiteCommand command = this.Connection.CreateCommand();
-				command.CommandText = "SELECT name FROM sqlite_master WHERE type = 'trigger' AND tbl_name = @tbl_name";
-				command.Parameters.AddWithValue("@tbl_name", this.Name);
-				using (SQLiteDataReader reader = command.ExecuteReader()) {
-					while (reader.Read()) {
-						SQLiteTrigger trigger = new SQLiteTrigger(this);
-						trigger.Name = reader.GetString(0);
-						triggersCollection.Add(trigger);
+				using (var command = this.Connection.CreateCommand()) {
+					command.CommandText = "SELECT name FROM sqlite_master WHERE type = 'trigger' AND tbl_name = @tbl_name";
+					command.Parameters.AddWithValue("@tbl_name", this.Name);
+					using (var reader = command.ExecuteReader()) {
+						while (reader.Read()) {
+							var trigger = new SQLiteTrigger(this);
+							trigger.Name = reader.GetString(0);
+							triggersCollection.Add(trigger);
+						}
 					}
 				}
 			}
@@ -82,7 +82,7 @@ namespace DataDevelop.Data.SQLite
 		{
 			var ids = new Dictionary<int, ForeignKey>();
 			using (this.Database.CreateConnectionScope()) {
-				DataTable keys = this.Connection.GetSchema("ForeignKeys", new string[] { null, null, this.Name, null });
+				var keys = this.Connection.GetSchema("ForeignKeys", new string[] { null, null, this.Name, null });
 				foreach (DataRow row in keys.Rows) {
 					var name = row["CONSTRAINT_NAME"] as string;
 					if (name != null) {
@@ -109,7 +109,7 @@ namespace DataDevelop.Data.SQLite
 				return false;
 			}
 			newName = newName.Replace("]", "]]");
-			using (IDbCommand rename = Database.CreateCommand()) {
+			using (var rename = Database.CreateCommand()) {
 				rename.CommandText = "ALTER TABLE " + this.QuotedName + " RENAME TO [" + newName + "]";
 				try {
 					rename.ExecuteNonQuery();
@@ -123,7 +123,7 @@ namespace DataDevelop.Data.SQLite
 
 		public override string GetBaseSelectCommandText(TableFilter filter)
 		{
-			StringBuilder select = new StringBuilder();
+			var select = new StringBuilder();
 			select.Append("SELECT ");
 			
 			if (!this.IsView && !this.HasPrimaryKey) {
@@ -142,50 +142,45 @@ namespace DataDevelop.Data.SQLite
 
 		public override DataTable GetData(int startIndex, int count, TableFilter filter, TableSort sort)
 		{		
-			StringBuilder text = new StringBuilder();
-			text.Append("SELECT ");
+			var sql = new StringBuilder();
+			sql.Append("SELECT ");
 
 			if (!this.IsView && !this.HasPrimaryKey) {
-				text.Append("RowId, ");
+				sql.Append("RowId, ");
 			}
 
-			filter.WriteColumnsProjection(text);
+			filter.WriteColumnsProjection(sql);
 
-			text.Append(" FROM ");
-			text.Append(this.QuotedName);
+			sql.Append(" FROM ");
+			sql.Append(this.QuotedName);
 
 			if (filter.IsRowFiltered) {
-				text.Append(" WHERE ");
-				filter.WriteWhereStatement(text);
+				sql.Append(" WHERE ");
+				filter.WriteWhereStatement(sql);
 			}
 
 			if (sort != null && sort.IsSorted) {
-				text.Append(" ORDER BY ");
-				sort.WriteOrderBy(text);
+				sql.Append(" ORDER BY ");
+				sort.WriteOrderBy(sql);
 			}
-			text.AppendFormat(" LIMIT {0}, {1}", startIndex, count);
+			sql.AppendFormat(" LIMIT {0}, {1}", startIndex, count);
 
-			DataTable data = new DataTable(this.Name);
-			SQLiteCommand select = this.Connection.CreateCommand();
-			select.CommandText = text.ToString();
-
-			using (this.Database.CreateConnectionScope()) {
-				SQLiteDataAdapter adapter = (SQLiteDataAdapter)this.Database.CreateAdapter(this, filter);
-				adapter.SelectCommand = select;
-				adapter.Fill(data);
-				////SQLiteDataReader reader = select.ExecuteReader();
-				////try {
-				////	data.Load(reader, LoadOption.OverwriteChanges);
-				////} catch (ConstraintException) {
-				////}
-				////reader.Close();
+			var data = new DataTable(this.Name);
+			using (var select = this.Connection.CreateCommand()) {
+				select.CommandText = sql.ToString();
+				using (this.Database.CreateConnectionScope()) {
+					using (var adapter = (SQLiteDataAdapter)this.Database.CreateAdapter(this, filter)) {
+						adapter.SelectCommand = select;
+						adapter.Fill(data);
+					}
+				}
 			}
 			return data;
 		}
 
 		public override string GenerateCreateStatement()
 		{
-			using (SQLiteCommand select = (SQLiteCommand)Database.CreateCommand()) {
+			using (var select = (SQLiteCommand)this.Database.CreateCommand()) {
 				select.CommandText = "SELECT sql FROM sqlite_master WHERE type = @type AND name = @name";
 				select.Parameters.AddWithValue("@type", this.isView ? "view" : "table");
 				select.Parameters.AddWithValue("@name", this.Name);
@@ -195,7 +190,7 @@ namespace DataDevelop.Data.SQLite
 
 		public override string GenerateAlterStatement()
 		{
-			StringBuilder statement = new StringBuilder();
+			var statement = new StringBuilder();
 			statement.AppendLine("BEGIN;");
 			if (this.IsView) {
 				statement.Append("DROP VIEW ");
@@ -226,7 +221,7 @@ namespace DataDevelop.Data.SQLite
 			}
 			if (Triggers.Count > 0) {
 				statement.AppendLine("/* RESTORE TRIGGERS */");
-				foreach (Trigger trigger in this.Triggers) {
+				foreach (var trigger in this.Triggers) {
 					statement.Append(trigger.GenerateCreateStatement());
 					statement.AppendLine(";");
 				}

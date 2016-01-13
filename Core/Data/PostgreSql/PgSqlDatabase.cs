@@ -1,7 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Data;
+using System.Data.Common;
 using Npgsql;
 
 namespace DataDevelop.Data.PostgreSql
@@ -59,39 +58,36 @@ namespace DataDevelop.Data.PostgreSql
 
 		public override int ExecuteNonQuery(string commandText)
 		{
-			NpgsqlCommand command = this.connection.CreateCommand();
-			command.CommandText = commandText;
-			return command.ExecuteNonQuery();
+			using (var command = this.connection.CreateCommand()) {
+				command.CommandText = commandText;
+				return command.ExecuteNonQuery();
+			}
 		}
 
-		public override int ExecuteNonQuery(string commandText, System.Data.Common.DbTransaction transaction)
+		public override int ExecuteNonQuery(string commandText, DbTransaction transaction)
 		{
-			int rows = 0;
-			try {
-				this.Connect();
-				NpgsqlCommand command = this.connection.CreateCommand();
-				command.Transaction = (NpgsqlTransaction)transaction;
-				command.CommandText = commandText;
-				rows = command.ExecuteNonQuery();
-			} finally {
-				Disconnect();
+			using (this.CreateConnectionScope()) {
+				using (var command = this.connection.CreateCommand()) {
+					command.Transaction = (NpgsqlTransaction)transaction;
+					command.CommandText = commandText;
+					return command.ExecuteNonQuery();
+				}
 			}
-			return rows;
 		}
 
 		public override DataTable ExecuteTable(string commandText)
 		{
-			DataTable data = new DataTable();
-			using (NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(commandText, this.connection)) {
+			var data = new DataTable();
+			using (var adapter = new NpgsqlDataAdapter(commandText, this.connection)) {
 				adapter.Fill(data);
 			}
 			return data;
 		}
 
-		public override System.Data.Common.DbDataAdapter CreateAdapter(Table table, TableFilter filter)
+		public override DbDataAdapter CreateAdapter(Table table, TableFilter filter)
 		{
-			NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(table.GetBaseSelectCommandText(filter), this.connection);
-			NpgsqlCommandBuilder builder = new NpgsqlCommandBuilder(adapter);
+			var adapter = new NpgsqlDataAdapter(table.GetBaseSelectCommandText(filter), this.connection);
+			var builder = new NpgsqlCommandBuilder(adapter);
 			////builder.ReturnGeneratedIdentifiers = true;
 			try {
 				adapter.InsertCommand = builder.GetInsertCommand();
@@ -102,12 +98,12 @@ namespace DataDevelop.Data.PostgreSql
 			return adapter;
 		}
 
-		public override System.Data.Common.DbCommand CreateCommand()
+		public override DbCommand CreateCommand()
 		{
 			return this.connection.CreateCommand();
 		}
 
-		public override System.Data.Common.DbTransaction BeginTransaction()
+		public override DbTransaction BeginTransaction()
 		{
 			return this.connection.BeginTransaction();
 		}
@@ -141,9 +137,9 @@ namespace DataDevelop.Data.PostgreSql
 
 		protected override void PopulateTables(DbObjectCollection<Table> tablesCollection)
 		{
-			DataTable tables = this.Connection.GetSchema("Tables", new string[] { this.connection.Database, "public" });
+			var tables = this.Connection.GetSchema("Tables", new string[] { this.connection.Database, "public" });
 			foreach (DataRow row in tables.Rows) {
-				PgSqlTable table = new PgSqlTable(this);
+				var table = new PgSqlTable(this);
 				table.Name = row["table_name"] as string;
 				tablesCollection.Add(table);
 				if (row["table_type"] as string == "VIEW") {

@@ -1,7 +1,4 @@
 using System;
-using DataDevelop.Data;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DataDevelop.Data
 {
@@ -44,10 +41,7 @@ namespace DataDevelop.Data
 
 		public bool Output
 		{
-			get
-			{
-				return this.output;
-			}
+			get { return this.output; }
 			set
 			{
 				if (!value && this.column.InPrimaryKey) {
@@ -64,7 +58,7 @@ namespace DataDevelop.Data
 
 		public ColumnFilter Clone()
 		{
-			ColumnFilter columnFilter = new ColumnFilter(this.column);
+			var columnFilter = new ColumnFilter(this.column);
 			columnFilter.output = this.output;
 			columnFilter.filter = this.filter;
 			return columnFilter;

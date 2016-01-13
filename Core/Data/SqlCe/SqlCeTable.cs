@@ -62,7 +62,7 @@ namespace DataDevelop.Data.SqlCe
 		{
 			bool success = true;
 			using (this.Database.CreateConnectionScope()) {
-				using (SqlCeCommand command = this.Database.Connection.CreateCommand()) {
+				using (var command = this.Database.Connection.CreateCommand()) {
 					command.CommandText = "DROP TABLE [" + this.Schema + "].[" + this.Name + "]";
 					try {
 						command.ExecuteNonQuery();
@@ -76,11 +76,12 @@ namespace DataDevelop.Data.SqlCe
 
 		public override DataTable GetData(int startIndex, int count, TableFilter filter, TableSort sort)
 		{
-			DataTable data = new DataTable(this.Name);
+			var data = new DataTable(this.Name);
 			using (this.Database.CreateConnectionScope()) {
-				SqlCeDataAdapter adapter = (SqlCeDataAdapter)this.Database.CreateAdapter(this, filter);
-				adapter.SelectCommand.CommandText = this.GetSelectStatement(startIndex, count, filter, sort);
-				adapter.Fill(data);
+				using (var adapter = (SqlCeDataAdapter)this.Database.CreateAdapter(this, filter)) {
+					adapter.SelectCommand.CommandText = this.GetSelectStatement(startIndex, count, filter, sort);
+					adapter.Fill(data);
+				}
 			}
 			return data;
 		}
@@ -88,17 +89,17 @@ namespace DataDevelop.Data.SqlCe
 		protected override void PopulateColumns(IList<Column> columnsCollection)
 		{
 			using (this.Database.CreateConnectionScope()) {
-				DataTable columns = this.Connection.GetSchema("Columns", new string[] { null, null, this.Name, null });
+				var columns = this.Connection.GetSchema("Columns", new string[] { null, null, this.Name, null });
 				
-				DataRow[] rows = new DataRow[columns.Rows.Count];
+				var rows = new DataRow[columns.Rows.Count];
 				foreach (DataRow row in columns.Rows) {
 					int i = Convert.ToInt32(row["ORDINAL_POSITION"]) - 1;
 					rows[i] = row;
 				}
 				
-				string[] keys = this.GetPrimaryKeyColumns();
+				var keys = this.GetPrimaryKeyColumns();
 				foreach (DataRow row in rows) {
-					Column column = new Column(this);
+					var column = new Column(this);
 					column.Name = row["COLUMN_NAME"].ToString();
 					
 					if (InPrimaryKey(keys, column.Name)) {
@@ -120,11 +121,11 @@ namespace DataDevelop.Data.SqlCe
 		protected override void PopulateForeignKeys(IList<ForeignKey> foreignKeysCollection)
 		{
 			using (this.Database.CreateConnectionScope()) {
-				string[] restrictions = new string[] { null, null, this.Name, null };
-				DataTable schema = this.Connection.GetSchema("ForeignKeys", restrictions);
+				var restrictions = new string[] { null, null, this.Name, null };
+				var schema = this.Connection.GetSchema("ForeignKeys", restrictions);
 				foreach (DataRow row in schema.Rows) {
 					var name = (string)row["CONSTRAINT_NAME"];
-					ForeignKey key = new ForeignKey(name, this);
+					var key = new ForeignKey(name, this);
 					key.ChildTable = this.Name;
 					////key.ChildTableColumns = (string)row["COLUMN_NAME"];
 					foreignKeysCollection.Add(key);
@@ -139,7 +140,7 @@ namespace DataDevelop.Data.SqlCe
 
 		private static bool InPrimaryKey(string[] primaryKeys, string columnName)
 		{
-			foreach (string key in primaryKeys) {
+			foreach (var key in primaryKeys) {
 				if (String.Equals(key, columnName, StringComparison.InvariantCultureIgnoreCase)) {
 					return true;
 				}
@@ -149,15 +150,15 @@ namespace DataDevelop.Data.SqlCe
 
 		private string[] GetPrimaryKeyColumns()
 		{
-			List<string> primaryKeys = new List<string>();
+			var primaryKeys = new List<string>();
 			using (this.Database.CreateConnectionScope()) {
-				using (SqlCeCommand select = this.Connection.CreateCommand()) {
+				using (var select = this.Connection.CreateCommand()) {
 					select.CommandText = "SELECT u.COLUMN_NAME, c.CONSTRAINT_NAME, c.TABLE_NAME " +
 						"FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS AS c INNER JOIN " +
 						"INFORMATION_SCHEMA.KEY_COLUMN_USAGE AS u ON c.CONSTRAINT_NAME = u.CONSTRAINT_NAME AND u.TABLE_NAME = c.TABLE_NAME " +
 						"where c.CONSTRAINT_TYPE = 'PRIMARY KEY' ORDER BY c.CONSTRAINT_NAME";
 					select.Parameters.AddWithValue("@TableName", this.Name);
-					using (SqlCeDataReader reader = select.ExecuteReader()) {
+					using (var reader = select.ExecuteReader()) {
 						while (reader.Read()) {
 							primaryKeys.Add(reader.GetString(0));
 						}
@@ -169,21 +170,21 @@ namespace DataDevelop.Data.SqlCe
 
 		private string GetSelectStatement(int startIndex, int count, TableFilter filter, TableSort sort)
 		{
-			StringBuilder text = new StringBuilder();
-			text.Append("SELECT ");
-			filter.WriteColumnsProjection(text);
-			text.Append(" FROM ");
-			text.Append(this.QuotedName);
+			var sql = new StringBuilder();
+			sql.Append("SELECT ");
+			filter.WriteColumnsProjection(sql);
+			sql.Append(" FROM ");
+			sql.Append(this.QuotedName);
 			if (filter.IsRowFiltered) {
-				text.Append(" WHERE ");
-				filter.WriteWhereStatement(text);
+				sql.Append(" WHERE ");
+				filter.WriteWhereStatement(sql);
 			}
-			text.Append(" ORDER BY ");
+			sql.Append(" ORDER BY ");
 			if (sort != null && sort.IsSorted) {	
-				sort.WriteOrderBy(text);
+				sort.WriteOrderBy(sql);
 			} else {
-				List<string> columns = new List<string>();
-				foreach (Column c in this.Columns) {
+				var columns = new List<string>();
+				foreach (var c in this.Columns) {
 					if (c.InPrimaryKey) {
 						columns.Add(c.QuotedName);
 					}
@@ -191,10 +192,10 @@ namespace DataDevelop.Data.SqlCe
 				if (columns.Count == 0) {
 					columns.Add(this.Columns[0].QuotedName);
 				}
-				text.Append(String.Join(", ", columns.ToArray()));
+				sql.Append(String.Join(", ", columns.ToArray()));
 			}
-			text.AppendFormat(" OFFSET {0} ROWS FETCH NEXT {1} ROWS ONLY", startIndex, count); 
-			return text.ToString();
+			sql.AppendFormat(" OFFSET {0} ROWS FETCH NEXT {1} ROWS ONLY", startIndex, count); 
+			return sql.ToString();
 		}
 	}
 }

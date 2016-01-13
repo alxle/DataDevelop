@@ -63,8 +63,8 @@ namespace DataDevelop.Data.OleDb
 		public string[] GetPrimaryKey()
 		{
 			using (this.Database.CreateConnectionScope()) {
-				List<string> primaryKey = new List<string>();
-				DataTable schema = this.Connection.GetOleDbSchemaTable(OleDbSchemaGuid.Indexes, null);
+				var primaryKey = new List<string>();
+				var schema = this.Connection.GetOleDbSchemaTable(OleDbSchemaGuid.Indexes, null);
 				foreach (DataRow row in schema.Rows) {
 					if ((string)row["TABLE_NAME"] == this.Name) {
 						if ((bool)row["PRIMARY_KEY"]) {
@@ -99,22 +99,20 @@ namespace DataDevelop.Data.OleDb
 		public override int GetRowCount(TableFilter filter)
 		{
 			int count = -1;
-			OleDbCommand command = this.Connection.CreateCommand();
-			StringBuilder text = new StringBuilder();
-			text.Append("SELECT COUNT(*) FROM ");
-			text.Append(this.QuotedName);
+			using (var command = this.Connection.CreateCommand()) {
+				var sql = new StringBuilder();
+				sql.Append("SELECT COUNT(*) FROM ");
+				sql.Append(this.QuotedName);
 
-			if (filter != null && filter.IsRowFiltered) {
-				text.Append(" WHERE ");
-				filter.WriteWhereStatement(text);
-			}
+				if (filter != null && filter.IsRowFiltered) {
+					sql.Append(" WHERE ");
+					filter.WriteWhereStatement(sql);
+				}
 
-			command.CommandText = text.ToString();
-			try {
-				this.Database.Connect();
-				count = Convert.ToInt32(command.ExecuteScalar());
-			} finally {
-				this.Database.Disconnect();
+				command.CommandText = sql.ToString();
+				using (this.Database.CreateConnectionScope()) {
+					count = Convert.ToInt32(command.ExecuteScalar());
+				}
 			}
 			return count;
 		}
@@ -126,56 +124,54 @@ namespace DataDevelop.Data.OleDb
 
 		private DataTable GetDataSecuencial(int startIndex, int count, TableFilter filter, TableSort sort)
 		{
-			StringBuilder text = new StringBuilder();
-			text.Append("SELECT ");
+			var sql = new StringBuilder();
+			sql.Append("SELECT ");
 
 			if (!this.IsView && !this.HasPrimaryKey) {
 				// TODO
 			}
 
-			filter.WriteColumnsProjection(text);
-			text.Append(" FROM ");
-			text.Append(this.QuotedName);
+			filter.WriteColumnsProjection(sql);
+			sql.Append(" FROM ");
+			sql.Append(this.QuotedName);
 
 			if (filter.IsRowFiltered) {
-				text.Append(" WHERE ");
-				filter.WriteWhereStatement(text);
+				sql.Append(" WHERE ");
+				filter.WriteWhereStatement(sql);
 			}
 
 			if (sort != null && sort.IsSorted) {
-				text.Append(" ORDER BY ");
-				sort.WriteOrderBy(text);
+				sql.Append(" ORDER BY ");
+				sort.WriteOrderBy(sql);
 			}
 
 			var data = new DataTable(this.Name);
-			var select = this.Connection.CreateCommand();
-			select.CommandText = text.ToString();
+			using (var select = this.Connection.CreateCommand()) {
+				select.CommandText = sql.ToString();
 
-			try {
-				Database.Connect();
-				using (var reader = select.ExecuteReader(CommandBehavior.SequentialAccess)) {
-					for (int i = 0; i < reader.FieldCount; i++) {
-						data.Columns.Add(new DataColumn(reader.GetName(i), reader.GetFieldType(i)));
-					}
+				using (this.Database.CreateConnectionScope()) {
+					using (var reader = select.ExecuteReader(CommandBehavior.SequentialAccess)) {
+						for (int i = 0; i < reader.FieldCount; i++) {
+							data.Columns.Add(new DataColumn(reader.GetName(i), reader.GetFieldType(i)));
+						}
 
-					while (startIndex > 0 && reader.Read()) {
-						startIndex--;
-					}
+						while (startIndex > 0 && reader.Read()) {
+							startIndex--;
+						}
 
-					if (reader.Read()) {
-						do {
-							DataRow row = data.NewRow();
-							for (int i = 0; i < reader.FieldCount; i++) {
-								row[i] = reader[i];
-							}
-							data.Rows.Add(row);
-							count--;
-						} while (reader.Read() && count > 0);
+						if (reader.Read()) {
+							do {
+								DataRow row = data.NewRow();
+								for (int i = 0; i < reader.FieldCount; i++) {
+									row[i] = reader[i];
+								}
+								data.Rows.Add(row);
+								count--;
+							} while (reader.Read() && count > 0);
+						}
+						reader.Close();
 					}
-					reader.Close();
 				}
-			} finally {
-				Database.Disconnect();
 			}
 			data.AcceptChanges();
 			return data;
@@ -184,18 +180,18 @@ namespace DataDevelop.Data.OleDb
 		protected override void PopulateColumns(IList<Column> columnsCollection)
 		{
 			using (this.Database.CreateConnectionScope()) {
-				DataTable columns = this.Connection.GetSchema("Columns", new string[] { null, null, this.Name, null });
+				var columns = this.Connection.GetSchema("Columns", new string[] { null, null, this.Name, null });
 
 				// Fix because Column are sorted by Name rather than Ordinal Position
-				DataRow[] rows = new DataRow[columns.Rows.Count];
+				var rows = new DataRow[columns.Rows.Count];
 				foreach (DataRow row in columns.Rows) {
 					int i = Convert.ToInt32(row["ORDINAL_POSITION"]) - 1;
 					rows[i] = row;
 				} // End of Fix
 
-				string[] primaryKey = this.GetPrimaryKey();
+				var primaryKey = this.GetPrimaryKey();
 				foreach (DataRow row in rows) {
-					Column column = new Column(this);
+					var column = new Column(this);
 					column.Name = row["COLUMN_NAME"].ToString();
 					if (InPrimaryKey(primaryKey, column.Name)) {
 						column.InPrimaryKey = true;

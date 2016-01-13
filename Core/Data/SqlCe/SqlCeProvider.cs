@@ -40,7 +40,7 @@ namespace DataDevelop.Data.SqlCe
 
 		public override string CreateDatabaseFile(string fileName)
 		{
-			using (SqlCeEngine engine = new SqlCeEngine("Data Source=" + fileName)) {
+			using (var engine = new SqlCeEngine("Data Source=" + fileName)) {
 				engine.CreateDatabase();
 				return engine.LocalConnectionString;
 			}

@@ -144,7 +144,7 @@ namespace DataDevelop.Data
 
 		public IEnumerable<Table> GetViews()
 		{
-			foreach (Table t in this.Tables) {
+			foreach (var t in this.Tables) {
 				if (t.IsView) {
 					yield return t;
 				}
@@ -153,7 +153,7 @@ namespace DataDevelop.Data
 
 		public IEnumerable<Table> GetTables()
 		{
-			foreach (Table t in this.Tables) {
+			foreach (var t in this.Tables) {
 				if (!t.IsView) {
 					yield return t;
 				}
@@ -167,14 +167,14 @@ namespace DataDevelop.Data
 
 		public DataTable Query(string commandText)
 		{
-			using (IDbCommand command = DbCommandParser.Parse(this, commandText)) {
+			using (var command = DbCommandParser.Parse(this, commandText)) {
 				return ExecuteTable(command);
 			}
 		}
 
 		public DataTable Query(string commandText, params object[] values)
 		{
-			using (IDbCommand command = DbCommandParser.Parse(this, commandText)) {
+			using (var command = DbCommandParser.Parse(this, commandText)) {
 				DbCommandParser.BindParameters(command, values);
 				return ExecuteTable(command);
 			}
@@ -182,7 +182,7 @@ namespace DataDevelop.Data
 
 		public DataTable Query(string commandText, DataRow row)
 		{
-			using (IDbCommand command = DbCommandParser.Parse(this, commandText)) {
+			using (var command = DbCommandParser.Parse(this, commandText)) {
 				DbCommandParser.BindParameters(command, row);
 				return ExecuteTable(command);
 			}
@@ -190,7 +190,7 @@ namespace DataDevelop.Data
 
 		public DataTable Query(string commandText, Dictionary<string, object> parameters)
 		{
-			using (IDbCommand command = DbCommandParser.Parse(this, commandText)) {
+			using (var command = DbCommandParser.Parse(this, commandText)) {
 				DbCommandParser.BindParameters(command, parameters);
 				return ExecuteTable(command);
 			}
@@ -198,14 +198,14 @@ namespace DataDevelop.Data
 
 		public int NonQuery(string commandText)
 		{
-			using (IDbCommand command = DbCommandParser.Parse(this, commandText)) {
+			using (var command = DbCommandParser.Parse(this, commandText)) {
 				return command.ExecuteNonQuery();
 			}
 		}
 
 		public int NonQuery(string commandText, params object[] values)
 		{
-			using (IDbCommand command = DbCommandParser.Parse(this, commandText)) {
+			using (var command = DbCommandParser.Parse(this, commandText)) {
 				DbCommandParser.BindParameters(command, values);
 				return command.ExecuteNonQuery();
 			}
@@ -213,7 +213,7 @@ namespace DataDevelop.Data
 
 		public int NonQuery(string commandText, DataRow row)
 		{
-			using (IDbCommand command = DbCommandParser.Parse(this, commandText)) {
+			using (var command = DbCommandParser.Parse(this, commandText)) {
 				DbCommandParser.BindParameters(command, row);
 				return command.ExecuteNonQuery();
 			}
@@ -221,7 +221,7 @@ namespace DataDevelop.Data
 
 		public int NonQuery(string commandText, Dictionary<string, object> parameters)
 		{
-			using (IDbCommand command = DbCommandParser.Parse(this, commandText)) {
+			using (var command = DbCommandParser.Parse(this, commandText)) {
 				DbCommandParser.BindParameters(command, parameters);
 				return command.ExecuteNonQuery();
 			}
@@ -235,8 +235,8 @@ namespace DataDevelop.Data
 
 		protected static DataTable ExecuteTable(IDbCommand command)
 		{
-			DataTable table = new DataTable();
-			using (IDataReader reader = command.ExecuteReader()) {
+			var table = new DataTable();
+			using (var reader = command.ExecuteReader()) {
 				table.Load(reader);
 			}
 			return table;

@@ -1,15 +1,15 @@
-﻿using System;
+﻿using Microsoft.Office.Interop.Excel;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Reflection;
-using System.Text;
-using Microsoft.Office.Interop.Excel;
+using System.Runtime.InteropServices;
 using DataTable = System.Data.DataTable;
 using ExcelApplication = Microsoft.Office.Interop.Excel.Application;
 using ExcelWorkbook = Microsoft.Office.Interop.Excel.Workbook;
 using ExcelWorksheet = Microsoft.Office.Interop.Excel.Worksheet;
-using System.Runtime.InteropServices;
 
 namespace DataDevelop.Core.MSOffice
 {
@@ -68,7 +68,7 @@ namespace DataDevelop.Core.MSOffice
 		private int lastRowIndex;
 		private int columnsCount;
 
-		public Worksheet(ExcelApplication app, ExcelWorkbook book, ExcelWorksheet sheet)
+		internal Worksheet(ExcelApplication app, ExcelWorkbook book, ExcelWorksheet sheet)
 		{
 			this.app = app;
 			this.book = book;
@@ -201,7 +201,7 @@ namespace DataDevelop.Core.MSOffice
 			return CreateWorksheet(caption, data, columns, worker);
 		}
 
-		public static Worksheet CreateWorksheet(string caption, DataTable data, IList<ColumnDef> columns, BackgroundWorker worker)
+		internal static Worksheet CreateWorksheet(string caption, DataTable data, IList<ColumnDef> columns, BackgroundWorker worker)
 		{
 			if (worker != null) {
 				worker.ReportProgress(0, "Initializing...");
@@ -235,7 +235,7 @@ namespace DataDevelop.Core.MSOffice
 
 			worksheet.RowOffset = 1;
 			
-			var chrono = new System.Diagnostics.Stopwatch();
+			var chrono = new Stopwatch();
 			if (worker != null) {
 				chrono.Start();
 			}

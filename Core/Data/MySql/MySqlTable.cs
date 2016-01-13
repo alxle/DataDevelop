@@ -34,7 +34,7 @@ namespace DataDevelop.Data.MySql
 
 		public override bool Rename(string newName)
 		{
-			using (MySqlCommand alter = this.Connection.CreateCommand()) {
+			using (var alter = this.Connection.CreateCommand()) {
 				alter.CommandText = "RENAME TABLE `" + Name + "` TO `" + newName + "`";
 				try {
 					alter.ExecuteNonQuery();
@@ -47,7 +47,7 @@ namespace DataDevelop.Data.MySql
 
 		public override bool Delete()
 		{
-			using (MySqlCommand drop = this.Connection.CreateCommand()) {
+			using (var drop = this.Connection.CreateCommand()) {
 				drop.CommandText = "DROP TABLE " + this.QuotedName;
 				try {
 					drop.ExecuteNonQuery();
@@ -60,9 +60,9 @@ namespace DataDevelop.Data.MySql
 
 		public override DataTable GetData(int startIndex, int count, TableFilter filter, TableSort sort)
 		{
-			DataTable data = new DataTable(this.Name);
+			var data = new DataTable(this.Name);
 
-			StringBuilder text = new StringBuilder();
+			var text = new StringBuilder();
 			text.Append("SELECT ");
 			filter.WriteColumnsProjection(text);
 			text.Append(" FROM ");
@@ -77,17 +77,15 @@ namespace DataDevelop.Data.MySql
 				sort.WriteOrderBy(text);
 			}
 			text.AppendFormat(" LIMIT {0}, {1}", startIndex, count);
-			
-			MySqlCommand select = this.Connection.CreateCommand();
-			select.CommandText = text.ToString();
-			try {
-				Database.Connect();
-				using (MySqlDataAdapter adapter = (MySqlDataAdapter)this.Database.CreateAdapter(this, filter)) {
-					adapter.SelectCommand = select;
-					adapter.Fill(data);
+
+			using (var select = this.Connection.CreateCommand()) {
+				select.CommandText = text.ToString();
+				using (this.Database.CreateConnectionScope()) {
+					using (var adapter = (MySqlDataAdapter)this.Database.CreateAdapter(this, filter)) {
+						adapter.SelectCommand = select;
+						adapter.Fill(data);
+					}
 				}
-			} finally {
-				Database.Disconnect();
 			}
 			return data;
 		}
@@ -95,9 +93,9 @@ namespace DataDevelop.Data.MySql
 		protected override void PopulateColumns(IList<Column> columnsCollection)
 		{
 			using (this.Database.CreateConnectionScope()) {
-				DataTable columns = this.Connection.GetSchema("Columns", new string[] { null, this.Connection.Database, this.Name, null });
+				var columns = this.Connection.GetSchema("Columns", new string[] { null, this.Connection.Database, this.Name, null });
 				foreach (DataRow row in columns.Rows) {
-					Column column = new Column(this);
+					var column = new Column(this);
 					column.Name = row["COLUMN_NAME"].ToString();
 					if (!IsReadOnly) {
 						column.InPrimaryKey = row["COLUMN_KEY"].ToString() == "PRI";
@@ -111,10 +109,10 @@ namespace DataDevelop.Data.MySql
 
 		protected override void PopulateTriggers(IList<Trigger> triggersCollection)
 		{
-			using (Database.CreateConnectionScope()) {
-				DataTable triggers = this.Connection.GetSchema("Triggers", new string[] { null, this.Connection.Database, this.Name, null });
+			using (this.Database.CreateConnectionScope()) {
+				var triggers = this.Connection.GetSchema("Triggers", new string[] { null, this.Connection.Database, this.Name, null });
 				foreach (DataRow row in triggers.Rows) {
-					MySqlTrigger trigger = new MySqlTrigger(this, row);
+					var trigger = new MySqlTrigger(this, row);
 					////trigger.Name = row["TRIGGER_NAME"].ToString();
 					triggersCollection.Add(trigger);
 				}
@@ -123,12 +121,11 @@ namespace DataDevelop.Data.MySql
 
 		protected override void PopulateForeignKeys(IList<ForeignKey> foreignKeysCollection)
 		{
-			using (Database.CreateConnectionScope()) {
-				////DataTable schema = this.Connection.GetSchema();
-				DataTable keys = this.Connection.GetSchema("Foreign Keys", new string[] { null, this.Connection.Database, this.Name, null });
+			using (this.Database.CreateConnectionScope()) {
+				var keys = this.Connection.GetSchema("Foreign Keys", new string[] { null, this.Connection.Database, this.Name, null });
 				foreach (DataRow row in keys.Rows) {
 					var name = row["CONSTRAINT_NAME"] as string;
-					ForeignKey key = new ForeignKey(name, this);
+					var key = new ForeignKey(name, this);
 					key.PrimaryTable = row["REFERENCED_TABLE_NAME"] as string;
 					//key.PrimaryTableColumns = row["REFERENCED_COLUMN_NAME"] as string;
 					key.ChildTable = row["TABLE_NAME"] as string;
@@ -140,8 +137,8 @@ namespace DataDevelop.Data.MySql
 
 		public override string GenerateCreateStatement()
 		{
-			using (Database.CreateConnectionScope()) {
-				DataTable data = Database.ExecuteTable("SHOW CREATE TABLE " + this.QuotedName);
+			using (this.Database.CreateConnectionScope()) {
+				var data = Database.ExecuteTable("SHOW CREATE TABLE " + this.QuotedName);
 				if (data.Rows.Count > 0 && data.Columns.Count >= 2) {
 					return data.Rows[0][1] as string;
 				}

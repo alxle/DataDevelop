@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Data.SQLite;
 using System.IO;
@@ -17,9 +16,6 @@ namespace DataDevelop.Data.SQLite
 		public SQLiteDatabase(string name, string connectionString)
 		{
 			this.name = name;
-			////if (!connectionString.Contains("Data Source=")) {
-			////    connectionString = "Data Source=" + connectionString;
-			////}
 			this.connection = new SQLiteConnection(connectionString);
 			this.connectionStringBuilder = new SQLiteConnectionStringBuilder(connectionString);
 		}
@@ -49,12 +45,14 @@ namespace DataDevelop.Data.SQLite
 			if (!(table is SQLiteTable)) {
 				throw new ArgumentException("Table must be of type SQLiteTable", "table");
 			}
-			SQLiteDataAdapter adapter = new SQLiteDataAdapter(table.GetBaseSelectCommandText(filter), this.connection);
+			var adapter = new SQLiteDataAdapter(table.GetBaseSelectCommandText(filter), this.connection);
 			if (!table.IsReadOnly) {
-				SQLiteCommandBuilder builder = new SQLiteCommandBuilder(adapter);
+				var builder = new SQLiteCommandBuilder(adapter);
 				builder.ConflictOption = ConflictOption.OverwriteChanges;
+
+				SQLiteCommand updateCommand = null;
 				try {
-					builder.GetUpdateCommand();
+					updateCommand = builder.GetUpdateCommand();
 				} catch (InvalidOperationException) {
 					StringBuilder selectSql = new StringBuilder();
 					selectSql.Append("SELECT RowId, ");
@@ -64,20 +62,17 @@ namespace DataDevelop.Data.SQLite
 					
 					adapter = new SQLiteDataAdapter(selectSql.ToString(), this.connection);
 					builder = new SQLiteCommandBuilder(adapter);
+					updateCommand = builder.GetUpdateCommand();
 				}
-				SQLiteCommand insertCommand = builder.GetInsertCommand();
-				SQLiteCommand deleteCommand = builder.GetDeleteCommand();
-				SQLiteCommand updateCommand = builder.GetUpdateCommand();
-				foreach (Column column in table.Columns) {
+				var insertCommand = builder.GetInsertCommand();
+				
+				foreach (var column in table.Columns) {
 					if (column.IsIdentity) {
 						insertCommand.CommandText = insertCommand.CommandText + "; SELECT @RowId = last_insert_rowid()";
 						insertCommand.UpdatedRowSource = UpdateRowSource.OutputParameters;
-						SQLiteParameter parameter = new SQLiteParameter();
+						var parameter = new SQLiteParameter();
 						parameter.ParameterName = "@RowId";
-						////parameter.DbType = column.DbType;
-						////parameter.Size = column.Size;
 						parameter.Direction = ParameterDirection.Output;
-						////parameter.IsNullable = column.AllowNulls;
 						parameter.SourceColumn = column.Name;
 						parameter.SourceVersion = DataRowVersion.Current;
 						parameter.Value = DBNull.Value;
@@ -85,9 +80,10 @@ namespace DataDevelop.Data.SQLite
 						break;
 					}
 				}
-				adapter.DeleteCommand = deleteCommand;
 				adapter.UpdateCommand = updateCommand;
 				adapter.InsertCommand = insertCommand;
+				adapter.DeleteCommand = builder.GetDeleteCommand();
+				
 			}
 			return adapter;
 		}
@@ -104,7 +100,7 @@ namespace DataDevelop.Data.SQLite
 
 		public override int ExecuteNonQuery(string commandText)
 		{
-			using (DbCommand command = this.connection.CreateCommand()) {
+			using (var command = this.connection.CreateCommand()) {
 				command.CommandText = commandText;
 				return command.ExecuteNonQuery();
 			}
@@ -112,10 +108,10 @@ namespace DataDevelop.Data.SQLite
 
 		public override DataTable ExecuteTable(string commandText)
 		{
-			using (SQLiteCommand command = this.connection.CreateCommand()) {
+			using (var command = this.connection.CreateCommand()) {
 				command.CommandText = commandText;
-				using (SQLiteDataAdapter adapter = new SQLiteDataAdapter(command)) {
-					DataTable table = new DataTable();
+				using (var adapter = new SQLiteDataAdapter(command)) {
+					var table = new DataTable();
 					adapter.Fill(table);
 					return table;
 				}
@@ -127,7 +123,7 @@ namespace DataDevelop.Data.SQLite
 			if ((object)transaction.Connection != (object)this.connection) {
 				throw new InvalidOperationException();
 			}
-			using (SQLiteCommand command = this.connection.CreateCommand()) {
+			using (var command = this.connection.CreateCommand()) {
 				command.Transaction = (SQLiteTransaction)transaction;
 				command.CommandText = commandText;
 				return command.ExecuteNonQuery();
@@ -153,7 +149,7 @@ namespace DataDevelop.Data.SQLite
 
 		protected override void DoConnect()
 		{
-			string fileName = this.connectionStringBuilder.DataSource;
+			var fileName = this.connectionStringBuilder.DataSource;
 			if (fileName.Contains("\"")) {
 				fileName = fileName.Replace("\"", "");
 			}
@@ -171,16 +167,16 @@ namespace DataDevelop.Data.SQLite
 
 		protected override void PopulateTables(DbObjectCollection<Table> tablesCollection)
 		{
-			DataTable tables = this.Connection.GetSchema("Tables");
+			var tables = this.Connection.GetSchema("Tables");
 			foreach (DataRow row in tables.Rows) {
-				Table table = new SQLiteTable(this);
+				var table = new SQLiteTable(this);
 				table.Name = row["TABLE_NAME"].ToString();
 				tablesCollection.Add(table);
 			}
 
-			DataTable views = this.Connection.GetSchema("Views");
+			var views = this.Connection.GetSchema("Views");
 			foreach (DataRow row in views.Rows) {
-				SQLiteTable table = new SQLiteTable(this);
+				var table = new SQLiteTable(this);
 				table.Name = row["TABLE_NAME"].ToString();
 				table.SetView(true);
 				tablesCollection.Add(table);
@@ -191,23 +187,5 @@ namespace DataDevelop.Data.SQLite
 		{
 			throw new NotSupportedException("Stored Procedures are not supported.");
 		}
-
-		////private int SelectCount(string fromTable)
-		////{
-		////    DbCommand count = database.CreateCommand();
-		////    count.CommandText = "SELECT COUNT(*) FROM [" + fromTable + "]";
-		////    return Convert.ToInt32(count.ExecuteScalar());
-		////}
-
-		////private string GetTableName(string sqlStatement)
-		////{
-		////    string[] statements = sqlStatement.Split(' ', ',');
-		////    for (int i = 0; i + 1 < statements.Length; i++) {
-		////        if (String.Compare(statements[i], "FROM", true) == 0) {
-		////            return statements[i + 1];
-		////        }
-		////    }
-		////    return null;
-		////}
 	}
 }

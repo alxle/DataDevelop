@@ -106,12 +106,12 @@ namespace DataDevelop.Data
 
 		public static IDbCommand Parse(Database database, string commandText)
 		{
-			IDbCommand command = database.CreateCommand();
-			StringBuilder result = new StringBuilder(commandText.Length * 2);
+			var command = database.CreateCommand();
+			var result = new StringBuilder(commandText.Length * 2);
 			const char ParamChar = '?';
 
 			using (var reader = new StringReader(commandText)) {
-				State state = State.OnCommandText;
+				var state = State.OnCommandText;
 				do {
 					int @char = reader.Read();
 					switch (state) {
@@ -129,14 +129,14 @@ namespace DataDevelop.Data
 										reader.Read();
 										result.Append(ParamChar);
 									} else {
-										DbType dbType = DbType.Object;
-										string paramName = ReadIdentifier(reader);
+										var dbType = DbType.Object;
+										var paramName = ReadIdentifier(reader);
 										if (paramName.Length == 0) {
 											throw new FormatException("Parameter Name or Index missing.");
 										}
 										if ((char)reader.Peek() == ':') {
 											reader.Read();
-											string dbTypeName = ReadIdentifier(reader);
+											var dbTypeName = ReadIdentifier(reader);
 											if (dbTypeName.Length == 0) {
 												throw new FormatException("DbType not specified.");
 											} else {
@@ -144,7 +144,7 @@ namespace DataDevelop.Data
 											}
 										}
 
-										IDataParameter p = command.CreateParameter();
+										var p = command.CreateParameter();
 										p.ParameterName = database.ParameterPrefix + paramName;
 										if (!command.Parameters.Contains(p.ParameterName)) {
 											p.SourceColumn = paramName;
@@ -191,7 +191,7 @@ namespace DataDevelop.Data
 
 		private static string ReadIdentifier(StringReader reader)
 		{
-			StringBuilder paramName = new StringBuilder();
+			var paramName = new StringBuilder();
 			if (IsIdentifierChar((char)reader.Peek(), false)) {
 				if (Char.IsDigit((char)reader.Peek())) {
 					paramName.Append('p');

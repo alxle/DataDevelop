@@ -25,7 +25,7 @@ namespace DataDevelop.Data.SqlServer
 
 		public override string GenerateAlterStatement()
 		{
-			string create = this.GenerateCreateStatement();
+			var create = this.GenerateCreateStatement();
 			if (!String.IsNullOrEmpty(create)) {
 				return Regex.Replace(create, @"^\s*CREATE\s+", "ALTER ");
 			}
@@ -35,7 +35,7 @@ namespace DataDevelop.Data.SqlServer
 		public override string GenerateCreateStatement()
 		{
 			using (this.database.CreateConnectionScope()) {
-				using (SqlCommand select = this.database.Connection.CreateCommand()) {
+				using (var select = this.database.Connection.CreateCommand()) {
 					select.CommandText = @"SELECT ISNULL(smsp.definition, ssmsp.definition) AS [Definition]"
 						+ " FROM sys.all_objects AS sp"
 						+ " LEFT OUTER JOIN sys.sql_modules AS smsp ON smsp.object_id = sp.object_id"
@@ -44,7 +44,7 @@ namespace DataDevelop.Data.SqlServer
 						+ "   AND (sp.name = @Name and SCHEMA_NAME(sp.schema_id) = @Schema)";
 					select.Parameters.AddWithValue("@Name", this.Name);
 					select.Parameters.AddWithValue("@Schema", this.Schema);
-					object obj = select.ExecuteScalar();
+					var obj = select.ExecuteScalar();
 					if (obj != null && obj != DBNull.Value) {
 						return (string)obj;
 					}
@@ -60,14 +60,14 @@ namespace DataDevelop.Data.SqlServer
 
 		public override string GenerateExecuteStatement()
 		{
-			StringBuilder statement = new StringBuilder();
+			var statement = new StringBuilder();
 			statement.Append("SELECT [");
 			statement.Append(this.Schema);
 			statement.Append("].[");
 			statement.Append(this.Name);
 			statement.Append("](");
 			bool first = true;
-			foreach (Parameter p in Parameters) {
+			foreach (var p in this.Parameters) {
 				if (first) {
 					first = false;
 				} else {

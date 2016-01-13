@@ -14,7 +14,7 @@ namespace DataDevelop.Data
 			this.table = table;
 			this.filters = new List<ColumnFilter>();
 
-			foreach (Column column in table.Columns) {
+			foreach (var column in table.Columns) {
 				filters.Add(new ColumnFilter(column));
 			}
 		}
@@ -24,7 +24,7 @@ namespace DataDevelop.Data
 			this.table = baseFilter.table;
 			this.filters = new List<ColumnFilter>();
 
-			foreach (ColumnFilter filter in baseFilter.filters) {
+			foreach (var filter in baseFilter.filters) {
 				this.filters.Add(filter.Clone());
 			}
 		}
@@ -38,7 +38,7 @@ namespace DataDevelop.Data
 		{
 			get
 			{
-				foreach (ColumnFilter f in filters) {
+				foreach (var f in filters) {
 					if (!f.Output) {
 						return true;
 					}
@@ -51,7 +51,7 @@ namespace DataDevelop.Data
 		{
 			get
 			{
-				foreach (ColumnFilter f in filters) {
+				foreach (var f in filters) {
 					if (!f.IsEmpty) {
 						return true;
 					}
@@ -62,7 +62,7 @@ namespace DataDevelop.Data
 
 		public IEnumerable<string> GetOutputColumns()
 		{
-			foreach (ColumnFilter filter in this.ColumnFilters) {
+			foreach (var filter in this.ColumnFilters) {
 				if (filter.Output) {
 					yield return filter.QuotedName;
 				}
@@ -72,7 +72,7 @@ namespace DataDevelop.Data
 		public void WriteColumnsProjection(StringBuilder b)
 		{
 			bool first = true;
-			foreach (ColumnFilter f in filters) {
+			foreach (var f in filters) {
 				if (f.InPrimaryKey || f.Output) {
 					if (first) {
 						first = false;
@@ -87,7 +87,7 @@ namespace DataDevelop.Data
 		public void WriteWhereStatement(StringBuilder b)
 		{
 			bool first = true;
-			foreach (ColumnFilter f in filters) {
+			foreach (var f in filters) {
 				if (!f.IsEmpty) {
 					if (first) {
 						first = false;

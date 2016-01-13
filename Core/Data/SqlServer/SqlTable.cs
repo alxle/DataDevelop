@@ -86,7 +86,7 @@ namespace DataDevelop.Data.SqlServer
 		{
 			bool success = true;
 			using (this.Database.CreateConnectionScope()) {
-				using (SqlCommand command = this.Database.Connection.CreateCommand()) {
+				using (var command = this.Database.Connection.CreateCommand()) {
 					command.CommandText = "sp_rename";
 					command.CommandType = CommandType.StoredProcedure;
 					command.Parameters.AddWithValue("@objname", this.QuotedName);
@@ -109,7 +109,7 @@ namespace DataDevelop.Data.SqlServer
 		{
 			bool success = true;
 			using (this.Database.CreateConnectionScope()) {
-				using (SqlCommand command = this.Database.Connection.CreateCommand()) {
+				using (var command = this.Database.Connection.CreateCommand()) {
 					command.CommandText = "DROP TABLE [" + this.Schema + "].[" + this.Name + "]";
 					try {
 						command.ExecuteNonQuery();
@@ -123,11 +123,12 @@ namespace DataDevelop.Data.SqlServer
 
 		public override DataTable GetData(int startIndex, int count, TableFilter filter, TableSort sort)
 		{
-			DataTable data = new DataTable(this.Name);
+			var data = new DataTable(this.Name);
 			using (this.Database.CreateConnectionScope()) {
-				SqlDataAdapter adapter = (SqlDataAdapter)this.Database.CreateAdapter(this, filter);
-				adapter.SelectCommand.CommandText = this.GetSelectStatement(startIndex, count, filter, sort);
-				adapter.Fill(data);
+				using (var adapter = (SqlDataAdapter)this.Database.CreateAdapter(this, filter)) {
+					adapter.SelectCommand.CommandText = this.GetSelectStatement(startIndex, count, filter, sort);
+					adapter.Fill(data);
+				}
 			}
 			return data;
 		}
@@ -135,17 +136,17 @@ namespace DataDevelop.Data.SqlServer
 		protected override void PopulateColumns(IList<Column> columnsCollection)
 		{
 			using (this.Database.CreateConnectionScope()) {
-				DataTable columns = this.Connection.GetSchema("Columns", new string[] { null, null, this.Name, null });
+				var columns = this.Connection.GetSchema("Columns", new string[] { null, null, this.Name, null });
 				
 				// Fix because Column are sorted by Name rather than Ordinal Position
-				DataRow[] rows = new DataRow[columns.Rows.Count];
+				var rows = new DataRow[columns.Rows.Count];
 				foreach (DataRow row in columns.Rows) {
 					int i = Convert.ToInt32(row["ORDINAL_POSITION"]) - 1;
 					rows[i] = row;
 				} // End of Fix
 
 				foreach (DataRow row in rows) {
-					Column column = new Column(this);
+					var column = new Column(this);
 					column.Name = row["COLUMN_NAME"].ToString();
 					string[] keys = this.GetPrimaryKeyColumns();
 					if (InPrimaryKey(keys, column.Name)) {
@@ -166,20 +167,8 @@ namespace DataDevelop.Data.SqlServer
 
 		protected override void PopulateForeignKeys(IList<ForeignKey> foreignKeysCollection)
 		{
-			////using (this.Database.CreateConnectionScope()) {
-			////    string[] restrictions = new string[] { null, null, this.Name, null };
-			////    DataTable schema = this.Connection.GetSchema("ForeignKeys", restrictions);
-			////    foreach (DataRow row in schema.Rows) {
-			////        ForeignKey key = new ForeignKey(this.Database);
-			////        key.Name = (string)row["CONSTRAINT_NAME"];
-			////        key.ChildTable = this.Name;
-			////        ////key.ChildTableColumns = (string)row["COLUMN_NAME"];
-			////        foreignKeysCollection.Add(key);
-			////    }
-			////}
-
 			using (this.Database.CreateConnectionScope()) {
-				using (SqlCommand select = this.Connection.CreateCommand()) {
+				using (var select = this.Connection.CreateCommand()) {
 					select.CommandText =
 						"select object_name(fk.constraint_object_id) as ForeignKeyName, " +
 						"       t1.name as ParentTable, "+
@@ -195,7 +184,7 @@ namespace DataDevelop.Data.SqlServer
 						"order by fk.constraint_object_id, fk.constraint_column_id";
 
 					select.Parameters.AddWithValue("@TableName", this.Name);
-					using (SqlDataReader reader = select.ExecuteReader()) {
+					using (var reader = select.ExecuteReader()) {
 						ForeignKey key = null;
 						while (reader.Read()) {
 							string name = reader.GetString(0);
@@ -216,14 +205,14 @@ namespace DataDevelop.Data.SqlServer
 		protected override void PopulateTriggers(IList<Trigger> triggersCollection)
 		{
 			using (this.Database.CreateConnectionScope()) {
-				using (SqlCommand select = this.Connection.CreateCommand()) {
+				using (var select = this.Connection.CreateCommand()) {
 					select.CommandText = "select tr.name from sys.triggers tr " +
 						" inner join sys.tables ta on tr.parent_id = ta.object_id " +
 						" where ta.name = @TableName";
 					select.Parameters.AddWithValue("@TableName", this.Name);
-					using (SqlDataReader reader = select.ExecuteReader()) {
+					using (var reader = select.ExecuteReader()) {
 						while (reader.Read()) {
-							SqlTrigger trigger = new SqlTrigger(this);
+							var trigger = new SqlTrigger(this);
 							trigger.Name = reader.GetString(0);
 							triggersCollection.Add(trigger);
 						}
@@ -244,9 +233,9 @@ namespace DataDevelop.Data.SqlServer
 
 		private string[] GetPrimaryKeyColumns()
 		{
-			List<string> primaryKeys = new List<string>();
+			var primaryKeys = new List<string>();
 			using (this.Database.CreateConnectionScope()) {
-				using (SqlCommand select = this.Connection.CreateCommand()) {
+				using (var select = this.Connection.CreateCommand()) {
 					select.CommandText = "select c.name from sys.key_constraints k"
 						+ " inner join sys.tables t on k.parent_object_id = t.object_id"
 						+ " inner join sys.indexes i on k.parent_object_id = i.object_id and k.unique_index_id = i.index_id"
@@ -254,7 +243,7 @@ namespace DataDevelop.Data.SqlServer
 						+ " inner join sys.columns c on c.object_id = ic.object_id and c.column_id = ic.column_id"
 						+ " where t.name = @TableName and k.type = 'PK'";
 					select.Parameters.AddWithValue("@TableName", this.Name);
-					using (SqlDataReader reader = select.ExecuteReader()) {
+					using (var reader = select.ExecuteReader()) {
 						while (reader.Read()) {
 							primaryKeys.Add(reader.GetString(0));
 						}
@@ -266,8 +255,7 @@ namespace DataDevelop.Data.SqlServer
 
 		private string GetSelectStatement(int startIndex, int count, TableFilter filter, TableSort sort)
 		{
-			////int total = GetRowCount(filter);
-			StringBuilder select = new StringBuilder();
+			var select = new StringBuilder();
 
 			select.Append("WITH Ordered AS (SELECT ROW_NUMBER() OVER (ORDER BY ");
 			
