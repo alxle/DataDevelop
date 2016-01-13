@@ -25,16 +25,8 @@ namespace DataDevelop.Data.PostgreSql
 
 		public override string GenerateCreateStatement()
 		{
-			StringBuilder create = new StringBuilder();
-			create.AppendLine("DELIMITER $$");
-			create.AppendLine();
-			create.Append("CREATE PROCEDURE ");
-			create.AppendLine(this.Name);
-			create.Append(this.schemaRow["ROUTINE_DEFINITION"]);
-			create.AppendLine();
-			create.AppendLine("END $$");
-			create.AppendLine("DELIMITER ;");
-			return create.ToString();
+			// TODO
+			return null;
 		}
 
 		public override string GenerateDropStatement()
@@ -44,12 +36,12 @@ namespace DataDevelop.Data.PostgreSql
 
 		public override string GenerateExecuteStatement()
 		{
-			StringBuilder statement = new StringBuilder();
+			var statement = new StringBuilder();
 			statement.Append("EXECUTE PROCEDURE ");
 			statement.AppendLine(this.Name);
 			statement.AppendLine("(");
 			bool first = true;
-			foreach (Parameter p in Parameters) {
+			foreach (var p in Parameters) {
 				if (!p.IsOutput) {
 					if (first) {
 						first = false;

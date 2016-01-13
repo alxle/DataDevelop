@@ -16,7 +16,7 @@ namespace DataDevelop.Data.SQLite
 		public override string GenerateCreateStatement()
 		{
 			using (this.database.CreateConnectionScope()) {
-				using (SQLiteCommand command = this.database.Connection.CreateCommand()) {
+				using (var command = this.database.Connection.CreateCommand()) {
 					command.CommandText = "SELECT sql FROM sqlite_master WHERE type = 'trigger' AND tbl_name = @tbl_name AND name = @name";
 					command.Parameters.AddWithValue("@tbl_name", Table.Name);
 					command.Parameters.AddWithValue("@name", this.Name);

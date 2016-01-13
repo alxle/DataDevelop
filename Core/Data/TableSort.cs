@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace DataDevelop.Data
@@ -31,7 +30,7 @@ namespace DataDevelop.Data
 		{
 			get
 			{
-				foreach (ColumnOrder order in sorting) {
+				foreach (var order in sorting) {
 					if (order.OrderType != OrderType.None) {
 						return true;
 					}
@@ -48,7 +47,7 @@ namespace DataDevelop.Data
 		public void WriteOrderBy(StringBuilder builder)
 		{
 			bool first = true;
-			foreach (ColumnOrder order in sorting) {
+			foreach (var order in sorting) {
 				if (order.OrderType != OrderType.None) {
 					if (first) {
 						first = false;
@@ -65,14 +64,14 @@ namespace DataDevelop.Data
 
 		public void Swap(int index1, int index2)
 		{
-			ColumnOrder temp = sorting[index1];
+			var temp = sorting[index1];
 			sorting[index1] = sorting[index2];
 			sorting[index2] = temp;
 		}
 
 		public void Reset()
 		{
-			foreach (ColumnOrder order in this.sorting) {
+			foreach (var order in this.sorting) {
 				order.Clear();
 			}
 		}
@@ -81,7 +80,7 @@ namespace DataDevelop.Data
 
 		object ICloneable.Clone()
 		{
-			throw new Exception("The method or operation is not implemented.");
+			return this.Clone();
 		}
 
 		public TableSort Clone()

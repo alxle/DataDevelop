@@ -1,7 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlServerCe;
 
 namespace DataDevelop.Data.SqlCe
@@ -42,42 +41,41 @@ namespace DataDevelop.Data.SqlCe
 			get { return false; }
 		}
 
-		public override System.Data.Common.DbDataAdapter CreateAdapter(Table table, TableFilter filter)
+		public override DbDataAdapter CreateAdapter(Table table, TableFilter filter)
 		{
-			SqlCeTable sqlTable = table as SqlCeTable;
+			var sqlTable = table as SqlCeTable;
 			if (sqlTable == null) {
 				throw new InvalidOperationException("Table should be an SqlCeTable");
 			}
-			SqlCeDataAdapter adapter = new SqlCeDataAdapter(table.GetBaseSelectCommandText(filter), this.connection);
+			var adapter = new SqlCeDataAdapter(table.GetBaseSelectCommandText(filter), this.connection);
 			if (!table.IsReadOnly) {
-				SqlCeCommandBuilder builder = new SqlCeCommandBuilder(adapter);
+				var builder = new SqlCeCommandBuilder(adapter);
 				builder.ConflictOption = ConflictOption.OverwriteChanges;
 				try {
-					builder.GetUpdateCommand();
+					adapter.UpdateCommand = builder.GetUpdateCommand();
+					adapter.InsertCommand = builder.GetInsertCommand();
+					adapter.DeleteCommand = builder.GetDeleteCommand();
 				} catch (InvalidOperationException) {
 					sqlTable.SetReadOnly(true);
 					return adapter;
 				}
-				adapter.DeleteCommand = builder.GetDeleteCommand();
-				adapter.UpdateCommand = builder.GetUpdateCommand();
-				adapter.InsertCommand = builder.GetInsertCommand();
 			}
 			return adapter;
 		}
 
-		public override System.Data.Common.DbCommand CreateCommand()
+		public override DbCommand CreateCommand()
 		{
 			return this.Connection.CreateCommand();
 		}
 
-		public override System.Data.Common.DbTransaction BeginTransaction()
+		public override DbTransaction BeginTransaction()
 		{
 			return this.Connection.BeginTransaction();
 		}
 
 		public override int ExecuteNonQuery(string commandText)
 		{
-			using (SqlCeCommand command = this.connection.CreateCommand()) {
+			using (var command = this.connection.CreateCommand()) {
 				command.CommandText = commandText;
 				return command.ExecuteNonQuery();
 			}
@@ -85,22 +83,22 @@ namespace DataDevelop.Data.SqlCe
 
 		public override DataTable ExecuteTable(string commandText)
 		{
-			using (SqlCeCommand command = this.connection.CreateCommand()) {
+			using (var command = this.connection.CreateCommand()) {
 				command.CommandText = commandText;
-				DataTable table = new DataTable();
-				using (SqlCeDataAdapter adapter = new SqlCeDataAdapter(command)) {
+				var table = new DataTable();
+				using (var adapter = new SqlCeDataAdapter(command)) {
 					adapter.Fill(table);
 				}
 				return table;
 			}
 		}
 
-		public override int ExecuteNonQuery(string commandText, System.Data.Common.DbTransaction transaction)
+		public override int ExecuteNonQuery(string commandText, DbTransaction transaction)
 		{
 			if ((object)transaction.Connection != (object)this.connection) {
 				throw new InvalidOperationException();
 			}
-			using (SqlCeCommand command = this.connection.CreateCommand()) {
+			using (var command = this.connection.CreateCommand()) {
 				command.Transaction = (SqlCeTransaction)transaction;
 				command.CommandText = commandText;
 				return command.ExecuteNonQuery();
@@ -140,24 +138,14 @@ namespace DataDevelop.Data.SqlCe
 
 		protected override void PopulateTables(DbObjectCollection<Table> tablesCollection)
 		{
-			using (DataTable tables = this.Connection.GetSchema("Tables")) {
+			using (var tables = this.Connection.GetSchema("Tables")) {
 				foreach (DataRow row in tables.Rows) {
-					SqlCeTable table = new SqlCeTable(this);
+					var table = new SqlCeTable(this);
 					table.Schema = row["TABLE_SCHEMA"] as string;
 					table.Name = row["TABLE_NAME"] as string;
 					tablesCollection.Add(table);
 				}
 			}
-			// TODO: Retrive Views
-			////using (DataTable views = this.Connection.GetSchema("Tables")) {
-			////    foreach (DataRow row in views.Rows) {
-			////        SqlCeTable table = new SqlCeTable(this);
-			////        table.Schema = (string)row["TABLE_SCHEMA"];
-			////        table.Name = (string)row["TABLE_NAME"];
-			////        table.SetView(true);
-			////        tablesCollection.Add(table);
-			////    }
-			////}
 		}
 
 		protected override void PopulateStoredProcedures(DbObjectCollection<StoredProcedure> storedProceduresCollection)

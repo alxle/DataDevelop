@@ -129,7 +129,6 @@
     <Compile Include="Data\SQLite\SQLiteDatabase.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Data\SQLite\SQLiteDataTypes.cs" />
     <Compile Include="Data\SQLite\SQLiteFirstFunction.cs" />
     <Compile Include="Data\SQLite\SQLiteListFunction.cs" />
     <Compile Include="Data\SQLite\SQLiteProvider.cs" />

@@ -36,7 +36,7 @@ namespace DataDevelop.Data.SQLite
 
 		public override string CreateDatabaseFile(string fileName)
 		{
-			using (FileStream db = File.Create(fileName)) {
+			using (var db = File.Create(fileName)) {
 				db.Close();
 			}
 			return "Data Source=" + fileName;

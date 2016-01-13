@@ -34,8 +34,8 @@ namespace DataDevelop.Data.Access
 		public string[] GetPrimaryKey()
 		{
 			using (this.Database.CreateConnectionScope()) {
-				List<string> primaryKey = new List<string>();
-				DataTable schema = this.Connection.GetOleDbSchemaTable(OleDbSchemaGuid.Indexes, null);
+				var primaryKey = new List<string>();
+				var schema = this.Connection.GetOleDbSchemaTable(OleDbSchemaGuid.Indexes, null);
 				foreach (DataRow row in schema.Rows) {
 					if ((string)row["TABLE_NAME"] == this.Name) {
 						if ((bool)row["PRIMARY_KEY"]) {
@@ -70,36 +70,31 @@ namespace DataDevelop.Data.Access
 		public override int GetRowCount(TableFilter filter)
 		{
 			int count = -1;
-			OleDbCommand command = this.Connection.CreateCommand();
-			StringBuilder text = new StringBuilder();
-			text.Append("SELECT COUNT(*) FROM ");
-			text.Append(this.QuotedName);
+			var sql = new StringBuilder();
+			sql.Append("SELECT COUNT(*) FROM ");
+			sql.Append(this.QuotedName);
 
 			if (filter != null && filter.IsRowFiltered) {
-				text.Append(" WHERE ");
-				filter.WriteWhereStatement(text);
+				sql.Append(" WHERE ");
+				filter.WriteWhereStatement(sql);
 			}
-
-			command.CommandText = text.ToString();
-			try {
-				this.Database.Connect();
-				count = Convert.ToInt32(command.ExecuteScalar());
-			} finally {
-				this.Database.Disconnect();
+			using (var command = this.Connection.CreateCommand()) {
+				command.CommandText = sql.ToString();
+				using (this.Database.CreateConnectionScope()) {
+					count = Convert.ToInt32(command.ExecuteScalar());
+				}
 			}
 			return count;
 		}
 
 		public override DataTable GetData(int startIndex, int count, TableFilter filter, TableSort sort)
 		{
-			DataTable data = new DataTable(this.Name);
-			try {
-				Database.Connect();
-				OleDbDataAdapter adapter = (OleDbDataAdapter)this.Database.CreateAdapter(this, filter);
-				adapter.SelectCommand.CommandText = this.GetSelectStatement(startIndex, count, filter, sort);
-				adapter.Fill(data);
-			} finally {
-				Database.Disconnect();
+			var data = new DataTable(this.Name);
+			using (this.Database.CreateConnectionScope()) {
+				using (var adapter = (OleDbDataAdapter)this.Database.CreateAdapter(this, filter)) {
+					adapter.SelectCommand.CommandText = this.GetSelectStatement(startIndex, count, filter, sort);
+					adapter.Fill(data);
+				}
 			}
 			return data;
 		}
@@ -107,10 +102,10 @@ namespace DataDevelop.Data.Access
 		protected override void PopulateColumns(IList<Column> columnsCollection)
 		{
 			using (this.Database.CreateConnectionScope()) {
-				DataTable columns = this.Connection.GetSchema("Columns", new string[] { null, null, this.Name, null });
+				var columns = this.Connection.GetSchema("Columns", new string[] { null, null, this.Name, null });
 
 				// Fix because Column are sorted by Name rather than Ordinal Position
-				DataRow[] rows = new DataRow[columns.Rows.Count];
+				var rows = new DataRow[columns.Rows.Count];
 				foreach (DataRow row in columns.Rows) {
 					int i = Convert.ToInt32(row["ORDINAL_POSITION"]) - 1;
 					rows[i] = row;
@@ -118,7 +113,7 @@ namespace DataDevelop.Data.Access
 
 				string[] primaryKey = this.GetPrimaryKey();
 				foreach (DataRow row in rows) {
-					Column column = new Column(this);
+					var column = new Column(this);
 					column.Name = row["COLUMN_NAME"].ToString();
 					if (InPrimaryKey(primaryKey, column.Name)) {
 						column.InPrimaryKey = true;
@@ -157,7 +152,7 @@ namespace DataDevelop.Data.Access
 
 		private static bool InPrimaryKey(string[] primaryKey, string columnName)
 		{
-			foreach (string column in primaryKey) {
+			foreach (var column in primaryKey) {
 				if (column == columnName) {
 					return true;
 				}

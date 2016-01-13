@@ -25,7 +25,7 @@ namespace DataDevelop.Scripting
 
 		private void Print(object obj)
 		{
-			string str = (obj == null) ? "null" : obj.ToString();
+			var str = (obj == null) ? "null" : obj.ToString();
 			str += Environment.NewLine;
 			byte[] buffer = Encoding.Unicode.GetBytes(str);
 			output.Write(buffer, 0, buffer.Length);
@@ -36,8 +36,8 @@ namespace DataDevelop.Scripting
 			if (obj == null) {
 				return "null";
 			}
-			StringBuilder builder = new StringBuilder();
-			Type type = obj.GetType();
+			var builder = new StringBuilder();
+			var type = obj.GetType();
 			foreach (var prop in type.GetProperties()) {
 				builder.AppendFormat("property {0} : {1}", prop.Name, prop.PropertyType);
 				builder.AppendLine();
@@ -91,7 +91,7 @@ namespace DataDevelop.Scripting
 
 			public JTableAdapter Each(Action<DataRow> action)
 			{
-				DataTable rows = new DataTable();
+				var rows = new DataTable();
 				this.adapter.Fill(rows);
 
 				foreach (DataRow row in rows.Rows) {
@@ -127,7 +127,7 @@ namespace DataDevelop.Scripting
 
 			public JTableAdapter Table(string name)
 			{
-				Table table = this.database.Tables[name];
+				var table = this.database.Tables[name];
 				return new JTableAdapter(table);
 			}
         }
@@ -144,10 +144,10 @@ namespace DataDevelop.Scripting
 
 		public override void Execute(string scriptCode)
 		{
-			object result = engine.Execute(scriptCode);
-			if (output != null) {
-				Print(result);
-			}
+			var result = engine.Execute(scriptCode);
+			////if (output != null) {
+			////	Print(result);
+			////}
 		}
 	}
 }

@@ -19,7 +19,7 @@ namespace DataDevelop.Data.SqlServer
 		public override string GenerateCreateStatement()
 		{
 			using (this.table.Database.CreateConnectionScope()) {
-				using (SqlCommand select = this.table.Database.Connection.CreateCommand()) {
+				using (var select = this.table.Database.Connection.CreateCommand()) {
 					select.CommandText = @"SELECT
 SCHEMA_NAME(tbl.schema_id) AS [Table_Schema],
 tbl.name AS [Table_Name],
@@ -53,7 +53,7 @@ ORDER BY
 [Table_Schema] ASC,[Table_Name] ASC,[Name] ASC";
 					select.Parameters.AddWithValue("@TableName", this.table.Name);
 					select.Parameters.AddWithValue("@TableSchema", this.table.Schema);
-					using (SqlDataReader reader = select.ExecuteReader()) {
+					using (var reader = select.ExecuteReader()) {
 						if (reader.Read()) {
 							return reader.GetString(reader.GetOrdinal("Definition"));
 						}
@@ -65,7 +65,7 @@ ORDER BY
 
 		public override string GenerateAlterStatement()
 		{
-			string create = this.GenerateCreateStatement();
+			var create = this.GenerateCreateStatement();
 			if (!String.IsNullOrEmpty(create)) {
 				return Regex.Replace(create, @"^\s*CREATE\s+", "ALTER ");
 			}

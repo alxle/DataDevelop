@@ -11,7 +11,7 @@ namespace DataDevelop.Data.SQLite
 	{
 		public override void Step(object[] args, int stepNumber, ref object contextData)
 		{
-			StringCollection list = contextData as StringCollection;
+			var list = contextData as StringCollection;
 			if (list == null) {
 				list = new StringCollection();
 				contextData = list;
@@ -21,11 +21,11 @@ namespace DataDevelop.Data.SQLite
 
 		public override object Final(object contextData)
 		{
-			StringCollection list = contextData as StringCollection;
+			var list = contextData as StringCollection;
 			if (list == null) {
 				return null;
 			}
-			StringBuilder builder = new StringBuilder();
+			var builder = new StringBuilder();
 			for (int i = 0; i < list.Count; i++) {
 				builder.Append(list[i]);
 				if (i + 1 < list.Count) {

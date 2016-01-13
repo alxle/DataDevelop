@@ -33,7 +33,7 @@ namespace DataDevelop.Data
 
 		public ColumnOrder Clone()
 		{
-			ColumnOrder order = new ColumnOrder(this.column);
+			var order = new ColumnOrder(this.column);
 			order.orderType = this.orderType;
 			return order;
 		}

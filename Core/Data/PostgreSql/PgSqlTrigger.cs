@@ -19,7 +19,7 @@ namespace DataDevelop.Data.PostgreSql
 
 		public override string GenerateCreateStatement()
 		{
-			StringBuilder create = new StringBuilder();
+			var create = new StringBuilder();
 			create.Append("CREATE TRIGGER ");
 			create.Append(this.Name);
 			create.Append(' ');

@@ -36,7 +36,7 @@ namespace DataDevelop.Data.SqlServer
 		public override string GenerateCreateStatement()
 		{
 			using (this.database.CreateConnectionScope()) {
-				using (SqlCommand select = this.database.Connection.CreateCommand()) {
+				using (var select = this.database.Connection.CreateCommand()) {
 					select.CommandText = @"SELECT ISNULL(smsp.definition, ssmsp.definition) AS [Definition]"
 						+ " FROM sys.all_objects AS sp"
 						+ " LEFT OUTER JOIN sys.sql_modules AS smsp ON smsp.object_id = sp.object_id"
@@ -45,7 +45,7 @@ namespace DataDevelop.Data.SqlServer
 						+ "    and(sp.name=@Name and SCHEMA_NAME(sp.schema_id)=@Schema)";
 					select.Parameters.AddWithValue("@Name", this.Name);
 					select.Parameters.AddWithValue("@Schema", this.Schema);
-					object obj = select.ExecuteScalar();
+					var obj = select.ExecuteScalar();
 					if (obj != null && obj != DBNull.Value) {
 						return (string)obj;
 					}
@@ -61,14 +61,14 @@ namespace DataDevelop.Data.SqlServer
 
 		public override string GenerateExecuteStatement()
 		{
-			StringBuilder statement = new StringBuilder();
+			var statement = new StringBuilder();
 			statement.Append("EXECUTE [");
 			statement.Append(this.Schema);
 			statement.Append("].[");
 			statement.Append(this.Name);
 			statement.AppendLine("]");
 			bool first = true;
-			foreach (Parameter p in Parameters) {
+			foreach (var p in this.Parameters) {
 				statement.Append('\t');
 				if (first) {
 					first = false;
@@ -82,11 +82,11 @@ namespace DataDevelop.Data.SqlServer
 		
 		protected override void PopulateParameters(IList<Parameter> parametersCollection)
 		{
-			DataTable parameters = this.database.Connection.GetSchema("ProcedureParameters", new string[] { null, null, this.Name, null });
-			DataView view = new DataView(parameters);
+			var parameters = this.database.Connection.GetSchema("ProcedureParameters", new string[] { null, null, this.Name, null });
+			var view = new DataView(parameters);
 			view.Sort = "ORDINAL_POSITION";
 			foreach (DataRow row in view.ToTable().Rows) {
-				Parameter p = new Parameter();
+				var p = new Parameter();
 				p.IsOutput = ((string)row["PARAMETER_MODE"] != "IN");
 				p.Name = (string)row["PARAMETER_NAME"];
 				p.ProviderType = (string)row["DATA_TYPE"];

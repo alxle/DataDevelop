@@ -1,7 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
 
 namespace DataDevelop.Data.SqlServer
@@ -47,42 +46,41 @@ namespace DataDevelop.Data.SqlServer
 			get { return true; }
 		}
 
-		public override System.Data.Common.DbDataAdapter CreateAdapter(Table table, TableFilter filter)
+		public override DbDataAdapter CreateAdapter(Table table, TableFilter filter)
 		{
-			SqlTable sqlTable = table as SqlTable;
+			var sqlTable = table as SqlTable;
 			if (sqlTable == null) {
 				throw new InvalidOperationException("Table should be an SqlTable");
 			}
-			SqlDataAdapter adapter = new SqlDataAdapter(table.GetBaseSelectCommandText(filter), this.connection);
+			var adapter = new SqlDataAdapter(table.GetBaseSelectCommandText(filter), this.connection);
 			if (!table.IsReadOnly) {
-				SqlCommandBuilder builder = new SqlCommandBuilder(adapter);
+				var builder = new SqlCommandBuilder(adapter);
 				builder.ConflictOption = ConflictOption.OverwriteChanges;
 				try {
-					builder.GetUpdateCommand();
+					adapter.UpdateCommand = builder.GetUpdateCommand();
 				} catch (InvalidOperationException) {
 					sqlTable.SetReadOnly(true);
 					return adapter;
 				}
 				adapter.InsertCommand = builder.GetInsertCommand();
-				adapter.UpdateCommand = builder.GetUpdateCommand();
 				adapter.DeleteCommand = builder.GetDeleteCommand();
 			}
 			return adapter;
 		}
 
-		public override System.Data.Common.DbCommand CreateCommand()
+		public override DbCommand CreateCommand()
 		{
 			return this.Connection.CreateCommand();
 		}
 
-		public override System.Data.Common.DbTransaction BeginTransaction()
+		public override DbTransaction BeginTransaction()
 		{
 			return this.Connection.BeginTransaction();
 		}
 
 		public override int ExecuteNonQuery(string commandText)
 		{
-			using (SqlCommand command = this.connection.CreateCommand()) {
+			using (var command = this.connection.CreateCommand()) {
 				command.CommandText = commandText;
 				return command.ExecuteNonQuery();
 			}
@@ -90,22 +88,22 @@ namespace DataDevelop.Data.SqlServer
 
 		public override DataTable ExecuteTable(string commandText)
 		{
-			using (SqlCommand command = this.connection.CreateCommand()) {
+			using (var command = this.connection.CreateCommand()) {
 				command.CommandText = commandText;
-				DataTable table = new DataTable();
-				using (SqlDataReader reader = command.ExecuteReader()) {
+				var table = new DataTable();
+				using (var reader = command.ExecuteReader()) {
 					table.Load(reader);
 				}
 				return table;
 			}
 		}
 
-		public override int ExecuteNonQuery(string commandText, System.Data.Common.DbTransaction transaction)
+		public override int ExecuteNonQuery(string commandText, DbTransaction transaction)
 		{
 			if ((object)transaction.Connection != (object)this.connection) {
 				throw new InvalidOperationException();
 			}
-			using (SqlCommand command = this.connection.CreateCommand()) {
+			using (var command = this.connection.CreateCommand()) {
 				command.Transaction = (SqlTransaction)transaction;
 				command.CommandText = commandText;
 				return command.ExecuteNonQuery();
@@ -146,11 +144,11 @@ namespace DataDevelop.Data.SqlServer
 		protected override void PopulateTables(DbObjectCollection<Table> tablesCollection)
 		{
 			using (this.CreateConnectionScope()) {
-				string[] restrictions = new string[4];
+				var restrictions = new string[4];
 				restrictions[3] = "Base Table";
-				using (DataTable tables = this.Connection.GetSchema("Tables", restrictions)) {
+				using (var tables = this.Connection.GetSchema("Tables", restrictions)) {
 					foreach (DataRow row in tables.Rows) {
-						SqlTable table = new SqlTable(this);
+						var table = new SqlTable(this);
 						table.Schema = (string)row["TABLE_SCHEMA"];
 						table.Name = (string)row["TABLE_NAME"];
 						tablesCollection.Add(table);
@@ -195,9 +193,9 @@ GROUP BY
 				}
 
 				restrictions[3] = "View";
-				using (DataTable views = this.Connection.GetSchema("Tables", restrictions)) {
+				using (var views = this.Connection.GetSchema("Tables", restrictions)) {
 					foreach (DataRow row in views.Rows) {
-						SqlTable table = new SqlTable(this);
+						var table = new SqlTable(this);
 						table.Schema = (string)row["TABLE_SCHEMA"];
 						table.Name = (string)row["TABLE_NAME"];
 						table.SetView(true);
@@ -209,9 +207,9 @@ GROUP BY
 
 		protected override void PopulateStoredProcedures(DbObjectCollection<StoredProcedure> storedProceduresCollection)
 		{
-			DataTable procedures = this.Connection.GetSchema("Procedures", new string[] { null, null, null, "PROCEDURE" });
+			var procedures = this.Connection.GetSchema("Procedures", new string[] { null, null, null, "PROCEDURE" });
 			foreach (DataRow row in procedures.Rows) {
-				SqlStoredProcedure sp = new SqlStoredProcedure(this);
+				var sp = new SqlStoredProcedure(this);
 				sp.Schema = (string)row["SPECIFIC_SCHEMA"];
 				sp.Name = (string)row["SPECIFIC_NAME"];
 				storedProceduresCollection.Add(sp);

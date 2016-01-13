@@ -102,7 +102,7 @@ namespace DataDevelop.Data
 
 		public virtual bool Delete()
 		{
-			using (IDbCommand create = Database.CreateCommand()) {
+			using (var create = Database.CreateCommand()) {
 				create.CommandText = "DROP " + (this.IsView ? "VIEW " : "TABLE ") + this.QuotedName;
 				try {
 					create.ExecuteNonQuery();
@@ -121,22 +121,20 @@ namespace DataDevelop.Data
 		public virtual int GetRowCount(TableFilter filter)
 		{
 			int count = -1;
-			IDbCommand command = this.Database.CreateCommand();
-			StringBuilder text = new StringBuilder();
-			text.Append("SELECT COUNT(*) FROM ");
-			text.Append(this.QuotedName);
-			
-			if (filter != null && filter.IsRowFiltered) {
-				text.Append(" WHERE ");
-				filter.WriteWhereStatement(text);
-			}
+			using (var command = this.Database.CreateCommand()) {
+				var sql = new StringBuilder();
+				sql.Append("SELECT COUNT(*) FROM ");
+				sql.Append(this.QuotedName);
 
-			command.CommandText = text.ToString();
-			try {
-				this.Database.Connect();
-				count = Convert.ToInt32(command.ExecuteScalar());
-			} finally {
-				this.Database.Disconnect();
+				if (filter != null && filter.IsRowFiltered) {
+					sql.Append(" WHERE ");
+					filter.WriteWhereStatement(sql);
+				}
+
+				command.CommandText = sql.ToString();
+				using (this.Database.CreateConnectionScope()) {
+					count = Convert.ToInt32(command.ExecuteScalar());
+				}
 			}
 			return count;
 		}
@@ -169,7 +167,7 @@ namespace DataDevelop.Data
 
 		public virtual string GetBaseSelectCommandText(TableFilter filter)
 		{
-			StringBuilder select = new StringBuilder();
+			var select = new StringBuilder();
 			select.Append("SELECT ");
 			if (filter != null || filter.IsColumnFiltered) {
 				filter.WriteColumnsProjection(select);
@@ -192,7 +190,7 @@ namespace DataDevelop.Data
 
 		public virtual string GenerateSelectStatement(bool singleResult)
 		{
-			StringBuilder select = new StringBuilder();
+			var select = new StringBuilder();
 			select.AppendLine("SELECT ");
 			bool first = true;
 			foreach (Column column in this.Columns) {
@@ -215,7 +213,7 @@ namespace DataDevelop.Data
 
 		public virtual string GenerateInsertStatement()
 		{
-			StringBuilder insert = new StringBuilder();
+			var insert = new StringBuilder();
 			insert.Append("INSERT INTO ");
 			insert.Append(this.Name);
 			insert.AppendLine();
@@ -255,7 +253,7 @@ namespace DataDevelop.Data
 
 		public virtual string GenerateUpdateStatement()
 		{
-			StringBuilder update = new StringBuilder();
+			var update = new StringBuilder();
 			update.Append("UPDATE ");
 			update.AppendLine(this.Name);
 
@@ -280,7 +278,7 @@ namespace DataDevelop.Data
 
 		public virtual string GenerateDeleteStatement()
 		{
-			StringBuilder delete = new StringBuilder();
+			var delete = new StringBuilder();
 			delete.Append("DELETE FROM ");
 			delete.Append(this.Name);
 			delete.Append(" WHERE ");
@@ -295,7 +293,7 @@ namespace DataDevelop.Data
 
 		public IEnumerable<string> GetColumnNames()
 		{
-			foreach (Column column in this.Columns) {
+			foreach (var column in this.Columns) {
 				yield return column.Name;
 			}
 		}
@@ -313,7 +311,7 @@ namespace DataDevelop.Data
 		protected virtual void InsertWhere(StringBuilder builder)
 		{
 			bool first = true;
-			foreach (Column column in this.Columns) {
+			foreach (var column in this.Columns) {
 				if (column.InPrimaryKey) {
 					builder.Append('\t');
 					if (first) {
@@ -331,10 +329,10 @@ namespace DataDevelop.Data
 
 		protected virtual void SetColumnTypes()
 		{
-			using (IDbCommand command = Database.CreateCommand()) {
+			using (var command = Database.CreateCommand()) {
 				command.CommandText = "SELECT * FROM " + this.QuotedName;
-				using (IDataReader reader = command.ExecuteReader(CommandBehavior.SchemaOnly)) {
-					foreach (Column column in this.Columns) {
+				using (var reader = command.ExecuteReader(CommandBehavior.SchemaOnly)) {
+					foreach (var column in this.Columns) {
 						int ordinal = reader.GetOrdinal(column.Name);
 						if (ordinal != -1) {
 							column.Type = reader.GetFieldType(ordinal);

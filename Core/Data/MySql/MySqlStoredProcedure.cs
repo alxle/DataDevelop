@@ -25,7 +25,7 @@ namespace DataDevelop.Data.MySql
 
 		public override string GenerateCreateStatement()
 		{
-			StringBuilder create = new StringBuilder();
+			var create = new StringBuilder();
 			create.AppendLine("DELIMITER $$");
 			create.AppendLine();
 			create.Append("CREATE PROCEDURE ");
@@ -44,12 +44,12 @@ namespace DataDevelop.Data.MySql
 
 		public override string GenerateExecuteStatement()
 		{
-			StringBuilder statement = new StringBuilder();
+			var statement = new StringBuilder();
 			statement.Append("EXECUTE PROCEDURE ");
 			statement.AppendLine(this.Name);
 			statement.AppendLine("(");
 			bool first = true;
-			foreach (Parameter p in Parameters) {
+			foreach (var p in Parameters) {
 				if (!p.IsOutput) {
 					if (first) {
 						first = false;
