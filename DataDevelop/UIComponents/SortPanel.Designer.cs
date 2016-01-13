@@ -144,7 +144,6 @@ namespace DataDevelop.UIComponents
 		private System.Windows.Forms.DataGridView dataGridView;
 		private System.Windows.Forms.BindingSource columnOrderBindingSource;
 		private System.Windows.Forms.Button resetButton;
-		private System.Windows.Forms.DataGridViewTextBoxColumn columnNameDataGridViewTextBoxColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn ColumnName;
 		private System.Windows.Forms.DataGridViewComboBoxColumn orderTypeComboBoxColumn;
 

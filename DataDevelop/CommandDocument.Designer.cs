@@ -118,9 +118,9 @@ namespace DataDevelop
 			this.textEditorControl.ShowVRuler = false;
 			this.textEditorControl.Size = new System.Drawing.Size(473, 174);
 			this.textEditorControl.TabIndex = 0;
-			this.textEditorControl.DragOver += new System.Windows.Forms.DragEventHandler(this.textEditorControl_DragOver);
 			this.textEditorControl.DragDrop += new System.Windows.Forms.DragEventHandler(this.textEditorControl_DragDrop);
 			this.textEditorControl.DragEnter += new System.Windows.Forms.DragEventHandler(this.textEditorControl_DragEnter);
+			this.textEditorControl.DragOver += new System.Windows.Forms.DragEventHandler(this.textEditorControl_DragOver);
 			// 
 			// splitContainer
 			// 
@@ -689,10 +689,10 @@ namespace DataDevelop
 			this.KeyPreview = true;
 			this.MainMenuStrip = this.menuStrip;
 			this.Name = "CommandDocument";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CommandDocument_FormClosing);
 			this.Load += new System.EventHandler(this.CommandDocument_Load);
 			this.DragDrop += new System.Windows.Forms.DragEventHandler(this.textEditorControl_DragDrop);
 			this.DragEnter += new System.Windows.Forms.DragEventHandler(this.textEditorControl_DragEnter);
-			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CommandDocument_FormClosing);
 			this.splitContainer.Panel1.ResumeLayout(false);
 			this.splitContainer.Panel2.ResumeLayout(false);
 			this.splitContainer.ResumeLayout(false);
