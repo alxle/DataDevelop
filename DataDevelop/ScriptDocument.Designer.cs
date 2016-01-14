@@ -96,7 +96,7 @@ namespace DataDevelop
             this.showResultPanelToolStripButton,
             this.toolStripSeparator8,
             this.statusLabel});
-			this.toolStrip.Location = new System.Drawing.Point(0, 0);
+			this.toolStrip.Location = new System.Drawing.Point(0, 24);
 			this.toolStrip.Name = "toolStrip";
 			this.toolStrip.Padding = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.toolStrip.Size = new System.Drawing.Size(475, 25);
@@ -188,8 +188,9 @@ namespace DataDevelop
 			this.newToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
 			this.newToolStripMenuItem.MergeIndex = 3;
 			this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-			this.newToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+			this.newToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.newToolStripMenuItem.Text = "&New";
+			this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
 			// 
 			// openToolStripMenuItem
 			// 
@@ -198,7 +199,7 @@ namespace DataDevelop
 			this.openToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
 			this.openToolStripMenuItem.MergeIndex = 4;
 			this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-			this.openToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+			this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.openToolStripMenuItem.Text = "&Open";
 			this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
 			// 
@@ -207,7 +208,7 @@ namespace DataDevelop
 			this.toolStripSeparator.MergeAction = System.Windows.Forms.MergeAction.Insert;
 			this.toolStripSeparator.MergeIndex = 5;
 			this.toolStripSeparator.Name = "toolStripSeparator";
-			this.toolStripSeparator.Size = new System.Drawing.Size(140, 6);
+			this.toolStripSeparator.Size = new System.Drawing.Size(149, 6);
 			// 
 			// saveToolStripMenuItem
 			// 
@@ -216,7 +217,7 @@ namespace DataDevelop
 			this.saveToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
 			this.saveToolStripMenuItem.MergeIndex = 6;
 			this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-			this.saveToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+			this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.saveToolStripMenuItem.Text = "&Save";
 			this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
 			// 
@@ -225,7 +226,7 @@ namespace DataDevelop
 			this.saveAsToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
 			this.saveAsToolStripMenuItem.MergeIndex = 7;
 			this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-			this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+			this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.saveAsToolStripMenuItem.Text = "Save &As";
 			this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
 			// 
@@ -234,7 +235,7 @@ namespace DataDevelop
 			this.toolStripSeparator2.MergeAction = System.Windows.Forms.MergeAction.Insert;
 			this.toolStripSeparator2.MergeIndex = 8;
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(140, 6);
+			this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
 			// 
 			// printToolStripMenuItem
 			// 
@@ -243,7 +244,7 @@ namespace DataDevelop
 			this.printToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
 			this.printToolStripMenuItem.MergeIndex = 9;
 			this.printToolStripMenuItem.Name = "printToolStripMenuItem";
-			this.printToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+			this.printToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.printToolStripMenuItem.Text = "&Print";
 			// 
 			// printPreviewToolStripMenuItem
@@ -253,7 +254,7 @@ namespace DataDevelop
 			this.printPreviewToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
 			this.printPreviewToolStripMenuItem.MergeIndex = 10;
 			this.printPreviewToolStripMenuItem.Name = "printPreviewToolStripMenuItem";
-			this.printPreviewToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+			this.printPreviewToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.printPreviewToolStripMenuItem.Text = "Print Pre&view";
 			// 
 			// toolStripSeparator3
@@ -261,14 +262,14 @@ namespace DataDevelop
 			this.toolStripSeparator3.MergeAction = System.Windows.Forms.MergeAction.Insert;
 			this.toolStripSeparator3.MergeIndex = 11;
 			this.toolStripSeparator3.Name = "toolStripSeparator3";
-			this.toolStripSeparator3.Size = new System.Drawing.Size(140, 6);
+			this.toolStripSeparator3.Size = new System.Drawing.Size(149, 6);
 			// 
 			// closeToolStripMenuItem
 			// 
 			this.closeToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
 			this.closeToolStripMenuItem.MergeIndex = 12;
 			this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-			this.closeToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+			this.closeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.closeToolStripMenuItem.Text = "&Close";
 			this.closeToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
 			// 
@@ -277,7 +278,7 @@ namespace DataDevelop
 			this.toolStripSeparator7.MergeAction = System.Windows.Forms.MergeAction.Insert;
 			this.toolStripSeparator7.MergeIndex = 13;
 			this.toolStripSeparator7.Name = "toolStripSeparator7";
-			this.toolStripSeparator7.Size = new System.Drawing.Size(140, 6);
+			this.toolStripSeparator7.Size = new System.Drawing.Size(149, 6);
 			// 
 			// editToolStripMenuItem1
 			// 
@@ -305,7 +306,7 @@ namespace DataDevelop
 			this.undoToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Undo;
 			this.undoToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Replace;
 			this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
-			this.undoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.undoToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
 			this.undoToolStripMenuItem.Text = "&Undo";
 			this.undoToolStripMenuItem.Click += new System.EventHandler(this.undoToolStripMenuItem_Click);
 			// 
@@ -314,14 +315,14 @@ namespace DataDevelop
 			this.redoToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Redo;
 			this.redoToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.MatchOnly;
 			this.redoToolStripMenuItem.Name = "redoToolStripMenuItem";
-			this.redoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.redoToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
 			this.redoToolStripMenuItem.Text = "&Redo";
 			this.redoToolStripMenuItem.Click += new System.EventHandler(this.redoToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator4
 			// 
 			this.toolStripSeparator4.Name = "toolStripSeparator4";
-			this.toolStripSeparator4.Size = new System.Drawing.Size(149, 6);
+			this.toolStripSeparator4.Size = new System.Drawing.Size(121, 6);
 			// 
 			// cutToolStripMenuItem
 			// 
@@ -329,7 +330,7 @@ namespace DataDevelop
 			this.cutToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.cutToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Replace;
 			this.cutToolStripMenuItem.Name = "cutToolStripMenuItem";
-			this.cutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.cutToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
 			this.cutToolStripMenuItem.Text = "Cu&t";
 			this.cutToolStripMenuItem.Click += new System.EventHandler(this.cutToolStripMenuItem_Click);
 			// 
@@ -339,7 +340,7 @@ namespace DataDevelop
 			this.copyToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.copyToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Replace;
 			this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
-			this.copyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.copyToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
 			this.copyToolStripMenuItem.Text = "&Copy";
 			this.copyToolStripMenuItem.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
 			// 
@@ -349,39 +350,39 @@ namespace DataDevelop
 			this.pasteToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.pasteToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Replace;
 			this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
-			this.pasteToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.pasteToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
 			this.pasteToolStripMenuItem.Text = "&Paste";
 			this.pasteToolStripMenuItem.Click += new System.EventHandler(this.pasteToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator5
 			// 
 			this.toolStripSeparator5.Name = "toolStripSeparator5";
-			this.toolStripSeparator5.Size = new System.Drawing.Size(149, 6);
+			this.toolStripSeparator5.Size = new System.Drawing.Size(121, 6);
 			// 
 			// selectAllToolStripMenuItem
 			// 
 			this.selectAllToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Replace;
 			this.selectAllToolStripMenuItem.Name = "selectAllToolStripMenuItem";
-			this.selectAllToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.selectAllToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
 			this.selectAllToolStripMenuItem.Text = "Select &All";
 			this.selectAllToolStripMenuItem.Click += new System.EventHandler(this.selectAllToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator9
 			// 
 			this.toolStripSeparator9.Name = "toolStripSeparator9";
-			this.toolStripSeparator9.Size = new System.Drawing.Size(149, 6);
+			this.toolStripSeparator9.Size = new System.Drawing.Size(121, 6);
 			// 
 			// findToolStripMenuItem
 			// 
 			this.findToolStripMenuItem.Name = "findToolStripMenuItem";
-			this.findToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.findToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
 			this.findToolStripMenuItem.Text = "Find...";
 			this.findToolStripMenuItem.Click += new System.EventHandler(this.findToolStripMenuItem_Click);
 			// 
 			// replaceToolStripMenuItem
 			// 
 			this.replaceToolStripMenuItem.Name = "replaceToolStripMenuItem";
-			this.replaceToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.replaceToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
 			this.replaceToolStripMenuItem.Text = "R&eplace...";
 			this.replaceToolStripMenuItem.Click += new System.EventHandler(this.replaceToolStripMenuItem_Click);
 			// 
@@ -508,12 +509,12 @@ namespace DataDevelop
 			this.textEditorControl.Font = global::DataDevelop.Properties.Settings.Default.TextEditorFont;
 			this.textEditorControl.HasChanges = false;
 			this.textEditorControl.IsReadOnly = false;
-			this.textEditorControl.Location = new System.Drawing.Point(0, 25);
+			this.textEditorControl.Location = new System.Drawing.Point(0, 49);
 			this.textEditorControl.Name = "textEditorControl";
 			this.textEditorControl.ShowEOLMarkers = true;
 			this.textEditorControl.ShowSpaces = true;
 			this.textEditorControl.ShowTabs = true;
-			this.textEditorControl.Size = new System.Drawing.Size(475, 374);
+			this.textEditorControl.Size = new System.Drawing.Size(475, 350);
 			this.textEditorControl.TabIndex = 8;
 			// 
 			// backgroundWorker

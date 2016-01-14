@@ -260,6 +260,26 @@ namespace DataDevelop
 		{
 			findDialog.ShowFor(this.textEditorControl, true);
 		}
+
+		private void newToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (textEditorControl.HasChanges) {
+				var result = MessageBox.Show(this, "Save Changes?", "Confirmation", MessageBoxButtons.YesNoCancel);
+				if (result == DialogResult.Yes) {
+					Save();
+					if (this.textEditorControl.HasChanges) {
+						return;
+					}
+				}
+				if (result == DialogResult.Cancel) {
+					return;
+				}
+			}
+			textEditorControl.Visible = false;
+			textEditorControl.FileName = null;
+			textEditorControl.ResetText();
+			textEditorControl.Visible = true;
+		}
 	}
 }
 
