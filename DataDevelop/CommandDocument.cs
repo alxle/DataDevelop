@@ -500,7 +500,22 @@ namespace DataDevelop
 
 		private void newToolStripButton_Click(object sender, EventArgs e)
 		{
+			if (textEditorControl.HasChanges) {
+				var result = MessageBox.Show(this, "Save Changes?", "Confirmation", MessageBoxButtons.YesNoCancel);
+				if (result == DialogResult.Yes) {
+					Save();
+					if (this.textEditorControl.HasChanges) {
+						return;
+					}
+				}
+				if (result == DialogResult.Cancel) {
+					return;
+				}
+			}
+			textEditorControl.Visible = false;
+			textEditorControl.FileName = null;
 			textEditorControl.ResetText();
+			textEditorControl.Visible = true;
 		}
 
 		private void printToolStripButton_Click(object sender, EventArgs e)
@@ -643,6 +658,17 @@ namespace DataDevelop
 				this.abortButton.Enabled = false;
 				this.statusLabel.Text = "Aborting...";
 				this.executeWorker.AbortAsync();
+			}
+		}
+
+		private void textEditorControl_FileNameChanged(object sender, EventArgs e)
+		{
+			if (textEditorControl.FileName == null) {
+				fileNameStatusLabel.ToolTipText = null;
+				fileNameStatusLabel.Text = "Unsaved*";
+			} else {
+				fileNameStatusLabel.ToolTipText = textEditorControl.FileName;
+				fileNameStatusLabel.Text = Path.GetFileName(textEditorControl.FileName);
 			}
 		}
 	}

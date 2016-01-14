@@ -89,6 +89,7 @@ namespace DataDevelop
 			this.printPreviewDialog = new System.Windows.Forms.PrintPreviewDialog();
 			this.excelWorker = new System.ComponentModel.BackgroundWorker();
 			this.executingTimer = new System.Windows.Forms.Timer(this.components);
+			this.fileNameStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.splitContainer.Panel1.SuspendLayout();
 			this.splitContainer.Panel2.SuspendLayout();
 			this.splitContainer.SuspendLayout();
@@ -118,6 +119,7 @@ namespace DataDevelop
 			this.textEditorControl.ShowVRuler = false;
 			this.textEditorControl.Size = new System.Drawing.Size(473, 174);
 			this.textEditorControl.TabIndex = 0;
+			this.textEditorControl.FileNameChanged += new System.EventHandler(this.textEditorControl_FileNameChanged);
 			this.textEditorControl.DragDrop += new System.Windows.Forms.DragEventHandler(this.textEditorControl_DragDrop);
 			this.textEditorControl.DragEnter += new System.Windows.Forms.DragEventHandler(this.textEditorControl_DragEnter);
 			this.textEditorControl.DragOver += new System.Windows.Forms.DragEventHandler(this.textEditorControl_DragOver);
@@ -489,6 +491,7 @@ namespace DataDevelop
 			this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusLabel,
             this.progressBar,
+            this.fileNameStatusLabel,
             this.providerStatusLabel,
             this.databaseStatusLabel,
             this.elapsedTimeStatusLabel,
@@ -496,6 +499,7 @@ namespace DataDevelop
 			this.statusStrip.Location = new System.Drawing.Point(0, 373);
 			this.statusStrip.Name = "statusStrip";
 			this.statusStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.ManagerRenderMode;
+			this.statusStrip.ShowItemToolTips = true;
 			this.statusStrip.Size = new System.Drawing.Size(473, 24);
 			this.statusStrip.SizingGrip = false;
 			this.statusStrip.TabIndex = 5;
@@ -504,7 +508,7 @@ namespace DataDevelop
 			// 
 			this.statusLabel.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
 			this.statusLabel.Name = "statusLabel";
-			this.statusLabel.Size = new System.Drawing.Size(274, 19);
+			this.statusLabel.Size = new System.Drawing.Size(213, 19);
 			this.statusLabel.Spring = true;
 			this.statusLabel.Text = "Ready.";
 			this.statusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -675,6 +679,13 @@ namespace DataDevelop
 			this.executingTimer.Interval = 1000;
 			this.executingTimer.Tick += new System.EventHandler(this.executingTimer_Tick);
 			// 
+			// fileNameStatusLabel
+			// 
+			this.fileNameStatusLabel.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
+			this.fileNameStatusLabel.Name = "fileNameStatusLabel";
+			this.fileNameStatusLabel.Size = new System.Drawing.Size(61, 19);
+			this.fileNameStatusLabel.Text = "Unsaved*";
+			// 
 			// CommandDocument
 			// 
 			this.AllowDrop = true;
@@ -775,5 +786,6 @@ namespace DataDevelop
 		private System.ComponentModel.BackgroundWorker excelWorker;
 		private System.Windows.Forms.Timer executingTimer;
 		private System.Windows.Forms.ToolStripButton abortButton;
+		private System.Windows.Forms.ToolStripStatusLabel fileNameStatusLabel;
 	}
 }
