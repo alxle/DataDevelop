@@ -144,20 +144,22 @@ namespace DataDevelop.Data
 											}
 										}
 
-										var p = command.CreateParameter();
-										p.ParameterName = database.ParameterPrefix + paramName;
-										if (!command.Parameters.Contains(p.ParameterName)) {
+										var parameterName = database.ParameterPrefix + paramName;
+										if (!command.Parameters.Contains(parameterName)) {
+											var p = command.CreateParameter();
+											p.ParameterName = parameterName;
 											p.SourceColumn = paramName;
 											p.DbType = dbType;
 											command.Parameters.Add(p);
 										} else {
+											var p = command.Parameters[parameterName];
 											if (p.DbType != dbType) {
 												throw new FormatException(
 													String.Format("Parameter {0} already declared with diferent DbType", paramName));
 											}
 										}
 										// Do not use p.ParameterName since some providers remove the prefix
-										result.Append(database.ParameterPrefix + paramName);
+										result.Append(parameterName);
 									}
 									break;
 								default:
