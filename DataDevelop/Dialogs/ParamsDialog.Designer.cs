@@ -31,10 +31,10 @@
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.dataGridView1 = new DataDevelop.DataGridView();
-			this.iDataParameterBindingSource = new System.Windows.Forms.BindingSource(this.components);
 			this.parameterNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.dbTypeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
 			this.valueDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.iDataParameterBindingSource = new System.Windows.Forms.BindingSource(this.components);
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.iDataParameterBindingSource)).BeginInit();
 			this.SuspendLayout();
@@ -51,9 +51,9 @@
 			// 
 			this.dataGridView1.AllowUserToAddRows = false;
 			this.dataGridView1.AllowUserToDeleteRows = false;
-			this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-						| System.Windows.Forms.AnchorStyles.Left)
-						| System.Windows.Forms.AnchorStyles.Right)));
+			this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.dataGridView1.AutoGenerateColumns = false;
 			this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
 			this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
@@ -69,10 +69,6 @@
 			this.dataGridView1.Size = new System.Drawing.Size(385, 147);
 			this.dataGridView1.StartRowNumber = 1;
 			this.dataGridView1.TabIndex = 2;
-			// 
-			// iDataParameterBindingSource
-			// 
-			this.iDataParameterBindingSource.DataSource = typeof(System.Data.IDataParameter);
 			// 
 			// parameterNameDataGridViewTextBoxColumn
 			// 
@@ -101,12 +97,18 @@
 			this.valueDataGridViewTextBoxColumn.Name = "valueDataGridViewTextBoxColumn";
 			this.valueDataGridViewTextBoxColumn.Width = 140;
 			// 
+			// iDataParameterBindingSource
+			// 
+			this.iDataParameterBindingSource.DataSource = typeof(System.Data.IDataParameter);
+			// 
 			// ParamsDialog
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.ClientSize = new System.Drawing.Size(409, 200);
 			this.Controls.Add(this.dataGridView1);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
 			this.Name = "ParamsDialog";
+			this.ShowIcon = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Parameters";
 			this.Controls.SetChildIndex(this.dataGridView1, 0);
