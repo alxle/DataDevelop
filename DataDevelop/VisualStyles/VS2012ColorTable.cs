@@ -175,11 +175,11 @@ namespace DataDevelop.VisualStyles
         }
         public override Color StatusStripGradientBegin
         { 
-            get { return Color.FromArgb(255, 79, 146, 219); }
+            get { return Color.FromArgb(255, 239, 239, 242); }
         }
         public override Color StatusStripGradientEnd
         { 
-            get { return Color.FromArgb(255, 79, 146, 219); }
+            get { return Color.FromArgb(255, 239, 239, 242); }
         }
         public override Color ToolStripBorder
         { 
