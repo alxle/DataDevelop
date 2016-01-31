@@ -286,7 +286,12 @@ namespace DataDevelop
 			ShowFullElapsedTime(stopwatch.Elapsed);
 
 			if (e.Error != null) {
-				ShowMessage(e.Error.Message);
+				var errorMessage = new StringBuilder();
+				var error = e.Error;
+				do {
+					errorMessage.AppendLine(error.Message);
+				} while ((error = error.InnerException) != null);
+				ShowMessage(errorMessage.ToString());
 				statusLabel.Text = "Error.";
 			} else if (e.Cancelled) { // Aborted
 				ShowMessage("Execution was aborted.");
