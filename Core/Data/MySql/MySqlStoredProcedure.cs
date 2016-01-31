@@ -45,7 +45,7 @@ namespace DataDevelop.Data.MySql
 		public override string GenerateExecuteStatement()
 		{
 			var statement = new StringBuilder();
-			statement.Append("EXECUTE PROCEDURE ");
+			statement.Append("CALL ");
 			statement.AppendLine(this.Name);
 			statement.AppendLine("(");
 			bool first = true;
@@ -69,7 +69,19 @@ namespace DataDevelop.Data.MySql
 
 		protected override void PopulateParameters(IList<Parameter> parametersCollection)
 		{
-			// TODO
+			var connection = this.database.Connection;
+			var parameters = connection.GetSchema("Procedure Parameters", 
+				new string[] { null, connection.Database, this.Name });
+			var view = new DataView(parameters);
+			view.Sort = "ORDINAL_POSITION";
+			foreach (DataRow row in view.ToTable().Rows) {
+				parametersCollection.Add(new Parameter()
+				{
+					Name = (string)row["PARAMETER_NAME"],
+					IsOutput = (string)row["PARAMETER_MODE"] == "OUT",
+					ProviderType = (string)row["DATA_TYPE"]
+				});
+			}
 		}
 	}
 }
