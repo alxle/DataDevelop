@@ -12,7 +12,7 @@ using System;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("DataDevelop")]
-[assembly: AssemblyCopyright("Copyright © Alex LE 2015")]
+[assembly: AssemblyCopyright("Copyright © Alex LE 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: NeutralResourcesLanguage("en-US")]
@@ -33,5 +33,5 @@ using System;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("0.13.1.0")]
-[assembly: AssemblyFileVersion("0.13.1.0")]
+[assembly: AssemblyVersion("0.14.0.0")]
+[assembly: AssemblyFileVersion("0.14.0.0")]
