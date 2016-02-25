@@ -12,7 +12,7 @@ namespace DataDevelop.Data
 
 		public DbObjectCollection()
 		{
-			this.objects = new SortedList<string, T>();
+			this.objects = new SortedList<string, T>(StringComparer.OrdinalIgnoreCase);
 		}
 
 		public int Count
@@ -35,6 +35,13 @@ namespace DataDevelop.Data
 		{
 			get { return this.objects[name]; }
 			set { throw new InvalidOperationException(); }
+		}
+
+		public T GetOrDefault(string name)
+		{
+			T value = default(T);
+			this.objects.TryGetValue(name, out value);
+			return value;
 		}
 
 		public int IndexOf(T item)

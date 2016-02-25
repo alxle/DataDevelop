@@ -117,12 +117,14 @@ class Database:
 		self.base.Disconnect()
 	
 	def __getattr__(self, name):
-		for table in self.base.Tables:
-			tableName = table.Name.replace(" ", "_")
-			if tableName == name:
-				t = Table(table)
-				self.__dict__[tableName] = t
-				return t
+		table = self.base.Tables[name]
+		if table == None:
+			name = name.replace("_", " ")
+			table = self.base.Table[name]
+		if table != None:
+			t = Table(table)
+			self.__dict__[name] = t
+			return t
 	
 	def Query(self, command, *values):
 		from System.Collections import ArrayList
