@@ -45,20 +45,18 @@ namespace DataDevelop
 				topBar.BackColor = bottomBar.BackColor = SystemColors.Control;
 				ToolStripManager.Renderer = VisualStyles.SystemToolStripRenderers.ToolStripSquaredEdgesRenderer;
 				ToolStripManager.VisualStylesEnabled = false;
-			} if (visualStyle == "VS2003") {
+			} else if (visualStyle == "VS2003") {
 				this.dockPanel.Theme = new VS2003Theme();
 				topBar.Visible = bottomBar.Visible = false;
 				topBar.BackColor = bottomBar.BackColor = SystemColors.Control;
 				ToolStripManager.Renderer = VisualStyles.SystemToolStripRenderers.ToolStripSquaredEdgesRenderer;
 				ToolStripManager.VisualStylesEnabled = false;
-
 			} else if (visualStyle == "VS2012 Light") {
 				this.dockPanel.Theme = new VS2012LightTheme();
 				topBar.Visible = bottomBar.Visible = false;
 				topBar.BackColor = bottomBar.BackColor = SystemColors.Control;
 				ToolStripManager.VisualStylesEnabled = true;
 				ToolStripManager.Renderer = new VisualStyles.VS2012ToolStripRenderer();
-
 			} else {
 				this.dockPanel.Theme = new VS2015BlueTheme();
 				var darkBlue = Color.FromArgb(0xFF, 41, 57, 85);
