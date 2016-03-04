@@ -75,23 +75,36 @@ namespace DataDevelop
 
 		public static void SaveDatabases()
 		{
+			var error = false;
 			if (DatabasesManager.IsCollectionDirty) {
-				XmlWriterSettings settings = new XmlWriterSettings();
-				settings.Indent = true;
-				XmlWriter writer = XmlWriter.Create(DatabasesFileName, settings);
+				var settings = new XmlWriterSettings() { Indent = true };
+				var writer = XmlWriter.Create(DatabasesFileName + ".saving", settings);
 				try {
 					writer.WriteStartElement("Databases");
-					foreach (Database db in Databases.Values) {
+					foreach (var db in Databases.Values) {
 						writer.WriteStartElement(db.Provider.Name);
 						writer.WriteAttributeString("Name", db.Name);
 						writer.WriteString(db.ConnectionString);
 						writer.WriteEndElement();
 					}
-				} catch (XmlException) {
+				} catch (Exception ex) {
+					error = true;
+					var errorLogFile = "ErrorLog-" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".txt";
+					using (var log = new StreamWriter(Path.Combine(GetDataDirectory(), errorLogFile))) {
+						log.WriteLine("Exception Saving Databases");
+						log.WriteLine("==========================");
+						log.WriteLine();
+						log.WriteLine("Exception type: " + ex.GetType().FullName);
+						log.WriteLine(ex.ToString());
+						log.WriteLine();
+					}
 				} finally {
-					writer.WriteFullEndElement();
-					writer.Close();
-					DatabasesManager.IsCollectionDirty = false;
+					if (!error) {
+						writer.WriteFullEndElement();
+						writer.Close();
+						File.Replace(DatabasesFileName + ".saving", DatabasesFileName, null);
+						DatabasesManager.IsCollectionDirty = false;
+					}
 				}
 			}
 		}
