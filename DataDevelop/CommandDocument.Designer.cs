@@ -69,6 +69,7 @@ namespace DataDevelop
 			this.statusStrip = new System.Windows.Forms.StatusStrip();
 			this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.progressBar = new System.Windows.Forms.ToolStripProgressBar();
+			this.fileNameStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.providerStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.databaseStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.elapsedTimeStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
@@ -89,7 +90,6 @@ namespace DataDevelop
 			this.printPreviewDialog = new System.Windows.Forms.PrintPreviewDialog();
 			this.excelWorker = new System.ComponentModel.BackgroundWorker();
 			this.executingTimer = new System.Windows.Forms.Timer(this.components);
-			this.fileNameStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.splitContainer.Panel1.SuspendLayout();
 			this.splitContainer.Panel2.SuspendLayout();
 			this.splitContainer.SuspendLayout();
@@ -402,21 +402,23 @@ namespace DataDevelop
 			// findToolStripMenuItem
 			// 
 			this.findToolStripMenuItem.Name = "findToolStripMenuItem";
-			this.findToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+			this.findToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
+			this.findToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
 			this.findToolStripMenuItem.Text = "Find...";
 			this.findToolStripMenuItem.Click += new System.EventHandler(this.Find);
 			// 
 			// replaceToolStripMenuItem
 			// 
 			this.replaceToolStripMenuItem.Name = "replaceToolStripMenuItem";
-			this.replaceToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+			this.replaceToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
+			this.replaceToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
 			this.replaceToolStripMenuItem.Text = "Replace...";
 			this.replaceToolStripMenuItem.Click += new System.EventHandler(this.Replace);
 			// 
 			// removeAllTabsToolStripMenuItem
 			// 
 			this.removeAllTabsToolStripMenuItem.Name = "removeAllTabsToolStripMenuItem";
-			this.removeAllTabsToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+			this.removeAllTabsToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
 			this.removeAllTabsToolStripMenuItem.Text = "Remove all tabs";
 			this.removeAllTabsToolStripMenuItem.Click += new System.EventHandler(this.RemoveAllTabs);
 			// 
@@ -518,6 +520,13 @@ namespace DataDevelop
 			this.progressBar.Name = "progressBar";
 			this.progressBar.Size = new System.Drawing.Size(100, 18);
 			this.progressBar.Visible = false;
+			// 
+			// fileNameStatusLabel
+			// 
+			this.fileNameStatusLabel.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
+			this.fileNameStatusLabel.Name = "fileNameStatusLabel";
+			this.fileNameStatusLabel.Size = new System.Drawing.Size(61, 19);
+			this.fileNameStatusLabel.Text = "Unsaved*";
 			// 
 			// providerStatusLabel
 			// 
@@ -644,7 +653,7 @@ namespace DataDevelop
 			this.executeToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Start;
 			this.executeToolStripMenuItem.Name = "executeToolStripMenuItem";
 			this.executeToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-			this.executeToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+			this.executeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.executeToolStripMenuItem.Text = "Execute";
 			this.executeToolStripMenuItem.Click += new System.EventHandler(this.executeButton_Click);
 			// 
@@ -678,13 +687,6 @@ namespace DataDevelop
 			// 
 			this.executingTimer.Interval = 1000;
 			this.executingTimer.Tick += new System.EventHandler(this.executingTimer_Tick);
-			// 
-			// fileNameStatusLabel
-			// 
-			this.fileNameStatusLabel.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
-			this.fileNameStatusLabel.Name = "fileNameStatusLabel";
-			this.fileNameStatusLabel.Size = new System.Drawing.Size(61, 19);
-			this.fileNameStatusLabel.Text = "Unsaved*";
 			// 
 			// CommandDocument
 			// 
