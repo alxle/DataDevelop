@@ -27,8 +27,9 @@ namespace DataDevelop.Data
 			get
 			{
 				if (this.columnsCollection == null) {
-					this.columnsCollection = new List<Column>();
-					this.PopulateColumns(this.columnsCollection);
+					var columns = new List<Column>();
+					this.PopulateColumns(columns);
+					this.columnsCollection = columns;
 				}
 				return this.columnsCollection;
 			}
@@ -40,8 +41,9 @@ namespace DataDevelop.Data
 			get
 			{
 				if (this.keysCollection == null) {
-					this.keysCollection = new List<ForeignKey>();
-					this.PopulateForeignKeys(this.keysCollection);
+					var keys = new List<ForeignKey>();
+					this.PopulateForeignKeys(keys);
+					this.keysCollection = keys;
 				}
 				return this.keysCollection;
 			}
@@ -53,8 +55,9 @@ namespace DataDevelop.Data
 			get
 			{
 				if (this.triggersCollection == null) {
-					this.triggersCollection = new List<Trigger>();
-					this.PopulateTriggers(this.triggersCollection);
+					var triggers = new List<Trigger>();
+					this.PopulateTriggers(triggers);
+					this.triggersCollection = triggers;
 				}
 				return this.triggersCollection;
 			}

@@ -21,8 +21,9 @@ namespace DataDevelop.Data
 			get
 			{
 				if (this.parameters == null) {
-					this.parameters = new List<Parameter>();
-					this.PopulateParameters(this.parameters);
+					var parametersList = new List<Parameter>();
+					this.PopulateParameters(parametersList);
+					this.parameters = parametersList;
 				}
 				return this.parameters;
 			}

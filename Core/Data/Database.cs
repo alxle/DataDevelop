@@ -23,8 +23,9 @@ namespace DataDevelop.Data
 			get
 			{
 				if (this.tablesCollection == null) {
-					this.tablesCollection = new DbObjectCollection<Table>();
-					this.PopulateTables(this.tablesCollection);
+					var tables = new DbObjectCollection<Table>();
+					this.PopulateTables(tables);
+					this.tablesCollection = tables;
 				}
 				return this.tablesCollection;
 			}
@@ -35,8 +36,9 @@ namespace DataDevelop.Data
 			get
 			{
 				if (this.storedProceduresCollection == null) {
-					this.storedProceduresCollection = new DbObjectCollection<StoredProcedure>();
-					this.PopulateStoredProcedures(this.storedProceduresCollection);
+					var procedures = new DbObjectCollection<StoredProcedure>();
+					this.PopulateStoredProcedures(procedures);
+					this.storedProceduresCollection = procedures;
 				}
 				return this.storedProceduresCollection;
 			}
@@ -47,8 +49,9 @@ namespace DataDevelop.Data
 			get
 			{
 				if (this.userDefinedFunctionsCollection == null) {
-					this.userDefinedFunctionsCollection = new DbObjectCollection<UserDefinedFunction>();
-					this.PopulateUserDefinedFunctions(this.userDefinedFunctionsCollection);
+					var functions = new DbObjectCollection<UserDefinedFunction>();
+					this.PopulateUserDefinedFunctions(functions);
+					this.userDefinedFunctionsCollection = functions;
 				}
 				return this.userDefinedFunctionsCollection;
 			}
