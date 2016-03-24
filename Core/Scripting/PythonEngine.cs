@@ -10,7 +10,14 @@ namespace DataDevelop.Scripting
 {
 	public class PythonScriptEngine : ScriptEngine
 	{
-		PythonEngine engine = new PythonEngine();
+		Microsoft.Scripting.Hosting.ScriptEngine engine;
+		Microsoft.Scripting.Hosting.ScriptScope scope;
+
+		public PythonScriptEngine()
+		{
+			engine = Python.CreateEngine();
+			scope = engine.CreateScope();
+		}
 
 		public override string Name
 		{
@@ -24,15 +31,15 @@ namespace DataDevelop.Scripting
 
 		public override void Initialize(Stream output, IDictionary<string, Database> databases)
 		{
-			engine.Sys.DefaultEncoding = Encoding.Unicode;
-			engine.SetStandardOutput(output);
-			engine.Globals["_dbs"] = databases;
-			engine.Execute(Properties.Resources.PythonScript);
+			var runtime = engine.Runtime;
+			runtime.IO.SetOutput(output, Encoding.Unicode);
+			scope.SetVariable("_dbs", databases);
+			engine.Execute(Properties.Resources.PythonScript, scope);
 		}
 
 		public override void Execute(string scriptCode)
 		{
-			engine.Execute(scriptCode);
+			engine.Execute(scriptCode, scope);
 		}
 	}
 }
