@@ -161,7 +161,7 @@ namespace DataDevelop.Data.SqlServer
 					}
 					columnsCollection.Add(column);
 				}
-				this.SetColumnTypes();
+				this.SetColumnTypes(columnsCollection);
 			}
 		}
 

@@ -199,7 +199,7 @@ namespace DataDevelop.Data.OleDb
 					column.ProviderType = ((OleDbType)row["DATA_TYPE"]).ToString();
 					columnsCollection.Add(column);
 				}
-				this.SetColumnTypes();
+				this.SetColumnTypes(columnsCollection);
 			}
 		}
 

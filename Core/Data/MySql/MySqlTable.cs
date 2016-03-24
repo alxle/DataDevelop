@@ -103,7 +103,7 @@ namespace DataDevelop.Data.MySql
 					column.ProviderType = row["COLUMN_TYPE"].ToString();
 					columnsCollection.Add(column);
 				}
-				this.SetColumnTypes();
+				this.SetColumnTypes(columnsCollection);
 			}
 		}
 
