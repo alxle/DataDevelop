@@ -132,7 +132,7 @@ namespace DataDevelop.Data.PostgreSql
 
 					columnsCollection.Add(column);
 				}
-				this.SetColumnTypes();
+				this.SetColumnTypes(columnsCollection);
 			}
 		}
 

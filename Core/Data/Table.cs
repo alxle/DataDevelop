@@ -330,12 +330,12 @@ namespace DataDevelop.Data
 			}
 		}
 
-		protected virtual void SetColumnTypes()
+		protected virtual void SetColumnTypes(IList<Column> columns)
 		{
 			using (var command = Database.CreateCommand()) {
 				command.CommandText = "SELECT * FROM " + this.QuotedName;
 				using (var reader = command.ExecuteReader(CommandBehavior.SchemaOnly)) {
-					foreach (var column in this.Columns) {
+					foreach (var column in columns) {
 						int ordinal = reader.GetOrdinal(column.Name);
 						if (ordinal != -1) {
 							column.Type = reader.GetFieldType(ordinal);

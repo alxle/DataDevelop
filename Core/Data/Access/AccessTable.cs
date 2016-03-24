@@ -121,7 +121,7 @@ namespace DataDevelop.Data.Access
 					column.ProviderType = ((OleDbType)row["DATA_TYPE"]).ToString();
 					columnsCollection.Add(column);
 				}
-				this.SetColumnTypes();
+				this.SetColumnTypes(columnsCollection);
 			}
 		}
 

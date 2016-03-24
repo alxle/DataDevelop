@@ -57,7 +57,7 @@ namespace DataDevelop.Data.SQLite
 
 					columnsCollection.Add(column);
 				}
-				this.SetColumnTypes();
+				this.SetColumnTypes(columnsCollection);
 			}
 		}
 
