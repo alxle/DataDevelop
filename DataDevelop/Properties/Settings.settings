@@ -17,5 +17,11 @@
     <Setting Name="CallUpgrade" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="FilterDialogSize" Type="System.Drawing.Size" Scope="User">
+      <Value Profile="(Default)">480, 300</Value>
+    </Setting>
+    <Setting Name="SortDialogSize" Type="System.Drawing.Size" Scope="User">
+      <Value Profile="(Default)">320, 240</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

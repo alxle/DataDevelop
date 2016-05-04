@@ -95,6 +95,7 @@ namespace DataDevelop
 			if (CloseAllDocuments()) {
 				databaseExplorer.SaveDatabases();
 				dockPanel.SaveAsXml(SettingsManager.DockPropertiesFileName);
+				Properties.Settings.Default.Save();
 			} else {
 				e.Cancel = true;
 			}

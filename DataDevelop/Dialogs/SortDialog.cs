@@ -21,5 +21,18 @@ namespace DataDevelop
 		{
 			get { return sortPanel.Sort; }
 		}
+
+		private void SortDialog_Load(object sender, EventArgs e)
+		{
+			var settingsSize = Properties.Settings.Default.SortDialogSize;
+			if (settingsSize.Width >= this.MinimumSize.Width && settingsSize.Height >= settingsSize.Height) {
+				this.Size = settingsSize;
+			}
+		}
+
+		private void SortDialog_FormClosed(object sender, FormClosedEventArgs e)
+		{
+			Properties.Settings.Default.SortDialogSize = this.Size;
+		}
 	}
 }
