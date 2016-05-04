@@ -82,5 +82,29 @@ namespace DataDevelop.Properties {
                 this["CallUpgrade"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("480, 300")]
+        public global::System.Drawing.Size FilterDialogSize {
+            get {
+                return ((global::System.Drawing.Size)(this["FilterDialogSize"]));
+            }
+            set {
+                this["FilterDialogSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("320, 240")]
+        public global::System.Drawing.Size SortDialogSize {
+            get {
+                return ((global::System.Drawing.Size)(this["SortDialogSize"]));
+            }
+            set {
+                this["SortDialogSize"] = value;
+            }
+        }
     }
 }

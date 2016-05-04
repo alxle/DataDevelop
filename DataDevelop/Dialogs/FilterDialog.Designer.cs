@@ -47,7 +47,7 @@ namespace DataDevelop
 			// 
 			this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.okButton.Location = new System.Drawing.Point(277, 249);
+			this.okButton.Location = new System.Drawing.Point(293, 258);
 			this.okButton.Name = "okButton";
 			this.okButton.Size = new System.Drawing.Size(75, 23);
 			this.okButton.TabIndex = 0;
@@ -58,7 +58,7 @@ namespace DataDevelop
 			// 
 			this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.cancelButton.Location = new System.Drawing.Point(358, 249);
+			this.cancelButton.Location = new System.Drawing.Point(374, 258);
 			this.cancelButton.Name = "cancelButton";
 			this.cancelButton.Size = new System.Drawing.Size(75, 23);
 			this.cancelButton.TabIndex = 1;
@@ -70,9 +70,9 @@ namespace DataDevelop
 			this.dataGridView.AllowUserToAddRows = false;
 			this.dataGridView.AllowUserToDeleteRows = false;
 			this.dataGridView.AllowUserToResizeRows = false;
-			this.dataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-						| System.Windows.Forms.AnchorStyles.Left)
-						| System.Windows.Forms.AnchorStyles.Right)));
+			this.dataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.dataGridView.AutoGenerateColumns = false;
 			this.dataGridView.BackgroundColor = System.Drawing.SystemColors.Window;
 			this.dataGridView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
@@ -86,10 +86,10 @@ namespace DataDevelop
 			this.dataGridView.Location = new System.Drawing.Point(1, 1);
 			this.dataGridView.Name = "dataGridView";
 			this.dataGridView.RowHeadersVisible = false;
-			this.dataGridView.Size = new System.Drawing.Size(446, 244);
+			this.dataGridView.Size = new System.Drawing.Size(462, 253);
 			this.dataGridView.TabIndex = 2;
-			this.dataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_CellValueChanged);
 			this.dataGridView.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.dataGridView_CellPainting);
+			this.dataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_CellValueChanged);
 			this.dataGridView.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dataGridView_DataBindingComplete);
 			// 
 			// Output
@@ -130,7 +130,7 @@ namespace DataDevelop
 			// clearButton
 			// 
 			this.clearButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.clearButton.Location = new System.Drawing.Point(98, 249);
+			this.clearButton.Location = new System.Drawing.Point(98, 258);
 			this.clearButton.Name = "clearButton";
 			this.clearButton.Size = new System.Drawing.Size(75, 23);
 			this.clearButton.TabIndex = 3;
@@ -145,7 +145,7 @@ namespace DataDevelop
 			this.selectAllCheckBox.AutoSize = true;
 			this.selectAllCheckBox.Checked = true;
 			this.selectAllCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.selectAllCheckBox.Location = new System.Drawing.Point(12, 253);
+			this.selectAllCheckBox.Location = new System.Drawing.Point(12, 262);
 			this.selectAllCheckBox.Name = "selectAllCheckBox";
 			this.selectAllCheckBox.Size = new System.Drawing.Size(70, 17);
 			this.selectAllCheckBox.TabIndex = 4;
@@ -159,7 +159,7 @@ namespace DataDevelop
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.cancelButton;
-			this.ClientSize = new System.Drawing.Size(448, 275);
+			this.ClientSize = new System.Drawing.Size(464, 284);
 			this.ControlBox = false;
 			this.Controls.Add(this.selectAllCheckBox);
 			this.Controls.Add(this.clearButton);
@@ -172,6 +172,7 @@ namespace DataDevelop
 			this.Name = "FilterDialog";
 			this.ShowInTaskbar = false;
 			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
+			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FilterDialog_FormClosed);
 			this.Load += new System.EventHandler(this.FilterDialog_Load);
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.columnFilterBindingSource)).EndInit();
