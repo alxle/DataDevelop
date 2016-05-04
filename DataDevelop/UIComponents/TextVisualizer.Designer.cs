@@ -39,14 +39,14 @@ namespace DataDevelop.UIComponents
 			this.pasteToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.toggleWordWrapButton = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+			this.actionsToolStripDropDownButton = new System.Windows.Forms.ToolStripDropDownButton();
+			this.changeFontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.formatXmlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip = new System.Windows.Forms.StatusStrip();
 			this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
 			this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-			this.actionsToolStripDropDownButton = new System.Windows.Forms.ToolStripDropDownButton();
-			this.changeFontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.formatXmlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.fontDialog = new System.Windows.Forms.FontDialog();
 			this.toolStrip.SuspendLayout();
 			this.statusStrip.SuspendLayout();
@@ -65,6 +65,7 @@ namespace DataDevelop.UIComponents
 			this.textBox.TabIndex = 0;
 			this.textBox.WordWrap = false;
 			this.textBox.TextChanged += new System.EventHandler(this.textBox_TextChanged);
+			this.textBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox_KeyDown);
 			// 
 			// toolStrip
 			// 
@@ -167,6 +168,36 @@ namespace DataDevelop.UIComponents
 			this.toggleWordWrapButton.Text = "Toggle Word Wrap";
 			this.toggleWordWrapButton.Click += new System.EventHandler(this.toggleWordWrapButton_Click);
 			// 
+			// toolStripSeparator2
+			// 
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+			// 
+			// actionsToolStripDropDownButton
+			// 
+			this.actionsToolStripDropDownButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.actionsToolStripDropDownButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.changeFontToolStripMenuItem,
+            this.formatXmlToolStripMenuItem});
+			this.actionsToolStripDropDownButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.actionsToolStripDropDownButton.Name = "actionsToolStripDropDownButton";
+			this.actionsToolStripDropDownButton.Size = new System.Drawing.Size(60, 22);
+			this.actionsToolStripDropDownButton.Text = "Actions";
+			// 
+			// changeFontToolStripMenuItem
+			// 
+			this.changeFontToolStripMenuItem.Name = "changeFontToolStripMenuItem";
+			this.changeFontToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+			this.changeFontToolStripMenuItem.Text = "Change Font...";
+			this.changeFontToolStripMenuItem.Click += new System.EventHandler(this.changeFontToolStripMenuItem_Click);
+			// 
+			// formatXmlToolStripMenuItem
+			// 
+			this.formatXmlToolStripMenuItem.Name = "formatXmlToolStripMenuItem";
+			this.formatXmlToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+			this.formatXmlToolStripMenuItem.Text = "Format XML";
+			this.formatXmlToolStripMenuItem.Click += new System.EventHandler(this.formatXmlToolStripMenuItem_Click);
+			// 
 			// statusStrip
 			// 
 			this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -191,36 +222,6 @@ namespace DataDevelop.UIComponents
 			// openFileDialog
 			// 
 			this.openFileDialog.Title = "Open File...";
-			// 
-			// actionsToolStripDropDownButton
-			// 
-			this.actionsToolStripDropDownButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.actionsToolStripDropDownButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.changeFontToolStripMenuItem,
-            this.formatXmlToolStripMenuItem});
-			this.actionsToolStripDropDownButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.actionsToolStripDropDownButton.Name = "actionsToolStripDropDownButton";
-			this.actionsToolStripDropDownButton.Size = new System.Drawing.Size(60, 22);
-			this.actionsToolStripDropDownButton.Text = "Actions";
-			// 
-			// changeFontToolStripMenuItem
-			// 
-			this.changeFontToolStripMenuItem.Name = "changeFontToolStripMenuItem";
-			this.changeFontToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.changeFontToolStripMenuItem.Text = "Change Font...";
-			this.changeFontToolStripMenuItem.Click += new System.EventHandler(this.changeFontToolStripMenuItem_Click);
-			// 
-			// formatXmlToolStripMenuItem
-			// 
-			this.formatXmlToolStripMenuItem.Name = "formatXmlToolStripMenuItem";
-			this.formatXmlToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.formatXmlToolStripMenuItem.Text = "Format XML";
-			this.formatXmlToolStripMenuItem.Click += new System.EventHandler(this.formatXmlToolStripMenuItem_Click);
-			// 
-			// toolStripSeparator2
-			// 
-			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
 			// 
 			// TextVisualizer
 			// 

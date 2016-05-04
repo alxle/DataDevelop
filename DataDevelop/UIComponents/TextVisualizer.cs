@@ -132,5 +132,14 @@ namespace DataDevelop.UIComponents
 				MessageBox.Show(this, ex.Message, "Error formatting XML", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
+
+		private void textBox_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.Modifiers == Keys.Control && e.KeyCode == Keys.A) {
+				textBox.SelectAll();
+				e.Handled = true;
+				e.SuppressKeyPress = true;
+			}
+		}
 	}
 }
