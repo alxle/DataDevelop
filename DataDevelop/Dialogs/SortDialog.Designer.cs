@@ -90,7 +90,6 @@ namespace DataDevelop
 			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.SortDialog_FormClosed);
-			this.Load += new System.EventHandler(this.SortDialog_Load);
 			((System.ComponentModel.ISupportInitialize)(this.orderBindingSource)).EndInit();
 			this.ResumeLayout(false);
 
