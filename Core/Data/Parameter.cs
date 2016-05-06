@@ -1,8 +1,9 @@
 using System;
+using System.ComponentModel;
 
 namespace DataDevelop.Data
 {
-	[System.ComponentModel.ReadOnly(true)]
+	[ReadOnly(true)]
 	public class Parameter
 	{
 		private string name;
