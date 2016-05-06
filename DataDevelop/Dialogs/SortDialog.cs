@@ -15,19 +15,16 @@ namespace DataDevelop
 		{
 			InitializeComponent();
 			sortPanel.LoadSort(sort);
+
+			var settingsSize = Properties.Settings.Default.SortDialogSize;
+			if (settingsSize.Width >= this.MinimumSize.Width && settingsSize.Height >= settingsSize.Height) {
+				this.Size = settingsSize;
+			}
 		}
 
 		public TableSort Sort
 		{
 			get { return sortPanel.Sort; }
-		}
-
-		private void SortDialog_Load(object sender, EventArgs e)
-		{
-			var settingsSize = Properties.Settings.Default.SortDialogSize;
-			if (settingsSize.Width >= this.MinimumSize.Width && settingsSize.Height >= settingsSize.Height) {
-				this.Size = settingsSize;
-			}
 		}
 
 		private void SortDialog_FormClosed(object sender, FormClosedEventArgs e)

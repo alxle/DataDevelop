@@ -18,6 +18,11 @@ namespace DataDevelop
 			InitializeComponent();
 			this.filter = filter;
 			columnFilterBindingSource.DataSource = this.filter.ColumnFilters;
+
+			var settingsSize = Properties.Settings.Default.FilterDialogSize;
+			if (settingsSize.Width >= this.MinimumSize.Width && settingsSize.Height >= settingsSize.Height) {
+				this.Size = settingsSize;
+			}
 		}
 
 		public TableFilter Filter
@@ -49,10 +54,6 @@ namespace DataDevelop
 
 		private void FilterDialog_Load(object sender, EventArgs e)
 		{
-			var settingsSize = Properties.Settings.Default.FilterDialogSize;
-			if (settingsSize.Width >= this.MinimumSize.Width && settingsSize.Height >= settingsSize.Height) {
-				this.Size = settingsSize;
-			}
 			foreach (DataGridViewRow row in dataGridView.Rows) {
 				if (!row.IsNewRow) {
 					row.Cells[Output.Index].ReadOnly = ((ColumnFilter)row.DataBoundItem).InPrimaryKey;
