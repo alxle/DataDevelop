@@ -136,9 +136,13 @@ namespace DataDevelop.UIComponents
 		private void textBox_KeyDown(object sender, KeyEventArgs e)
 		{
 			if (e.Modifiers == Keys.Control && e.KeyCode == Keys.A) {
-				textBox.SelectAll();
 				e.Handled = true;
 				e.SuppressKeyPress = true;
+				textBox.SelectAll();
+			} else if (e.Modifiers == Keys.None && e.KeyCode == Keys.Escape) {
+				e.Handled = true;
+				e.SuppressKeyPress = true;
+				this.Close();
 			}
 		}
 	}
