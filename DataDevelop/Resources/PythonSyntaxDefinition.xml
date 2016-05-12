@@ -67,8 +67,10 @@
         <Key word = "__init__"/>
       </KeyWords>
 
-      <KeyWords name = "AccessKeywords" bold="false" italic="false" color="DarkGray">
+      <KeyWords name = "AccessKeywords" bold="false" italic="false" color="DarkRed">
         <Key word = "None" />
+        <Key word = "True" />
+        <Key word = "False" />
       </KeyWords>
 
       <!--KeyWords name = "SelectionStatements" bold="false" italic="false" color="Blue"-->
