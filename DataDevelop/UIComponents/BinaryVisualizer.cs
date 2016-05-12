@@ -63,12 +63,15 @@ namespace DataDevelop.UIComponents
 					ShowImage();
 					picturePanel.Show();
 					hexTextBox.Hide();
+					statusLabel.Text = String.Format("Data Length: {0} bytes | Image Dimensions: {1} x {2}.", cell.BinaryData.Length, pictureBox.Image.Width, pictureBox.Image.Height);
+
 				} catch {
 					picturePanel.Hide();
 					ShowHexadecimal();
 					hexTextBox.Show();
+					statusLabel.Text = String.Format("Data Length: {0} bytes.", cell.BinaryData.Length);
 				}
-				statusLabel.Text = String.Format("Data Length: {0} bytes.", cell.BinaryData.Length);
+				
 			}
 		}
 
