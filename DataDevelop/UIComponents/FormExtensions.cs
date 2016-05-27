@@ -41,6 +41,12 @@ namespace DataDevelop
 		private static void EnsureVisibility(Form form)
 		{
 			Rectangle rect = Screen.FromControl(form).WorkingArea;
+			if (rect.Height < form.Height) {
+				form.Height = Math.Max(rect.Height, form.MinimumSize.Height);
+			}
+			if (rect.Width < form.Width) {
+				form.Width = Math.Max(rect.Width, form.MinimumSize.Width);
+			}
 			if (form.Bottom > rect.Bottom) {
 				form.Top = rect.Top + rect.Height - form.Height;
 			}
