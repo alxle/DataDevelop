@@ -116,5 +116,17 @@ namespace DataDevelop.Data
 		}
 
 		#endregion
+
+		public override string ToString()
+		{
+			var builder = new StringBuilder();
+			builder.AppendLine("FILTER:");
+			WriteWhereStatement(builder);
+			builder.AppendLine();
+			builder.AppendLine();
+			builder.AppendLine("COLUMNS:");
+			WriteColumnsProjection(builder);
+			return builder.ToString();
+		}
 	}
 }

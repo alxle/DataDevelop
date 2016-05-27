@@ -175,7 +175,9 @@ namespace DataDevelop
 			}
 
 			filterToolStripButton.Checked = IsFiltered;
+			filterToolStripButton.ToolTipText = IsFiltered ? filter.ToString() : "Filter";
 			sortToolStripButton.Checked = IsSorted;
+			sortToolStripButton.ToolTipText = IsSorted ? sort.ToString() : "Sort";
 
 			if (IsFiltered) {
 				locationLabel.Text = String.Format("{0:0000} to {1:0000} of {2:0000}*", startRow, lastRow, count);
@@ -393,11 +395,12 @@ namespace DataDevelop
 					this.filter = filterDialog.Filter;
 
 					 if (IsFiltered) {
-						 this.currentPage = 0;
-						 this.filterToolStripButton.Checked = true;
+						this.currentPage = 0;
+						this.filterToolStripButton.Checked = true;
 					 } else {
-						 this.filterToolStripButton.Checked = false;
-					 }
+						this.filterToolStripButton.Checked = false;
+					}
+					this.filterToolStripButton.ToolTipText = IsFiltered ? filter.ToString() : "Filter";
 
 					try {
 						this.UpdateDataSet();
@@ -425,6 +428,8 @@ namespace DataDevelop
 					TableSort lastGood = this.sort;
 					this.sort = sortDialog.Sort;
 					this.sortToolStripButton.Checked = IsSorted;
+					this.sortToolStripButton.ToolTipText = IsSorted ? sort.ToString() : "Sort";
+
 					//string orderby = ColumnOrder.GetOrderByStatement(orders);
 					try {
 						UpdateDataSet();

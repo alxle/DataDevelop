@@ -379,7 +379,7 @@ namespace DataDevelop
 			this.tableToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
 			this.tableToolStripMenuItem.MergeIndex = 2;
 			this.tableToolStripMenuItem.Name = "tableToolStripMenuItem";
-			this.tableToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+			this.tableToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
 			this.tableToolStripMenuItem.Text = "&Table";
 			// 
 			// loadingPanel
@@ -416,8 +416,8 @@ namespace DataDevelop
 			// 
 			// progressBar1
 			// 
-			this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-						| System.Windows.Forms.AnchorStyles.Right)));
+			this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.progressBar1.Location = new System.Drawing.Point(3, 28);
 			this.progressBar1.MarqueeAnimationSpeed = 50;
 			this.progressBar1.Name = "progressBar1";
@@ -447,9 +447,9 @@ namespace DataDevelop
 			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "TableDocument";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TableDocument_FormClosing);
 			this.Load += new System.EventHandler(this.TableDocument_Load);
 			this.Shown += new System.EventHandler(this.TableDocument_Shown);
-			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TableDocument_FormClosing);
 			this.tableToolStrip.ResumeLayout(false);
 			this.tableToolStrip.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();

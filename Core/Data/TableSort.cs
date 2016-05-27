@@ -89,5 +89,13 @@ namespace DataDevelop.Data
 		}
 
 		#endregion
+
+		public override string ToString()
+		{
+			var builder = new StringBuilder();
+			builder.AppendLine("SORT:");
+			WriteOrderBy(builder);
+			return builder.ToString();
+		}
 	}
 }
