@@ -27,58 +27,91 @@ namespace DataDevelop
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OutputWindow));
-			this.results = new System.Windows.Forms.RichTextBox();
-			this.mainToolStrip = new DataDevelop.UIComponents.ToolStrip();
-			this.clearAllButton = new System.Windows.Forms.ToolStripButton();
-			this.toggleWordWrapButton = new System.Windows.Forms.ToolStripButton();
-			this.mainToolStrip.SuspendLayout();
+			this.outputMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.clearAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.wordWrapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.outputTextBox = new DataDevelop.UIComponents.LogTextBox();
+			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+			this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.outputMenuStrip.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.outputTextBox)).BeginInit();
 			this.SuspendLayout();
 			// 
-			// results
+			// outputMenuStrip
 			// 
-			this.results.BackColor = System.Drawing.SystemColors.Window;
-			this.results.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.results.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.results.Location = new System.Drawing.Point(1, 26);
-			this.results.Name = "results";
-			this.results.ReadOnly = true;
-			this.results.Size = new System.Drawing.Size(488, 143);
-			this.results.TabIndex = 0;
-			this.results.Text = "";
-			this.results.WordWrap = false;
+			this.outputMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.clearAllToolStripMenuItem,
+            this.wordWrapToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.copyToolStripMenuItem});
+			this.outputMenuStrip.Name = "outputMenuStrip";
+			this.outputMenuStrip.Size = new System.Drawing.Size(153, 98);
 			// 
-			// mainToolStrip
+			// clearAllToolStripMenuItem
 			// 
-			this.mainToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-			this.mainToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.clearAllButton,
-            this.toggleWordWrapButton});
-			this.mainToolStrip.Location = new System.Drawing.Point(1, 1);
-			this.mainToolStrip.Name = "mainToolStrip";
-			this.mainToolStrip.Size = new System.Drawing.Size(488, 25);
-			this.mainToolStrip.TabIndex = 1;
+			this.clearAllToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.ClearAll;
+			this.clearAllToolStripMenuItem.Name = "clearAllToolStripMenuItem";
+			this.clearAllToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.clearAllToolStripMenuItem.Text = "Clear All";
+			this.clearAllToolStripMenuItem.Click += new System.EventHandler(this.clearAllButton_Click);
 			// 
-			// clearAllButton
+			// wordWrapToolStripMenuItem
 			// 
-			this.clearAllButton.Image = global::DataDevelop.Properties.Resources.ClearAll;
-			this.clearAllButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.clearAllButton.MergeAction = System.Windows.Forms.MergeAction.Replace;
-			this.clearAllButton.Name = "clearAllButton";
-			this.clearAllButton.Size = new System.Drawing.Size(71, 22);
-			this.clearAllButton.Text = "Clear All";
-			this.clearAllButton.Click += new System.EventHandler(this.clearAllButton_Click);
+			this.wordWrapToolStripMenuItem.CheckOnClick = true;
+			this.wordWrapToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.WordWrap;
+			this.wordWrapToolStripMenuItem.Name = "wordWrapToolStripMenuItem";
+			this.wordWrapToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.wordWrapToolStripMenuItem.Text = "Word Wrap";
+			this.wordWrapToolStripMenuItem.CheckedChanged += new System.EventHandler(this.toggleWordWrapButton_CheckedChanged);
 			// 
-			// toggleWordWrapButton
+			// outputTextBox
 			// 
-			this.toggleWordWrapButton.CheckOnClick = true;
-			this.toggleWordWrapButton.Image = global::DataDevelop.Properties.Resources.WordWrap;
-			this.toggleWordWrapButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toggleWordWrapButton.MergeAction = System.Windows.Forms.MergeAction.Replace;
-			this.toggleWordWrapButton.Name = "toggleWordWrapButton";
-			this.toggleWordWrapButton.Size = new System.Drawing.Size(87, 22);
-			this.toggleWordWrapButton.Text = "Word Wrap";
-			this.toggleWordWrapButton.CheckedChanged += new System.EventHandler(this.toggleWordWrapButton_CheckedChanged);
+			this.outputTextBox.AutoCompleteBracketsList = new char[] {
+        '(',
+        ')',
+        '{',
+        '}',
+        '[',
+        ']',
+        '\"',
+        '\"',
+        '\'',
+        '\''};
+			this.outputTextBox.AutoScrollMinSize = new System.Drawing.Size(2, 12);
+			this.outputTextBox.BackBrush = null;
+			this.outputTextBox.CharHeight = 12;
+			this.outputTextBox.CharWidth = 6;
+			this.outputTextBox.ContextMenuStrip = this.outputMenuStrip;
+			this.outputTextBox.Cursor = System.Windows.Forms.Cursors.IBeam;
+			this.outputTextBox.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+			this.outputTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.outputTextBox.Font = new System.Drawing.Font("Consolas", 8.25F);
+			this.outputTextBox.IsReplaceMode = false;
+			this.outputTextBox.Location = new System.Drawing.Point(1, 1);
+			this.outputTextBox.Name = "outputTextBox";
+			this.outputTextBox.Paddings = new System.Windows.Forms.Padding(0);
+			this.outputTextBox.ReadOnly = true;
+			this.outputTextBox.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
+			this.outputTextBox.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("outputTextBox.ServiceColors")));
+			this.outputTextBox.ShowLineNumbers = false;
+			this.outputTextBox.Size = new System.Drawing.Size(488, 168);
+			this.outputTextBox.TabIndex = 1;
+			this.outputTextBox.Zoom = 100;
+			// 
+			// toolStripSeparator1
+			// 
+			this.toolStripSeparator1.Name = "toolStripSeparator1";
+			this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+			// 
+			// copyToolStripMenuItem
+			// 
+			this.copyToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Copy;
+			this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
+			this.copyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.copyToolStripMenuItem.Text = "Copy";
+			this.copyToolStripMenuItem.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
 			// 
 			// OutputWindow
 			// 
@@ -86,30 +119,27 @@ namespace DataDevelop
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.SystemColors.AppWorkspace;
 			this.ClientSize = new System.Drawing.Size(490, 170);
-			this.Controls.Add(this.results);
-			this.Controls.Add(this.mainToolStrip);
+			this.Controls.Add(this.outputTextBox);
 			this.DockAreas = ((WeifenLuo.WinFormsUI.Docking.DockAreas)(((((WeifenLuo.WinFormsUI.Docking.DockAreas.Float | WeifenLuo.WinFormsUI.Docking.DockAreas.DockLeft) 
             | WeifenLuo.WinFormsUI.Docking.DockAreas.DockRight) 
             | WeifenLuo.WinFormsUI.Docking.DockAreas.DockTop) 
             | WeifenLuo.WinFormsUI.Docking.DockAreas.DockBottom)));
-			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "OutputWindow";
-			this.Padding = new System.Windows.Forms.Padding(1);
 			this.TabText = "Output";
 			this.Text = "Output";
-			this.mainToolStrip.ResumeLayout(false);
-			this.mainToolStrip.PerformLayout();
+			this.outputMenuStrip.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.outputTextBox)).EndInit();
 			this.ResumeLayout(false);
-			this.PerformLayout();
 
 		}
 
 		#endregion
-
-		private System.Windows.Forms.RichTextBox results;
-		private DataDevelop.UIComponents.ToolStrip mainToolStrip;
-		private System.Windows.Forms.ToolStripButton clearAllButton;
-		private System.Windows.Forms.ToolStripButton toggleWordWrapButton;
+		private System.Windows.Forms.ContextMenuStrip outputMenuStrip;
+		private System.Windows.Forms.ToolStripMenuItem clearAllToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem wordWrapToolStripMenuItem;
+		private UIComponents.LogTextBox outputTextBox;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+		private System.Windows.Forms.ToolStripMenuItem copyToolStripMenuItem;
 	}
 }

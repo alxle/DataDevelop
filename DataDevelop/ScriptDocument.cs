@@ -60,12 +60,10 @@ namespace DataDevelop
 			if (code.Length > 0) {
 				EnableUI(false, "Executing...");
 
-				output.CurrentTextColor = Color.DarkBlue;
 				foreach (string line in StringUtils.GetLines(code)) {
-					output.AppendMessage(">>> " + line);
+					output.AppendInfo(">>> " + line);
 				}
 				output.FocusOutput();
-				output.ResetTextColor();
 
 				backgroundWorker.RunWorkerAsync(code);
 			}
@@ -92,14 +90,18 @@ namespace DataDevelop
 			EnableUI(true, "Ready...");
 
 			if (e.Error != null || e.Cancelled) {
-				output.CurrentTextColor = Color.Red;
-				output.AppendMessage(Environment.NewLine);
+				output.AppendMessage("");
 				if (e.Error != null) {
-					output.AppendMessage(e.Error.ToString());
+					var syntaxError = e.Error as Microsoft.Scripting.SyntaxErrorException;
+					if (syntaxError != null) {
+						output.AppendError("Syntax Error: " + e.Error.Message);
+						output.AppendError(String.Format("Error Code: {0}, Line: {1}, Column: {2}", syntaxError.ErrorCode, syntaxError.Line, syntaxError.Column));
+					} else {
+						output.AppendError(e.Error.ToString());
+					}
 				} else {
-					output.AppendMessage("Script execution was cancelled.");
+					output.AppendError("Script execution was cancelled.");
 				}
-				output.ResetTextColor();
 			}
 			output.Show();
 			textEditorControl.Focus();
