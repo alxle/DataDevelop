@@ -10,85 +10,77 @@ namespace DataDevelop
 {
 	public partial class OutputWindow : Toolbox
 	{
-		////private IDictionary<string, string> outputs;
-		private Color currentColor;
-
 		public OutputWindow()
 		{
 			InitializeComponent();
-			////outputs = new Dictionary<string, string>();
-			currentColor = results.ForeColor;
-		}
-
-		public Color CurrentTextColor
-		{
-			get { return currentColor; }
-			set
-			{
-				if (currentColor != value) {
-					results.SelectionStart = results.TextLength;
-					currentColor = value;
-					results.SelectionColor = value;
-				}
-			}
-		}
-
-		public Font OutputFont
-		{
-			get { return results.Font; }
-			set { results.Font = value; }
 		}
 
 		public void WriteUTF8(byte[] buffer, int offset, int count)
 		{
 			string text = Encoding.UTF8.GetString(buffer, offset, count);
+			if (count == 3 && buffer[offset] == 0xEF && buffer[offset + 1] == 0xBB && buffer[offset + 2] == 0xBF) { // Byte order mark 
+				return;
+			}
 			if (!this.Created) {
 				CreateControlsInstance();
 			}
-			results.Invoke(new Action<string>(results.AppendText), text);
+			this.Invoke(new Action<string>(this.AppendText), text);
 		}
 
 		public void WriteUnicode(byte[] buffer, int offset, int count)
 		{
 			string text = Encoding.Unicode.GetString(buffer, offset, count);
+			if (text == "\uFEFF") { // Byte order mark 
+				return;
+			}
 			if (!this.Created) {
 				CreateControlsInstance();
 			}
-			results.Invoke(new Action<string>(results.AppendText), text);
+			this.Invoke(new Action<string>(this.AppendText), text);
 		}
 
 		public void AppendText(string text)
 		{
-			results.SelectionColor = currentColor;
-			results.SelectionStart = results.TextLength;
-			results.SelectedText = text;
+			outputTextBox.AppendText(text);
+			outputTextBox.GoEnd();
 		}
 
-		public void AppendMessage(string message)
+		public void AppendMessage(string text)
 		{
-			AppendText(message);
-			AppendText(Environment.NewLine);
-			////results.ScrollToCaret();
+			outputTextBox.AppendText(text);
+			outputTextBox.AppendText(Environment.NewLine);
+			outputTextBox.GoEnd();
+		}
+
+		public void AppendInfo(string text)
+		{
+			outputTextBox.LogInfo(text);
+		}
+
+		public void AppendError(string text)
+		{
+			outputTextBox.LogError(text);
 		}
 
 		public void FocusOutput()
 		{
-			results.Focus();
-		}
-
-		public void ResetTextColor()
-		{
-			CurrentTextColor = results.ForeColor;
+			outputTextBox.GoEnd();
+			outputTextBox.Focus();
 		}
 
 		private void clearAllButton_Click(object sender, EventArgs e)
 		{
-			results.Clear();
+			outputTextBox.Clear();
 		}
 
 		private void toggleWordWrapButton_CheckedChanged(object sender, EventArgs e)
 		{
-			results.WordWrap = toggleWordWrapButton.Checked;
+			outputTextBox.WordWrap = wordWrapToolStripMenuItem.Checked;
+		}
+
+		private void copyToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			outputTextBox.Copy();
 		}
 	}
 }
