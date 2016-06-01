@@ -638,6 +638,8 @@
     <Content Include="VisualStyles\ThemeVS2015Blue\Resources\ActiveTab_Close.png" />
     <Content Include="VisualStyles\ThemeVS2015Blue\Resources\DockPane_Close.png" />
     <Content Include="VisualStyles\ThemeVS2015Blue\Resources\DockPane_Close_disabled.png" />
+    <Content Include="VisualStyles\ThemeVS2015Blue\Resources\DockPane_Option.png" />
+    <Content Include="VisualStyles\ThemeVS2015Blue\Resources\DockPane_OptionOverflow.png" />
     <Content Include="VisualStyles\ThemeVS2015Blue\Resources\LostFocusTab_Close.png" />
     <None Include="app.config" />
     <Content Include="DataDevelop.ico" />

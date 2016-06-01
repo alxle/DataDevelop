@@ -93,6 +93,26 @@ namespace WeifenLuo.WinFormsUI.ThemeVS2015Blue {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap DockPane_Option {
+            get {
+                object obj = ResourceManager.GetObject("DockPane_Option", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap DockPane_OptionOverflow {
+            get {
+                object obj = ResourceManager.GetObject("DockPane_OptionOverflow", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap LostFocusTab_Close {
             get {
                 object obj = ResourceManager.GetObject("LostFocusTab_Close", resourceCulture);
