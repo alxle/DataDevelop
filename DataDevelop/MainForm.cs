@@ -278,5 +278,10 @@ namespace DataDevelop
 		{
 			CloseAllButCurrent();
 		}
+
+		private void documentationToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			System.Diagnostics.Process.Start(Program.Documentation);
+		}
 	}
 }
