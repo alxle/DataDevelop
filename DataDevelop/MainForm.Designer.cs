@@ -63,10 +63,10 @@ namespace DataDevelop
 			// menuStrip
 			// 
 			this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.fileToolStripMenuItem,
-			this.viewToolStripMenuItem,
-			this.windowToolStripMenuItem,
-			this.exitToolStripMenuItem});
+            this.fileToolStripMenuItem,
+            this.viewToolStripMenuItem,
+            this.windowToolStripMenuItem,
+            this.exitToolStripMenuItem});
 			this.menuStrip.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip.MdiWindowListItem = this.windowToolStripMenuItem;
 			this.menuStrip.Name = "menuStrip";
@@ -77,10 +77,10 @@ namespace DataDevelop
 			// fileToolStripMenuItem
 			// 
 			this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.newDatabaseToolStripMenuItem,
-			this.openDatabaseToolStripMenuItem,
-			this.toolStripSeparator2,
-			this.exitToolStripMenuItem1});
+            this.newDatabaseToolStripMenuItem,
+            this.openDatabaseToolStripMenuItem,
+            this.toolStripSeparator2,
+            this.exitToolStripMenuItem1});
 			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
 			this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
 			this.fileToolStripMenuItem.Text = "&File";
@@ -114,15 +114,15 @@ namespace DataDevelop
 			// viewToolStripMenuItem
 			// 
 			this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.databaseExplorerToolStripMenuItem,
-			this.propertiesWindowToolStripMenuItem,
-			this.assemblyExplorerToolStripMenuItem,
-			this.toolStripSeparator1,
-			this.scriptWindowToolStripMenuItem,
-			this.javascriptConsoleToolStripMenuItem,
-			this.outputWindowToolStripMenuItem,
-			this.toolStripSeparator5,
-			this.preferencesToolStripMenuItem});
+            this.databaseExplorerToolStripMenuItem,
+            this.propertiesWindowToolStripMenuItem,
+            this.assemblyExplorerToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.scriptWindowToolStripMenuItem,
+            this.javascriptConsoleToolStripMenuItem,
+            this.outputWindowToolStripMenuItem,
+            this.toolStripSeparator5,
+            this.preferencesToolStripMenuItem});
 			this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
 			this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
 			this.viewToolStripMenuItem.Text = "&View";
@@ -193,10 +193,10 @@ namespace DataDevelop
 			// windowToolStripMenuItem
 			// 
 			this.windowToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.closeAllDocumentToolStripMenuItem,
-			this.closeAllButCurrentToolStripMenuItem,
-			this.resetWindowLayoutToolStripMenuItem,
-			this.toolStripSeparator6});
+            this.closeAllDocumentToolStripMenuItem,
+            this.closeAllButCurrentToolStripMenuItem,
+            this.resetWindowLayoutToolStripMenuItem,
+            this.toolStripSeparator6});
 			this.windowToolStripMenuItem.Name = "windowToolStripMenuItem";
 			this.windowToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
 			this.windowToolStripMenuItem.Text = "&Window";
@@ -231,20 +231,21 @@ namespace DataDevelop
 			// exitToolStripMenuItem
 			// 
 			this.exitToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.documentationToolStripMenuItem,
-			this.checkForUpdatesToolStripMenuItem,
-			this.toolStripSeparator3,
-			this.aboutSQLiteStudioToolStripMenuItem});
+            this.documentationToolStripMenuItem,
+            this.checkForUpdatesToolStripMenuItem,
+            this.toolStripSeparator3,
+            this.aboutSQLiteStudioToolStripMenuItem});
 			this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
 			this.exitToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
 			this.exitToolStripMenuItem.Text = "&Help";
 			// 
 			// documentationToolStripMenuItem
 			// 
-			this.documentationToolStripMenuItem.Enabled = false;
+			this.documentationToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Web;
 			this.documentationToolStripMenuItem.Name = "documentationToolStripMenuItem";
 			this.documentationToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
 			this.documentationToolStripMenuItem.Text = "&Documentation";
+			this.documentationToolStripMenuItem.Click += new System.EventHandler(this.documentationToolStripMenuItem_Click);
 			// 
 			// checkForUpdatesToolStripMenuItem
 			// 
@@ -252,6 +253,7 @@ namespace DataDevelop
 			this.checkForUpdatesToolStripMenuItem.Name = "checkForUpdatesToolStripMenuItem";
 			this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
 			this.checkForUpdatesToolStripMenuItem.Text = "Check for updates...";
+			this.checkForUpdatesToolStripMenuItem.Visible = false;
 			// 
 			// toolStripSeparator3
 			// 
@@ -305,7 +307,7 @@ namespace DataDevelop
 			this.IsMdiContainer = true;
 			this.MainMenuStrip = this.menuStrip;
 			this.Name = "MainForm";
-			this.Text = "DataDevelop (beta)";
+			this.Text = "DataDevelop";
 			this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
 			this.Load += new System.EventHandler(this.MainForm_Load);
