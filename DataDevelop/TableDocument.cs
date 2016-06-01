@@ -315,7 +315,7 @@ namespace DataDevelop
 		private void lastButton_Click(object sender, EventArgs e)
 		{
 			if (this.CanContinue()) {
-				this.currentPage = (count / rowsPerPage);
+				this.currentPage = (count - 1) / rowsPerPage;
 				this.UpdateDataSet();
 			}
 		}
