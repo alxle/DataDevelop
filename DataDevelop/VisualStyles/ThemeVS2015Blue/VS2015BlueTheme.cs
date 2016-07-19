@@ -13,11 +13,16 @@ namespace WeifenLuo.WinFormsUI.Docking
     /// </summary>
     public class VS2015BlueTheme : ThemeBase
     {
-        /// <summary>
-        /// Applies the specified theme to the dock panel.
-        /// </summary>
-        /// <param name="dockPanel">The dock panel.</param>
-        public override void Apply(DockPanel dockPanel)
+		public VS2015BlueTheme()
+		{
+			Skin = CreateVisualStudio2013Blue();
+		}
+
+		/// <summary>
+		/// Applies the specified theme to the dock panel.
+		/// </summary>
+		/// <param name="dockPanel">The dock panel.</param>
+		public override void Apply(DockPanel dockPanel)
         {
             if (dockPanel == null)
             {
@@ -35,7 +40,6 @@ namespace WeifenLuo.WinFormsUI.Docking
             dockPanel.Extender.PaneIndicatorFactory = new VS2015BluePaneIndicatorFactory();
             dockPanel.Extender.PanelIndicatorFactory = new VS2015BluePanelIndicatorFactory();
             dockPanel.Extender.DockOutlineFactory = new VS2015BlueDockOutlineFactory();
-            dockPanel.Skin = CreateVisualStudio2013Blue();
         }
 
         private class VS2015BlueDockOutlineFactory : DockPanelExtender.IDockOutlineFactory
