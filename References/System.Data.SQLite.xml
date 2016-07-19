@@ -845,6 +845,11 @@
             code.
             </summary>
         </member>
+        <member name="M:System.Data.SQLite.SQLiteBase.IsReadOnly(System.String)">
+            <summary>
+            Returns non-zero if this connection to the database is read-only.
+            </summary>
+        </member>
         <member name="M:System.Data.SQLite.SQLiteBase.SetMemoryStatus(System.Boolean)">
             <summary>
             Sets the status of the memory usage tracking subsystem in the SQLite core library.  By default, this is enabled.
@@ -2101,6 +2106,37 @@
             verifying their affinity.
             </summary>
         </member>
+        <member name="F:System.Data.SQLite.SQLiteConnectionFlags.UseConnectionBindValueCallbacks">
+            <summary>
+            Enable using per-connection mappings between type names and
+            <see cref="T:system.Data.SQLite.SQLiteBindValueCallback"/> values.  Also see the
+            <see cref="M:system.Data.SQLite.SQLiteConnection.ClearTypeCallbacks"/>,
+            <see cref="M:system.Data.SQLite.SQLiteConnection.TryGetTypeCallbacks(System.String,System.Data.SQLite.SQLiteTypeCallbacks@)"/>, and
+            <see cref="M:system.Data.SQLite.SQLiteConnection.SetTypeCallbacks(System.String,System.Data.SQLite.SQLiteTypeCallbacks)"/> methods.
+            </summary>
+        </member>
+        <member name="F:System.Data.SQLite.SQLiteConnectionFlags.UseConnectionReadValueCallbacks">
+            <summary>
+            Enable using per-connection mappings between type names and
+            <see cref="T:system.Data.SQLite.SQLiteReadValueCallback"/> values.  Also see the
+            <see cref="M:system.Data.SQLite.SQLiteConnection.ClearTypeCallbacks"/>,
+            <see cref="M:system.Data.SQLite.SQLiteConnection.TryGetTypeCallbacks(System.String,System.Data.SQLite.SQLiteTypeCallbacks@)"/>, and
+            <see cref="M:system.Data.SQLite.SQLiteConnection.SetTypeCallbacks(System.String,System.Data.SQLite.SQLiteTypeCallbacks)"/> methods.
+            </summary>
+        </member>
+        <member name="F:System.Data.SQLite.SQLiteConnectionFlags.UseParameterNameForTypeName">
+            <summary>
+            If the database type name has not been explicitly set for the
+            parameter specified, fallback to using the parameter name.
+            </summary>
+        </member>
+        <member name="F:System.Data.SQLite.SQLiteConnectionFlags.UseParameterDbTypeForTypeName">
+            <summary>
+            If the database type name has not been explicitly set for the
+            parameter specified, fallback to using the database type name
+            associated with the <see cref="T:System.Data.DbType"/> value.
+            </summary>
+        </member>
         <member name="F:System.Data.SQLite.SQLiteConnectionFlags.BindAndGetAllAsText">
             <summary>
             When binding parameter values or returning column values, always
@@ -2129,6 +2165,17 @@
             date/time, or other conversions should be attempted) and always
             use the invariant culture when converting their values to strings
             or from strings.
+            </summary>
+        </member>
+        <member name="F:System.Data.SQLite.SQLiteConnectionFlags.UseConnectionAllValueCallbacks">
+            <summary>
+            Enables use of all per-connection value handling callbacks.
+            </summary>
+        </member>
+        <member name="F:System.Data.SQLite.SQLiteConnectionFlags.UseParameterAnythingForTypeName">
+            <summary>
+            Enables use of all applicable <see cref="T:system.Data.SQLite.SQLiteParameter"/>
+            properties as fallbacks for the database type name.
             </summary>
         </member>
         <member name="F:System.Data.SQLite.SQLiteConnectionFlags.LogAll">
@@ -2296,6 +2343,13 @@
             Create a new parameter
             </summary>
             <returns></returns>
+        </member>
+        <member name="M:System.Data.SQLite.SQLiteCommand.VerifyOnly">
+            <summary>
+            Verifies that all SQL queries associated with the current command text
+            can be successfully compiled.  A <see cref="T:system.Data.SQLite.SQLiteException"/> will be
+            raised if any errors occur.
+            </summary>
         </member>
         <member name="M:System.Data.SQLite.SQLiteCommand.InitializeForReader">
             <summary>
@@ -2653,6 +2707,524 @@
         <member name="P:System.Data.SQLite.SQLiteCommandBuilder.SchemaSeparator">
             <summary>
             Overridden to hide its property from the designer
+            </summary>
+        </member>
+        <member name="T:System.Data.SQLite.SQLiteDataReaderValue">
+            <summary>
+            This class represents a single value to be returned
+            from the <see cref="T:system.Data.SQLite.SQLiteDataReader"/> class via
+            its <see cref="M:system.Data.SQLite.SQLiteDataReader.GetBoolean(System.Int32)"/>,
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetByte(System.Int32)"/>,
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetBytes(System.Int32,System.Int64,System.Byte[],System.Int32,System.Int32)"/>,
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetChar(System.Int32)"/>,
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetChars(System.Int32,System.Int64,System.Char[],System.Int32,System.Int32)"/>,
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetDateTime(System.Int32)"/>,
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetDecimal(System.Int32)"/>,
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetDouble(System.Int32)"/>,
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetFloat(System.Int32)"/>,
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetGuid(System.Int32)"/>,
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetInt16(System.Int32)"/>,
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetInt32(System.Int32)"/>,
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetInt64(System.Int32)"/>,
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetString(System.Int32)"/>, or
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetValue(System.Int32)"/> method.  If the value of the
+            associated public field of this class is null upon returning from the
+            callback, the null value will only be used if the return type for the
+            <see cref="T:system.Data.SQLite.SQLiteDataReader"/> method called is not a value type.
+            If the value to be returned from the <see cref="T:system.Data.SQLite.SQLiteDataReader"/>
+            method is unsuitable (e.g. null with a value type), an exception will
+            be thrown.
+            </summary>
+        </member>
+        <member name="F:System.Data.SQLite.SQLiteDataReaderValue.BooleanValue">
+            <summary>
+            The value to be returned from the
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetBoolean(System.Int32)"/> method -OR- null to
+            indicate an error.
+            </summary>
+        </member>
+        <member name="F:System.Data.SQLite.SQLiteDataReaderValue.ByteValue">
+            <summary>
+            The value to be returned from the
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetByte(System.Int32)"/> method -OR- null to
+            indicate an error.
+            </summary>
+        </member>
+        <member name="F:System.Data.SQLite.SQLiteDataReaderValue.BytesValue">
+            <summary>
+            The value to be returned from the
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetBytes(System.Int32,System.Int64,System.Byte[],System.Int32,System.Int32)"/> method.
+            </summary>
+        </member>
+        <member name="F:System.Data.SQLite.SQLiteDataReaderValue.CharValue">
+            <summary>
+            The value to be returned from the
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetChar(System.Int32)"/> method -OR- null to
+            indicate an error.
+            </summary>
+        </member>
+        <member name="F:System.Data.SQLite.SQLiteDataReaderValue.CharsValue">
+            <summary>
+            The value to be returned from the
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetChars(System.Int32,System.Int64,System.Char[],System.Int32,System.Int32)"/> method.
+            </summary>
+        </member>
+        <member name="F:System.Data.SQLite.SQLiteDataReaderValue.DateTimeValue">
+            <summary>
+            The value to be returned from the
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetDateTime(System.Int32)"/> method -OR- null to
+            indicate an error.
+            </summary>
+        </member>
+        <member name="F:System.Data.SQLite.SQLiteDataReaderValue.DecimalValue">
+            <summary>
+            The value to be returned from the
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetDecimal(System.Int32)"/> method -OR- null to
+            indicate an error.
+            </summary>
+        </member>
+        <member name="F:System.Data.SQLite.SQLiteDataReaderValue.DoubleValue">
+            <summary>
+            The value to be returned from the
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetDouble(System.Int32)"/> method -OR- null to
+            indicate an error.
+            </summary>
+        </member>
+        <member name="F:System.Data.SQLite.SQLiteDataReaderValue.FloatValue">
+            <summary>
+            The value to be returned from the
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetFloat(System.Int32)"/> method -OR- null to
+            indicate an error.
+            </summary>
+        </member>
+        <member name="F:System.Data.SQLite.SQLiteDataReaderValue.GuidValue">
+            <summary>
+            The value to be returned from the
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetGuid(System.Int32)"/> method -OR- null to
+            indicate an error.
+            </summary>
+        </member>
+        <member name="F:System.Data.SQLite.SQLiteDataReaderValue.Int16Value">
+            <summary>
+            The value to be returned from the
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetInt16(System.Int32)"/> method -OR- null to
+            indicate an error.
+            </summary>
+        </member>
+        <member name="F:System.Data.SQLite.SQLiteDataReaderValue.Int32Value">
+            <summary>
+            The value to be returned from the
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetInt32(System.Int32)"/> method -OR- null to
+            indicate an error.
+            </summary>
+        </member>
+        <member name="F:System.Data.SQLite.SQLiteDataReaderValue.Int64Value">
+            <summary>
+            The value to be returned from the
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetInt64(System.Int32)"/> method -OR- null to
+            indicate an error.
+            </summary>
+        </member>
+        <member name="F:System.Data.SQLite.SQLiteDataReaderValue.StringValue">
+            <summary>
+            The value to be returned from the
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetString(System.Int32)"/> method.
+            </summary>
+        </member>
+        <member name="F:System.Data.SQLite.SQLiteDataReaderValue.Value">
+            <summary>
+            The value to be returned from the
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetValue(System.Int32)"/> method.
+            </summary>
+        </member>
+        <member name="T:System.Data.SQLite.SQLiteReadArrayEventArgs">
+            <summary>
+            This class represents the parameters that are provided
+            to the <see cref="M:system.Data.SQLite.SQLiteDataReader.GetBytes(System.Int32,System.Int64,System.Byte[],System.Int32,System.Int32)"/> and
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetChars(System.Int32,System.Int64,System.Char[],System.Int32,System.Int32)"/> methods, with
+            the exception of the column index (provided separately).
+            </summary>
+        </member>
+        <member name="F:System.Data.SQLite.SQLiteReadArrayEventArgs.dataOffset">
+            <summary>
+            Provides the underlying storage for the
+            <see cref="P:system.Data.SQLite.SQLiteReadArrayEventArgs.DataOffset"/> property.
+            </summary>
+        </member>
+        <member name="F:System.Data.SQLite.SQLiteReadArrayEventArgs.byteBuffer">
+            <summary>
+            Provides the underlying storage for the
+            <see cref="P:system.Data.SQLite.SQLiteReadArrayEventArgs.ByteBuffer"/> property.
+            </summary>
+        </member>
+        <member name="F:System.Data.SQLite.SQLiteReadArrayEventArgs.charBuffer">
+            <summary>
+            Provides the underlying storage for the
+            <see cref="P:system.Data.SQLite.SQLiteReadArrayEventArgs.CharBuffer"/> property.
+            </summary>
+        </member>
+        <member name="F:System.Data.SQLite.SQLiteReadArrayEventArgs.bufferOffset">
+            <summary>
+            Provides the underlying storage for the
+            <see cref="P:system.Data.SQLite.SQLiteReadArrayEventArgs.BufferOffset"/> property.
+            </summary>
+        </member>
+        <member name="F:System.Data.SQLite.SQLiteReadArrayEventArgs.length">
+            <summary>
+            Provides the underlying storage for the
+            <see cref="P:system.Data.SQLite.SQLiteReadArrayEventArgs.Length"/> property.
+            </summary>
+        </member>
+        <member name="M:System.Data.SQLite.SQLiteReadArrayEventArgs.#ctor(System.Int64,System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Constructs an instance of this class to pass into a user-defined
+            callback associated with the <see cref="M:system.Data.SQLite.SQLiteDataReader.GetBytes(System.Int32,System.Int64,System.Byte[],System.Int32,System.Int32)"/>
+            method.
+            </summary>
+            <param name="dataOffset">
+            The value that was originally specified for the "dataOffset"
+            parameter to the <see cref="M:system.Data.SQLite.SQLiteDataReader.GetBytes(System.Int32,System.Int64,System.Byte[],System.Int32,System.Int32)"/> or
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetChars(System.Int32,System.Int64,System.Char[],System.Int32,System.Int32)"/> methods.
+            </param>
+            <param name="byteBuffer">
+            The value that was originally specified for the "buffer"
+            parameter to the <see cref="M:system.Data.SQLite.SQLiteDataReader.GetBytes(System.Int32,System.Int64,System.Byte[],System.Int32,System.Int32)"/>
+            method.
+            </param>
+            <param name="bufferOffset">
+            The value that was originally specified for the "bufferOffset"
+            parameter to the <see cref="M:system.Data.SQLite.SQLiteDataReader.GetBytes(System.Int32,System.Int64,System.Byte[],System.Int32,System.Int32)"/> or
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetChars(System.Int32,System.Int64,System.Char[],System.Int32,System.Int32)"/> methods.
+            </param>
+            <param name="length">
+            The value that was originally specified for the "length"
+            parameter to the <see cref="M:system.Data.SQLite.SQLiteDataReader.GetBytes(System.Int32,System.Int64,System.Byte[],System.Int32,System.Int32)"/> or
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetChars(System.Int32,System.Int64,System.Char[],System.Int32,System.Int32)"/> methods.
+            </param>
+        </member>
+        <member name="M:System.Data.SQLite.SQLiteReadArrayEventArgs.#ctor(System.Int64,System.Char[],System.Int32,System.Int32)">
+            <summary>
+            Constructs an instance of this class to pass into a user-defined
+            callback associated with the <see cref="M:system.Data.SQLite.SQLiteDataReader.GetChars(System.Int32,System.Int64,System.Char[],System.Int32,System.Int32)"/>
+            method.
+            </summary>
+            <param name="dataOffset">
+            The value that was originally specified for the "dataOffset"
+            parameter to the <see cref="M:system.Data.SQLite.SQLiteDataReader.GetBytes(System.Int32,System.Int64,System.Byte[],System.Int32,System.Int32)"/> or
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetChars(System.Int32,System.Int64,System.Char[],System.Int32,System.Int32)"/> methods.
+            </param>
+            <param name="charBuffer">
+            The value that was originally specified for the "buffer"
+            parameter to the <see cref="M:system.Data.SQLite.SQLiteDataReader.GetChars(System.Int32,System.Int64,System.Char[],System.Int32,System.Int32)"/>
+            method.
+            </param>
+            <param name="bufferOffset">
+            The value that was originally specified for the "bufferOffset"
+            parameter to the <see cref="M:system.Data.SQLite.SQLiteDataReader.GetBytes(System.Int32,System.Int64,System.Byte[],System.Int32,System.Int32)"/> or
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetChars(System.Int32,System.Int64,System.Char[],System.Int32,System.Int32)"/> methods.
+            </param>
+            <param name="length">
+            The value that was originally specified for the "length"
+            parameter to the <see cref="M:system.Data.SQLite.SQLiteDataReader.GetBytes(System.Int32,System.Int64,System.Byte[],System.Int32,System.Int32)"/> or
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetChars(System.Int32,System.Int64,System.Char[],System.Int32,System.Int32)"/> methods.
+            </param>
+        </member>
+        <member name="P:System.Data.SQLite.SQLiteReadArrayEventArgs.DataOffset">
+            <summary>
+            The value that was originally specified for the "dataOffset"
+            parameter to the <see cref="M:system.Data.SQLite.SQLiteDataReader.GetBytes(System.Int32,System.Int64,System.Byte[],System.Int32,System.Int32)"/> or
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetChars(System.Int32,System.Int64,System.Char[],System.Int32,System.Int32)"/> methods.
+            </summary>
+        </member>
+        <member name="P:System.Data.SQLite.SQLiteReadArrayEventArgs.ByteBuffer">
+            <summary>
+            The value that was originally specified for the "buffer"
+            parameter to the <see cref="M:system.Data.SQLite.SQLiteDataReader.GetBytes(System.Int32,System.Int64,System.Byte[],System.Int32,System.Int32)"/>
+            method.
+            </summary>
+        </member>
+        <member name="P:System.Data.SQLite.SQLiteReadArrayEventArgs.CharBuffer">
+            <summary>
+            The value that was originally specified for the "buffer"
+            parameter to the <see cref="M:system.Data.SQLite.SQLiteDataReader.GetChars(System.Int32,System.Int64,System.Char[],System.Int32,System.Int32)"/>
+            method.
+            </summary>
+        </member>
+        <member name="P:System.Data.SQLite.SQLiteReadArrayEventArgs.BufferOffset">
+            <summary>
+            The value that was originally specified for the "bufferOffset"
+            parameter to the <see cref="M:system.Data.SQLite.SQLiteDataReader.GetBytes(System.Int32,System.Int64,System.Byte[],System.Int32,System.Int32)"/> or
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetChars(System.Int32,System.Int64,System.Char[],System.Int32,System.Int32)"/> methods.
+            </summary>
+        </member>
+        <member name="P:System.Data.SQLite.SQLiteReadArrayEventArgs.Length">
+            <summary>
+            The value that was originally specified for the "length"
+            parameter to the <see cref="M:system.Data.SQLite.SQLiteDataReader.GetBytes(System.Int32,System.Int64,System.Byte[],System.Int32,System.Int32)"/> or
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetChars(System.Int32,System.Int64,System.Char[],System.Int32,System.Int32)"/> methods.
+            </summary>
+        </member>
+        <member name="T:System.Data.SQLite.SQLiteReadValueEventArgs">
+            <summary>
+            This class represents the parameters and return values for the
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetBoolean(System.Int32)"/>,
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetByte(System.Int32)"/>,
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetBytes(System.Int32,System.Int64,System.Byte[],System.Int32,System.Int32)"/>,
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetChar(System.Int32)"/>,
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetChars(System.Int32,System.Int64,System.Char[],System.Int32,System.Int32)"/>,
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetDateTime(System.Int32)"/>,
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetDecimal(System.Int32)"/>,
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetDouble(System.Int32)"/>,
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetFloat(System.Int32)"/>,
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetGuid(System.Int32)"/>,
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetInt16(System.Int32)"/>,
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetInt32(System.Int32)"/>,
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetInt64(System.Int32)"/>,
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetString(System.Int32)"/>, and
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetValue(System.Int32)"/> methods.
+            </summary>
+        </member>
+        <member name="F:System.Data.SQLite.SQLiteReadValueEventArgs.methodName">
+            <summary>
+            Provides the underlying storage for the
+            <see cref="P:system.Data.SQLite.SQLiteReadValueEventArgs.MethodName"/> property.
+            </summary>
+        </member>
+        <member name="F:System.Data.SQLite.SQLiteReadValueEventArgs.arrayEventArgs">
+            <summary>
+            Provides the underlying storage for the
+            <see cref="P:system.Data.SQLite.SQLiteReadValueEventArgs.ArrayEventArgs"/> property.
+            </summary>
+        </member>
+        <member name="F:System.Data.SQLite.SQLiteReadValueEventArgs.value">
+            <summary>
+            Provides the underlying storage for the
+            <see cref="P:system.Data.SQLite.SQLiteReadValueEventArgs.Value"/> property.
+            </summary>
+        </member>
+        <member name="M:System.Data.SQLite.SQLiteReadValueEventArgs.#ctor(System.String,System.Data.SQLite.SQLiteReadArrayEventArgs,System.Data.SQLite.SQLiteDataReaderValue)">
+            <summary>
+            Constructs a new instance of this class.  Depending on the method
+            being called, the <paramref name="arrayEventArgs"/> and/or
+            <paramref name="value"/> parameters may be null.
+            </summary>
+            <param name="methodName">
+            The name of the <see cref="T:system.Data.SQLite.SQLiteDataReader"/> method that was
+            responsible for invoking this callback.
+            </param>
+            <param name="arrayEventArgs">
+            If the <see cref="M:system.Data.SQLite.SQLiteDataReader.GetBytes(System.Int32,System.Int64,System.Byte[],System.Int32,System.Int32)"/> or
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetChars(System.Int32,System.Int64,System.Char[],System.Int32,System.Int32)"/> method is being called,
+            this object will contain the array related parameters for that
+            method.
+            </param>
+            <param name="value">
+            This may be used by the callback to set the return value for the
+            called <see cref="T:system.Data.SQLite.SQLiteDataReader"/> method.
+            </param>
+        </member>
+        <member name="P:System.Data.SQLite.SQLiteReadValueEventArgs.MethodName">
+            <summary>
+            The name of the <see cref="T:system.Data.SQLite.SQLiteDataReader"/> method that was
+            responsible for invoking this callback.
+            </summary>
+        </member>
+        <member name="P:System.Data.SQLite.SQLiteReadValueEventArgs.ArrayEventArgs">
+            <summary>
+            If the <see cref="M:system.Data.SQLite.SQLiteDataReader.GetBytes(System.Int32,System.Int64,System.Byte[],System.Int32,System.Int32)"/> or
+            <see cref="M:system.Data.SQLite.SQLiteDataReader.GetChars(System.Int32,System.Int64,System.Char[],System.Int32,System.Int32)"/> method is being called,
+            this object will contain the array related parameters for that
+            method.
+            </summary>
+        </member>
+        <member name="P:System.Data.SQLite.SQLiteReadValueEventArgs.Value">
+            <summary>
+            This may be used by the callback to set the return value for the
+            called <see cref="T:system.Data.SQLite.SQLiteDataReader"/> method.
+            </summary>
+        </member>
+        <member name="T:System.Data.SQLite.SQLiteBindValueCallback">
+            <summary>
+            This represents a method that will be called in response to a request to
+            bind a parameter to a command.  If an exception is thrown, it will cause
+            the parameter binding operation to fail -AND- it will continue to unwind
+            the call stack.
+            </summary>
+            <param name="convert">
+            The <see cref="T:system.Data.SQLite.SQLiteConvert"/> instance in use.
+            </param>
+            <param name="command">
+            The <see cref="T:system.Data.SQLite.SQLiteCommand"/> instance in use.
+            </param>
+            <param name="flags">
+            The flags associated with the <see cref="T:system.Data.SQLite.SQLiteConnection"/> instance
+            in use.
+            </param>
+            <param name="parameter">
+            The <see cref="T:system.Data.SQLite.SQLiteParameter"/> instance being bound to the command.
+            </param>
+            <param name="typeName">
+            The database type name associated with this callback.
+            </param>
+            <param name="index">
+            The ordinal of the parameter being bound to the command.
+            </param>
+            <param name="userData">
+            The data originally used when registering this callback.
+            </param>
+            <param name="complete">
+            Non-zero if the default handling for the parameter binding call should
+            be skipped (i.e. the parameter should not be bound at all).  Great care
+            should be used when setting this to non-zero.
+            </param>
+        </member>
+        <member name="T:System.Data.SQLite.SQLiteReadValueCallback">
+            <summary>
+            This represents a method that will be called in response to a request
+            to read a value from a data reader.  If an exception is thrown, it will
+            cause the data reader operation to fail -AND- it will continue to unwind
+            the call stack.
+            </summary>
+            <param name="convert">
+            The <see cref="T:system.Data.SQLite.SQLiteConvert"/> instance in use.
+            </param>
+            <param name="dataReader">
+            The <see cref="T:system.Data.SQLite.SQLiteDataReader"/> instance in use.
+            </param>
+            <param name="flags">
+            The flags associated with the <see cref="T:system.Data.SQLite.SQLiteConnection"/> instance
+            in use.
+            </param>
+            <param name="eventArgs">
+            The parameter and return type data for the column being read from the
+            data reader.
+            </param>
+            <param name="typeName">
+            The database type name associated with this callback.
+            </param>
+            <param name="index">
+            The zero based index of the column being read from the data reader.
+            </param>
+            <param name="userData">
+            The data originally used when registering this callback.
+            </param>
+            <param name="complete">
+            Non-zero if the default handling for the data reader call should be
+            skipped.  If this is set to non-zero and the necessary return value
+            is unavailable or unsuitable, an exception will be thrown.
+            </param>
+        </member>
+        <member name="T:System.Data.SQLite.SQLiteTypeCallbacks">
+            <summary>
+            This class represents the custom data type handling callbacks
+            for a single type name.
+            </summary>
+        </member>
+        <member name="F:System.Data.SQLite.SQLiteTypeCallbacks.typeName">
+            <summary>
+            Provides the underlying storage for the
+            <see cref="P:system.Data.SQLite.SQLiteTypeCallbacks.TypeName"/> property.
+            </summary>
+        </member>
+        <member name="F:System.Data.SQLite.SQLiteTypeCallbacks.bindValueCallback">
+            <summary>
+            Provides the underlying storage for the
+            <see cref="P:system.Data.SQLite.SQLiteTypeCallbacks.BindValueCallback"/> property.
+            </summary>
+        </member>
+        <member name="F:System.Data.SQLite.SQLiteTypeCallbacks.readValueCallback">
+            <summary>
+            Provides the underlying storage for the
+            <see cref="P:system.Data.SQLite.SQLiteTypeCallbacks.ReadValueCallback"/> property.
+            </summary>
+        </member>
+        <member name="F:System.Data.SQLite.SQLiteTypeCallbacks.bindValueUserData">
+            <summary>
+            Provides the underlying storage for the
+            <see cref="P:system.Data.SQLite.SQLiteTypeCallbacks.BindValueUserData"/> property.
+            </summary>
+        </member>
+        <member name="F:System.Data.SQLite.SQLiteTypeCallbacks.readValueUserData">
+            <summary>
+            Provides the underlying storage for the
+            <see cref="P:system.Data.SQLite.SQLiteTypeCallbacks.ReadValueUserData"/> property.
+            </summary>
+        </member>
+        <member name="M:System.Data.SQLite.SQLiteTypeCallbacks.#ctor(System.Data.SQLite.SQLiteBindValueCallback,System.Data.SQLite.SQLiteReadValueCallback,System.Object,System.Object)">
+            <summary>
+            Constructs an instance of this class.
+            </summary>
+            <param name="bindValueCallback">
+            The custom paramater binding callback.  This parameter may be null.
+            </param>
+            <param name="readValueCallback">
+            The custom data reader value callback.  This parameter may be null.
+            </param>
+            <param name="bindValueUserData">
+            The extra data to pass into the parameter binding callback.  This
+            parameter may be null.
+            </param>
+            <param name="readValueUserData">
+            The extra data to pass into the data reader value callback.  This
+            parameter may be null.
+            </param>
+        </member>
+        <member name="M:System.Data.SQLite.SQLiteTypeCallbacks.Create(System.Data.SQLite.SQLiteBindValueCallback,System.Data.SQLite.SQLiteReadValueCallback,System.Object,System.Object)">
+            <summary>
+            Creates an instance of the <see cref="T:system.Data.SQLite.SQLiteTypeCallbacks"/> class.
+            </summary>
+            <param name="bindValueCallback">
+            The custom paramater binding callback.  This parameter may be null.
+            </param>
+            <param name="readValueCallback">
+            The custom data reader value callback.  This parameter may be null.
+            </param>
+            <param name="bindValueUserData">
+            The extra data to pass into the parameter binding callback.  This
+            parameter may be null.
+            </param>
+            <param name="readValueUserData">
+            The extra data to pass into the data reader value callback.  This
+            parameter may be null.
+            </param>
+        </member>
+        <member name="P:System.Data.SQLite.SQLiteTypeCallbacks.TypeName">
+            <summary>
+            The database type name that the callbacks contained in this class
+            will apply to.  This value may not be null.
+            </summary>
+        </member>
+        <member name="P:System.Data.SQLite.SQLiteTypeCallbacks.BindValueCallback">
+            <summary>
+            The custom paramater binding callback.  This value may be null.
+            </summary>
+        </member>
+        <member name="P:System.Data.SQLite.SQLiteTypeCallbacks.ReadValueCallback">
+            <summary>
+            The custom data reader value callback.  This value may be null.
+            </summary>
+        </member>
+        <member name="P:System.Data.SQLite.SQLiteTypeCallbacks.BindValueUserData">
+            <summary>
+            The extra data to pass into the parameter binding callback.  This
+            value may be null.
+            </summary>
+        </member>
+        <member name="P:System.Data.SQLite.SQLiteTypeCallbacks.ReadValueUserData">
+            <summary>
+            The extra data to pass into the data reader value callback.  This
+            value may be null.
+            </summary>
+        </member>
+        <member name="T:System.Data.SQLite.SQLiteTypeCallbacksMap">
+            <summary>
+            This class represents the mappings between database type names
+            and their associated custom data type handling callbacks.
+            </summary>
+        </member>
+        <member name="M:System.Data.SQLite.SQLiteTypeCallbacksMap.#ctor">
+            <summary>
+            Constructs an (empty) instance of this class.
             </summary>
         </member>
         <member name="T:System.Data.SQLite.ConnectionEventArgs">
@@ -3201,6 +3773,12 @@
             values.  These mappings override the corresponding global mappings.
             </summary>
         </member>
+        <member name="F:System.Data.SQLite.SQLiteConnection._typeCallbacks">
+            <summary>
+            The per-connection mappings between type names and optional callbacks
+            for parameter binding and value reading.
+            </summary>
+        </member>
         <member name="F:System.Data.SQLite.SQLiteConnection._sql">
             <summary>
             The base SQLite object to interop with
@@ -3468,6 +4046,48 @@
             A negative value if nothing was done.  Zero if no per-connection type
             mappings were replaced (i.e. it was a pure add operation).  More than
             zero if some per-connection type mappings were replaced.
+            </returns>
+        </member>
+        <member name="M:System.Data.SQLite.SQLiteConnection.ClearTypeCallbacks">
+            <summary>
+            Clears the per-connection type callbacks.
+            </summary>
+            <returns>
+            The total number of per-connection type callbacks cleared.
+            </returns>
+        </member>
+        <member name="M:System.Data.SQLite.SQLiteConnection.TryGetTypeCallbacks(System.String,System.Data.SQLite.SQLiteTypeCallbacks@)">
+            <summary>
+            Attempts to get the per-connection type callbacks for the specified
+            database type name.
+            </summary>
+            <param name="typeName">
+            The database type name.
+            </param>
+            <param name="callbacks">
+            Upon success, this parameter will contain the object holding the
+            callbacks for the database type name.  Upon failure, this parameter
+            will be null.
+            </param>
+            <returns>
+            Non-zero upon success; otherwise, zero.
+            </returns>
+        </member>
+        <member name="M:System.Data.SQLite.SQLiteConnection.SetTypeCallbacks(System.String,System.Data.SQLite.SQLiteTypeCallbacks)">
+            <summary>
+            Sets, resets, or clears the per-connection type callbacks for the
+            specified database type name.
+            </summary>
+            <param name="typeName">
+            The database type name.
+            </param>
+            <param name="callbacks">
+            The object holding the callbacks for the database type name.  If
+            this parameter is null, any callbacks for the database type name
+            will be removed if they are present.
+            </param>
+            <returns>
+            Non-zero if callbacks were set or removed; otherwise, zero.
             </returns>
         </member>
         <member name="M:System.Data.SQLite.SQLiteConnection.BindFunction(System.Data.SQLite.SQLiteFunctionAttribute,System.Data.SQLite.SQLiteFunction)">
@@ -3902,6 +4522,21 @@
             with a database connection that is closed or might close before this method
             returns.
             </summary>
+        </member>
+        <member name="M:System.Data.SQLite.SQLiteConnection.IsReadOnly(System.String)">
+            <summary>
+            Checks if this connection to the specified database should be considered
+            read-only.  An exception will be thrown if the database name specified
+            via <paramref name="name" /> cannot be found.
+            </summary>
+            <param name="name">
+            The name of a database associated with this connection -OR- null for the
+            main database.
+            </param>
+            <returns>
+            Non-zero if this connection to the specified database should be considered
+            read-only.
+            </returns>
         </member>
         <member name="M:System.Data.SQLite.SQLiteConnection.GetMemoryStatistics(System.Collections.Generic.IDictionary{System.String,System.Int64}@)">
             <summary>
@@ -6234,6 +6869,24 @@
              <param name="i">The index of the column to type-check</param>
              <param name="typ">The type we want to get out of the column</param>
         </member>
+        <member name="M:System.Data.SQLite.SQLiteDataReader.InvokeReadValueCallback(System.Int32,System.Data.SQLite.SQLiteReadValueEventArgs,System.Boolean@)">
+            <summary>
+            Invokes the data reader value callback configured for the database
+            type name associated with the specified column.  If no data reader
+            value callback is available for the database type name, do nothing.
+            </summary>
+            <param name="index">
+            The index of the column being read.
+            </param>
+            <param name="eventArgs">
+            The extra event data to pass into the callback.
+            </param>
+            <param name="complete">
+            Non-zero if the default handling for the data reader call should be
+            skipped.  If this is set to non-zero and the necessary return value
+            is unavailable or unsuitable, an exception will be thrown.
+            </param>
+        </member>
         <member name="M:System.Data.SQLite.SQLiteDataReader.GetBoolean(System.Int32)">
             <summary>
             Retrieves the column as a boolean value
@@ -7073,6 +7726,12 @@
         <member name="F:System.Data.SQLite.SQLiteErrorCode.Auth_User">
             <summary>
             User authentication failed.
+            </summary>
+        </member>
+        <member name="F:System.Data.SQLite.SQLiteErrorCode.Ok_Load_Permanently">
+            <summary>
+            Success.  Prevents the extension from unloading until the process
+            terminates.
             </summary>
         </member>
         <member name="T:System.Data.SQLite.SQLiteFactory">
@@ -8397,6 +9056,11 @@
             The data size, unused by SQLite
             </summary>
         </member>
+        <member name="F:System.Data.SQLite.SQLiteParameter._typeName">
+            <summary>
+            The database type name associated with this parameter, if any.
+            </summary>
+        </member>
         <member name="M:System.Data.SQLite.SQLiteParameter.#ctor(System.Data.IDbCommand)">
             <summary>
             Constructor used when creating for use with a specific command.
@@ -8615,6 +9279,11 @@
         <member name="P:System.Data.SQLite.SQLiteParameter.Value">
             <summary>
             Gets and sets the parameter value.  If no datatype was specified, the datatype will assume the type from the value given.
+            </summary>
+        </member>
+        <member name="P:System.Data.SQLite.SQLiteParameter.TypeName">
+            <summary>
+            The database type name associated with this parameter, if any.
             </summary>
         </member>
         <member name="T:System.Data.SQLite.SQLiteParameterCollection">
@@ -8941,6 +9610,36 @@
             <summary>
              Bind all parameters, making sure the caller didn't miss any
             </summary>
+        </member>
+        <member name="M:System.Data.SQLite.SQLiteStatement.GetConnection(System.Data.SQLite.SQLiteStatement)">
+            <summary>
+            This method attempts to query the database connection associated with
+            the statement in use.  If the underlying command or connection is
+            unavailable, a null value will be returned.
+            </summary>
+            <returns>
+            The connection object -OR- null if it is unavailable.
+            </returns>
+        </member>
+        <member name="M:System.Data.SQLite.SQLiteStatement.InvokeBindValueCallback(System.Int32,System.Data.SQLite.SQLiteParameter,System.Boolean@)">
+            <summary>
+            Invokes the parameter binding callback configured for the database
+            type name associated with the specified column.  If no parameter
+            binding callback is available for the database type name, do
+            nothing.
+            </summary>
+            <param name="index">
+            The index of the column being read.
+            </param>
+            <param name="parameter">
+            The <see cref="T:system.Data.SQLite.SQLiteParameter"/> instance being bound to the
+            command.
+            </param>
+            <param name="complete">
+            Non-zero if the default handling for the parameter binding call
+            should be skipped (i.e. the parameter should not be bound at all).
+            Great care should be used when setting this to non-zero.
+            </param>
         </member>
         <member name="M:System.Data.SQLite.SQLiteStatement.BindParameter(System.Int32,System.Data.SQLite.SQLiteParameter)">
             <summary>
