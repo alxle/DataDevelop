@@ -169,7 +169,6 @@ namespace DataDevelop.Data.OleDb
 								count--;
 							} while (reader.Read() && count > 0);
 						}
-						reader.Close();
 					}
 				}
 			}

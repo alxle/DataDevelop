@@ -46,5 +46,20 @@ namespace DataDevelop.UIComponents
 		{
 			this.Log(text, errorStyle);
 		}
+
+		/// <summary> 
+		/// Clean up any resources being used.
+		/// </summary>
+		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing) {
+				if (components != null) components.Dispose();
+				if (textStyle != null) textStyle.Dispose();
+				if (infoStyle != null) infoStyle.Dispose();
+				if (errorStyle != null) errorStyle.Dispose();
+			}
+			base.Dispose(disposing);
+		}
 	}
 }

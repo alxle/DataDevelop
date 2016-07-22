@@ -388,14 +388,10 @@ namespace DataDevelop
 			}
 		}
 
-		#region IDbObject Members
-
-		Database IDbObject.Database
+		public Database Database
 		{
 			get { return database; }
 		}
-
-		#endregion
 
 		private void textEditorControl_DragDrop(object sender, DragEventArgs e)
 		{

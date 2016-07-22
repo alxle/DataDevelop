@@ -63,7 +63,7 @@ namespace DataDevelop.Scripting
 			return builder.ToString();
 		}
 
-		class JTableAdapter
+		sealed class JTableAdapter : IDisposable
 		{
 			private Table table;
 			private DbDataAdapter adapter;
@@ -114,9 +114,15 @@ namespace DataDevelop.Scripting
 			{
 				this.data.Rows.Clear();
 			}
+
+			public void Dispose()
+			{
+				data.Dispose();
+				adapter.Dispose();
+			}
 		}
 
-		class JDatabase
+		sealed class JDatabase
 		{
 			private Database database;
 

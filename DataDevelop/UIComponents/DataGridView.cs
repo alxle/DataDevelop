@@ -16,10 +16,6 @@ namespace DataDevelop
 		public DataGridView()
 		{
 			InitializeComponent();
-			//nullStyle = new DataGridViewCellStyle();
-			//nullStyle.BackColor = SystemColors.Info;
-			//nullStyle.ForeColor = SystemColors.InfoText;
-			//this.DefaultCellStyle.NullValue = "NULL";
 
 			this.DoubleBuffered = true;
 
@@ -182,13 +178,10 @@ namespace DataDevelop
 
 			public void Dispose()
 			{
-				if (back != null) {
-					back.Dispose();
-				}
-				if (fore != null) {
-					fore.Dispose();
-				}
-				GC.SuppressFinalize(this);
+				if (back != null) back.Dispose();
+				if (fore != null) fore.Dispose();
+				if (font != null) font.Dispose();
+				if (format != null) format.Dispose();
 			}
 
 			#endregion

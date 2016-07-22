@@ -179,15 +179,37 @@ namespace DataDevelop.Core.MSOffice
 			this.app.Quit();
 		}
 
-		#region IDisposable Members
+		#region IDisposable Support
+		private bool disposedValue = false; // To detect redundant calls
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (!disposedValue) {
+				if (disposing) {
+					// Dispose managed state (managed objects).
+				}
+
+				// Free unmanaged resources (unmanaged objects).
+				// Set large fields to null.
+				this.app.Quit();
+				Marshal.FinalReleaseComObject(this.app);
+
+				disposedValue = true;
+			}
+		}
+
+		~Worksheet()
+		{
+			Dispose(false);
+		}
 
 		public void Dispose()
 		{
-			this.app.Quit();
-			Marshal.FinalReleaseComObject(this.app);
+			Dispose(true);
+			GC.SuppressFinalize(this);
 		}
-
 		#endregion
+
 	}
 	
 	public static class Excel
@@ -252,8 +274,8 @@ namespace DataDevelop.Core.MSOffice
 					if (worker.CancellationPending) {
 						excel.DisplayAlerts = false;
 						excel.ActiveWindow.Close(false, Missing.Value, Missing.Value);
-						excel.Quit();
-						Marshal.FinalReleaseComObject(excel);
+						// Worksheet.Dispose releases Excel Application
+						worksheet.Dispose();
 						return null;
 					}
 				}

@@ -486,14 +486,10 @@ namespace DataDevelop
 			doc.Show(this.DockPanel);
 		}
 
-		#region IDbObject Members
-
-		Database IDbObject.Database
+		public Database Database
 		{
 			get { return table.Database; }
 		}
-
-		#endregion
 
 		private void allCellsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
