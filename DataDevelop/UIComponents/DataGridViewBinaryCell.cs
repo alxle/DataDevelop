@@ -14,19 +14,6 @@ namespace DataDevelop.UIComponents
 				return null;
 			}
 			return Properties.Resources.BinaryImage;
-			//return base.GetFormattedValue(value, rowIndex, ref cellStyle, valueTypeConverter, formattedValueTypeConverter, context);
-			//Rectangle bounds = new Rectangle(0, 0, 64, 16);
-			//Bitmap bitmap = new Bitmap(bounds.Width, bounds.Height);
-			//Graphics g = Graphics.FromImage(bitmap);
-			//StringFormat sf = new StringFormat();
-			//sf.LineAlignment = StringAlignment.Center;
-			//sf.Alignment = StringAlignment.Center;
-			//sf.FormatFlags = StringFormatFlags.MeasureTrailingSpaces;
-			//byte[] data = (byte[])value;
-			//g.Clear(SystemColors.Window);
-			//g.DrawRectangle(SystemPens.ControlText, 0, 0, bounds.Width - 1, bounds.Height - 1);
-			//g.DrawString(GetDataLength(data.Length), DataGridView.Font, SystemBrushes.ControlText, bounds, sf);
-			//return bitmap;
 		}
 
 		public byte[] BinaryData
@@ -34,13 +21,6 @@ namespace DataDevelop.UIComponents
 			get { return Value as byte[]; }
 			set { Value = value; }
 		}
-
-		//protected override void OnContentDoubleClick(DataGridViewCellEventArgs e)
-		//{
-		//    if (Value is byte[] || Value == null || Value == DBNull.Value) {
-		//        BinaryVisualizer.Show(null, this);
-		//    }
-		//}
 
 		private static string GetDataLength(double length)
 		{

@@ -13,10 +13,6 @@ namespace DataDevelop
 		public PropertiesToolbox()
 		{
 			InitializeComponent();
-			//propertyGrid.BackColor = SystemColors.ControlDarkDark;
-			//propertyGrid.ToolStrip.Anchor = AnchorStyles.Top | AnchorStyles.Right | AnchorStyles.Left;
-			//propertyGrid.ToolStrip.Left += 1;
-			//propertyGrid.ToolStrip.Width -= 2;
 		}
 
 		public PropertyGrid PropertyGrid

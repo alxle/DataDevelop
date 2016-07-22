@@ -1,17 +1,15 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
+using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 using DataDevelop.Reflection;
-using System.Reflection;
 
 namespace DataDevelop
 {
-    partial class TypeDocument : Document
-    {
+	partial class TypeDocument : Document
+	{
 		TypeNode typeNode;
 		ListViewGroup fieldsGroup;
 		ListViewGroup constructorsGroup;
@@ -19,9 +17,9 @@ namespace DataDevelop
 		ListViewGroup propertiesGroup;
 		ListViewGroup eventsGroup;
 
-        public TypeDocument()
-        {
-            InitializeComponent();
+		public TypeDocument()
+		{
+			InitializeComponent();
 			typeLabel.Font = new Font(typeLabel.Font.FontFamily, 14F);
 			fieldsGroup = new ListViewGroup("Fields");
 			constructorsGroup = new ListViewGroup("Contructors");
@@ -33,8 +31,7 @@ namespace DataDevelop
 			mainListView.Groups.Add(methodsGroup);
 			mainListView.Groups.Add(propertiesGroup);
 			mainListView.Groups.Add(eventsGroup);
-			//SetStyle(ControlStyles.AllPaintingInWmPaint, true);
-        }
+		}
 
 		public TypeNode TypeNode
 		{
@@ -191,6 +188,5 @@ namespace DataDevelop
 			mainListView.Columns[0].AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
 			mainListView.EndUpdate();
 		}
-
-    }
+	}
 }

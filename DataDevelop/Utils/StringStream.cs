@@ -15,11 +15,11 @@ namespace DataDevelop.Utils
 			this.writer = new StringWriter();
 		}
 
-        public StringStream(Encoding encoding)
-            : this()
-        {
-            this.encoding = encoding ?? Encoding.Default;
-        }
+		public StringStream(Encoding encoding)
+			: this()
+		{
+			this.encoding = encoding ?? Encoding.Default;
+		}
 
 		public override bool CanRead { get { return false; } }
 		public override bool CanSeek { get { return false; } }
@@ -30,7 +30,7 @@ namespace DataDevelop.Utils
 		public override long Position
 		{
 			get { throw new NotSupportedException(); }
-			set	{ throw new NotSupportedException(); }
+			set { throw new NotSupportedException(); }
 		}
 
 		public override long Seek(long offset, SeekOrigin origin)

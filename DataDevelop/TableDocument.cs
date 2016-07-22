@@ -143,11 +143,11 @@ namespace DataDevelop
 		private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
 			this.HideLoadingPanel();
-			
+
 			if (e.Error == null) {
 				this.refreshDataNeeded = false;
 				this.dataGridView.DataSource = data;
-				this.UpdateLocation();	
+				this.UpdateLocation();
 			} else {
 				throw e.Error;
 			}
@@ -379,7 +379,7 @@ namespace DataDevelop
 			pageSetupDialog.Document = dataTablePrintDocument;
 			pageSetupDialog.ShowDialog();
 		}
-		
+
 		#endregion
 
 		private void filterToolStripButton_Click(object sender, EventArgs e)
@@ -387,17 +387,16 @@ namespace DataDevelop
 			if (!CanContinue()) {
 				return;
 			}
-			using (FilterDialog filterDialog = new FilterDialog(this.filter.Clone()))
-			{
+			using (FilterDialog filterDialog = new FilterDialog(this.filter.Clone())) {
 				FormExtensions.DownPositionate(filterDialog, filterToolStripButton, this);
 				if (filterDialog.ShowDialog(this) == DialogResult.OK) {
 					TableFilter lastGood = this.filter;
 					this.filter = filterDialog.Filter;
 
-					 if (IsFiltered) {
+					if (IsFiltered) {
 						this.currentPage = 0;
 						this.filterToolStripButton.Checked = true;
-					 } else {
+					} else {
 						this.filterToolStripButton.Checked = false;
 					}
 					this.filterToolStripButton.ToolTipText = IsFiltered ? filter.ToString() : "Filter";
@@ -430,7 +429,6 @@ namespace DataDevelop
 					this.sortToolStripButton.Checked = IsSorted;
 					this.sortToolStripButton.ToolTipText = IsSorted ? sort.ToString() : "Sort";
 
-					//string orderby = ColumnOrder.GetOrderByStatement(orders);
 					try {
 						UpdateDataSet();
 					} catch (Exception ex) {
@@ -455,7 +453,7 @@ namespace DataDevelop
 					return;
 				}
 				DataTable changes = this.GetChanges();
-				if (changes != null){
+				if (changes != null) {
 					if (!this.AskAndSave(changes)) {
 						e.Cancel = true;
 					}
@@ -485,7 +483,6 @@ namespace DataDevelop
 			CommandDocument doc = new CommandDocument(table.Database);
 			doc.Text = String.Format(Resources.QueryDocumentTitle, table.Database.Name);
 			doc.CommandText = sql.ToString();
-			////doc.Show(this.Pane, WeifenLuo.WinFormsUI.Docking.DockAlignment.Bottom, 1 / 3F);
 			doc.Show(this.DockPanel);
 		}
 

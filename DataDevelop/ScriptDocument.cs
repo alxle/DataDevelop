@@ -1,12 +1,11 @@
+using System;
+using System.ComponentModel;
+using System.Windows.Forms;
 using DataDevelop.Data;
 using DataDevelop.Dialogs;
 using DataDevelop.Scripting;
 using DataDevelop.UIComponents;
 using DataDevelop.Utils;
-using System;
-using System.ComponentModel;
-using System.Drawing;
-using System.Windows.Forms;
 
 namespace DataDevelop
 {
@@ -20,25 +19,19 @@ namespace DataDevelop
 		{
 			InitializeComponent();
 			this.output = output;
-			
-			var isPython = (engine is PythonScriptEngine);
-            var highlighter = isPython ? Highlighters.Python : Highlighters.Javascript;
-			var outputStream = new StreamWriteDelegator(this.Output.WriteUnicode);
-			
-			////if (!isPython) {
-			////    outputStream = new StreamWriteDelegator(this.Output.WriteUnicode);
-			////}
 
-            textEditorControl.Document.HighlightingStrategy = highlighter;
+			var isPython = (engine is PythonScriptEngine);
+			var highlighter = isPython ? Highlighters.Python : Highlighters.Javascript;
+			var outputStream = new StreamWriteDelegator(this.Output.WriteUnicode);
+
+			textEditorControl.Document.HighlightingStrategy = highlighter;
 			this.Text = String.Concat(highlighter.Name, " Console");
 
 			textEditorControl.ShowEOLMarkers = false;
 			textEditorControl.ShowSpaces = false;
 			textEditorControl.ShowInvalidLines = false;
 
-			//output.OutputFont = new Font(FontFamily.GenericMonospace, 8F);
-            
-            this.engine = engine;
+			this.engine = engine;
 			this.engine.Initialize(outputStream, DatabasesManager.Databases);
 		}
 
@@ -109,8 +102,6 @@ namespace DataDevelop
 
 		private void ShowOutput()
 		{
-			////output.DockTo(this.DockPanel, DockStyle.Fill);
-			////output.Show(this.Pane, DockAlignment.Bottom, 0.3);
 			output.Show();
 			this.Focus();
 		}
@@ -150,7 +141,7 @@ namespace DataDevelop
 		{
 			textEditorControl.ActiveTextAreaControl.TextArea.ClipboardHandler.Paste(sender, e);
 		}
-		
+
 		private void selectAllToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			textEditorControl.ActiveTextAreaControl.TextArea.ClipboardHandler.SelectAll(sender, e);
@@ -203,18 +194,6 @@ namespace DataDevelop
 		private void exitToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			this.Close();
-		}
-
-		private void ScriptDocument_Load(object sender, EventArgs e)
-		{
-			////Application.DoEvents();
-			////this.ShowOutput();
-			////this.Activate();
-		}
-
-		private void ScriptDocument_Shown(object sender, EventArgs e)
-		{
-			
 		}
 
 		private void showResultPanelToolStripButton_Click(object sender, EventArgs e)

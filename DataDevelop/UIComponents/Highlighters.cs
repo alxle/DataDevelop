@@ -56,11 +56,6 @@ namespace DataDevelop.UIComponents
 		private static DefaultHighlightingStrategy GetHighlightingStrategy(string name, XmlDocument doc)
 		{
 			DefaultHighlightingStrategy highlighter = new DefaultHighlightingStrategy(name);
-            
-			//string strPathXSHD = System.IO.Path.GetDirectoryName(Application.ExecutablePath) + @"\res\";
-			//ICSharpCode.TextEditor.Document.FileSyntaxModeProvider provider = new ICSharpCode.TextEditor.Document.FileSyntaxModeProvider(strPathXSHD);
-			//ICSharpCode.TextEditor.Document.HighlightingManager.Manager.AddSyntaxModeFileProvider(provider);
-			//highlighter = (ICSharpCode.TextEditor.Document.DefaultHighlightingStrategy)ICSharpCode.TextEditor.Document.HighlightingManager.Manager.FindHighlighter("sql");
 
 			if (doc.DocumentElement.HasAttribute("extensions")) {
 				highlighter.Extensions = doc.DocumentElement.GetAttribute("extensions").Split(new char[] { ';', '|' });

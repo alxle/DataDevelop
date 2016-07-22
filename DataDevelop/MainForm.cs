@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Deployment.Application;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using DataDevelop.Scripting;
 using WeifenLuo.WinFormsUI.Docking;
+using DataDevelop.Scripting;
 
 namespace DataDevelop
 {
@@ -69,7 +70,7 @@ namespace DataDevelop
 				topBar.BackColor = bottomBar.BackColor = darkBlue;
 				ToolStripManager.VisualStylesEnabled = true;
 				ToolStripManager.Renderer = new VisualStyles.VS2015ToolStripRenderer();
-			} 
+			}
 		}
 
 		public static MainForm Instance
@@ -236,20 +237,20 @@ namespace DataDevelop
 			databaseExplorer.OpenDatabase();
 		}
 
-        private void pythonConsole_Click(object sender, EventArgs e)
-        {
-            Application.DoEvents();
-            ScriptDocument script = new ScriptDocument(outputWindow, new PythonScriptEngine());
-            script.Show(dockPanel);
-            Application.DoEvents();
-        }
+		private void pythonConsole_Click(object sender, EventArgs e)
+		{
+			Application.DoEvents();
+			ScriptDocument script = new ScriptDocument(outputWindow, new PythonScriptEngine());
+			script.Show(dockPanel);
+			Application.DoEvents();
+		}
 
 		private void javascriptConsole_Click(object sender, EventArgs e)
-        {
-            Application.DoEvents();
-            ScriptDocument script = new ScriptDocument(outputWindow, new JavascriptEngine());
-            script.Show(dockPanel);
-            Application.DoEvents();
+		{
+			Application.DoEvents();
+			ScriptDocument script = new ScriptDocument(outputWindow, new JavascriptEngine());
+			script.Show(dockPanel);
+			Application.DoEvents();
 		}
 
 		private void updates_ApplicationRestarting(object sender, CancelEventArgs e)
@@ -281,7 +282,7 @@ namespace DataDevelop
 
 		private void documentationToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			System.Diagnostics.Process.Start(Program.Documentation);
+			Process.Start(Program.Documentation);
 		}
 	}
 }

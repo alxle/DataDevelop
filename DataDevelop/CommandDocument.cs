@@ -2,22 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Text;
-using System.Windows.Forms;
-using System.Data.Common;
-using System.Xml;
-using DataDevelop.Data;
-using DataDevelop.UIComponents;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace DataDevelop
 {
+	using Data;
+	using Dialogs;
 	using Printing;
-	using System.IO;
-	using DataDevelop.Utils;
-	using System.Diagnostics;
-	using DataDevelop.Dialogs;
+	using UIComponents;
+	using Utils;
 
 	public partial class CommandDocument : Document, IDbObject
 	{
@@ -42,7 +40,7 @@ namespace DataDevelop
 
 		private Database database;
 		private Stopwatch stopwatch = new Stopwatch();
-		private IList<IDataParameter> parameters = new List<IDataParameter>();		
+		private IList<IDataParameter> parameters = new List<IDataParameter>();
 		FindAndReplaceDialog findDialog = new FindAndReplaceDialog();
 
 		public CommandDocument(Database database)
@@ -53,7 +51,7 @@ namespace DataDevelop
 			this.providerStatusLabel.Text = database.Provider.Name;
 
 			//this.command = database.CreateCommand();
-			
+
 			splitContainer.Panel2Collapsed = true;
 
 			textEditorControl.Document.HighlightingStrategy = Highlighters.Sql;
@@ -81,13 +79,6 @@ namespace DataDevelop
 			if (commandText == null) {
 				return false;
 			}
-			//Match match = regex.Match(commandText);
-			//if (match.Success) {
-			//    return true;
-			//    //return (String.Compare(match.Captures[0].Value, "SELECT", true) == 0);
-			//}
-			//return false;
-			//return commandText.StartsWith("SELECT", StringComparison.OrdinalIgnoreCase);
 
 			if (matchSelectCommand == null) {
 				matchSelectCommand = new Regex(@"^\s*SELECT\s+", RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -113,7 +104,7 @@ namespace DataDevelop
 			//useTransactionToolStripButton.Enabled = value;
 			textEditorControl.IsReadOnly = !value;
 			progressBar.Visible = !value;
-			progressBar.Style = progressBar.Visible ?  ProgressBarStyle.Marquee : ProgressBarStyle.Blocks;
+			progressBar.Style = progressBar.Visible ? ProgressBarStyle.Marquee : ProgressBarStyle.Blocks;
 		}
 
 		public string SelectedText
@@ -306,25 +297,19 @@ namespace DataDevelop
 						dataGridView.Columns.Clear();
 						dataGridView.DataSource = result.Data;
 						statusLabel.Text = String.Format("Rows returned: {0}", result.Data.Rows.Count);
-						
+
 					} else {
 						ShowMessage(String.Format("Success: {0} rows affected.", result.RowsAffected));
 						statusLabel.Text = "Ready.";
 						messagesTabPage.Select();
 					}
 				}
-				
+
 			}
 			outputTabControl.SelectTab((dataGridView.DataSource == null) ? messagesTabPage : resultsTabPage);
 			AppendMessage(String.Format("Elapsed time: {0}", stopwatch.Elapsed));
 			EnableUI(true);
 		}
-
-		////private bool UseTransaction
-		////{
-		////    get { return useTransactionToolStripButton.Checked; }
-		////    set { useTransactionToolStripButton.Checked = value; }
-		////}
 
 		private bool ResultsPanelVisible
 		{
@@ -403,11 +388,6 @@ namespace DataDevelop
 			}
 		}
 
-		private void CommandDocument_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-		{
-
-		}
-
 		#region IDbObject Members
 
 		Database IDbObject.Database
@@ -416,11 +396,6 @@ namespace DataDevelop
 		}
 
 		#endregion
-
-		private void textEditorControl_QueryContinueDrag(object sender, QueryContinueDragEventArgs e)
-		{
-			//
-		}
 
 		private void textEditorControl_DragDrop(object sender, DragEventArgs e)
 		{
@@ -443,11 +418,6 @@ namespace DataDevelop
 			} else {
 				e.Effect = DragDropEffects.None;
 			}
-		}
-
-		private void textEditorControl_DragOver(object sender, DragEventArgs e)
-		{
-
 		}
 
 		private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -552,10 +522,6 @@ namespace DataDevelop
 		private void Redo(object sender, EventArgs e)
 		{
 			textEditorControl.Redo();
-		}
-
-		private void textEditorControl_Changed(object sender, EventArgs e)
-		{
 		}
 
 		private void CommandDocument_FormClosing(object sender, FormClosingEventArgs e)
@@ -678,4 +644,3 @@ namespace DataDevelop
 		}
 	}
 }
-

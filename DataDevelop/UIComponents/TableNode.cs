@@ -27,10 +27,5 @@ namespace DataDevelop
 		{
 			get { return table; }
 		}
-
-		//public DatabaseNode DatabaseNode
-		//{
-		//	get { return (DatabaseNode)this.Parent; }
-		//}
 	}
 }
