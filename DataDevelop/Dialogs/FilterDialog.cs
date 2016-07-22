@@ -40,7 +40,6 @@ namespace DataDevelop
 
 		private void dataGridView_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
 		{
-			//if (dataGridView.Columns[e.ColumnIndex].Frozen) {
 			if (columnName.Index == e.ColumnIndex && e.RowIndex >= 0) {
 				if ((e.PaintParts & DataGridViewPaintParts.Border) == DataGridViewPaintParts.Border) {
 					e.Paint(e.ClipBounds, e.PaintParts);

@@ -34,7 +34,8 @@ namespace DataDevelop
 			node.Nodes.Add(String.Empty);
 
 			TreeNodeController controller = new TreeNodeController();
-			controller.Populate += delegate {
+			controller.Populate += delegate
+			{
 				foreach (StoredProcedure sp in db.StoredProcedures) {
 					node.Nodes.Add(CreateStoredProcedureNode(sp));
 				}
@@ -52,7 +53,6 @@ namespace DataDevelop
 			TreeNodeController controller = new TreeNodeController();
 			controller.Populate += delegate { AddParameters(node, storedProdecure); };
 			controller.Refresh += delegate { storedProdecure.RefreshParameters(); };
-			//controller.DoubleClick += delegate { OpenQuery(storedProdecure.Database, storedProdecure.GetAlterStatement()); };
 			controller.Tag = storedProdecure;
 			node.Tag = controller;
 
@@ -223,7 +223,7 @@ namespace DataDevelop
 					if (views != null) {
 						node.Nodes.Add(views);
 					}
-					if (node.Database.SupportStoredProcedures) {// && node.Database.StoredProcedures.Count > 0) {
+					if (node.Database.SupportStoredProcedures) {
 						node.Nodes.Add(CreateStoredProceduresFolderNode(node.Database));
 					}
 					if (node.Database.SupportUserDefinedFunctions) {
@@ -528,7 +528,7 @@ namespace DataDevelop
 
 		private void treeView_BeforeLabelEdit(object sender, NodeLabelEditEventArgs e)
 		{
-			
+
 		}
 
 		private void treeView_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
@@ -541,7 +541,7 @@ namespace DataDevelop
 				e.Node.Text = table.DisplayName;
 				return;
 			}
-			
+
 			try {
 				if (table.Rename(e.Label)) {
 					e.Node.Text = table.DisplayName;
@@ -660,7 +660,6 @@ namespace DataDevelop
 
 			foreach (Document doc in documents) {
 				if (!FormExtensions.Close(doc)) {
-					////MessageBox.Show(this, "Disconnection was cancelled");
 					return false;
 				}
 			}
@@ -763,7 +762,6 @@ namespace DataDevelop
 					box.ConnectionStringBuilder = db.Provider.CreateConnectionStringBuilder();
 					box.ConnectionStringBuilder.ConnectionString = db.ConnectionString;
 					if (box.ShowDialog(this) == DialogResult.OK) {
-						////DisconnectSelectedDatabase();
 						db.ChangeConnectionString(box.ConnectionString);
 						DatabasesManager.IsCollectionDirty = true;
 						ShowNodeProperties(treeView.SelectedNode);
@@ -816,14 +814,14 @@ namespace DataDevelop
 			this.SaveDatabases();
 		}
 
-        private void loadConnectionsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            DialogResult result = MessageBox.Show(this, Resources.LoadConnections, "Confirm", 
-                MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
-            if (result == DialogResult.Yes) {
-                this.LoadDatabases();
-            }
-        }
+		private void loadConnectionsToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			DialogResult result = MessageBox.Show(this, Resources.LoadConnections, "Confirm",
+				MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+			if (result == DialogResult.Yes) {
+				this.LoadDatabases();
+			}
+		}
 
 		public bool DisconnectAll()
 		{
@@ -854,7 +852,7 @@ namespace DataDevelop
 
 		private void reconnectToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			this.SelectedDatabaseNode.ConnectAsync(true, null);	
+			this.SelectedDatabaseNode.ConnectAsync(true, null);
 		}
 
 		private void databaseContextMenu_Opening(object sender, CancelEventArgs e)

@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Windows.Forms;
+using System.Diagnostics;
 using System.Reflection;
-using System.Text;
+using System.Windows.Forms;
 
 namespace DataDevelop
 {
@@ -44,8 +42,6 @@ namespace DataDevelop
 			}
 		}
 
-
-		
 		#region Assembly Attribute Accessors
 
 		public static string AssemblyTitle
@@ -138,7 +134,7 @@ namespace DataDevelop
 
 		private void homepageLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
-			System.Diagnostics.Process.Start(Program.Homepage);
+			Process.Start(Program.Homepage);
 		}
 	}
 }

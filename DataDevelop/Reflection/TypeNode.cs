@@ -72,28 +72,6 @@ namespace DataDevelop.Reflection
 			}
 		}
 
-		//public IList<MethodInfo> Methods
-		//{
-		//    get
-		//    {
-		//        if (methods == null) {
-		//            methods = new Dictionary<string, IList<MethodInfo>>();
-		//            foreach (MethodInfo m in type.GetMethods()) {
-		//                if (m.IsSpecialName) continue;
-		//                IList<MethodInfo> methodInfos;
-		//                if (!methods.ContainsKey(m.Name)) {
-		//                    methodInfos = new List<MethodInfo>();
-		//                    methods.Add(m.Name, methodInfos);
-		//                } else {
-		//                    methodInfos = methods[m.Name];
-		//                }
-		//                methodInfos.Add(m);
-		//            }
-		//        }
-		//        return methods;
-		//    }
-		//}
-
 		public IList<PropertyInfo> Properties
 		{
 			get

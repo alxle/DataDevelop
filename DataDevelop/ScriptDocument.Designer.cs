@@ -545,8 +545,6 @@ namespace DataDevelop
 			this.Name = "ScriptDocument";
 			this.Text = "Scripting Console";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ScriptDocument_FormClosing);
-			this.Load += new System.EventHandler(this.ScriptDocument_Load);
-			this.Shown += new System.EventHandler(this.ScriptDocument_Shown);
 			((System.ComponentModel.ISupportInitialize)(this.dataSet)).EndInit();
 			this.toolStrip.ResumeLayout(false);
 			this.toolStrip.PerformLayout();

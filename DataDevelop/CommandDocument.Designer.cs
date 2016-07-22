@@ -122,7 +122,6 @@ namespace DataDevelop
 			this.textEditorControl.FileNameChanged += new System.EventHandler(this.textEditorControl_FileNameChanged);
 			this.textEditorControl.DragDrop += new System.Windows.Forms.DragEventHandler(this.textEditorControl_DragDrop);
 			this.textEditorControl.DragEnter += new System.Windows.Forms.DragEventHandler(this.textEditorControl_DragEnter);
-			this.textEditorControl.DragOver += new System.Windows.Forms.DragEventHandler(this.textEditorControl_DragOver);
 			// 
 			// splitContainer
 			// 
