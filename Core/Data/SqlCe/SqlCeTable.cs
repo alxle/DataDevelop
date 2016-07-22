@@ -127,7 +127,6 @@ namespace DataDevelop.Data.SqlCe
 					var name = (string)row["CONSTRAINT_NAME"];
 					var key = new ForeignKey(name, this);
 					key.ChildTable = this.Name;
-					////key.ChildTableColumns = (string)row["COLUMN_NAME"];
 					foreignKeysCollection.Add(key);
 				}
 			}
@@ -135,7 +134,7 @@ namespace DataDevelop.Data.SqlCe
 
 		protected override void PopulateTriggers(IList<Trigger> triggersCollection)
 		{
-
+			// TODO
 		}
 
 		private static bool InPrimaryKey(string[] primaryKeys, string columnName)

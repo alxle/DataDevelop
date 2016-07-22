@@ -13,8 +13,6 @@ namespace DataDevelop.Data
 		private IList<Column> columnsCollection;
 		private IList<ForeignKey> keysCollection;
 		private IList<Trigger> triggersCollection;
-		////private DateTime creationDate;
-		////private DateTime lastModifiedDate;
 
 		protected Table(Database database)
 			: base(database)

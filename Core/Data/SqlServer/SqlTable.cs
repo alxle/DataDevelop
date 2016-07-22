@@ -267,7 +267,6 @@ namespace DataDevelop.Data.SqlServer
 			}
 			
 			select.Append(") AS [Row_Number()], * ");
-			////filter.WriteColumnsProjection(select);
 			select.Append(" FROM [");
 			select.Append(this.schema);
 			select.Append("].[");
