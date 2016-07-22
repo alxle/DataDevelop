@@ -207,9 +207,7 @@ namespace DataDevelop
 
 		private void exitToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (CloseAllDocuments()) {
-				databaseExplorer.SaveDatabases();
-				dockPanel.SaveAsXml(SettingsManager.DockPropertiesFileName);
+			if (FormExtensions.Close(this)) { 
 				Application.Exit();
 			}
 		}
