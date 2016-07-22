@@ -127,27 +127,10 @@ namespace DataDevelop.Data.Access
 
 		protected override void PopulateForeignKeys(IList<ForeignKey> foreignKeysCollection)
 		{
-			////try {
-			////    Database.Connect();
-			////    string[] restrictions = null;// new string[] { null, null, this.Name, null };
-			////    DataTable schema = Connection.GetOleDbSchemaTable(OleDbSchemaGuid.Indexes, restrictions);
-			////    foreach (DataRow row in schema.Rows) {
-			////        if ((string)row["TABLE_NAME"] == this.Name) {
-			////            if ((bool)row["PRIMARY_KEY"]) {
-			////                ForeignKey key = new ForeignKey();
-			////                key.Name = (string)row["COLUMN_NAME"];
-			////                _keyObjects.Add(key);
-			////            }
-			////        }
-			////    }
-			////} finally {
-			////    Database.Disconnect();
-			////}
 		}
 
 		protected override void PopulateTriggers(IList<Trigger> triggersCollection)
 		{
-			return;
 		}
 
 		private static bool InPrimaryKey(string[] primaryKey, string columnName)
@@ -185,11 +168,7 @@ namespace DataDevelop.Data.Access
 				select.Append("SELECT TOP ");
 				select.Append(count);
 				select.Append(" * FROM (SELECT TOP ");
-				////if (startIndex < total) {
 				select.Append(total - startIndex);
-				////} else {
-				////	select.Append(total);
-				////}
 				select.Append(" ");
 				filter.WriteColumnsProjection(select);
 				select.Append(" FROM ");

@@ -300,14 +300,11 @@ namespace DataDevelop.Core.MSOffice
 							}
 						}
 					}
-					//cell.Formula = value ?? String.Empty;
 					if (!String.IsNullOrEmpty(column.Format)) {
 						var cell = worksheet.GetCell(rowIndex + 1, columnIndex);
 						cell.NumberFormat = column.Format;
 					}
-					////cell.Auto = false;
 					rowValues[columnIndex] = value;
-					//tableValues[rowIndex, columnIndex] = value;
 				}
 				worksheet.AddRow(rowValues);
 			}
@@ -316,8 +313,6 @@ namespace DataDevelop.Core.MSOffice
 			}
 
 			worksheet.Flush();
-			//SetTable(sheet, 2, 1, tableValues);
-			////headers.EntireColumn.AutoFit();
 			excel.Cursor = XlMousePointer.xlDefault;
 			watch.Stop();
 			Console.WriteLine("Elapsed: {0}", watch.Elapsed);

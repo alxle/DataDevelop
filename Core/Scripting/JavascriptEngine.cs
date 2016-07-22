@@ -145,9 +145,6 @@ namespace DataDevelop.Scripting
 		public override void Execute(string scriptCode)
 		{
 			var result = engine.Execute(scriptCode);
-			////if (output != null) {
-			////	Print(result);
-			////}
 		}
 	}
 }

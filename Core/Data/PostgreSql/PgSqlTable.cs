@@ -138,31 +138,12 @@ namespace DataDevelop.Data.PostgreSql
 
 		protected override void PopulateTriggers(IList<Trigger> triggersCollection)
 		{
-			////using (Database.CreateConnectionScope()) {
-			////	DataTable triggers = this.Connection.GetSchema("Triggers", new string[] { null, this.Connection.Database, this.Name, null });
-			////	foreach (DataRow row in triggers.Rows) {
-			////		PgSqlTrigger trigger = new PgSqlTrigger(this, row);
-			////		trigger.Name = row["TRIGGER_NAME"].ToString();
-			////		triggersCollection.Add(trigger);
-			////	}
-			////}
+			// TODO
 		}
 
 		protected override void PopulateForeignKeys(IList<ForeignKey> foreignKeysCollection)
 		{
-			////using (Database.CreateConnectionScope()) {
-			////    ////DataTable schema = this.Connection.GetSchema();
-			////    DataTable keys = this.Connection.GetSchema("Foreign Keys", new string[] { null, this.Connection.Database, this.Name, null });
-			////    foreach (DataRow row in keys.Rows) {
-			////        ForeignKey key = new ForeignKey();
-			////        key.Name = row["CONSTRAINT_NAME"] as string;
-			////        key.PrimaryTable = row["REFERENCED_TABLE_NAME"] as string;
-			////        key.PrimaryTableColumns = row["REFERENCED_COLUMN_NAME"] as string;
-			////        key.ChildTable = row["TABLE_NAME"] as string;
-			////        key.ChildTableColumns = row["COLUMN_NAME"] as string;
-			////        foreignKeysCollection.Add(key);
-			////    }
-			////}
+			// TODO
 		}
 
 		public override string GenerateCreateStatement()

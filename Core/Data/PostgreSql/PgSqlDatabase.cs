@@ -88,7 +88,6 @@ namespace DataDevelop.Data.PostgreSql
 		{
 			var adapter = new NpgsqlDataAdapter(table.GetBaseSelectCommandText(filter), this.connection);
 			var builder = new NpgsqlCommandBuilder(adapter);
-			////builder.ReturnGeneratedIdentifiers = true;
 			try {
 				adapter.InsertCommand = builder.GetInsertCommand();
 				adapter.UpdateCommand = builder.GetUpdateCommand();
@@ -151,11 +150,6 @@ namespace DataDevelop.Data.PostgreSql
 		protected override void PopulateStoredProcedures(DbObjectCollection<StoredProcedure> storedProceduresCollection)
 		{
 			// TODO: Populate PostgreSQL stored procedures
-			////DataTable procedures = this.Connection.GetSchema("Procedures", new string[] { null, this.connection.Database });
-			////foreach (DataRow row in procedures.Rows) {
-			////    PgSqlStoredProcedure sp = new PgSqlStoredProcedure(this, row);
-			////    storedProceduresCollection.Add(sp);
-			////}
 		}
 	}
 }

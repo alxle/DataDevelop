@@ -113,7 +113,6 @@ namespace DataDevelop.Data.MySql
 				var triggers = this.Connection.GetSchema("Triggers", new string[] { null, this.Connection.Database, this.Name, null });
 				foreach (DataRow row in triggers.Rows) {
 					var trigger = new MySqlTrigger(this, row);
-					////trigger.Name = row["TRIGGER_NAME"].ToString();
 					triggersCollection.Add(trigger);
 				}
 			}
@@ -127,9 +126,7 @@ namespace DataDevelop.Data.MySql
 					var name = row["CONSTRAINT_NAME"] as string;
 					var key = new ForeignKey(name, this);
 					key.PrimaryTable = row["REFERENCED_TABLE_NAME"] as string;
-					//key.PrimaryTableColumns = row["REFERENCED_COLUMN_NAME"] as string;
 					key.ChildTable = row["TABLE_NAME"] as string;
-					//key.ChildTableColumns = row["COLUMN_NAME"] as string;
 					foreignKeysCollection.Add(key);
 				}
 			}
