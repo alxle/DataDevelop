@@ -81,7 +81,6 @@ namespace DataDevelop.Data.Access
 				var table = new DataTable();
 				using (var reader = command.ExecuteReader()) {
 					table.Load(reader);
-					reader.Close();
 				}
 				return table;
 			}

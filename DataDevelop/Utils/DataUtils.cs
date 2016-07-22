@@ -15,41 +15,39 @@ namespace DataDevelop.Utils
 		public static void WriteToFile(string fileName, DataTable dataTable, char rowSeparator, char textQualifier)
 		{
 			string rowSep = rowSeparator.ToString();
-			using (FileStream file = File.OpenWrite(fileName)) {
-				using (StreamWriter stream = new StreamWriter(file, Encoding.Default)) {
-					bool first = true;
-					foreach (DataColumn column in dataTable.Columns) {
-						if (first) {
-							first = false;
-						} else {
+			using (StreamWriter stream = new StreamWriter(fileName, false, Encoding.Default)) {
+				bool first = true;
+				foreach (DataColumn column in dataTable.Columns) {
+					if (first) {
+						first = false;
+					} else {
+						stream.Write(rowSeparator);
+					}
+					if (column.ColumnName.Contains(rowSep)) {
+						stream.Write(textQualifier);
+						stream.Write(column.ColumnName);
+						stream.Write(textQualifier);
+					} else {
+						stream.Write(column.ColumnName);
+					}
+				}
+				stream.WriteLine();
+				foreach (DataRow row in dataTable.Rows) {
+					object[] values = row.ItemArray;
+					for (int i = 0; i < values.Length; i++) {
+						if (i != 0) {
 							stream.Write(rowSeparator);
 						}
-						if (column.ColumnName.Contains(rowSep)) {
+						var value = values[i].ToString();
+						if (value.Contains(rowSep)) {
 							stream.Write(textQualifier);
-							stream.Write(column.ColumnName);
+							stream.Write(value);
 							stream.Write(textQualifier);
 						} else {
-							stream.Write(column.ColumnName);
+							stream.Write(value);
 						}
 					}
 					stream.WriteLine();
-					foreach (DataRow row in dataTable.Rows) {
-						object[] values = row.ItemArray;
-						for (int i = 0; i < values.Length; i++) {
-							if (i != 0) {
-								stream.Write(rowSeparator);
-							}
-							var value = values[i].ToString();
-							if (value.Contains(rowSep)) {
-								stream.Write(textQualifier);
-								stream.Write(value);
-								stream.Write(textQualifier);
-							} else {
-								stream.Write(value);
-							}
-						}
-						stream.WriteLine();
-					}
 				}
 			}
 		}
