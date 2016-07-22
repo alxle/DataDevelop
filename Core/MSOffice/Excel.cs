@@ -87,22 +87,22 @@ namespace DataDevelop.Core.MSOffice
 			set { this.sheet.Name = value; }
 		}
 
-		public Range GetCell(int rowIndex, int columnIndex)
+		internal Range GetCell(int rowIndex, int columnIndex)
 		{
 			return (Range)sheet.Cells[rowIndex + 1, columnIndex + 1];
 		}
 
-		public void SetCell(int rowIndex, int columnIndex, object value)
+		internal void SetCell(int rowIndex, int columnIndex, object value)
 		{
 			GetCell(rowIndex, columnIndex).Formula = value;
 		}
 
-		public Range GetRow(int rowIndex, int columnIndex, int length)
+		internal Range GetRow(int rowIndex, int columnIndex, int length)
 		{
 			return sheet.get_Range(GetCell(rowIndex, columnIndex), GetCell(rowIndex, columnIndex + length - 1));
 		}
 
-		public void SetRow(int rowIndex, int columnIndex, object[] values)
+		internal void SetRow(int rowIndex, int columnIndex, object[] values)
 		{
 			GetRow(rowIndex, columnIndex, values.Length).FormulaArray = values;
 		}
