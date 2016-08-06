@@ -70,7 +70,7 @@ namespace DataDevelop
 			this.menuStrip.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip.MdiWindowListItem = this.windowToolStripMenuItem;
 			this.menuStrip.Name = "menuStrip";
-			this.menuStrip.Size = new System.Drawing.Size(600, 24);
+			this.menuStrip.Size = new System.Drawing.Size(604, 24);
 			this.menuStrip.TabIndex = 1;
 			this.menuStrip.Text = "menuStrip1";
 			// 
@@ -275,7 +275,7 @@ namespace DataDevelop
 			this.dockPanel.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.dockPanel.Location = new System.Drawing.Point(0, 30);
 			this.dockPanel.Name = "dockPanel";
-			this.dockPanel.Size = new System.Drawing.Size(600, 364);
+			this.dockPanel.Size = new System.Drawing.Size(604, 365);
 			this.dockPanel.TabIndex = 2;
 			// 
 			// topBar
@@ -283,22 +283,22 @@ namespace DataDevelop
 			this.topBar.Dock = System.Windows.Forms.DockStyle.Top;
 			this.topBar.Location = new System.Drawing.Point(0, 24);
 			this.topBar.Name = "topBar";
-			this.topBar.Size = new System.Drawing.Size(600, 6);
+			this.topBar.Size = new System.Drawing.Size(604, 6);
 			this.topBar.TabIndex = 5;
 			// 
 			// bottomBar
 			// 
 			this.bottomBar.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.bottomBar.Location = new System.Drawing.Point(0, 394);
+			this.bottomBar.Location = new System.Drawing.Point(0, 395);
 			this.bottomBar.Name = "bottomBar";
-			this.bottomBar.Size = new System.Drawing.Size(600, 6);
+			this.bottomBar.Size = new System.Drawing.Size(604, 6);
 			this.bottomBar.TabIndex = 6;
 			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(600, 400);
+			this.ClientSize = new System.Drawing.Size(604, 401);
 			this.Controls.Add(this.dockPanel);
 			this.Controls.Add(this.bottomBar);
 			this.Controls.Add(this.topBar);
