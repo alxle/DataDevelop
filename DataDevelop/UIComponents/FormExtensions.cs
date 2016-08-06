@@ -61,6 +61,13 @@ namespace DataDevelop
 			}
 		}
 
+		public static void TrySetSize(Form form, Size size)
+		{
+			if (size.Width >= form.MinimumSize.Width && size.Height >= form.MinimumSize.Height) {
+				form.Size = size;
+			}
+		}
+
 		public static bool Close(Form form)
 		{
 			bool closed = false;

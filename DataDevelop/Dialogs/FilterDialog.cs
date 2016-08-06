@@ -5,10 +5,12 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using DataDevelop.Data;
 
 namespace DataDevelop
 {
+	using Data;
+	using Properties;
+
 	internal partial class FilterDialog : Form
 	{
 		private TableFilter filter;
@@ -19,10 +21,7 @@ namespace DataDevelop
 			this.filter = filter;
 			columnFilterBindingSource.DataSource = this.filter.ColumnFilters;
 
-			var settingsSize = Properties.Settings.Default.FilterDialogSize;
-			if (settingsSize.Width >= this.MinimumSize.Width && settingsSize.Height >= settingsSize.Height) {
-				this.Size = settingsSize;
-			}
+			FormExtensions.TrySetSize(this, Settings.Default.FilterDialogSize);
 		}
 
 		public TableFilter Filter
