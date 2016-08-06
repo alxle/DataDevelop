@@ -8,6 +8,7 @@ using System.IO;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 using DataDevelop.Scripting;
+using DataDevelop.Properties;
 
 namespace DataDevelop
 {
@@ -22,7 +23,7 @@ namespace DataDevelop
 		private MainForm()
 		{
 			InitializeComponent();
-			this.ApplyVisualStyle(Properties.Settings.Default.VisualStyle);
+			this.ApplyVisualStyle(Settings.Default.VisualStyle);
 			this.databaseExplorer = new DatabaseExplorer();
 			this.assemblyExplorer = new AssemblyExplorer();
 			this.propertiesToolbox = new PropertiesToolbox();
@@ -80,6 +81,10 @@ namespace DataDevelop
 
 		private void MainForm_Load(object sender, EventArgs e)
 		{
+			this.Size = Settings.Default.MainFormSize;
+			this.Location = Settings.Default.MainFormLocation;
+			this.WindowState = Settings.Default.MainFormState;
+
 			if (File.Exists(SettingsManager.DockPropertiesFileName)) {
 				try {
 					dockPanel.LoadFromXml(SettingsManager.DockPropertiesFileName, GetContentFromPersistString);
@@ -96,7 +101,15 @@ namespace DataDevelop
 			if (CloseAllDocuments()) {
 				databaseExplorer.SaveDatabases();
 				dockPanel.SaveAsXml(SettingsManager.DockPropertiesFileName);
-				Properties.Settings.Default.Save();
+				Settings.Default.MainFormState = this.WindowState;
+				if (this.WindowState == FormWindowState.Normal) {
+					Settings.Default.MainFormSize = this.Size;
+					Settings.Default.MainFormLocation = this.Location;
+				} else {
+					Settings.Default.MainFormSize = this.RestoreBounds.Size;
+					Settings.Default.MainFormLocation = this.RestoreBounds.Location;
+				}
+				Settings.Default.Save();
 			} else {
 				e.Cancel = true;
 			}
