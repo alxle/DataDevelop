@@ -102,7 +102,11 @@ namespace DataDevelop
 					if (!error) {
 						writer.WriteFullEndElement();
 						writer.Close();
-						File.Replace(DatabasesFileName + ".saving", DatabasesFileName, null);
+						if (File.Exists(DatabasesFileName)) {
+							File.Replace(DatabasesFileName + ".saving", DatabasesFileName, null);
+						} else {
+							File.Move(DatabasesFileName + ".saving", DatabasesFileName);
+						}
 						DatabasesManager.IsCollectionDirty = false;
 					}
 				}
