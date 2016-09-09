@@ -418,8 +418,10 @@ namespace DataDevelop
 
 		private void openToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (openFileDialog.ShowDialog(this) == DialogResult.OK) {
-				textEditorControl.LoadFile(openFileDialog.FileName, false, true);
+			if (AskToSaveChanges()) {
+				if (openFileDialog.ShowDialog(this) == DialogResult.OK) {
+					textEditorControl.LoadFile(openFileDialog.FileName);
+				}
 			}
 		}
 
@@ -471,22 +473,12 @@ namespace DataDevelop
 
 		private void newToolStripButton_Click(object sender, EventArgs e)
 		{
-			if (textEditorControl.HasChanges) {
-				var result = MessageBox.Show(this, "Save Changes?", "Confirmation", MessageBoxButtons.YesNoCancel);
-				if (result == DialogResult.Yes) {
-					Save();
-					if (this.textEditorControl.HasChanges) {
-						return;
-					}
-				}
-				if (result == DialogResult.Cancel) {
-					return;
-				}
+			if (AskToSaveChanges()) {
+				textEditorControl.Visible = false;
+				textEditorControl.FileName = null;
+				textEditorControl.ResetText();
+				textEditorControl.Visible = true;
 			}
-			textEditorControl.Visible = false;
-			textEditorControl.FileName = null;
-			textEditorControl.ResetText();
-			textEditorControl.Visible = true;
 		}
 
 		private void printToolStripButton_Click(object sender, EventArgs e)
@@ -526,21 +518,29 @@ namespace DataDevelop
 				if (this.executeWorker.IsBusy) {
 					MessageBox.Show(this, "Command is executing, please wait...", this.ProductName);
 					e.Cancel = true;
+					return;
 				}
-				if (textEditorControl.HasChanges) {
-					this.Activate();
-					switch (MessageBox.Show(this, "Save Changes?", "Confirmation", MessageBoxButtons.YesNoCancel)) {
-						case DialogResult.Yes:
-							Save();
-							e.Cancel = textEditorControl.HasChanges;
-							break;
+				e.Cancel = !AskToSaveChanges();
+			}
+		}
 
-						case DialogResult.Cancel:
-							e.Cancel = true;
-							break;
-					}
+		/// <summary>
+		/// If there are changes it asks user to save changes and Save changes.
+		/// </summary>
+		/// <returns>Returns true if can continue or false if users cancels</returns>
+		private bool AskToSaveChanges()
+		{
+			if (textEditorControl.HasChanges) {
+				this.Activate();
+				switch (MessageBox.Show(this, "Save Changes?", "Confirmation", MessageBoxButtons.YesNoCancel)) {
+					case DialogResult.Yes:
+						Save();
+						return !textEditorControl.HasChanges;
+					case DialogResult.Cancel:
+						return false;
 				}
 			}
+			return true;
 		}
 
 		private void CommandDocument_Load(object sender, EventArgs e)

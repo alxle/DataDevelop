@@ -149,13 +149,15 @@ namespace DataDevelop
 
 		private void openToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			using (OpenFileDialog dialog = new OpenFileDialog()) {
-				dialog.Filter = String.Format("{0} Script (*{1})|*{1}|All Files (*.*)|*.*", engine.Name, engine.Extension);
-				dialog.Title = "Select File to open...";
-				dialog.Multiselect = false;
-				if (dialog.ShowDialog(this) == DialogResult.OK) {
-					textEditorControl.LoadFile(dialog.FileName, false, true);
-					textEditorControl.FileName = dialog.FileName;
+			if (AskToSaveChanges()) {
+				using (OpenFileDialog dialog = new OpenFileDialog()) {
+					dialog.Filter = String.Format("{0} Script (*{1})|*{1}|All Files (*.*)|*.*", engine.Name, engine.Extension);
+					dialog.Title = "Select File to open...";
+					dialog.Multiselect = false;
+					if (dialog.ShowDialog(this) == DialogResult.OK) {
+						textEditorControl.LoadFile(dialog.FileName);
+						textEditorControl.FileName = dialog.FileName;
+					}
 				}
 			}
 		}
@@ -209,20 +211,27 @@ namespace DataDevelop
 					e.Cancel = true;
 					return;
 				}
-				if (textEditorControl.HasChanges) {
-					this.Activate();
-					switch (MessageBox.Show(this, "Save Changes?", "Confirmation", MessageBoxButtons.YesNoCancel)) {
-						case DialogResult.Yes:
-							Save();
-							e.Cancel = textEditorControl.HasChanges;
-							break;
+				e.Cancel = !AskToSaveChanges();
+			}
+		}
 
-						case DialogResult.Cancel:
-							e.Cancel = true;
-							break;
-					}
+		/// <summary>
+		/// If there are changes it asks user to save changes and Save changes.
+		/// </summary>
+		/// <returns>Returns true if can continue or false if users cancels</returns>
+		private bool AskToSaveChanges()
+		{
+			if (textEditorControl.HasChanges) {
+				this.Activate();
+				switch (MessageBox.Show(this, "Save Changes?", "Confirmation", MessageBoxButtons.YesNoCancel)) {
+					case DialogResult.Yes:
+						Save();
+						return !textEditorControl.HasChanges;
+					case DialogResult.Cancel:
+						return false;
 				}
 			}
+			return true;
 		}
 
 		private void stopButton_Click(object sender, EventArgs e)
@@ -244,22 +253,12 @@ namespace DataDevelop
 
 		private void newToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (textEditorControl.HasChanges) {
-				var result = MessageBox.Show(this, "Save Changes?", "Confirmation", MessageBoxButtons.YesNoCancel);
-				if (result == DialogResult.Yes) {
-					Save();
-					if (this.textEditorControl.HasChanges) {
-						return;
-					}
-				}
-				if (result == DialogResult.Cancel) {
-					return;
-				}
+			if (AskToSaveChanges()) {
+				textEditorControl.Visible = false;
+				textEditorControl.FileName = null;
+				textEditorControl.ResetText();
+				textEditorControl.Visible = true;
 			}
-			textEditorControl.Visible = false;
-			textEditorControl.FileName = null;
-			textEditorControl.ResetText();
-			textEditorControl.Visible = true;
 		}
 	}
 }
