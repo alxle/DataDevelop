@@ -104,50 +104,19 @@
             Indications extra information about a parameter such as if it's a parameter array.
             </summary>
         </member>
-        <member name="T:Microsoft.Scripting.IndexSpan">
-            <summary>
-            This structure represents an immutable integer interval that describes a range of values, from Start to End. 
-            
-            It is closed on the left and open on the right: [Start .. End). 
-            </summary>
-        </member>
-        <member name="T:Microsoft.Scripting.Runtime.ObjectDictionaryExpando">
-            <summary>
-            Wraps a an IDictionary[object, object] and exposes it as an IDynamicMetaObjectProvider so that
-            users can access string attributes using member accesses.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Scripting.Runtime.DocumentationProvider">
-            <summary>
-            Provides language specific documentation for live objects.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Scripting.Runtime.DynamicStackFrame">
-            <summary>
-            Helper for storing information about stack frames.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Scripting.Runtime.StringDictionaryExpando">
-            <summary>
-            Exposes a IDictionary[string, object] as a dynamic object.  Gets/sets/deletes turn
-            into accesses on the underlying dictionary.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Scripting.CompilerOptions">
-            <summary>
-            Class that represents compiler options.
-            Note that this class is likely to change when hosting API becomes part of .Net
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.ErrorSink.Add(System.String,System.String,System.String,System.String,Microsoft.Scripting.SourceSpan,System.Int32,Microsoft.Scripting.Severity)">
-            <summary>
-            This overload will be called when a SourceUnit is not available. This can happen if the code is being executed remotely,
-            since SourceUnit cannot be marshaled across AppDomains.
-            </summary>
-        </member>
         <member name="T:Microsoft.Scripting.Hosting.CompiledCode">
             <summary>
             Hosting API counterpart for <see cref="P:Microsoft.Scripting.Hosting.CompiledCode.ScriptCode"/>.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Scripting.Hosting.CompiledCode.Engine">
+            <summary>
+            Engine that compiled this code.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Scripting.Hosting.CompiledCode.DefaultScope">
+            <summary>
+            Default scope for this code.
             </summary>
         </member>
         <member name="M:Microsoft.Scripting.Hosting.CompiledCode.Execute">
@@ -207,16 +176,6 @@
             Use this API to handle non-serializable exceptions (exceptions might not be serializable due to security restrictions) 
             or if an exception serialization loses information.
             </remarks>
-        </member>
-        <member name="P:Microsoft.Scripting.Hosting.CompiledCode.Engine">
-            <summary>
-            Engine that compiled this code.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Scripting.Hosting.CompiledCode.DefaultScope">
-            <summary>
-            Default scope for this code.
-            </summary>
         </member>
         <member name="T:Microsoft.Scripting.Hosting.ErrorListener">
             <summary>
@@ -908,51 +867,6 @@
             Helper to unwrap multiple objects
             </summary>
         </member>
-        <member name="M:Microsoft.Scripting.LanguageOptions.GetStringCollectionOption(System.Collections.Generic.IDictionary{System.String,System.Object},System.String,System.Char[])">
-            <summary>
-            Reads an option whose value is expected to be a collection of non-null strings.
-            Reaturns a read-only copy of the option's value.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Scripting.LanguageOptions.NoAdaptiveCompilation">
-            <summary>
-            Dynamically choose between interpreting, simple compilation and compilation
-            that takes advantage of runtime history.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Scripting.LanguageOptions.CompilationThreshold">
-            <summary>
-            The number of iterations before the interpreter starts compiling.s
-            </summary>
-        </member>
-        <member name="P:Microsoft.Scripting.LanguageOptions.ExceptionDetail">
-            <summary>
-             Display exception detail (callstack) when exception gets caught
-            </summary>
-        </member>
-        <member name="P:Microsoft.Scripting.LanguageOptions.PerfStats">
-            <summary>
-            Whether to gather performance statistics.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Scripting.LanguageOptions.SearchPaths">
-            <summary>
-            Initial file search paths provided by the host.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Scripting.PlatformAdaptationLayer">
-            <summary>
-            Abstracts system operations that are used by DLR and could potentially be platform specific.
-            The host can implement its PAL to adapt DLR to the platform it is running on.
-            For example, the Silverlight host adapts some file operations to work against files on the server.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.PlatformAdaptationLayer.GetFullPath(System.String)">
-            <exception cref="T:System.ArgumentException">Invalid path.</exception>
-        </member>
-        <member name="M:Microsoft.Scripting.PlatformAdaptationLayer.IsAbsolutePath(System.String)">
-            <exception cref="T:System.ArgumentException">Invalid path.</exception>
-        </member>
         <member name="T:Microsoft.Scripting.Hosting.Providers.HostingHelpers">
             <summary>
             Advanced APIs for HAPI providers. These methods should not be used by hosts. 
@@ -1003,6 +917,25 @@
             <summary>
             Represents a language in Hosting API. 
             Hosting API counterpart for <see cref="P:Microsoft.Scripting.Hosting.ScriptEngine.LanguageContext"/>.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Scripting.Hosting.ScriptEngine.Operations">
+            <summary>
+            Returns a default ObjectOperations for the engine.  
+            
+            Because an ObjectOperations object caches rules for the types of 
+            objects and operations it processes, using the default ObjectOperations for 
+            many objects could degrade the caching benefits.  Eventually the cache for 
+            some operations could degrade to a point where ObjectOperations stops caching and 
+            does a full search for an implementation of the requested operation for the given objects.  
+            
+            Another reason to create a new ObjectOperations instance is to have it bound
+            to the specific view of a ScriptScope.  Languages may attach per-language
+            behavior to a ScriptScope which would alter how the operations are performed.
+            
+            For simple hosting situations, this is sufficient behavior.
+            
+            
             </summary>
         </member>
         <member name="M:Microsoft.Scripting.Hosting.ScriptEngine.CreateOperations">
@@ -1297,38 +1230,6 @@
                     Provides documentation for live object.
             </summary>
         </member>
-        <member name="M:Microsoft.Scripting.Hosting.ScriptEngine.SetSearchPaths(System.Collections.Generic.ICollection{System.String})">
-            <summary>
-            Sets the search paths used by the engine for loading files when a script wants 
-            to import or require another file of code.  
-            </summary>
-            <exception cref="T:System.NotSupportedException">The language doesn't allow to set search paths.</exception>
-        </member>
-        <member name="M:Microsoft.Scripting.Hosting.ScriptEngine.GetSearchPaths">
-            <summary>
-            Gets the search paths used by the engine for loading files when a script wants 
-            to import or require another file of code.  
-            </summary>
-        </member>
-        <member name="P:Microsoft.Scripting.Hosting.ScriptEngine.Operations">
-            <summary>
-            Returns a default ObjectOperations for the engine.  
-            
-            Because an ObjectOperations object caches rules for the types of 
-            objects and operations it processes, using the default ObjectOperations for 
-            many objects could degrade the caching benefits.  Eventually the cache for 
-            some operations could degrade to a point where ObjectOperations stops caching and 
-            does a full search for an implementation of the requested operation for the given objects.  
-            
-            Another reason to create a new ObjectOperations instance is to have it bound
-            to the specific view of a ScriptScope.  Languages may attach per-language
-            behavior to a ScriptScope which would alter how the operations are performed.
-            
-            For simple hosting situations, this is sufficient behavior.
-            
-            
-            </summary>
-        </member>
         <member name="P:Microsoft.Scripting.Hosting.ScriptEngine.Setup">
             <summary>
             This property returns readon-only LanguageOptions this engine is using.
@@ -1346,6 +1247,19 @@
         <member name="P:Microsoft.Scripting.Hosting.ScriptEngine.LanguageVersion">
             <summary>
             This property returns the engine's version as a string.  The format is language-dependent.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Scripting.Hosting.ScriptEngine.SetSearchPaths(System.Collections.Generic.ICollection{System.String})">
+            <summary>
+            Sets the search paths used by the engine for loading files when a script wants 
+            to import or require another file of code.  
+            </summary>
+            <exception cref="T:System.NotSupportedException">The language doesn't allow to set search paths.</exception>
+        </member>
+        <member name="M:Microsoft.Scripting.Hosting.ScriptEngine.GetSearchPaths">
+            <summary>
+            Gets the search paths used by the engine for loading files when a script wants 
+            to import or require another file of code.  
             </summary>
         </member>
         <member name="T:Microsoft.Scripting.Hosting.ScriptHost">
@@ -1382,17 +1296,6 @@
         <member name="T:Microsoft.Scripting.Hosting.ScriptHostProxy">
             <summary>
             Provides hosting to DLR. Forwards DLR requests to the ScriptHost. 
-            </summary>
-        </member>
-        <member name="T:Microsoft.Scripting.Runtime.DynamicRuntimeHostingProvider">
-            <summary>
-            DLR requires any Hosting API provider to implement this class and provide its instance upon Runtime initialization.
-            DLR calls on it to perform basic host/system dependent operations.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Scripting.Runtime.DynamicRuntimeHostingProvider.PlatformAdaptationLayer">
-            <summary>
-            Abstracts system operations that are used by DLR and could potentially be platform specific.
             </summary>
         </member>
         <member name="T:Microsoft.Scripting.Hosting.ScriptIO">
@@ -1464,6 +1367,14 @@
             <exception cref="T:System.InvalidOperationException">language does not have any search paths</exception>
             <exception cref="T:System.IO.FileNotFoundException">file does exist in language's search path</exception>
         </member>
+        <member name="P:Microsoft.Scripting.Hosting.ScriptRuntime.Globals">
+            <summary>
+            This property returns the "global object" or name bindings of the ScriptRuntime as a ScriptScope.  
+            
+            You can set the globals scope, which you might do if you created a ScriptScope with an 
+            IAttributesCollection so that your host could late bind names.
+            </summary>
+        </member>
         <member name="M:Microsoft.Scripting.Hosting.ScriptRuntime.LoadAssembly(System.Reflection.Assembly)">
             <summary>
             This method walks the assembly's namespaces and name bindings to ScriptRuntime.Globals 
@@ -1475,33 +1386,9 @@
             </summary>
             <param name="assembly"></param>
         </member>
-        <member name="P:Microsoft.Scripting.Hosting.ScriptRuntime.Globals">
-            <summary>
-            This property returns the "global object" or name bindings of the ScriptRuntime as a ScriptScope.  
-            
-            You can set the globals scope, which you might do if you created a ScriptScope with an 
-            IAttributesCollection so that your host could late bind names.
-            </summary>
-        </member>
         <member name="T:Microsoft.Scripting.Hosting.ScriptRuntimeSetup">
             <summary>
             Stores information needed to setup a ScriptRuntime
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.Hosting.ScriptRuntimeSetup.ReadConfiguration">
-            <summary>
-            Reads setup from .NET configuration system (.config files).
-            If there is no configuration available returns an empty setup.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.Hosting.ScriptRuntimeSetup.ReadConfiguration(System.IO.Stream)">
-            <summary>
-            Reads setup from a specified XML stream.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.Hosting.ScriptRuntimeSetup.ReadConfiguration(System.String)">
-            <summary>
-            Reads setup from a specified XML file.
             </summary>
         </member>
         <member name="P:Microsoft.Scripting.Hosting.ScriptRuntimeSetup.LanguageSetups">
@@ -1542,6 +1429,22 @@
             Arguments passed to the host type when it is constructed
             </summary>
         </member>
+        <member name="M:Microsoft.Scripting.Hosting.ScriptRuntimeSetup.ReadConfiguration">
+            <summary>
+            Reads setup from .NET configuration system (.config files).
+            If there is no configuration available returns an empty setup.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Scripting.Hosting.ScriptRuntimeSetup.ReadConfiguration(System.IO.Stream)">
+            <summary>
+            Reads setup from a specified XML stream.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Scripting.Hosting.ScriptRuntimeSetup.ReadConfiguration(System.String)">
+            <summary>
+            Reads setup from a specified XML file.
+            </summary>
+        </member>
         <member name="T:Microsoft.Scripting.Hosting.ScriptScope">
              <summary>
              A ScriptScope is a unit of execution for code.  It consists of a global Scope which
@@ -1553,6 +1456,12 @@
             
              Hosting API counterpart for <see cref="P:Microsoft.Scripting.Hosting.ScriptScope.Scope"/>.
              </summary>
+        </member>
+        <member name="P:Microsoft.Scripting.Hosting.ScriptScope.Engine">
+            <summary>
+            Gets an engine for the language associated with this scope.
+            Returns invariant engine if the scope is language agnostic.
+            </summary>
         </member>
         <member name="M:Microsoft.Scripting.Hosting.ScriptScope.GetVariable(System.String)">
             <summary>
@@ -1636,15 +1545,17 @@
             Gets an array of variable names and their values stored in the scope.
             </summary>
         </member>
-        <member name="P:Microsoft.Scripting.Hosting.ScriptScope.Engine">
-            <summary>
-            Gets an engine for the language associated with this scope.
-            Returns invariant engine if the scope is language agnostic.
-            </summary>
-        </member>
         <member name="T:Microsoft.Scripting.Hosting.ScriptSource">
             <summary>
             Hosting counterpart for <see cref="P:Microsoft.Scripting.Hosting.ScriptSource.SourceUnit"/>.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Scripting.Hosting.ScriptSource.Path">
+            <summary>
+            Identification of the source unit. Assigned by the host. 
+            The format and semantics is host dependent (could be a path on file system or URL).
+            <c>null</c> for anonymous script source.
+            Cannot be an empty string.
             </summary>
         </member>
         <member name="M:Microsoft.Scripting.Hosting.ScriptSource.Compile">
@@ -1803,12 +1714,14 @@
             The entire content of the source unit is encoded by single encoding (if it is read from binary stream).
             </remarks>
         </member>
-        <member name="P:Microsoft.Scripting.Hosting.ScriptSource.Path">
+        <member name="P:Microsoft.Scripting.Hosting.TokenCategorizer.CurrentState">
             <summary>
-            Identification of the source unit. Assigned by the host. 
-            The format and semantics is host dependent (could be a path on file system or URL).
-            <c>null</c> for anonymous script source.
-            Cannot be an empty string.
+            The current internal state of the scanner.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Scripting.Hosting.TokenCategorizer.CurrentPosition">
+            <summary>
+            The current startLocation of the scanner.
             </summary>
         </member>
         <member name="M:Microsoft.Scripting.Hosting.TokenCategorizer.ReadToken">
@@ -1846,14 +1759,33 @@
             </remarks>
             <returns><c>False</c> if the end of stream has been reached, <c>true</c> otherwise.</returns>
         </member>
-        <member name="P:Microsoft.Scripting.Hosting.TokenCategorizer.CurrentState">
+        <member name="T:Microsoft.Scripting.IndexSpan">
             <summary>
-            The current internal state of the scanner.
+            This structure represents an immutable integer interval that describes a range of values, from Start to End. 
+            
+            It is closed on the left and open on the right: [Start .. End). 
             </summary>
         </member>
-        <member name="P:Microsoft.Scripting.Hosting.TokenCategorizer.CurrentPosition">
+        <member name="T:Microsoft.Scripting.Runtime.ObjectDictionaryExpando">
             <summary>
-            The current startLocation of the scanner.
+            Wraps a an IDictionary[object, object] and exposes it as an IDynamicMetaObjectProvider so that
+            users can access string attributes using member accesses.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Scripting.Runtime.DocumentationProvider">
+            <summary>
+            Provides language specific documentation for live objects.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Scripting.Runtime.DynamicStackFrame">
+            <summary>
+            Helper for storing information about stack frames.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Scripting.Runtime.StringDictionaryExpando">
+            <summary>
+            Exposes a IDictionary[string, object] as a dynamic object.  Gets/sets/deletes turn
+            into accesses on the underlying dictionary.
             </summary>
         </member>
         <member name="T:Microsoft.Scripting.Runtime.ContextId">
@@ -1912,6 +1844,15 @@
             engine.  However, very advanced hosts can create new instances.
             </summary>
         </member>
+        <member name="F:Microsoft.Scripting.Runtime.DynamicOperations._sites">
+            <summary> a dictionary of SiteKey's which are used to cache frequently used operations, logically a set </summary>
+        </member>
+        <member name="F:Microsoft.Scripting.Runtime.DynamicOperations.LastCleanup">
+            <summary> the # of sites we had created at the last cleanup </summary>
+        </member>
+        <member name="F:Microsoft.Scripting.Runtime.DynamicOperations.SitesCreated">
+            <summary> the total number of sites we've ever created </summary>
+        </member>
         <member name="F:Microsoft.Scripting.Runtime.DynamicOperations.CleanupThreshold">
             <summary> the number of sites required before we'll try cleaning up the cache... </summary>
         </member>
@@ -1923,15 +1864,6 @@
         </member>
         <member name="F:Microsoft.Scripting.Runtime.DynamicOperations.ClearThreshold">
             <summary> the number of sites we should clear after if we can't make progress cleaning up otherwise </summary>
-        </member>
-        <member name="F:Microsoft.Scripting.Runtime.DynamicOperations._sites">
-            <summary> a dictionary of SiteKey's which are used to cache frequently used operations, logically a set </summary>
-        </member>
-        <member name="F:Microsoft.Scripting.Runtime.DynamicOperations.LastCleanup">
-            <summary> the # of sites we had created at the last cleanup </summary>
-        </member>
-        <member name="F:Microsoft.Scripting.Runtime.DynamicOperations.SitesCreated">
-            <summary> the total number of sites we've ever created </summary>
         </member>
         <member name="M:Microsoft.Scripting.Runtime.DynamicOperations.Invoke(System.Object,System.Object[])">
             <summary>
@@ -2189,14 +2121,48 @@
             store it in a dictionary.
             </summary>
         </member>
+        <member name="T:Microsoft.Scripting.Runtime.DynamicRuntimeHostingProvider">
+            <summary>
+            DLR requires any Hosting API provider to implement this class and provide its instance upon Runtime initialization.
+            DLR calls on it to perform basic host/system dependent operations.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Scripting.Runtime.DynamicRuntimeHostingProvider.PlatformAdaptationLayer">
+            <summary>
+            Abstracts system operations that are used by DLR and could potentially be platform specific.
+            </summary>
+        </member>
         <member name="T:Microsoft.Scripting.Runtime.InvariantContext">
             <summary>
             Singleton LanguageContext which represents a language-neutral LanguageContext
             </summary>
         </member>
+        <member name="T:Microsoft.Scripting.Runtime.LanguageBoundTextContentProvider">
+            <summary>
+            Internal class which binds a LanguageContext, StreamContentProvider, and Encoding together to produce
+            a TextContentProvider which reads binary data with the correct language semantics.
+            </summary>
+        </member>
         <member name="T:Microsoft.Scripting.Runtime.LanguageContext">
             <summary>
             Provides language specific facilities which are typically called by the runtime.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Scripting.Runtime.LanguageContext.ContextId">
+            <summary>
+            Provides the ContextId which includes members that should only be shown for this LanguageContext.
+            
+            ContextId's are used for filtering by Scope's.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Scripting.Runtime.LanguageContext.DomainManager">
+            <summary>
+            Gets the ScriptDomainManager that this LanguageContext is running within.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Scripting.Runtime.LanguageContext.CanCreateSourceCode">
+            <summary>
+            Whether the language can parse code and create source units.
             </summary>
         </member>
         <member name="M:Microsoft.Scripting.Runtime.LanguageContext.ScopeSetVariable(Microsoft.Scripting.Runtime.Scope,System.String,System.Object)">
@@ -2297,48 +2263,6 @@
             <param name="obj">Object to format.</param>
             <returns>A string representation of object.</returns>
         </member>
-        <member name="P:Microsoft.Scripting.Runtime.LanguageContext.ContextId">
-            <summary>
-            Provides the ContextId which includes members that should only be shown for this LanguageContext.
-            
-            ContextId's are used for filtering by Scope's.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Scripting.Runtime.LanguageContext.DomainManager">
-            <summary>
-            Gets the ScriptDomainManager that this LanguageContext is running within.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Scripting.Runtime.LanguageContext.CanCreateSourceCode">
-            <summary>
-            Whether the language can parse code and create source units.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Scripting.Runtime.LanguageBoundTextContentProvider">
-            <summary>
-            Internal class which binds a LanguageContext, StreamContentProvider, and Encoding together to produce
-            a TextContentProvider which reads binary data with the correct language semantics.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Scripting.TextContentProvider">
-            <summary>
-            Provides a factory to create TextReader's over one source of textual content.
-            
-            TextContentProvider's are used when reading from a source which is already decoded
-            or has a known specific decoding.  
-            
-            For example a text editor might provide a TextContentProvider whose backing is
-            an in-memory text buffer that the user can actively edit.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.TextContentProvider.GetReader">
-            <summary>
-            Creates a new TextReader which is backed by the content the TextContentProvider was created for.
-            
-            This method may be called multiple times.  For example once to compile the code and again to get
-            the source code to display error messages.
-            </summary>
-        </member>
         <member name="T:Microsoft.Scripting.Runtime.NotNullAttribute">
             <summary>
             This attribute marks a parameter that is not allowed to be null.
@@ -2352,41 +2276,6 @@
             It is used by the method binding infrastructure to generate better error 
             messages and method selection.
             </summary>
-        </member>
-        <member name="T:Microsoft.Scripting.ParamDictionaryAttribute">
-            <summary>
-            This attribute is used to mark a parameter that can accept any keyword parameters that
-            are not bound to normal arguments.  The extra keyword parameters will be
-            passed in a dictionary which is created for the call.
-            
-            Most languages which support params dictionaries will support the following types:
-                IDictionary&lt;string, anything&gt;
-                IDictionary&lt;object, anything&gt;
-                Dictionary&lt;string, anything&gt;
-                Dictionary&lt;object, anything&gt;
-                IDictionary
-                IAttributesCollection (deprecated)
-            
-            For languages which don't have language level support the user will be required to
-            create and populate the dictionary by hand.
-            
-            This attribute is the dictionary equivalent of the System.ParamArrayAttribute.
-            </summary>
-            <example>
-            public static void KeywordArgFunction([ParamsDictionary]IDictionary&lt;string, object&gt; dict) {
-                foreach (var v in dict) {
-                    Console.WriteLine("Key: {0} Value: {1}", v.Key, v.Value);
-                }
-            }
-            
-            Called from Python:
-            
-            KeywordArgFunction(a = 2, b = "abc")
-            
-            will print:
-                Key: a Value = 2
-                Key: b Value = abc
-            </example>
         </member>
         <member name="T:Microsoft.Scripting.Runtime.Scope">
             <summary>
@@ -2426,6 +2315,161 @@
             The extension can only be set once.  The returned value is either the new ScopeExtension
             if no value was previously set or the previous value.
             </summary>
+        </member>
+        <member name="P:Microsoft.Scripting.Runtime.ScriptDomainManager.Globals">
+            <summary>
+            A collection of environment variables.
+            </summary>
+        </member>
+        <member name="E:Microsoft.Scripting.Runtime.ScriptDomainManager.AssemblyLoaded">
+            <summary>
+            Event for when a host calls LoadAssembly.  After hooking this
+            event languages will need to call GetLoadedAssemblyList to
+            get any assemblies which were loaded before the language was
+            loaded.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Scripting.Runtime.SharedIO.SetOutput(System.IO.Stream,System.IO.TextWriter)">
+            <summary>
+            Only host should redirect I/O.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Scripting.Runtime.TokenizerService.CurrentState">
+            <summary>
+            The current internal state of the scanner.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Scripting.Runtime.TokenizerService.CurrentPosition">
+            <summary>
+            The current startLocation of the scanner.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Scripting.Runtime.TokenizerService.ReadToken">
+            <summary>
+            Move the tokenizer past the next token and return its category.
+            </summary>
+            <returns>The token information associated with the token just scanned.</returns>
+        </member>
+        <member name="M:Microsoft.Scripting.Runtime.TokenizerService.SkipToken">
+            <summary>
+            Move the tokenizer past the next token.
+            </summary>
+            <returns><c>False</c> if the end of stream has been reached, <c>true</c> otherwise.</returns>
+        </member>
+        <member name="M:Microsoft.Scripting.Runtime.TokenizerService.ReadTokens(System.Int32)">
+            <summary>
+            Get all tokens over a block of the stream.
+            </summary>
+            <remarks>
+            <para>
+            The scanner should return full tokens. If startLocation + length lands in the middle of a token, the full token
+            should be returned.
+            </para>
+            </remarks>
+            <param name="characterCount">Tokens are read until at least given amount of characters is read or the stream ends.</param>
+            <returns>A enumeration of tokens.</returns>
+        </member>
+        <member name="M:Microsoft.Scripting.Runtime.TokenizerService.SkipTokens(System.Int32)">
+            <summary>
+            Scan from startLocation to at least startLocation + length.
+            </summary>
+            <param name="countOfChars">The mininum number of characters to process while getting tokens.</param>
+            <remarks>
+            This method is used to determine state at arbitrary startLocation.
+            </remarks>
+            <returns><c>False</c> if the end of stream has been reached, <c>true</c> otherwise.</returns>
+        </member>
+        <member name="T:Microsoft.Scripting.CompilerOptions">
+            <summary>
+            Class that represents compiler options.
+            Note that this class is likely to change when hosting API becomes part of .Net
+            </summary>
+        </member>
+        <member name="M:Microsoft.Scripting.ErrorSink.Add(System.String,System.String,System.String,System.String,Microsoft.Scripting.SourceSpan,System.Int32,Microsoft.Scripting.Severity)">
+            <summary>
+            This overload will be called when a SourceUnit is not available. This can happen if the code is being executed remotely,
+            since SourceUnit cannot be marshaled across AppDomains.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Scripting.LanguageOptions.NoAdaptiveCompilation">
+            <summary>
+            Dynamically choose between interpreting, simple compilation and compilation
+            that takes advantage of runtime history.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Scripting.LanguageOptions.CompilationThreshold">
+            <summary>
+            The number of iterations before the interpreter starts compiling.s
+            </summary>
+        </member>
+        <member name="P:Microsoft.Scripting.LanguageOptions.ExceptionDetail">
+            <summary>
+             Display exception detail (callstack) when exception gets caught
+            </summary>
+        </member>
+        <member name="P:Microsoft.Scripting.LanguageOptions.PerfStats">
+            <summary>
+            Whether to gather performance statistics.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Scripting.LanguageOptions.SearchPaths">
+            <summary>
+            Initial file search paths provided by the host.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Scripting.LanguageOptions.GetStringCollectionOption(System.Collections.Generic.IDictionary{System.String,System.Object},System.String,System.Char[])">
+            <summary>
+            Reads an option whose value is expected to be a collection of non-null strings.
+            Reaturns a read-only copy of the option's value.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Scripting.PlatformAdaptationLayer">
+            <summary>
+            Abstracts system operations that are used by DLR and could potentially be platform specific.
+            The host can implement its PAL to adapt DLR to the platform it is running on.
+            For example, the Silverlight host adapts some file operations to work against files on the server.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Scripting.PlatformAdaptationLayer.GetFullPath(System.String)">
+            <exception cref="T:System.ArgumentException">Invalid path.</exception>
+        </member>
+        <member name="M:Microsoft.Scripting.PlatformAdaptationLayer.IsAbsolutePath(System.String)">
+            <exception cref="T:System.ArgumentException">Invalid path.</exception>
+        </member>
+        <member name="T:Microsoft.Scripting.ParamDictionaryAttribute">
+            <summary>
+            This attribute is used to mark a parameter that can accept any keyword parameters that
+            are not bound to normal arguments.  The extra keyword parameters will be
+            passed in a dictionary which is created for the call.
+            
+            Most languages which support params dictionaries will support the following types:
+                IDictionary&lt;string, anything&gt;
+                IDictionary&lt;object, anything&gt;
+                Dictionary&lt;string, anything&gt;
+                Dictionary&lt;object, anything&gt;
+                IDictionary
+                IAttributesCollection (deprecated)
+            
+            For languages which don't have language level support the user will be required to
+            create and populate the dictionary by hand.
+            
+            This attribute is the dictionary equivalent of the System.ParamArrayAttribute.
+            </summary>
+            <example>
+            public static void KeywordArgFunction([ParamsDictionary]IDictionary&lt;string, object&gt; dict) {
+                foreach (var v in dict) {
+                    Console.WriteLine("Key: {0} Value: {1}", v.Key, v.Value);
+                }
+            }
+            
+            Called from Python:
+            
+            KeywordArgFunction(a = 2, b = "abc")
+            
+            will print:
+                Key: a Value = 2
+                Key: b Value = abc
+            </example>
         </member>
         <member name="T:Microsoft.Scripting.ScopeStorage">
             <summary>
@@ -2493,6 +2537,11 @@
             a dictionary lookup on subsequent accesses.
             </summary>
         </member>
+        <member name="P:Microsoft.Scripting.ScopeStorage.Item(System.String)">
+            <summary>
+            Provides convenient case-sensitive value access.
+            </summary>
+        </member>
         <member name="M:Microsoft.Scripting.ScopeStorage.GetMemberNames">
             <summary>
             Returns all of the member names which currently have values in the scope.
@@ -2507,15 +2556,15 @@
             The list contains all available casings.
             </summary>
         </member>
-        <member name="P:Microsoft.Scripting.ScopeStorage.Item(System.String)">
-            <summary>
-            Provides convenient case-sensitive value access.
-            </summary>
-        </member>
         <member name="T:Microsoft.Scripting.IScopeVariable">
             <summary>
             Provides a common interface for accessing both case sensitive and 
             case insensitive variable storage.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Scripting.IScopeVariable.HasValue">
+            <summary>
+            True if the scope has a value, false if it does not.
             </summary>
         </member>
         <member name="M:Microsoft.Scripting.IScopeVariable.TryGetValue(System.Object@)">
@@ -2534,11 +2583,6 @@
             Removes the current value from the scope.
             </summary>
         </member>
-        <member name="P:Microsoft.Scripting.IScopeVariable.HasValue">
-            <summary>
-            True if the scope has a value, false if it does not.
-            </summary>
-        </member>
         <member name="T:Microsoft.Scripting.ScopeVariable">
             <summary>
             Boxes the value for storage in a scope. Languages or consumers of the scope
@@ -2546,6 +2590,11 @@
             commonly accessed values.
             
             ScopeVariables are case sensitive and will only refer to a single value.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Scripting.ScopeVariable.HasValue">
+            <summary>
+            True if the scope has a value, false if it does not.
             </summary>
         </member>
         <member name="M:Microsoft.Scripting.ScopeVariable.TryGetValue(System.Object@)">
@@ -2564,11 +2613,6 @@
             Removes the current value from the scope.
             </summary>
         </member>
-        <member name="P:Microsoft.Scripting.ScopeVariable.HasValue">
-            <summary>
-            True if the scope has a value, false if it does not.
-            </summary>
-        </member>
         <member name="T:Microsoft.Scripting.ScopeVariableIgnoreCase">
             <summary>
             Boxes the value for storage in a scope. Languages or consumers of the scope
@@ -2577,6 +2621,11 @@
             
             ScopeVariablesIgnoreCase are case insensitive and may access different casings
             depending on how other gets/sets occur in the scope.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Scripting.ScopeVariableIgnoreCase.HasValue">
+            <summary>
+            True if the scope has a value, false if it does not.
             </summary>
         </member>
         <member name="M:Microsoft.Scripting.ScopeVariableIgnoreCase.TryGetValue(System.Object@)">
@@ -2595,34 +2644,11 @@
             Removes the current value from the scope.
             </summary>
         </member>
-        <member name="P:Microsoft.Scripting.ScopeVariableIgnoreCase.HasValue">
-            <summary>
-            True if the scope has a value, false if it does not.
-            </summary>
-        </member>
         <member name="T:Microsoft.Scripting.ScriptCode">
             <summary>
             ScriptCode is an instance of compiled code that is bound to a specific LanguageContext
             but not a specific ScriptScope. The code can be re-executed multiple times in different
             scopes. Hosting API counterpart for this class is <c>CompiledCode</c>.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Scripting.Runtime.ScriptDomainManager.Globals">
-            <summary>
-            A collection of environment variables.
-            </summary>
-        </member>
-        <member name="E:Microsoft.Scripting.Runtime.ScriptDomainManager.AssemblyLoaded">
-            <summary>
-            Event for when a host calls LoadAssembly.  After hooking this
-            event languages will need to call GetLoadedAssemblyList to
-            get any assemblies which were loaded before the language was
-            loaded.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.Runtime.SharedIO.SetOutput(System.IO.Stream,System.IO.TextWriter)">
-            <summary>
-            Only host should redirect I/O.
             </summary>
         </member>
         <member name="T:Microsoft.Scripting.StreamContentProvider">
@@ -2646,51 +2672,6 @@
             
             This method may be called multiple times.  For example once to compile the code and again to get
             the source code to display error messages.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.Runtime.TokenizerService.ReadToken">
-            <summary>
-            Move the tokenizer past the next token and return its category.
-            </summary>
-            <returns>The token information associated with the token just scanned.</returns>
-        </member>
-        <member name="M:Microsoft.Scripting.Runtime.TokenizerService.SkipToken">
-            <summary>
-            Move the tokenizer past the next token.
-            </summary>
-            <returns><c>False</c> if the end of stream has been reached, <c>true</c> otherwise.</returns>
-        </member>
-        <member name="M:Microsoft.Scripting.Runtime.TokenizerService.ReadTokens(System.Int32)">
-            <summary>
-            Get all tokens over a block of the stream.
-            </summary>
-            <remarks>
-            <para>
-            The scanner should return full tokens. If startLocation + length lands in the middle of a token, the full token
-            should be returned.
-            </para>
-            </remarks>
-            <param name="characterCount">Tokens are read until at least given amount of characters is read or the stream ends.</param>
-            <returns>A enumeration of tokens.</returns>
-        </member>
-        <member name="M:Microsoft.Scripting.Runtime.TokenizerService.SkipTokens(System.Int32)">
-            <summary>
-            Scan from startLocation to at least startLocation + length.
-            </summary>
-            <param name="countOfChars">The mininum number of characters to process while getting tokens.</param>
-            <remarks>
-            This method is used to determine state at arbitrary startLocation.
-            </remarks>
-            <returns><c>False</c> if the end of stream has been reached, <c>true</c> otherwise.</returns>
-        </member>
-        <member name="P:Microsoft.Scripting.Runtime.TokenizerService.CurrentState">
-            <summary>
-            The current internal state of the scanner.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Scripting.Runtime.TokenizerService.CurrentPosition">
-            <summary>
-            The current startLocation of the scanner.
             </summary>
         </member>
         <member name="T:Microsoft.Scripting.TokenTriggers">
@@ -2758,10 +2739,84 @@
             The language parser auto-detects the kind. A syntax error is reported if it is not able to do so.
             </summary>
         </member>
+        <member name="M:Microsoft.Scripting.Utils.ArrayUtils.ToArray``1(System.Collections.Generic.ICollection{``0})">
+            <summary>
+            Converts a generic ICollection of T into an array of T.  
+            
+            If the collection is already an  array of T the original collection is returned.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Scripting.Utils.CheckedDictionaryEnumerator">
+            <summary>
+            Not all .NET enumerators throw exceptions if accessed in an invalid state. This type
+            can be used to throw exceptions from enumerators implemented in IronPython.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Scripting.Utils.CollectionExtensions.ToReadOnly``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Wraps the provided enumerable into a ReadOnlyCollection{T}
+            
+            Copies all of the data into a new array, so the data can't be
+            changed after creation. The exception is if the enumerable is
+            already a ReadOnlyCollection{T}, in which case we just return it.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Scripting.Utils.ConsoleInputStream">
+            <summary>
+            Console input stream (Console.OpenStandardInput) has a bug that manifests itself if reading small amounts of data.
+            This class wraps the standard input stream with a buffer that ensures that enough data are read from the underlying stream.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Scripting.Utils.ContractUtils.RequiresArrayRange``1(System.Collections.Generic.IList{``0},System.Int32,System.Int32,System.String,System.String)">
+            <summary>
+            Requires the range [offset, offset + count] to be a subset of [0, array.Count].
+            </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException">Offset or count are out of range.</exception>
+        </member>
+        <member name="M:Microsoft.Scripting.Utils.ContractUtils.RequiresArrayRange(System.Int32,System.Int32,System.Int32,System.String,System.String)">
+            <summary>
+            Requires the range [offset, offset + count] to be a subset of [0, array.Count].
+            </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException">Offset or count are out of range.</exception>
+        </member>
+        <member name="M:Microsoft.Scripting.Utils.ContractUtils.RequiresNotNullItems``1(System.Collections.Generic.IList{``0},System.String)">
+            <summary>
+            Requires the array and all its items to be non-null.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Scripting.Utils.ContractUtils.RequiresNotNullItems``1(System.Collections.Generic.IEnumerable{``0},System.String)">
+            <summary>
+            Requires the enumerable collection and all its items to be non-null.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Scripting.Utils.ContractUtils.RequiresListRange(System.Collections.IList,System.Int32,System.Int32,System.String,System.String)">
+            <summary>
+            Requires the range [offset, offset + count] to be a subset of [0, array.Count].
+            </summary>
+            <exception cref="T:System.ArgumentNullException">Array is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">Offset or count are out of range.</exception>
+        </member>
+        <member name="T:Microsoft.Scripting.Utils.DictionaryUnionEnumerator">
+            <summary>
+            Presents a flat enumerable view of multiple dictionaries
+            </summary>
+        </member>
+        <member name="M:Microsoft.Scripting.Utils.DelegateUtils.GetObjectCallSiteDelegateType(System.Int32)">
+            <summary>
+            Gets a Func of CallSite, object * paramCnt, object delegate type
+            that's suitable for use in a non-strongly typed call site.
+            </summary>
+        </member>
         <member name="T:Microsoft.Scripting.SourceCodeReader">
             <summary>
             Source code reader.
             </summary>    
+        </member>
+        <member name="P:Microsoft.Scripting.SourceCodeReader.Encoding">
+            <summary>
+            Encoding that is used by the reader to convert binary data read from an underlying binary stream.
+            <c>Null</c> if the reader is reading from a textual source (not performing any byte to character transcoding).
+            </summary>
         </member>
         <member name="M:Microsoft.Scripting.SourceCodeReader.SeekLine(System.Int32)">
             <summary>
@@ -2771,12 +2826,6 @@
             <returns>
             Returns <c>true</c> if the line is found, <b>false</b> otherwise.
             </returns>
-        </member>
-        <member name="P:Microsoft.Scripting.SourceCodeReader.Encoding">
-            <summary>
-            Encoding that is used by the reader to convert binary data read from an underlying binary stream.
-            <c>Null</c> if the reader is reading from a textual source (not performing any byte to character transcoding).
-            </summary>
         </member>
         <member name="T:Microsoft.Scripting.FileStreamContentProvider">
             <summary>
@@ -2795,6 +2844,21 @@
             <param name="index">The index in the source stream the location represents (0-based).</param>
             <param name="line">The line in the source stream the location represents (1-based).</param>
             <param name="column">The column in the source stream the location represents (1-based).</param>
+        </member>
+        <member name="P:Microsoft.Scripting.SourceLocation.Index">
+            <summary>
+            The index in the source stream the location represents (0-based).
+            </summary>
+        </member>
+        <member name="P:Microsoft.Scripting.SourceLocation.Line">
+            <summary>
+            The line in the source stream the location represents (1-based).
+            </summary>
+        </member>
+        <member name="P:Microsoft.Scripting.SourceLocation.Column">
+            <summary>
+            The column in the source stream the location represents (1-based).
+            </summary>
         </member>
         <member name="M:Microsoft.Scripting.SourceLocation.op_Equality(Microsoft.Scripting.SourceLocation,Microsoft.Scripting.SourceLocation)">
             <summary>
@@ -2867,21 +2931,6 @@
             A minimal valid location.
             </summary>
         </member>
-        <member name="P:Microsoft.Scripting.SourceLocation.Index">
-            <summary>
-            The index in the source stream the location represents (0-based).
-            </summary>
-        </member>
-        <member name="P:Microsoft.Scripting.SourceLocation.Line">
-            <summary>
-            The line in the source stream the location represents (1-based).
-            </summary>
-        </member>
-        <member name="P:Microsoft.Scripting.SourceLocation.Column">
-            <summary>
-            The column in the source stream the location represents (1-based).
-            </summary>
-        </member>
         <member name="P:Microsoft.Scripting.SourceLocation.IsValid">
             <summary>
             Whether the location is a valid location.
@@ -2900,6 +2949,21 @@
             <param name="start">The beginning of the span.</param>
             <param name="end">The end of the span.</param>
         </member>
+        <member name="P:Microsoft.Scripting.SourceSpan.Start">
+            <summary>
+            The start location of the span.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Scripting.SourceSpan.End">
+            <summary>
+            The end location of the span. Location of the first character behind the span.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Scripting.SourceSpan.Length">
+            <summary>
+            Length of the span (number of characters inside the span).
+            </summary>
+        </member>
         <member name="F:Microsoft.Scripting.SourceSpan.None">
             <summary>
             A valid span that represents no location.
@@ -2908,6 +2972,11 @@
         <member name="F:Microsoft.Scripting.SourceSpan.Invalid">
             <summary>
             An invalid span.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Scripting.SourceSpan.IsValid">
+            <summary>
+            Whether the locations in the span are valid.
             </summary>
         </member>
         <member name="M:Microsoft.Scripting.SourceSpan.op_Equality(Microsoft.Scripting.SourceSpan,Microsoft.Scripting.SourceSpan)">
@@ -2926,24 +2995,16 @@
             <param name="right">The other span to compare.</param>
             <returns>True if the spans are not the same, False otherwise.</returns>
         </member>
-        <member name="P:Microsoft.Scripting.SourceSpan.Start">
+        <member name="P:Microsoft.Scripting.SourceUnit.Path">
             <summary>
-            The start location of the span.
+            Identification of the source unit. Assigned by the host. 
+            The format and semantics is host dependent (could be a path on file system or URL).
+            Empty string for anonymous source units.
             </summary>
         </member>
-        <member name="P:Microsoft.Scripting.SourceSpan.End">
+        <member name="P:Microsoft.Scripting.SourceUnit.LanguageContext">
             <summary>
-            The end location of the span. Location of the first character behind the span.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Scripting.SourceSpan.Length">
-            <summary>
-            Length of the span (number of characters inside the span).
-            </summary>
-        </member>
-        <member name="P:Microsoft.Scripting.SourceSpan.IsValid">
-            <summary>
-            Whether the locations in the span are valid.
+            LanguageContext of the language of the unit.
             </summary>
         </member>
         <member name="M:Microsoft.Scripting.SourceUnit.GetCodeLines(System.Int32,System.Int32)">
@@ -2983,21 +3044,28 @@
             Executes in a new scope created by the language.
             </summary>
         </member>
-        <member name="P:Microsoft.Scripting.SourceUnit.Path">
-            <summary>
-            Identification of the source unit. Assigned by the host. 
-            The format and semantics is host dependent (could be a path on file system or URL).
-            Empty string for anonymous source units.
-            </summary>
-        </member>
-        <member name="P:Microsoft.Scripting.SourceUnit.LanguageContext">
-            <summary>
-            LanguageContext of the language of the unit.
-            </summary>
-        </member>
         <member name="P:Microsoft.Scripting.SyntaxErrorException.RawSpan">
             <summary>
             Unmapped span.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Scripting.TextContentProvider">
+            <summary>
+            Provides a factory to create TextReader's over one source of textual content.
+            
+            TextContentProvider's are used when reading from a source which is already decoded
+            or has a known specific decoding.  
+            
+            For example a text editor might provide a TextContentProvider whose backing is
+            an in-memory text buffer that the user can actively edit.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Scripting.TextContentProvider.GetReader">
+            <summary>
+            Creates a new TextReader which is backed by the content the TextContentProvider was created for.
+            
+            This method may be called multiple times.  For example once to compile the code and again to get
+            the source code to display error messages.
             </summary>
         </member>
         <member name="F:Microsoft.Scripting.TokenCategory.EndOfStream">
@@ -3080,68 +3148,6 @@
             Errors.
             </summary>
         </member>
-        <member name="M:Microsoft.Scripting.Utils.ArrayUtils.ToArray``1(System.Collections.Generic.ICollection{``0})">
-            <summary>
-            Converts a generic ICollection of T into an array of T.  
-            
-            If the collection is already an  array of T the original collection is returned.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Scripting.Utils.CheckedDictionaryEnumerator">
-            <summary>
-            Not all .NET enumerators throw exceptions if accessed in an invalid state. This type
-            can be used to throw exceptions from enumerators implemented in IronPython.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.Utils.CollectionExtensions.ToReadOnly``1(System.Collections.Generic.IEnumerable{``0})">
-            <summary>
-            Wraps the provided enumerable into a ReadOnlyCollection{T}
-            
-            Copies all of the data into a new array, so the data can't be
-            changed after creation. The exception is if the enumerable is
-            already a ReadOnlyCollection{T}, in which case we just return it.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Scripting.Utils.ConsoleInputStream">
-            <summary>
-            Console input stream (Console.OpenStandardInput) has a bug that manifests itself if reading small amounts of data.
-            This class wraps the standard input stream with a buffer that ensures that enough data are read from the underlying stream.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.Utils.ContractUtils.RequiresArrayRange``1(System.Collections.Generic.IList{``0},System.Int32,System.Int32,System.String,System.String)">
-            <summary>
-            Requires the range [offset, offset + count] to be a subset of [0, array.Count].
-            </summary>
-            <exception cref="T:System.ArgumentOutOfRangeException">Offset or count are out of range.</exception>
-        </member>
-        <member name="M:Microsoft.Scripting.Utils.ContractUtils.RequiresArrayRange(System.Int32,System.Int32,System.Int32,System.String,System.String)">
-            <summary>
-            Requires the range [offset, offset + count] to be a subset of [0, array.Count].
-            </summary>
-            <exception cref="T:System.ArgumentOutOfRangeException">Offset or count are out of range.</exception>
-        </member>
-        <member name="M:Microsoft.Scripting.Utils.ContractUtils.RequiresNotNullItems``1(System.Collections.Generic.IList{``0},System.String)">
-            <summary>
-            Requires the array and all its items to be non-null.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.Utils.ContractUtils.RequiresNotNullItems``1(System.Collections.Generic.IEnumerable{``0},System.String)">
-            <summary>
-            Requires the enumerable collection and all its items to be non-null.
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.Utils.ContractUtils.RequiresListRange(System.Collections.IList,System.Int32,System.Int32,System.String,System.String)">
-            <summary>
-            Requires the range [offset, offset + count] to be a subset of [0, array.Count].
-            </summary>
-            <exception cref="T:System.ArgumentNullException">Array is <c>null</c>.</exception>
-            <exception cref="T:System.ArgumentOutOfRangeException">Offset or count are out of range.</exception>
-        </member>
-        <member name="T:Microsoft.Scripting.Utils.DictionaryUnionEnumerator">
-            <summary>
-            Presents a flat enumerable view of multiple dictionaries
-            </summary>
-        </member>
         <member name="T:Microsoft.Scripting.Strings">
             <summary>
                Strongly-typed and parameterized string factory.
@@ -3165,136 +3171,6 @@
         <member name="M:Microsoft.Scripting.Strings.StaticAssignmentFromInstanceError(System.Object,System.Object)">
             <summary>
             A string like  "static property "{0}" of "{1}" can only be assigned to through a type, not an instance"
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.Strings.TypeParameterIsNotDelegate(System.Object)">
-            <summary>
-            A string like  "Type parameter is {0}. Expected a delegate."
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.Strings.InvalidCast(System.Object,System.Object)">
-            <summary>
-            A string like  "Cannot cast from type '{0}' to type '{1}"
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.Strings.UnknownMemberType(System.Object)">
-            <summary>
-            A string like  "unknown member type: '{0}'. "
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.Strings.NonGenericWithGenericGroup(System.Object)">
-            <summary>
-            A string like  "The operation requires a non-generic type for {0}, but this represents generic types only"
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.Strings.InvalidOperation(System.Object)">
-            <summary>
-            A string like  "Invalid operation: '{0}'"
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.Strings.CantCreateDefaultTypeFor(System.Object)">
-            <summary>
-            A string like  "Cannot create default value for type {0}."
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.Strings.UnhandledConvert(System.Object)">
-            <summary>
-            A string like  "Unhandled convert: {0}"
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.Strings.NoCallableMethods(System.Object,System.Object)">
-            <summary>
-            A string like  "{0}.{1} has no publiclly visible method."
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.Strings.ExtensionMustBePublic(System.Object)">
-            <summary>
-            A string like  "Extension type {0} must be public."
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.Strings.InvalidArgumentType(System.Object,System.Object)">
-            <summary>
-            A string like  "Invalid type of argument {0}; expecting {1}."
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.Strings.FieldReadonly(System.Object)">
-            <summary>
-            A string like  "Field {0} is read-only"
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.Strings.PropertyReadonly(System.Object)">
-            <summary>
-            A string like  "Property {0} is read-only"
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.Strings.UnexpectedEvent(System.Object,System.Object,System.Object,System.Object)">
-            <summary>
-            A string like  "Expected event from {0}.{1}, got event from {2}.{3}."
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.Strings.ExpectedBoundEvent(System.Object)">
-            <summary>
-            A string like  "expected bound event, got {0}."
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.Strings.UnexpectedType(System.Object,System.Object)">
-            <summary>
-            A string like  "Expected type {0}, got {1}."
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.Strings.MemberWriteOnly(System.Object)">
-            <summary>
-            A string like  "can only write to member {0}."
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.Strings.InvalidStreamType(System.Object)">
-            <summary>
-            A string like  "Invalid stream type: {0}."
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.Strings.CantAddCasing(System.Object)">
-            <summary>
-            A string like  "can't add another casing for identifier {0}"
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.Strings.CantAddIdentifier(System.Object)">
-            <summary>
-            A string like  "can't add new identifier {0}"
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.Strings.InvalidCtorImplementation(System.Object,System.Object)">
-            <summary>
-            A string like  "Type '{0}' doesn't provide a suitable public constructor or its implementation is faulty: {1}"
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.Strings.CanotEmitConstant(System.Object,System.Object)">
-            <summary>
-            A string like  "Cannot emit constant {0} ({1})"
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.Strings.NoImplicitCast(System.Object,System.Object)">
-            <summary>
-            A string like  "No implicit cast from {0} to {1}"
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.Strings.NoExplicitCast(System.Object,System.Object)">
-            <summary>
-            A string like  "No explicit cast from {0} to {1}"
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.Strings.NameNotDefined(System.Object)">
-            <summary>
-            A string like  "name '{0}' not defined"
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.Strings.IllegalNew_GenericParams(System.Object)">
-            <summary>
-            A string like  "Cannot create instance of {0} because it contains generic parameters"
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.Strings.VerificationException(System.Object,System.Object,System.Object)">
-            <summary>
-            A string like  "Non-verifiable assembly generated: {0}:\nAssembly preserved as {1}\nError text:\n{2}\n"
             </summary>
         </member>
         <member name="P:Microsoft.Scripting.Strings.MethodPreconditionViolated">
@@ -3387,6 +3263,21 @@
             A string like  "Either code or target must be specified."
             </summary>
         </member>
+        <member name="M:Microsoft.Scripting.Strings.TypeParameterIsNotDelegate(System.Object)">
+            <summary>
+            A string like  "Type parameter is {0}. Expected a delegate."
+            </summary>
+        </member>
+        <member name="M:Microsoft.Scripting.Strings.InvalidCast(System.Object,System.Object)">
+            <summary>
+            A string like  "Cannot cast from type '{0}' to type '{1}"
+            </summary>
+        </member>
+        <member name="M:Microsoft.Scripting.Strings.UnknownMemberType(System.Object)">
+            <summary>
+            A string like  "unknown member type: '{0}'. "
+            </summary>
+        </member>
         <member name="P:Microsoft.Scripting.Strings.FirstArgumentMustBeCallSite">
             <summary>
             A string like  "RuleBuilder can only be used with delegates whose first argument is CallSite."
@@ -3407,6 +3298,16 @@
             A string like  "Missing Target."
             </summary>
         </member>
+        <member name="M:Microsoft.Scripting.Strings.NonGenericWithGenericGroup(System.Object)">
+            <summary>
+            A string like  "The operation requires a non-generic type for {0}, but this represents generic types only"
+            </summary>
+        </member>
+        <member name="M:Microsoft.Scripting.Strings.InvalidOperation(System.Object)">
+            <summary>
+            A string like  "Invalid operation: '{0}'"
+            </summary>
+        </member>
         <member name="P:Microsoft.Scripting.Strings.FinallyAlreadyDefined">
             <summary>
             A string like  "Finally already defined."
@@ -3420,6 +3321,21 @@
         <member name="P:Microsoft.Scripting.Strings.FaultAlreadyDefined">
             <summary>
             A string like  "Fault already defined."
+            </summary>
+        </member>
+        <member name="M:Microsoft.Scripting.Strings.CantCreateDefaultTypeFor(System.Object)">
+            <summary>
+            A string like  "Cannot create default value for type {0}."
+            </summary>
+        </member>
+        <member name="M:Microsoft.Scripting.Strings.UnhandledConvert(System.Object)">
+            <summary>
+            A string like  "Unhandled convert: {0}"
+            </summary>
+        </member>
+        <member name="M:Microsoft.Scripting.Strings.NoCallableMethods(System.Object,System.Object)">
+            <summary>
+            A string like  "{0}.{1} has no publiclly visible method."
             </summary>
         </member>
         <member name="P:Microsoft.Scripting.Strings.GlobalsMustBeUnique">
@@ -3457,6 +3373,11 @@
             A string like  "No exception."
             </summary>
         </member>
+        <member name="M:Microsoft.Scripting.Strings.ExtensionMustBePublic(System.Object)">
+            <summary>
+            A string like  "Extension type {0} must be public."
+            </summary>
+        </member>
         <member name="P:Microsoft.Scripting.Strings.AlreadyInitialized">
             <summary>
             A string like  "Already initialized."
@@ -3472,14 +3393,54 @@
             A string like  "Invalid number of parameters for the service."
             </summary>
         </member>
+        <member name="M:Microsoft.Scripting.Strings.InvalidArgumentType(System.Object,System.Object)">
+            <summary>
+            A string like  "Invalid type of argument {0}; expecting {1}."
+            </summary>
+        </member>
         <member name="P:Microsoft.Scripting.Strings.CannotChangeNonCachingValue">
             <summary>
             A string like  "Cannot change non-caching value."
             </summary>
         </member>
+        <member name="M:Microsoft.Scripting.Strings.FieldReadonly(System.Object)">
+            <summary>
+            A string like  "Field {0} is read-only"
+            </summary>
+        </member>
+        <member name="M:Microsoft.Scripting.Strings.PropertyReadonly(System.Object)">
+            <summary>
+            A string like  "Property {0} is read-only"
+            </summary>
+        </member>
+        <member name="M:Microsoft.Scripting.Strings.UnexpectedEvent(System.Object,System.Object,System.Object,System.Object)">
+            <summary>
+            A string like  "Expected event from {0}.{1}, got event from {2}.{3}."
+            </summary>
+        </member>
+        <member name="M:Microsoft.Scripting.Strings.ExpectedBoundEvent(System.Object)">
+            <summary>
+            A string like  "expected bound event, got {0}."
+            </summary>
+        </member>
+        <member name="M:Microsoft.Scripting.Strings.UnexpectedType(System.Object,System.Object)">
+            <summary>
+            A string like  "Expected type {0}, got {1}."
+            </summary>
+        </member>
+        <member name="M:Microsoft.Scripting.Strings.MemberWriteOnly(System.Object)">
+            <summary>
+            A string like  "can only write to member {0}."
+            </summary>
+        </member>
         <member name="P:Microsoft.Scripting.Strings.NoCodeToCompile">
             <summary>
             A string like  "No code to compile."
+            </summary>
+        </member>
+        <member name="M:Microsoft.Scripting.Strings.InvalidStreamType(System.Object)">
+            <summary>
+            A string like  "Invalid stream type: {0}."
             </summary>
         </member>
         <member name="P:Microsoft.Scripting.Strings.QueueEmpty">
@@ -3497,6 +3458,21 @@
             A string like  "Enumeration already finished."
             </summary>
         </member>
+        <member name="M:Microsoft.Scripting.Strings.CantAddCasing(System.Object)">
+            <summary>
+            A string like  "can't add another casing for identifier {0}"
+            </summary>
+        </member>
+        <member name="M:Microsoft.Scripting.Strings.CantAddIdentifier(System.Object)">
+            <summary>
+            A string like  "can't add new identifier {0}"
+            </summary>
+        </member>
+        <member name="M:Microsoft.Scripting.Strings.InvalidCtorImplementation(System.Object,System.Object)">
+            <summary>
+            A string like  "Type '{0}' doesn't provide a suitable public constructor or its implementation is faulty: {1}"
+            </summary>
+        </member>
         <member name="P:Microsoft.Scripting.Strings.InvalidOutputDir">
             <summary>
             A string like  "Invalid output directory."
@@ -3505,6 +3481,26 @@
         <member name="P:Microsoft.Scripting.Strings.InvalidAsmNameOrExtension">
             <summary>
             A string like  "Invalid assembly name or file extension."
+            </summary>
+        </member>
+        <member name="M:Microsoft.Scripting.Strings.CanotEmitConstant(System.Object,System.Object)">
+            <summary>
+            A string like  "Cannot emit constant {0} ({1})"
+            </summary>
+        </member>
+        <member name="M:Microsoft.Scripting.Strings.NoImplicitCast(System.Object,System.Object)">
+            <summary>
+            A string like  "No implicit cast from {0} to {1}"
+            </summary>
+        </member>
+        <member name="M:Microsoft.Scripting.Strings.NoExplicitCast(System.Object,System.Object)">
+            <summary>
+            A string like  "No explicit cast from {0} to {1}"
+            </summary>
+        </member>
+        <member name="M:Microsoft.Scripting.Strings.NameNotDefined(System.Object)">
+            <summary>
+            A string like  "name '{0}' not defined"
             </summary>
         </member>
         <member name="P:Microsoft.Scripting.Strings.NoDefaultValue">
@@ -3525,6 +3521,16 @@
         <member name="P:Microsoft.Scripting.Strings.CantWriteProperty">
             <summary>
             A string like  "can't write to property"
+            </summary>
+        </member>
+        <member name="M:Microsoft.Scripting.Strings.IllegalNew_GenericParams(System.Object)">
+            <summary>
+            A string like  "Cannot create instance of {0} because it contains generic parameters"
+            </summary>
+        </member>
+        <member name="M:Microsoft.Scripting.Strings.VerificationException(System.Object,System.Object,System.Object)">
+            <summary>
+            A string like  "Non-verifiable assembly generated: {0}:\nAssembly preserved as {1}\nError text:\n{2}\n"
             </summary>
         </member>
         <member name="T:Microsoft.Scripting.Error">
@@ -3800,12 +3806,6 @@
         <member name="M:Microsoft.Scripting.Error.VerificationException(System.Object,System.Object,System.Object)">
             <summary>
             System.Security.VerificationException with message like "Non-verifiable assembly generated: {0}:\nAssembly preserved as {1}\nError text:\n{2}\n"
-            </summary>
-        </member>
-        <member name="M:Microsoft.Scripting.Utils.DelegateUtils.GetObjectCallSiteDelegateType(System.Int32)">
-            <summary>
-            Gets a Func of CallSite, object * paramCnt, object delegate type
-            that's suitable for use in a non-strongly typed call site.
             </summary>
         </member>
     </members>
