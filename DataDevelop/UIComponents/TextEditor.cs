@@ -40,7 +40,7 @@ namespace DataDevelop.UIComponents
 		
 		public new void LoadFile(string fileName)
 		{
-			base.LoadFile(fileName);
+			base.LoadFile(fileName, false, true);
 			this.HasChanges = false;
 		}
 
