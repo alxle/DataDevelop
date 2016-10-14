@@ -79,6 +79,11 @@ namespace DataDevelop.Scripting
 				this.adapter.Fill(0, 0, data);
 			}
 
+			public Table @base
+			{
+				get { return this.table; }
+			}
+
 			public DataRow NewRow()
 			{
 				return this.data.NewRow();
@@ -101,6 +106,21 @@ namespace DataDevelop.Scripting
 					}
 				}
 				return this;
+			}
+
+			public void Import(DataRow row)
+			{
+				var newRow = this.data.NewRow();
+				newRow.ItemArray = row.ItemArray;
+				this.data.Rows.Add(newRow);
+				this.SaveChanges();
+			}
+
+			public void ImportAll(DataTable fromTable)
+			{
+				foreach (DataRow row in fromTable.Rows) {
+					this.Import(row);
+				}
 			}
 
 			public int SaveChanges()
@@ -131,12 +151,41 @@ namespace DataDevelop.Scripting
 				this.database = database;
 			}
 
-			public JTableAdapter Table(string name)
+			public JTableAdapter this[string name]
 			{
-				var table = this.database.Tables[name];
-				return new JTableAdapter(table);
+				get
+				{
+					var table = this.database.Tables[name];
+					return new JTableAdapter(table);
+				}
 			}
-        }
+
+			public Database @base
+			{
+				get { return this.database; }
+			}
+
+			public IEnumerable<DataRow> Query(string command, params object[] values)
+			{
+				foreach (DataRow dataRow in database.Query(command, values).Rows) {
+					yield return dataRow;
+				}
+			}
+
+			public int NonQuery(string command, params object[] values)
+			{
+				return database.NonQuery(command, values);
+			}
+
+			public object Scalar(string command, params object[] values)
+			{
+				var table = database.Query(command, values);
+				if (table.Rows.Count > 0) {
+					return table.Rows[0][0];
+				}
+				return null;
+			}
+		}
 
 		public override void Initialize(Stream output, IDictionary<string, Database> databases)
 		{
