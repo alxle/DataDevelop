@@ -11,6 +11,7 @@ using System.Windows.Forms;
 
 namespace DataDevelop
 {
+	using Core.Excel;
 	using Data;
 	using Dialogs;
 	using Printing;
@@ -146,6 +147,7 @@ namespace DataDevelop
 									command.Parameters.Add(p);
 								}
 							} else {
+								command.Dispose();
 								return;
 							}
 						}
@@ -361,11 +363,15 @@ namespace DataDevelop
 					if (ext == ".txt" || ext == ".csv") {
 						char separator = (ext == ".txt") ? '\t' : ',';
 						DataUtils.WriteToFile(resultSaveFileDialog.FileName, table, separator);
-					} else {
+					} else if (ext == ".xml") {
 						if (String.IsNullOrEmpty(table.TableName)) {
 							table.TableName = Path.GetFileNameWithoutExtension(resultSaveFileDialog.FileName);
 						}
 						table.WriteXml(resultSaveFileDialog.FileName);
+					} else {
+						using (var reader = table.CreateDataReader()) {
+							Xlsx.Save(resultSaveFileDialog.FileName, "Result", reader);
+						}
 					}
 				}
 			}
@@ -594,7 +600,7 @@ namespace DataDevelop
 		{
 			var data = this.DataTable;
 			if (data != null) {
-				var sheet = DataDevelop.Core.MSOffice.Excel.CreateWorksheet("", data, excelWorker);
+				var sheet = ExcelInterop.CreateWorksheet("", data, excelWorker);
 				if (sheet != null) {
 					excelWorker.ReportProgress(100, "Loading Excel...");
 					sheet.OpenInExcel();
@@ -637,6 +643,59 @@ namespace DataDevelop
 				fileNameStatusLabel.ToolTipText = textEditorControl.FileName;
 				fileNameStatusLabel.Text = Path.GetFileName(textEditorControl.FileName);
 			}
+		}
+
+		class ExecuteToXlsxArgs
+		{
+			public IDbCommand Command { get; set; }
+			public string FileName { get; set; }
+		}
+
+		private void executeAndSaveToXslxToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var command = DbCommandParser.Parse(this.database, SelectedText);
+			if (command.Parameters.Count > 0) {
+				using (ParamsDialog dialog = new ParamsDialog()) {
+					IList<IDataParameter> newParameters = MergeParameters(command.Parameters);
+					dialog.Parameters = newParameters;
+					if (dialog.ShowDialog(this) == DialogResult.OK) {
+						this.parameters = newParameters;
+						command.Parameters.Clear();
+						foreach (IDataParameter p in newParameters) {
+							command.Parameters.Add(p);
+						}
+					} else {
+						command.Dispose();
+						return;
+					}
+				}
+			}
+
+			using (var xlsxDialog = new SaveFileDialog()) {
+				xlsxDialog.Filter = "Excel Spreadsheet Document (*.xlsx)|*.xlsx";
+				if (xlsxDialog.ShowDialog(this) == DialogResult.OK) {
+					var args = new ExecuteToXlsxArgs()
+					{
+						Command = command, FileName = xlsxDialog.FileName
+					};
+					ProgressDialog.Run(this, "Executing...", executeToXlsxWorker, true, args);
+				}
+			}
+		}
+
+		private void executeToXlsxWorker_DoWork(object sender, DoWorkEventArgs e)
+		{
+			var args = (ExecuteToXlsxArgs)e.Argument;
+			using (var command = args.Command) {
+				using (var reader = command.ExecuteReader()) {
+					Xlsx.Save(args.FileName, "Result", reader);
+				}
+			}
+		}
+
+		private void executeToXlsxWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+		{
+
 		}
 	}
 }
