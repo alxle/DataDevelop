@@ -1,17 +1,18 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Common;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using System.Data.Common;
-using DataDevelop.Data;
-using DataDevelop.Properties;
-using DataDevelop.Dialogs;
 
 namespace DataDevelop
 {
+	using Core.Excel;
+	using Data;
+	using Dialogs;
+	using Properties;
+
 	public partial class TableDocument : Document, IDbObject
 	{
 		private Table table;
@@ -555,7 +556,7 @@ namespace DataDevelop
 			}
 
 			if (dataToExport != null) {
-				var sheet = DataDevelop.Core.MSOffice.Excel.CreateWorksheet("", dataToExport, excelWorker);
+				var sheet = ExcelInterop.CreateWorksheet("", dataToExport, excelWorker);
 				if (sheet != null) {
 					excelWorker.ReportProgress(100, "Loading Excel...");
 					sheet.OpenInExcel();
