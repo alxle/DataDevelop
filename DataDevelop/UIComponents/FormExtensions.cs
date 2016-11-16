@@ -4,10 +4,8 @@ using System.Windows.Forms;
 
 namespace DataDevelop
 {
-	class FormExtensions
+	static class FormExtensions
 	{
-		private FormExtensions() { }
-
 		public static void LeftPositionate(Form form, Control relativeTo)
 		{
 			form.StartPosition = FormStartPosition.Manual;
