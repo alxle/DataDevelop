@@ -1,17 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
+using DataDevelop.Properties;
 using ICSharpCode.TextEditor.Document;
 using System.Xml;
-using DataDevelop.Properties;
 
 namespace DataDevelop.UIComponents
 {
 	static class Highlighters
 	{
 		private static DefaultHighlightingStrategy python;
-        private static DefaultHighlightingStrategy sql;
-        private static DefaultHighlightingStrategy javascript;
+		private static DefaultHighlightingStrategy sql;
+		private static DefaultHighlightingStrategy javascript;
 
 		public static DefaultHighlightingStrategy Python
 		{
@@ -39,19 +36,18 @@ namespace DataDevelop.UIComponents
 			}
 		}
 
-        public static DefaultHighlightingStrategy Javascript
-        {
-            get
-            {
-                if (javascript == null)
-                {
-                    XmlDocument doc = new XmlDocument();
-                    doc.LoadXml(Resources.JavascriptSyntaxDefinition);
-                    javascript = GetHighlightingStrategy("Javascript", doc);
-                }
-                return javascript;
-            }
-        }
+		public static DefaultHighlightingStrategy Javascript
+		{
+			get
+			{
+				if (javascript == null) {
+					XmlDocument doc = new XmlDocument();
+					doc.LoadXml(Resources.JavascriptSyntaxDefinition);
+					javascript = GetHighlightingStrategy("Javascript", doc);
+				}
+				return javascript;
+			}
+		}
 
 		private static DefaultHighlightingStrategy GetHighlightingStrategy(string name, XmlDocument doc)
 		{
