@@ -55,8 +55,6 @@ namespace DataDevelop
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.aboutSQLiteStudioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
-			this.topBar = new System.Windows.Forms.Panel();
-			this.bottomBar = new System.Windows.Forms.Panel();
 			this.menuStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -273,26 +271,10 @@ namespace DataDevelop
 			this.dockPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.dockPanel.DockBackColor = System.Drawing.SystemColors.AppWorkspace;
 			this.dockPanel.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.dockPanel.Location = new System.Drawing.Point(0, 30);
+			this.dockPanel.Location = new System.Drawing.Point(0, 24);
 			this.dockPanel.Name = "dockPanel";
-			this.dockPanel.Size = new System.Drawing.Size(604, 365);
+			this.dockPanel.Size = new System.Drawing.Size(604, 377);
 			this.dockPanel.TabIndex = 2;
-			// 
-			// topBar
-			// 
-			this.topBar.Dock = System.Windows.Forms.DockStyle.Top;
-			this.topBar.Location = new System.Drawing.Point(0, 24);
-			this.topBar.Name = "topBar";
-			this.topBar.Size = new System.Drawing.Size(604, 6);
-			this.topBar.TabIndex = 5;
-			// 
-			// bottomBar
-			// 
-			this.bottomBar.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.bottomBar.Location = new System.Drawing.Point(0, 395);
-			this.bottomBar.Name = "bottomBar";
-			this.bottomBar.Size = new System.Drawing.Size(604, 6);
-			this.bottomBar.TabIndex = 6;
 			// 
 			// MainForm
 			// 
@@ -300,8 +282,6 @@ namespace DataDevelop
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(604, 401);
 			this.Controls.Add(this.dockPanel);
-			this.Controls.Add(this.bottomBar);
-			this.Controls.Add(this.topBar);
 			this.Controls.Add(this.menuStrip);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.IsMdiContainer = true;
@@ -335,7 +315,6 @@ namespace DataDevelop
 		private System.Windows.Forms.ToolStripMenuItem openDatabaseToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem preferencesToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem scriptWindowToolStripMenuItem;
-		private WeifenLuo.WinFormsUI.Docking.DockPanel dockPanel;
 		private System.Windows.Forms.ToolStripMenuItem checkForUpdatesToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem assemblyExplorerToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem outputWindowToolStripMenuItem;
@@ -346,8 +325,7 @@ namespace DataDevelop
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
 		private System.Windows.Forms.ToolStripMenuItem javascriptConsoleToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem closeAllButCurrentToolStripMenuItem;
-		private System.Windows.Forms.Panel topBar;
-		private System.Windows.Forms.Panel bottomBar;
-	}
+        private WeifenLuo.WinFormsUI.Docking.DockPanel dockPanel;
+    }
 }
 

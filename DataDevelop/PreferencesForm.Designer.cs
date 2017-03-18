@@ -237,10 +237,9 @@ namespace DataDevelop
 			this.visualStyleComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.visualStyleComboBox.FormattingEnabled = true;
 			this.visualStyleComboBox.Items.AddRange(new object[] {
-            "VS2003",
-            "VS2005",
-            "VS2012 Light",
-            "VS2015 Blue"});
+            "Classic",
+            "Light",
+            "Blue"});
 			this.visualStyleComboBox.Location = new System.Drawing.Point(84, 20);
 			this.visualStyleComboBox.Name = "visualStyleComboBox";
 			this.visualStyleComboBox.Size = new System.Drawing.Size(121, 21);
