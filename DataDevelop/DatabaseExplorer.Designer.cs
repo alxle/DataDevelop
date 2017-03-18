@@ -96,10 +96,10 @@ namespace DataDevelop
             this.refreshToolStripButton,
             this.toolStripSeparator3,
             this.actionsButton});
-			this.toolStrip.Location = new System.Drawing.Point(1, 1);
+			this.toolStrip.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip.Name = "toolStrip";
 			this.toolStrip.Padding = new System.Windows.Forms.Padding(4, 0, 1, 0);
-			this.toolStrip.Size = new System.Drawing.Size(234, 25);
+			this.toolStrip.Size = new System.Drawing.Size(236, 25);
 			this.toolStrip.TabIndex = 0;
 			// 
 			// createDatabaseToolStripButton
@@ -220,11 +220,11 @@ namespace DataDevelop
 			this.treeView.ImageIndex = 0;
 			this.treeView.ImageList = this.nodesImageList;
 			this.treeView.LoadOnDemand = true;
-			this.treeView.Location = new System.Drawing.Point(1, 26);
+			this.treeView.Location = new System.Drawing.Point(0, 25);
 			this.treeView.Margin = new System.Windows.Forms.Padding(0);
 			this.treeView.Name = "treeView";
 			this.treeView.SelectedImageIndex = 0;
-			this.treeView.Size = new System.Drawing.Size(234, 239);
+			this.treeView.Size = new System.Drawing.Size(236, 241);
 			this.treeView.TabIndex = 2;
 			this.treeView.TreeNodePopulate += new System.Windows.Forms.TreeViewEventHandler(this.treeView_TreeNodePopulate);
 			this.treeView.BeforeLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.treeView_BeforeLabelEdit);
@@ -496,14 +496,12 @@ namespace DataDevelop
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.BackColor = System.Drawing.SystemColors.ControlDark;
 			this.ClientSize = new System.Drawing.Size(236, 266);
 			this.Controls.Add(this.treeView);
 			this.Controls.Add(this.toolStrip);
-			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "DatabaseExplorer";
-			this.Padding = new System.Windows.Forms.Padding(1);
+			this.Padding = new System.Windows.Forms.Padding(0);
 			this.TabText = "Database Explorer";
 			this.Text = "Database Explorer";
 			this.Load += new System.EventHandler(this.DatabaseExplorer_Load);

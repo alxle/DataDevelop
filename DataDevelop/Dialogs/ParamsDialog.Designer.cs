@@ -30,12 +30,12 @@
 			this.components = new System.ComponentModel.Container();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-			this.dataGridView1 = new DataDevelop.DataGridView();
+			this.paramsDataGridView = new DataDevelop.DataGridView();
 			this.parameterNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.dbTypeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
 			this.valueDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.iDataParameterBindingSource = new System.Windows.Forms.BindingSource(this.components);
-			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.paramsDataGridView)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.iDataParameterBindingSource)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -47,28 +47,28 @@
 			// 
 			this.cancelButton.Location = new System.Drawing.Point(322, 165);
 			// 
-			// dataGridView1
+			// paramsDataGridView
 			// 
-			this.dataGridView1.AllowUserToAddRows = false;
-			this.dataGridView1.AllowUserToDeleteRows = false;
-			this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			this.paramsDataGridView.AllowUserToAddRows = false;
+			this.paramsDataGridView.AllowUserToDeleteRows = false;
+			this.paramsDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.dataGridView1.AutoGenerateColumns = false;
-			this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
-			this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+			this.paramsDataGridView.AutoGenerateColumns = false;
+			this.paramsDataGridView.BackgroundColor = System.Drawing.SystemColors.Window;
+			this.paramsDataGridView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.paramsDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.paramsDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.parameterNameDataGridViewTextBoxColumn,
             this.dbTypeDataGridViewTextBoxColumn,
             this.valueDataGridViewTextBoxColumn});
-			this.dataGridView1.DataSource = this.iDataParameterBindingSource;
-			this.dataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-			this.dataGridView1.Location = new System.Drawing.Point(12, 12);
-			this.dataGridView1.Name = "dataGridView1";
-			this.dataGridView1.Size = new System.Drawing.Size(385, 147);
-			this.dataGridView1.StartRowNumber = 1;
-			this.dataGridView1.TabIndex = 2;
+			this.paramsDataGridView.DataSource = this.iDataParameterBindingSource;
+			this.paramsDataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+			this.paramsDataGridView.Location = new System.Drawing.Point(12, 12);
+			this.paramsDataGridView.Name = "paramsDataGridView";
+			this.paramsDataGridView.Size = new System.Drawing.Size(385, 147);
+			this.paramsDataGridView.StartRowNumber = 1;
+			this.paramsDataGridView.TabIndex = 2;
 			// 
 			// parameterNameDataGridViewTextBoxColumn
 			// 
@@ -105,16 +105,16 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.ClientSize = new System.Drawing.Size(409, 200);
-			this.Controls.Add(this.dataGridView1);
+			this.Controls.Add(this.paramsDataGridView);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
 			this.Name = "ParamsDialog";
 			this.ShowIcon = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Parameters";
-			this.Controls.SetChildIndex(this.dataGridView1, 0);
+			this.Controls.SetChildIndex(this.paramsDataGridView, 0);
 			this.Controls.SetChildIndex(this.okButton, 0);
 			this.Controls.SetChildIndex(this.cancelButton, 0);
-			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.paramsDataGridView)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.iDataParameterBindingSource)).EndInit();
 			this.ResumeLayout(false);
 
@@ -122,7 +122,7 @@
 
 		#endregion
 
-		private DataGridView dataGridView1;
+		private DataGridView paramsDataGridView;
 		private System.Windows.Forms.BindingSource iDataParameterBindingSource;
 		private System.Windows.Forms.DataGridViewTextBoxColumn parameterNameDataGridViewTextBoxColumn;
 		private System.Windows.Forms.DataGridViewComboBoxColumn dbTypeDataGridViewTextBoxColumn;

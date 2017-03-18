@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
 
 namespace DataDevelop.Dialogs
 {
-	public partial class ParamsDialog : DataDevelop.Dialogs.BaseDialog
+	public partial class ParamsDialog : BaseDialog
 	{
 		public ParamsDialog()
 		{
@@ -20,8 +16,8 @@ namespace DataDevelop.Dialogs
 
 		public IList<IDataParameter> Parameters
 		{
-			get { return this.dataGridView1.DataSource as IList<IDataParameter>; }
-			set { this.dataGridView1.DataSource = value; }
+			get { return this.paramsDataGridView.DataSource as IList<IDataParameter>; }
+			set { this.paramsDataGridView.DataSource = value; }
 		}
 	}
 }
