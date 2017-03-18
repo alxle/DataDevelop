@@ -12,7 +12,7 @@
       <Value Profile="(Default)">Courier New, 9.75pt</Value>
     </Setting>
     <Setting Name="VisualStyle" Type="System.String" Scope="User">
-      <Value Profile="(Default)">VS2015 Blue</Value>
+      <Value Profile="(Default)">Blue</Value>
     </Setting>
     <Setting Name="CallUpgrade" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
