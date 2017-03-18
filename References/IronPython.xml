@@ -1306,9 +1306,13 @@
             previous conditional.
             </summary>
         </member>
-        <member name="M:IronPython.Runtime.Binding.ConditionalBuilder.AddCondition(Microsoft.Scripting.Ast.Expression)">
+        <member name="M:IronPython.Runtime.Binding.ConditionalBuilder.ExtendLastCondition(Microsoft.Scripting.Ast.Expression)">
             <summary>
-            Adds a new condition to the last added body / condition.
+            If present, converts the finish condition body be a normal conditional body. 
+            The builder instance will become unfinished again. 
+            
+            If no finish condition body is available, this extends the last condition check 
+            with the new condition.
             </summary>
         </member>
         <member name="M:IronPython.Runtime.Binding.ConditionalBuilder.FinishCondition(Microsoft.Scripting.Ast.Expression)">
@@ -2445,6 +2449,12 @@
             
             To the end user these modules appear just like any other module.  These modules are
             implemented by subclassing the BuiltinPythonModule class.
+            </summary>
+        </member>
+        <member name="M:IronPython.Runtime.MemoryView.FixSlice(IronPython.Runtime.Slice,System.Int32,System.Int32@,System.Int32@)">
+            <summary>
+            MemoryView slicing is somewhat different and more restricted than
+            standard slicing.
             </summary>
         </member>
         <member name="M:IronPython.Runtime.Method.CheckSelf(IronPython.Runtime.CodeContext,System.Object)">
@@ -4674,7 +4684,7 @@
             Is this a type used for instances Python types (and not for the types themselves)?
             </summary>
         </member>
-        <member name="M:IronPython.Runtime.Types.NewTypeMaker.GetOriginalIndex(System.Reflection.ParameterInfo[],System.Reflection.ParameterInfo[],System.Int32)">
+        <member name="M:IronPython.Runtime.Types.NewTypeMaker.GetOriginalIndex(System.Reflection.ParameterInfo[],Microsoft.Scripting.Generation.ParameterInfoWrapper[],System.Int32)">
             <summary>
             Gets the position for the parameter which we are overriding.
             </summary>
@@ -7591,13 +7601,6 @@
         <member name="P:IronPython.Resources.UnknownFutureFeature">
             <summary>
               Looks up a localized string similar to future feature is not defined:.
-            </summary>
-        </member>
-        <member name="T:Microsoft.Scripting.Generation.ParameterInfoWrapper">
-            <summary>
-            This helper type lets us build a fake ParameterInfo object with a specific type and name
-            to pass along to methods that expect ParameterInfos.  This is currently found useful
-            for the NewTypeMaker code and may be useful in other situations as well.
             </summary>
         </member>
     </members>
