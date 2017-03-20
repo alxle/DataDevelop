@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Data;
-using System.Text;
-using System.IO;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
+using System.IO;
+using System.Text;
 
 namespace DataDevelop.Data
 {
@@ -109,6 +110,7 @@ namespace DataDevelop.Data
 			var command = database.CreateCommand();
 			var result = new StringBuilder(commandText.Length * 2);
 			const char ParamChar = '?';
+			var parameters = new Dictionary<string, DbParameter>(StringComparer.OrdinalIgnoreCase);
 
 			using (var reader = new StringReader(commandText)) {
 				var state = State.OnCommandText;
@@ -145,17 +147,18 @@ namespace DataDevelop.Data
 										}
 
 										var parameterName = database.ParameterPrefix + paramName;
-										if (!command.Parameters.Contains(parameterName)) {
+										if (!parameters.ContainsKey(paramName)) {
 											var p = command.CreateParameter();
 											p.ParameterName = parameterName;
 											p.SourceColumn = paramName;
 											p.DbType = dbType;
-											command.Parameters.Add(p);
+											parameters.Add(paramName, p);
 										} else {
-											var p = command.Parameters[parameterName];
-											if (p.DbType != dbType) {
-												throw new FormatException(
-													String.Format("Parameter {0} already declared with diferent DbType", paramName));
+											var p = parameters[paramName];
+											if (dbType != DbType.Object) {
+												if (p.DbType != dbType) {
+													throw new FormatException(String.Format("Parameter {0} already declared with diferent DbType", paramName));
+												}
 											}
 										}
 										// Do not use p.ParameterName since some providers remove the prefix
@@ -186,7 +189,9 @@ namespace DataDevelop.Data
 					}
 				} while (state != State.End);
 			}
-
+			foreach (var p in parameters) {
+				command.Parameters.Add(p.Value);
+			}
 			command.CommandText = result.ToString();
 			return command;
 		}
