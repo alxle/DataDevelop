@@ -47,6 +47,7 @@ namespace DataDevelop
 			this.toolStrip.Size = new System.Drawing.Size(254, 25);
 			this.toolStrip.TabIndex = 0;
 			this.toolStrip.Text = "toolStrip";
+			this.toolStrip.Visible = false;
 			// 
 			// addAssemblyButton
 			// 
@@ -66,10 +67,10 @@ namespace DataDevelop
 			this.mainTreeView.ImageIndex = 0;
 			this.mainTreeView.ImageList = this.imageList;
 			this.mainTreeView.LoadOnDemand = true;
-			this.mainTreeView.Location = new System.Drawing.Point(0, 25);
+			this.mainTreeView.Location = new System.Drawing.Point(0, 0);
 			this.mainTreeView.Name = "mainTreeView";
 			this.mainTreeView.SelectedImageIndex = 0;
-			this.mainTreeView.Size = new System.Drawing.Size(254, 241);
+			this.mainTreeView.Size = new System.Drawing.Size(254, 266);
 			this.mainTreeView.TabIndex = 1;
 			this.mainTreeView.TreeNodePopulate += new System.Windows.Forms.TreeViewEventHandler(this.mainTreeView_TreeNodePopulate);
 			this.mainTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.mainTreeView_AfterSelect);
@@ -94,7 +95,6 @@ namespace DataDevelop
 			this.ClientSize = new System.Drawing.Size(254, 266);
 			this.Controls.Add(this.mainTreeView);
 			this.Controls.Add(this.toolStrip);
-			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "AssemblyExplorer";
 			this.TabText = "Assembly Explorer";
