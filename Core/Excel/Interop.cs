@@ -191,9 +191,7 @@ namespace DataDevelop.Core.Excel
 
 				// Free unmanaged resources (unmanaged objects).
 				// Set large fields to null.
-				this.app.Quit();
 				Marshal.FinalReleaseComObject(this.app);
-
 				disposedValue = true;
 			}
 		}
