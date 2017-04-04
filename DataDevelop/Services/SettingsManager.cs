@@ -54,22 +54,42 @@ namespace DataDevelop
 
 		public static void LoadDatabases()
 		{
-			if (File.Exists(DatabasesFileName)) {
-				XmlDocument document = new XmlDocument();
-				document.Load(DatabasesFileName);
+			var databasesFile = DatabasesFileName;
+			if (File.Exists(databasesFile)) {
+				var document = new XmlDocument();
+				document.Load(databasesFile);
 				foreach (XmlNode node in document.DocumentElement.ChildNodes) {
-					string providerName = node.Name;
-					string name = (node.Attributes["Name"] != null) ? node.Attributes["Name"].Value : null;
-					DbProvider provider = DbProvider.GetProvider(providerName);
+					var providerName = node.Name;
+					var name = (node.Attributes["Name"] != null) ? node.Attributes["Name"].Value : null;
+					var provider = DbProvider.GetProvider(providerName);
 					if (provider != null && name != null) {
 						string connectionString = node.InnerText;
 						if (!DatabasesManager.Contains(name)) {
-							Database database = provider.CreateDatabase(name, connectionString);
+							var database = provider.CreateDatabase(name, connectionString);
 							DatabasesManager.Add(database);
 						}
 					}
 				}
 				DatabasesManager.IsCollectionDirty = false;
+			}
+			if (DatabasesManager.Databases.Count == 0) {
+				var worldDbFile = new FileInfo(Path.Combine(GetDataDirectory(), "World.db"));
+				if (ApplicationDeployment.IsNetworkDeployed) {
+					if (!worldDbFile.Exists) {
+						var deployWorldDb = new FileInfo(Path.Combine(Application.StartupPath, "World.db"));
+						if (deployWorldDb.Exists) {
+							deployWorldDb.CopyTo(worldDbFile.FullName);
+						}
+					}
+				}
+				if (worldDbFile.Exists) {
+					var sqliteProvider = DbProvider.GetProvider("SQLite");
+					var connectionStringBuilder = sqliteProvider.CreateConnectionStringBuilder();
+					connectionStringBuilder["Data Source"] = worldDbFile.FullName;
+					connectionStringBuilder["Fail If Missing"] = true;
+					var worldDb = sqliteProvider.CreateDatabase("World", connectionStringBuilder.ToString());
+					DatabasesManager.Add(worldDb);
+				}
 			}
 		}
 
