@@ -1,12 +1,12 @@
-using System;
+﻿using System;
 using System.Windows.Forms;
 
 namespace DataDevelop
 {
 	static class Program
 	{
-		internal const string Homepage = "http://datadevelop.codeplex.com/";
-		internal const string Documentation = "http://datadevelop.codeplex.com/documentation";
+		internal const string Homepage = "https://github.com/alxle/DataDevelop";
+		internal const string Documentation = "https://github.com/alxle/DataDevelop/wiki";
 
 		/// <summary>
 		/// The main entry point for the application.
