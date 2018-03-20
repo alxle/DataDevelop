@@ -12,7 +12,7 @@ using System.Resources;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("DataDevelop")]
-[assembly: AssemblyCopyright("Copyright © Alex LE 2016")]
+[assembly: AssemblyCopyright("Copyright © Alex LE 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -38,4 +38,4 @@ using System.Resources;
 [assembly: AssemblyFileVersion("0.17.0.0")]
 
 [assembly: CLSCompliant(true)]
-[assembly: NeutralResourcesLanguageAttribute("en-US")]
+[assembly: NeutralResourcesLanguage("en-US")]

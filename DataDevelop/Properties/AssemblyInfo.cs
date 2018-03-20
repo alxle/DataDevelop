@@ -12,7 +12,7 @@ using System;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("DataDevelop")]
-[assembly: AssemblyCopyright("Copyright © Alex LE 2016")]
+[assembly: AssemblyCopyright("Copyright © Alex LE 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: NeutralResourcesLanguage("en-US")]
