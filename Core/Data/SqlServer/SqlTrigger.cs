@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Data.SqlClient;
@@ -51,8 +51,8 @@ WHERE
 (tbl.name=@TableName and SCHEMA_NAME(tbl.schema_id)=@TableSchema)
 ORDER BY
 [Table_Schema] ASC,[Table_Name] ASC,[Name] ASC";
-					select.Parameters.AddWithValue("@TableName", this.table.Name);
-					select.Parameters.AddWithValue("@TableSchema", this.table.Schema);
+					select.Parameters.AddWithValue("@TableName", this.table.TableName);
+					select.Parameters.AddWithValue("@TableSchema", this.table.SchemaName);
 					using (var reader = select.ExecuteReader()) {
 						if (reader.Read()) {
 							return reader.GetString(reader.GetOrdinal("Definition"));

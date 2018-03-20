@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Data.SqlClient;
@@ -9,46 +9,28 @@ namespace DataDevelop.Data.SqlServer
 {
 	internal sealed class SqlTable : Table
 	{
-		private string schema;
 		private bool isView;
 		private bool isReadOnly;
 
-		public SqlTable(SqlDatabase database)
+		public SqlTable(SqlDatabase database, string schemaName, string tableName)
 			: base(database)
 		{
+			SchemaName = schemaName;
+			TableName = tableName;
+			Name = $"{schemaName}.{tableName}";
 		}
 
-		public override string DisplayName
-		{
-			get
-			{
-				return String.Format("{0}.{1}", this.Schema, base.Name);
-			}
-		}
+		public override string DisplayName => Name;
 
-		public override string QuotedName
-		{
-			get
-			{
-				return String.Format("[{0}].[{1}]", this.Schema, base.Name);
-			}
-		}
+		public override string QuotedName => $"[{SchemaName}].[{TableName}]";
 
-		public string Schema
-		{
-			get { return this.schema; }
-			internal set { this.schema = value; }
-		}
+		public string SchemaName { get; internal set; }
 
-		public override bool IsView
-		{
-			get { return this.isView; }
-		}
+		public string TableName { get; internal set; }
 
-		public override bool IsReadOnly
-		{
-			get { return this.isReadOnly; }
-		}
+		public override bool IsView => isView;
+
+		public override bool IsReadOnly => isReadOnly;
 
 		[ReadOnly(true)]
 		public long TotalRows { get; set; }
@@ -60,17 +42,11 @@ namespace DataDevelop.Data.SqlServer
 		public decimal TotalUsedKB { get; set; }
 
 		[ReadOnly(true)]
-		public decimal TotalUnusedKB { get { return TotalSizeKB - TotalUsedKB; } }
+		public decimal TotalUnusedKB => TotalSizeKB - TotalUsedKB;
 
-		public new SqlDatabase Database
-		{
-			get { return (SqlDatabase)base.Database; }
-		}
+		public new SqlDatabase Database => (SqlDatabase)base.Database;
 
-		private SqlConnection Connection
-		{
-			get { return ((SqlDatabase)this.Database).Connection; }
-		}
+		private SqlConnection Connection => Database.Connection;
 
 		public void SetView(bool value)
 		{
@@ -100,7 +76,8 @@ namespace DataDevelop.Data.SqlServer
 				}
 			}
 			if (success) {
-				this.Name = newName;
+				TableName = newName;
+				Name = $"{SchemaName}.{TableName}";
 			}
 			return success;
 		}
@@ -110,7 +87,7 @@ namespace DataDevelop.Data.SqlServer
 			bool success = true;
 			using (this.Database.CreateConnectionScope()) {
 				using (var command = this.Database.Connection.CreateCommand()) {
-					command.CommandText = "DROP TABLE [" + this.Schema + "].[" + this.Name + "]";
+					command.CommandText = $"DROP TABLE {QuotedName}";
 					try {
 						command.ExecuteNonQuery();
 					} catch (SqlException) {
@@ -126,7 +103,11 @@ namespace DataDevelop.Data.SqlServer
 			var data = new DataTable(this.Name);
 			using (this.Database.CreateConnectionScope()) {
 				using (var adapter = (SqlDataAdapter)this.Database.CreateAdapter(this, filter)) {
-					adapter.SelectCommand.CommandText = this.GetSelectStatement(startIndex, count, filter, sort);
+					if (Convert.ToInt32(Connection.ServerVersion.Split('.')[0]) >= 11) {
+						adapter.SelectCommand.CommandText = GetSelectOffsetFetchStatement(startIndex, count, filter, sort);
+					} else {
+						adapter.SelectCommand.CommandText = GetSelectRowNumberStatement(startIndex, count, filter, sort);
+					}
 					adapter.Fill(data);
 				}
 			}
@@ -136,8 +117,8 @@ namespace DataDevelop.Data.SqlServer
 		protected override void PopulateColumns(IList<Column> columnsCollection)
 		{
 			using (this.Database.CreateConnectionScope()) {
-				var columns = this.Connection.GetSchema("Columns", new string[] { null, null, this.Name, null });
-				
+				var columns = this.Connection.GetSchema("Columns", new string[] { null, this.SchemaName, this.TableName, null });
+
 				// Fix because Column are sorted by Name rather than Ordinal Position
 				var rows = new DataRow[columns.Rows.Count];
 				foreach (DataRow row in columns.Rows) {
@@ -171,19 +152,23 @@ namespace DataDevelop.Data.SqlServer
 				using (var select = this.Connection.CreateCommand()) {
 					select.CommandText =
 						"select object_name(fk.constraint_object_id) as ForeignKeyName, " +
-						"       t1.name as ParentTable, "+
+						"       t1.name as ParentTable, " +
+						"       s1.name as ParentSchema, " +
 						"       c1.name as ParentColumn, " +
-						"       t.name as ChildTable, "+
+						"       t.name as ChildTable, " +
+						"       s.name as ChildSchema, " +
 						"       c.name AS ChildColumn " +
 						"from sys.foreign_key_columns as fk " +
 						"inner join sys.tables as t on fk.parent_object_id = t.object_id " +
+						"inner join sys.schemas as s on t.schema_id = s.schema_id " +
 						"inner join sys.columns as c on fk.parent_object_id = c.object_id and fk.parent_column_id = c.column_id " +
 						"inner join sys.tables as t1 on fk.referenced_object_id = t1.object_id " +
+						"inner join sys.schemas as s1 on t1.schema_id = s1.schema_id " +
 						"inner join sys.columns as c1 on fk.referenced_object_id = c1.object_id and fk.referenced_column_id = c1.column_id " +
-						"where t.name = @TableName " +
+						"where t.name = @TableName and s.name = @SchemaName " +
 						"order by fk.constraint_object_id, fk.constraint_column_id";
-
-					select.Parameters.AddWithValue("@TableName", this.Name);
+					select.Parameters.AddWithValue("@SchemaName", this.SchemaName);
+					select.Parameters.AddWithValue("@TableName", this.TableName);
 					using (var reader = select.ExecuteReader()) {
 						ForeignKey key = null;
 						while (reader.Read()) {
@@ -191,11 +176,11 @@ namespace DataDevelop.Data.SqlServer
 							if (key == null || key.Name != name) {
 								key = new ForeignKey(name, this);
 								key.Name = name;
-								key.PrimaryTable = reader.GetString(1);
-								key.ChildTable = reader.GetString(3);
+								key.PrimaryTable = reader.GetString(2) + "." + reader.GetString(1);
+								key.ChildTable = reader.GetString(5) + "." + reader.GetString(4);
 								foreignKeysCollection.Add(key);
 							}
-							key.Columns.Add(new ColumnsPair(reader.GetString(2), reader.GetString(4)));
+							key.Columns.Add(new ColumnsPair(reader.GetString(3), reader.GetString(6)));
 						}
 					}
 				}
@@ -206,10 +191,13 @@ namespace DataDevelop.Data.SqlServer
 		{
 			using (this.Database.CreateConnectionScope()) {
 				using (var select = this.Connection.CreateCommand()) {
-					select.CommandText = "select tr.name from sys.triggers tr " +
-						" inner join sys.tables ta on tr.parent_id = ta.object_id " +
-						" where ta.name = @TableName";
-					select.Parameters.AddWithValue("@TableName", this.Name);
+					select.CommandText = 
+						"select tr.name from sys.triggers tr " +
+						"inner join sys.tables ta on tr.parent_id = ta.object_id " +
+						"inner join sys.schemas s on ta.schema_id = s.schema_id " +
+						"where ta.name = @TableName and s.name = @SchemaName ";
+					select.Parameters.AddWithValue("@SchemaName", SchemaName);
+					select.Parameters.AddWithValue("@TableName", TableName);
 					using (var reader = select.ExecuteReader()) {
 						while (reader.Read()) {
 							var trigger = new SqlTrigger(this);
@@ -236,13 +224,16 @@ namespace DataDevelop.Data.SqlServer
 			var primaryKeys = new List<string>();
 			using (this.Database.CreateConnectionScope()) {
 				using (var select = this.Connection.CreateCommand()) {
-					select.CommandText = "select c.name from sys.key_constraints k"
-						+ " inner join sys.tables t on k.parent_object_id = t.object_id"
-						+ " inner join sys.indexes i on k.parent_object_id = i.object_id and k.unique_index_id = i.index_id"
-						+ " inner join sys.index_columns ic on ic.object_id = i.object_id and ic.index_id = i.index_id"
-						+ " inner join sys.columns c on c.object_id = ic.object_id and c.column_id = ic.column_id"
-						+ " where t.name = @TableName and k.type = 'PK'";
-					select.Parameters.AddWithValue("@TableName", this.Name);
+					select.CommandText =
+						"select c.name from sys.key_constraints k " +
+						"inner join sys.tables t on k.parent_object_id = t.object_id " +
+						"inner join sys.schemas s on t.object_id = s.schema_id " +
+						"inner join sys.indexes i on k.parent_object_id = i.object_id and k.unique_index_id = i.index_id " +
+						"inner join sys.index_columns ic on ic.object_id = i.object_id and ic.index_id = i.index_id " +
+						"inner join sys.columns c on c.object_id = ic.object_id and c.column_id = ic.column_id " +
+						"where t.name = @TableName and s.name = @SchemaName and k.type = 'PK' ";
+					select.Parameters.AddWithValue("@SchemaName", SchemaName);
+					select.Parameters.AddWithValue("@TableName", TableName);
 					using (var reader = select.ExecuteReader()) {
 						while (reader.Read()) {
 							primaryKeys.Add(reader.GetString(0));
@@ -253,49 +244,88 @@ namespace DataDevelop.Data.SqlServer
 			}
 		}
 
-		private string GetSelectStatement(int startIndex, int count, TableFilter filter, TableSort sort)
+		private string GetSelectRowNumberStatement(int startIndex, int count, TableFilter filter, TableSort sort)
 		{
-			var select = new StringBuilder();
+			var sql = new StringBuilder();
+			sql.Append("WITH Ordered AS (SELECT ROW_NUMBER() OVER (ORDER BY ");
 
-			select.Append("WITH Ordered AS (SELECT ROW_NUMBER() OVER (ORDER BY ");
-			
 			if (sort != null && sort.IsSorted) {
-				sort.WriteOrderBy(select);
+				sort.WriteOrderBy(sql);
 			} else {
-				// TODO: Project Primary Columns
-				select.Append(Columns[0].QuotedName);
+				var columns = new List<string>();
+				foreach (var c in this.Columns) {
+					if (c.InPrimaryKey) {
+						columns.Add(c.QuotedName);
+					}
+				}
+				if (columns.Count == 0) {
+					columns.Add(this.Columns[0].QuotedName);
+				}
+				sql.Append(string.Join(", ", columns.ToArray()));
 			}
-			
-			select.Append(") AS [Row_Number()], * ");
-			select.Append(" FROM [");
-			select.Append(this.schema);
-			select.Append("].[");
-			select.Append(Name);
-			select.Append(']');
+
+			sql.Append(") AS [Row_Number()], * ");
+			sql.Append(" FROM ");
+			sql.Append(QuotedName);
 
 			if (filter.IsRowFiltered) {
-				select.Append(" WHERE (");
-				filter.WriteWhereStatement(select);
-				select.Append(")");
+				sql.Append(" WHERE (");
+				filter.WriteWhereStatement(sql);
+				sql.Append(")");
 			}
 
-			select.Append(") SELECT ");
-			filter.WriteColumnsProjection(select);
-			select.Append(" FROM Ordered WHERE (([Row_Number()] BETWEEN ");
-			select.Append(startIndex + 1);
-			select.Append(" AND ");
-			select.Append(startIndex + count);
-			select.Append(")");
+			sql.Append(") SELECT ");
+			filter.WriteColumnsProjection(sql);
+			sql.Append(" FROM Ordered WHERE (([Row_Number()] BETWEEN ");
+			sql.Append(startIndex + 1);
+			sql.Append(" AND ");
+			sql.Append(startIndex + count);
+			sql.Append(")");
 
-			select.Append(")");
-			return select.ToString();
+			sql.Append(")");
+			return sql.ToString();
+		}
+
+		private string GetSelectOffsetFetchStatement(int startIndex, int count, TableFilter filter, TableSort sort)
+		{
+			var sql = new StringBuilder();
+			sql.Append("SELECT ");
+			filter.WriteColumnsProjection(sql);
+			sql.Append(" FROM ");
+			sql.Append(QuotedName);
+
+			if (filter.IsRowFiltered) {
+				sql.Append(" WHERE ");
+				filter.WriteWhereStatement(sql);
+			}
+
+			sql.Append(" ORDER BY ");
+			if (sort != null && sort.IsSorted) {
+				sort.WriteOrderBy(sql);
+			} else {
+				var columns = new List<string>();
+				foreach (var c in this.Columns) {
+					if (c.InPrimaryKey) {
+						columns.Add(c.QuotedName);
+					}
+				}
+				if (columns.Count == 0) {
+					columns.Add(this.Columns[0].QuotedName);
+				}
+				sql.Append(string.Join(", ", columns.ToArray()));
+			}
+
+			sql.Append($" OFFSET {startIndex} ROWS FETCH NEXT {count} ROWS ONLY");
+
+			return sql.ToString();
 		}
 
 		public override string GenerateCreateStatement()
 		{
 			if (this.IsView) {
 				using (var select = this.Connection.CreateCommand()) {
-					select.CommandText = "SELECT Definition FROM sys.sql_modules " +
+					select.CommandText = 
+						"SELECT Definition FROM sys.sql_modules " +
 						"WHERE object_id = OBJECT_ID(@name)";
 					select.Parameters.AddWithValue("@name", this.QuotedName);
 					return select.ExecuteScalar() as string;

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
@@ -148,9 +148,9 @@ namespace DataDevelop.Data.SqlServer
 				restrictions[3] = "Base Table";
 				using (var tables = this.Connection.GetSchema("Tables", restrictions)) {
 					foreach (DataRow row in tables.Rows) {
-						var table = new SqlTable(this);
-						table.Schema = (string)row["TABLE_SCHEMA"];
-						table.Name = (string)row["TABLE_NAME"];
+						var table = new SqlTable(this, 
+							(string)row["TABLE_SCHEMA"],
+							(string)row["TABLE_NAME"]);
 						tablesCollection.Add(table);
 					}
 				}
@@ -183,7 +183,7 @@ GROUP BY
 					var schema = (string)row["SchemaName"];
 					var name = (string)row["TableName"];
 					foreach (SqlTable table in tablesCollection) {
-						if (table.Schema == schema && table.Name == name) {
+						if (table.SchemaName == schema && table.TableName == name) {
 							table.TotalRows = Convert.ToInt64(row["RowCounts"]);
 							table.TotalSizeKB = Convert.ToDecimal(row["TotalSpaceKB"]);
 							table.TotalUsedKB = Convert.ToDecimal(row["UsedSpaceKB"]);
@@ -195,9 +195,9 @@ GROUP BY
 				restrictions[3] = "View";
 				using (var views = this.Connection.GetSchema("Tables", restrictions)) {
 					foreach (DataRow row in views.Rows) {
-						var table = new SqlTable(this);
-						table.Schema = (string)row["TABLE_SCHEMA"];
-						table.Name = (string)row["TABLE_NAME"];
+						var table = new SqlTable(this,
+							(string)row["TABLE_SCHEMA"],
+							(string)row["TABLE_NAME"]);
 						table.SetView(true);
 						tablesCollection.Add(table);
 					}
