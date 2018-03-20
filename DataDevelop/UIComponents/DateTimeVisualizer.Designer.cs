@@ -104,12 +104,14 @@ namespace DataDevelop.UIComponents
 			this.Controls.Add(this.isNullCheckBox);
 			this.Controls.Add(this.valueGroupBox);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+			this.KeyPreview = true;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "DateTimeVisualizer";
 			this.ShowIcon = false;
 			this.ShowInTaskbar = false;
 			this.Text = "DateTime Visualizer";
+			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.DateTimeVisualizer_KeyDown);
 			this.valueGroupBox.ResumeLayout(false);
 			this.valueGroupBox.PerformLayout();
 			this.ResumeLayout(false);

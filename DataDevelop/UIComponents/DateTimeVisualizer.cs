@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -55,6 +55,14 @@ namespace DataDevelop.UIComponents
 		private void timePicker_ValueChanged(object sender, EventArgs e)
 		{
 			this.valueChanged = true;
+		}
+
+		private void DateTimeVisualizer_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.KeyCode == Keys.Escape) {
+				e.Handled = true;
+				this.Close();
+			}
 		}
 	}
 }
