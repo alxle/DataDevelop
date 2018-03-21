@@ -126,13 +126,11 @@ namespace DataDevelop.Data.SqlServer
 					rows[i] = row;
 				} // End of Fix
 
+				var keys = this.GetPrimaryKeyColumns();
 				foreach (DataRow row in rows) {
 					var column = new Column(this);
 					column.Name = row["COLUMN_NAME"].ToString();
-					string[] keys = this.GetPrimaryKeyColumns();
-					if (InPrimaryKey(keys, column.Name)) {
-						column.InPrimaryKey = true;
-					}
+					column.InPrimaryKey = keys.Contains(column.Name);
 					column.ProviderType = (string)row["DATA_TYPE"];
 					string maxLength = row["CHARACTER_MAXIMUM_LENGTH"].ToString();
 					if (!String.IsNullOrEmpty(maxLength)) {
@@ -191,7 +189,7 @@ namespace DataDevelop.Data.SqlServer
 		{
 			using (this.Database.CreateConnectionScope()) {
 				using (var select = this.Connection.CreateCommand()) {
-					select.CommandText = 
+					select.CommandText =
 						"select tr.name from sys.triggers tr " +
 						"inner join sys.tables ta on tr.parent_id = ta.object_id " +
 						"inner join sys.schemas s on ta.schema_id = s.schema_id " +
@@ -209,25 +207,15 @@ namespace DataDevelop.Data.SqlServer
 			}
 		}
 
-		private static bool InPrimaryKey(string[] primaryKeys, string columnName)
+		private HashSet<string> GetPrimaryKeyColumns()
 		{
-			foreach (string key in primaryKeys) {
-				if (String.Equals(key, columnName, StringComparison.InvariantCultureIgnoreCase)) {
-					return true;
-				}
-			}
-			return false;
-		}
-
-		private string[] GetPrimaryKeyColumns()
-		{
-			var primaryKeys = new List<string>();
+			var primaryKeys = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 			using (this.Database.CreateConnectionScope()) {
 				using (var select = this.Connection.CreateCommand()) {
 					select.CommandText =
 						"select c.name from sys.key_constraints k " +
 						"inner join sys.tables t on k.parent_object_id = t.object_id " +
-						"inner join sys.schemas s on t.object_id = s.schema_id " +
+						"inner join sys.schemas s on t.schema_id = s.schema_id " +
 						"inner join sys.indexes i on k.parent_object_id = i.object_id and k.unique_index_id = i.index_id " +
 						"inner join sys.index_columns ic on ic.object_id = i.object_id and ic.index_id = i.index_id " +
 						"inner join sys.columns c on c.object_id = ic.object_id and c.column_id = ic.column_id " +
@@ -240,7 +228,7 @@ namespace DataDevelop.Data.SqlServer
 						}
 					}
 				}
-				return primaryKeys.ToArray();
+				return primaryKeys;
 			}
 		}
 
@@ -324,7 +312,7 @@ namespace DataDevelop.Data.SqlServer
 		{
 			if (this.IsView) {
 				using (var select = this.Connection.CreateCommand()) {
-					select.CommandText = 
+					select.CommandText =
 						"SELECT Definition FROM sys.sql_modules " +
 						"WHERE object_id = OBJECT_ID(@name)";
 					select.Parameters.AddWithValue("@name", this.QuotedName);
