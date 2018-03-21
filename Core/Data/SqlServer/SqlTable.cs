@@ -100,10 +100,12 @@ namespace DataDevelop.Data.SqlServer
 
 		public override DataTable GetData(int startIndex, int count, TableFilter filter, TableSort sort)
 		{
-			var data = new DataTable(this.Name);
-			using (this.Database.CreateConnectionScope()) {
-				using (var adapter = (SqlDataAdapter)this.Database.CreateAdapter(this, filter)) {
-					if (Convert.ToInt32(Connection.ServerVersion.Split('.')[0]) >= 11) {
+			var data = new DataTable(Name);
+			using (Database.CreateConnectionScope()) {
+				using (var adapter = (SqlDataAdapter)Database.CreateAdapter(this, filter)) {
+					if (startIndex == 0 || count == 0) {
+						adapter.SelectCommand.CommandText = GetSelectTopStatement(count, filter, sort);
+					} else if (Convert.ToInt32(Connection.ServerVersion.Split('.')[0]) >= 11) {
 						adapter.SelectCommand.CommandText = GetSelectOffsetFetchStatement(startIndex, count, filter, sort);
 					} else {
 						adapter.SelectCommand.CommandText = GetSelectRowNumberStatement(startIndex, count, filter, sort);
@@ -232,6 +234,20 @@ namespace DataDevelop.Data.SqlServer
 			}
 		}
 
+		private void WriteDefaultOrderBy(StringBuilder sql)
+		{
+			var columns = new List<string>();
+			foreach (var c in Columns) {
+				if (c.InPrimaryKey) {
+					columns.Add(c.QuotedName);
+				}
+			}
+			if (columns.Count == 0) {
+				columns.Add(Columns[0].QuotedName);
+			}
+			sql.Append(string.Join(", ", columns.ToArray()));
+		}
+
 		private string GetSelectRowNumberStatement(int startIndex, int count, TableFilter filter, TableSort sort)
 		{
 			var sql = new StringBuilder();
@@ -240,16 +256,7 @@ namespace DataDevelop.Data.SqlServer
 			if (sort != null && sort.IsSorted) {
 				sort.WriteOrderBy(sql);
 			} else {
-				var columns = new List<string>();
-				foreach (var c in this.Columns) {
-					if (c.InPrimaryKey) {
-						columns.Add(c.QuotedName);
-					}
-				}
-				if (columns.Count == 0) {
-					columns.Add(this.Columns[0].QuotedName);
-				}
-				sql.Append(string.Join(", ", columns.ToArray()));
+				WriteDefaultOrderBy(sql);
 			}
 
 			sql.Append(") AS [Row_Number()], * ");
@@ -291,20 +298,34 @@ namespace DataDevelop.Data.SqlServer
 			if (sort != null && sort.IsSorted) {
 				sort.WriteOrderBy(sql);
 			} else {
-				var columns = new List<string>();
-				foreach (var c in this.Columns) {
-					if (c.InPrimaryKey) {
-						columns.Add(c.QuotedName);
-					}
-				}
-				if (columns.Count == 0) {
-					columns.Add(this.Columns[0].QuotedName);
-				}
-				sql.Append(string.Join(", ", columns.ToArray()));
+				WriteDefaultOrderBy(sql);
 			}
 
 			sql.Append($" OFFSET {startIndex} ROWS FETCH NEXT {count} ROWS ONLY");
 
+			return sql.ToString();
+		}
+
+		private string GetSelectTopStatement(int count, TableFilter filter, TableSort sort)
+		{
+			var sql = new StringBuilder();
+			sql.Append($"SELECT TOP {count} ");
+			filter.WriteColumnsProjection(sql);
+			sql.Append($" FROM {QuotedName} ");
+
+			if (count > 0) {
+				if (filter != null && filter.IsRowFiltered) {
+					sql.Append(" WHERE ");
+					filter.WriteWhereStatement(sql);
+				}
+
+				sql.Append(" ORDER BY ");
+				if (sort != null && sort.IsSorted) {
+					sort.WriteOrderBy(sql);
+				} else {
+					WriteDefaultOrderBy(sql);
+				}
+			}
 			return sql.ToString();
 		}
 
