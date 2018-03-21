@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Data;
@@ -10,22 +10,27 @@ namespace DataDevelop.Data.PostgreSql
 	{
 		private PgSqlDatabase database;
 		private bool isView;
+		private bool isReadOnly;
 
-		public PgSqlTable(PgSqlDatabase database)
+		public PgSqlTable(PgSqlDatabase database, string name)
 			: base(database)
 		{
 			this.database = database;
+			Name = name;
 		}
 
-		public NpgsqlConnection Connection
+		public PgSqlTable(PgSqlDatabase database, string name, bool isView, bool isReadOnly)
+			: this(database, name)
 		{
-			get { return this.database.Connection; }
+			this.isView = isView;
+			this.isReadOnly = isReadOnly;
 		}
 
-		public override bool IsView
-		{
-			get { return this.isView; }
-		}
+		public NpgsqlConnection Connection => database.Connection;
+
+		public override bool IsReadOnly => isReadOnly;
+
+		public override bool IsView => isView;
 
 		public void SetView(bool value)
 		{
@@ -69,7 +74,7 @@ namespace DataDevelop.Data.PostgreSql
 			sql.Append(this.QuotedName);
 
 			if (filter.IsRowFiltered) {
-				sql.Append(" WHERE " );
+				sql.Append(" WHERE ");
 				filter.WriteWhereStatement(sql);
 			}
 			if (sort != null && sort.IsSorted) {
@@ -93,22 +98,22 @@ namespace DataDevelop.Data.PostgreSql
 		protected override void PopulateColumns(IList<Column> columnsCollection)
 		{
 			using (this.Database.CreateConnectionScope()) {
-				var primaryKeys = new List<string>();
+				var primaryKeys = new HashSet<string>();
 				if (!IsReadOnly) {
 					// TODO: Add Schema
-					using (var command = (NpgsqlCommand)this.Database.CreateCommand()) {
-						command.CommandText = "select column_name " +
-											  "from information_schema.table_constraints t " +
-											  "inner join information_schema.key_column_usage k " +
-											  "           on k.constraint_name = t.constraint_name " +
-											  "where t.table_catalog = :table_catalog " +
-											  ////"      and table_schema = :table_schema " +
-											  "      and t.table_name = :table_name " +
-											  "      and t.constraint_type = 'PRIMARY KEY'";
+					using (var command = this.Connection.CreateCommand()) {
+						command.CommandText =
+							"select column_name " +
+							"from information_schema.table_constraints t " +
+							"inner join information_schema.key_column_usage k " +
+							"           on k.constraint_name = t.constraint_name " +
+							"where t.table_catalog = :table_catalog " +
+							////"      and table_schema = :table_schema " +
+							"      and t.table_name = :table_name " +
+							"      and t.constraint_type = 'PRIMARY KEY'";
 						command.Parameters.AddWithValue(":table_catalog", this.Connection.Database);
 						////command.Parameters.AddWithValue(":table_schema", null);
 						command.Parameters.AddWithValue(":table_name", this.Name);
-
 						using (var reader = command.ExecuteReader()) {
 							while (reader.Read()) {
 								primaryKeys.Add(reader.GetString(0));
@@ -120,16 +125,15 @@ namespace DataDevelop.Data.PostgreSql
 				var columns = this.Connection.GetSchema("Columns", new string[] { this.Connection.Database, null, this.Name });
 				columns.DefaultView.Sort = "ordinal_position";
 				foreach (DataRowView row in columns.DefaultView) {
-					var column = new Column(this);
-					column.Name = row["COLUMN_NAME"].ToString();
-
-					foreach (string key in primaryKeys) {
-						if (key == column.Name) {
-							column.InPrimaryKey = true;
-							break;
-						}
+					var column = new Column(this) {
+						Name = (string)row["column_name"],
+						ProviderType = (string)row["data_type"],
+					};
+					if (column.ProviderType.Equals("varchar", StringComparison.OrdinalIgnoreCase) ||
+						column.ProviderType.Equals("bpchar", StringComparison.OrdinalIgnoreCase)) {
+						column.ProviderType += "(" + row["character_maximum_length"].ToString() + ")";
 					}
-
+					column.InPrimaryKey = primaryKeys.Contains(column.Name);
 					columnsCollection.Add(column);
 				}
 				this.SetColumnTypes(columnsCollection);
@@ -143,18 +147,72 @@ namespace DataDevelop.Data.PostgreSql
 
 		protected override void PopulateForeignKeys(IList<ForeignKey> foreignKeysCollection)
 		{
-			// TODO
+			using (Database.CreateConnectionScope()) {
+				using (var command = Connection.CreateCommand()) {
+					command.CommandText =
+						@"select conname, " +
+						"    att2.attname as child_column, " +
+						"	cl.relname as parent_table, " +
+						"    att.attname as parent_column " +
+						"from " +
+						"   (select" +
+						"		unnest(con1.conkey) as parent, " +
+						"		unnest(con1.confkey) as child, " +
+						"		con1.confrelid, " +
+						"		con1.conrelid, " +
+						"		con1.conname " +
+						"	from " +
+						"		pg_class cl " +
+						"		join pg_namespace ns on cl.relnamespace = ns.oid " +
+						"		join pg_constraint con1 on con1.conrelid = cl.oid " +
+						"	where " +
+						"		cl.relname = :TableName " +
+						"		and ns.nspname = 'public' " +
+						"		and con1.contype = 'f' " +
+						"   ) con " +
+						"inner join pg_attribute att on att.attrelid = con.confrelid and att.attnum = con.child " +
+						"inner join pg_class cl on cl.oid = con.confrelid " +
+						"inner join pg_attribute att2 on att2.attrelid = con.conrelid and att2.attnum = con.parent";
+					command.Parameters.AddWithValue(":TableName", Name);
+					using (var reader = command.ExecuteReader()) {
+						ForeignKey key = null;
+						while (reader.Read()) {
+							var name = reader.GetString(0);
+							if (key == null || key.Name != name) {
+								key = new ForeignKey(name, this);
+								key.Name = name;
+								key.PrimaryTable = reader.GetString(2);
+								key.ChildTable = Name;
+								foreignKeysCollection.Add(key);
+							}
+							key.Columns.Add(new ColumnsPair(reader.GetString(3), reader.GetString(1)));
+						}
+					}
+				}
+			}
 		}
 
 		public override string GenerateCreateStatement()
 		{
-			using (this.Database.CreateConnectionScope()) {
-				var data = Database.ExecuteTable("SHOW CREATE TABLE " + this.QuotedName);
-				if (data.Rows.Count > 0 && data.Columns.Count >= 2) {
-					return data.Rows[0][1] as string;
+			if (IsView) {
+				using (Database.CreateConnectionScope()) {
+					using (var command = Connection.CreateCommand()) {
+						command.CommandText = "select pg_get_viewdef(:ViewName, true)";
+						command.Parameters.AddWithValue(":ViewName", Name);
+						var viewStatement = command.ExecuteScalar() as string;
+						if (!string.IsNullOrEmpty(viewStatement)) {
+							return "CREATE VIEW " + QuotedName + Environment.NewLine +
+								"AS " + Environment.NewLine + viewStatement;
+						}
+					}
 				}
-				return "Error: Query returned 0 rows.";
 			}
+			return null;
+		}
+
+		public override string GenerateDropStatement()
+		{
+			return $"DROP {(IsView ? "VIEW" : "TABLE")} {QuotedName}";
 		}
 	}
 }
