@@ -117,10 +117,9 @@ class Database:
 		self.base.Disconnect()
 	
 	def __getattr__(self, name):
-		table = self.base.Tables[name]
+		table = self.base.GetTable(name)
 		if table == None:
-			name = name.replace("_", " ")
-			table = self.base.Table[name]
+			table = self.base.GetTable(name.Replace('_', ' '))
 		if table != None:
 			t = Table(table)
 			self.__dict__[name] = t
@@ -141,7 +140,7 @@ class Database:
 			for dataRow in self.base.Query(command, list.ToArray()).Rows:
 				yield Row(dataRow)
 	
-	def NonQuery(self, command, *values):
+	def Execute(self, command, *values):
 		from System.Collections import ArrayList
 		list = ArrayList()
 		for value in values:
@@ -152,6 +151,9 @@ class Database:
 			return self.base.NonQuery(command, list[0])
 		else:
 			return self.base.NonQuery(command, list.ToArray())
+
+	def NonQuery(self, command, *values):
+		self.Execute(command, values)
 	
 	def Scalar(self, command, *values):
 		from System.Collections import ArrayList

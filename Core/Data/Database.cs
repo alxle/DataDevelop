@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Data.Common;
@@ -161,6 +161,14 @@ namespace DataDevelop.Data
 					yield return t;
 				}
 			}
+		}
+
+		public virtual Table GetTable(string name)
+		{
+			if (Tables.Contains(name)) {
+				return Tables[name];
+			}
+			return null;
 		}
 
 		public virtual string QuoteObjectName(string name)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
@@ -44,6 +45,29 @@ namespace DataDevelop.Data.SqlServer
 		public override bool SupportUserDefinedFunctions
 		{
 			get { return true; }
+		}
+
+		public override Table GetTable(string name)
+		{
+			if (Tables.Contains(name)) {
+				return Tables[name];
+			}
+			if (Tables.Contains("dbo." + name)) {
+				return Tables["dbo." + name];
+			}
+			var matchTables = new List<SqlTable>();
+			foreach (SqlTable table in Tables) {
+				if (string.Equals(table.TableName, name, StringComparison.OrdinalIgnoreCase)) {
+					matchTables.Add(table);
+				}
+			}
+			if (matchTables.Count == 1) {
+				return matchTables[0];
+			}
+			if (matchTables.Count > 1) {
+				throw new ApplicationException("Ambiguous table name");
+			}
+			return null;
 		}
 
 		public override DbDataAdapter CreateAdapter(Table table, TableFilter filter)
