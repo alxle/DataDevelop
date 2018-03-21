@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Data.Common;
 using Npgsql;
@@ -136,20 +136,25 @@ namespace DataDevelop.Data.PostgreSql
 
 		protected override void PopulateTables(DbObjectCollection<Table> tablesCollection)
 		{
-			var tables = this.Connection.GetSchema("Tables", new string[] { this.connection.Database, "public" });
-			foreach (DataRow row in tables.Rows) {
-				var table = new PgSqlTable(this);
-				table.Name = row["table_name"] as string;
-				tablesCollection.Add(table);
-				if (row["table_type"] as string == "VIEW") {
-					table.SetView(true);
+			using (var tables = Connection.GetSchema("Tables", new[] { Connection.Database, "public" })) {
+				foreach (DataRow row in tables.Rows) {
+					var table = new PgSqlTable(this, (string)row["table_name"]);
+					tablesCollection.Add(table);
+				}
+			}
+
+			using (var views = Connection.GetSchema("Views", new[] { Connection.Database, "public" })) {
+				foreach (DataRow row in views.Rows) {
+					var table = new PgSqlTable(this, (string)row["table_name"], 
+						isView: true, isReadOnly: (string)row["is_updatable"] == "NO");
+					tablesCollection.Add(table);					
 				}
 			}
 		}
 
 		protected override void PopulateStoredProcedures(DbObjectCollection<StoredProcedure> storedProceduresCollection)
 		{
-			// TODO: Populate PostgreSQL stored procedures
+			// TODO
 		}
 	}
 }
