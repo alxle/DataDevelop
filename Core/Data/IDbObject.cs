@@ -1,14 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DataDevelop.Data
+﻿namespace DataDevelop.Data
 {
 	public interface IDbObject
 	{
-		Database Database
-		{
-			get;
-		}
+		Database Database { get; }
+
+		string Name { get; }
 	}
 }

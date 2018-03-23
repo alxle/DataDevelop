@@ -1,4 +1,5 @@
-using System;
+﻿using System;
+using System.Linq;
 using System.Text;
 
 namespace DataDevelop.Data
@@ -11,42 +12,31 @@ namespace DataDevelop.Data
 		public TableSort(Table table)
 		{
 			this.table = table;
-			this.sorting = new ColumnOrder[table.Columns.Count];
-			for (int i = 0; i < this.sorting.Length; i++) {
-				this.sorting[i] = new ColumnOrder(table.Columns[i]);
+			sorting = new ColumnOrder[table.Columns.Count];
+			for (var i = 0; i < sorting.Length; i++) {
+				sorting[i] = new ColumnOrder(table.Columns[i]);
 			}
 		}
 
 		private TableSort(TableSort baseSort)
 		{
-			this.table = baseSort.table;
-			this.sorting = new ColumnOrder[baseSort.sorting.Length];
-			for (int i = 0; i < this.sorting.Length; i++) {
-				this.sorting[i] = baseSort.sorting[i].Clone();
+			table = baseSort.table;
+			sorting = new ColumnOrder[baseSort.sorting.Length];
+			for (var i = 0; i < sorting.Length; i++) {
+				sorting[i] = baseSort.sorting[i].Clone();
 			}
 		}
 
-		public bool IsSorted
-		{
-			get
-			{
-				foreach (var order in sorting) {
-					if (order.OrderType != OrderType.None) {
-						return true;
-					}
-				}
-				return false;
-			}
-		}
+		public bool IsSorted => sorting.Any(i => i.OrderType != OrderType.None);
 
 		public ColumnOrder[] GetColumnOrders()
 		{
-			return this.sorting;
+			return sorting;
 		}
 
 		public void WriteOrderBy(StringBuilder builder)
 		{
-			bool first = true;
+			var first = true;
 			foreach (var order in sorting) {
 				if (order.OrderType != OrderType.None) {
 					if (first) {
@@ -71,7 +61,7 @@ namespace DataDevelop.Data
 
 		public void Reset()
 		{
-			foreach (var order in this.sorting) {
+			foreach (var order in sorting) {
 				order.Clear();
 			}
 		}
@@ -80,7 +70,7 @@ namespace DataDevelop.Data
 
 		object ICloneable.Clone()
 		{
-			return this.Clone();
+			return Clone();
 		}
 
 		public TableSort Clone()

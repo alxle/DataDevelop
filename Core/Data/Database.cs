@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Data.Common;
 using System.Data;
+using System.Data.Common;
 
 namespace DataDevelop.Data
 {
@@ -13,21 +12,18 @@ namespace DataDevelop.Data
 		private DbObjectCollection<StoredProcedure> storedProceduresCollection;
 		private DbObjectCollection<UserDefinedFunction> userDefinedFunctionsCollection;
 
-		public abstract string Name
-		{
-			get;
-		}
+		public abstract string Name { get; }
 
 		public DbObjectCollection<Table> Tables
 		{
 			get
 			{
-				if (this.tablesCollection == null) {
+				if (tablesCollection == null) {
 					var tables = new DbObjectCollection<Table>();
-					this.PopulateTables(tables);
-					this.tablesCollection = tables;
+					PopulateTables(tables);
+					tablesCollection = tables;
 				}
-				return this.tablesCollection;
+				return tablesCollection;
 			}
 		}
 
@@ -35,12 +31,12 @@ namespace DataDevelop.Data
 		{
 			get
 			{
-				if (this.storedProceduresCollection == null) {
+				if (storedProceduresCollection == null) {
 					var procedures = new DbObjectCollection<StoredProcedure>();
-					this.PopulateStoredProcedures(procedures);
-					this.storedProceduresCollection = procedures;
+					PopulateStoredProcedures(procedures);
+					storedProceduresCollection = procedures;
 				}
-				return this.storedProceduresCollection;
+				return storedProceduresCollection;
 			}
 		}
 
@@ -48,75 +44,51 @@ namespace DataDevelop.Data
 		{
 			get
 			{
-				if (this.userDefinedFunctionsCollection == null) {
+				if (userDefinedFunctionsCollection == null) {
 					var functions = new DbObjectCollection<UserDefinedFunction>();
-					this.PopulateUserDefinedFunctions(functions);
-					this.userDefinedFunctionsCollection = functions;
+					PopulateUserDefinedFunctions(functions);
+					userDefinedFunctionsCollection = functions;
 				}
-				return this.userDefinedFunctionsCollection;
+				return userDefinedFunctionsCollection;
 			}
 		}
 
-		public virtual string ParameterPrefix
-		{
-			get { return "@"; }
-		}
+		public virtual string ParameterPrefix => "@";
 
-		public virtual string QuotePrefix
-		{
-			get { return "["; }
-		}
+		public virtual string QuotePrefix => "[";
 
-		public virtual string QuoteSuffix
-		{
-			get { return "]"; }
-		}
+		public virtual string QuoteSuffix => "]";
 
-		public abstract DbProvider Provider
-		{
-			get;
-		}
+		public abstract DbProvider Provider { get; }
 
-		public abstract string ConnectionString
-		{
-			get;
-		}
+		public abstract string ConnectionString { get; }
 
-		public virtual bool SupportStoredProcedures
-		{
-			get { return false; }
-		}
+		public virtual bool SupportStoredProcedures => false;
 
-		public virtual bool SupportUserDefinedFunctions
-		{
-			get { return false; }
-		}
+		public virtual bool SupportUserDefinedFunctions => false;
 
-		public bool IsConnected
-		{
-			get { return this.connectionCount > 0; }
-		}
+		public bool IsConnected => connectionCount > 0;
 
 		public void Connect()
 		{
 			lock (this) {
-				if (this.connectionCount == 0) {
-					this.DoConnect();
+				if (connectionCount == 0) {
+					DoConnect();
 				}
-				this.connectionCount++;
+				connectionCount++;
 			}
 		}
 
 		public void Disconnect()
 		{
 			lock (this) {
-				if (this.connectionCount != 0) {
-					this.connectionCount--;
-					if (this.connectionCount == 0) {
-						this.DoDisconnect();
-						this.RefreshTables();
-						if (this.SupportStoredProcedures) {
-							this.RefreshStoredProcedures();
+				if (connectionCount != 0) {
+					connectionCount--;
+					if (connectionCount == 0) {
+						DoDisconnect();
+						RefreshTables();
+						if (SupportStoredProcedures) {
+							RefreshStoredProcedures();
 						}
 					}
 				}
@@ -126,10 +98,10 @@ namespace DataDevelop.Data
 		public void DisconnectAll()
 		{
 			lock (this) {
-				this.DoDisconnect();
-				this.tablesCollection = null;
-				this.storedProceduresCollection = null;
-				this.connectionCount = 0;
+				DoDisconnect();
+				tablesCollection = null;
+				storedProceduresCollection = null;
+				connectionCount = 0;
 			}
 		}
 
@@ -137,17 +109,17 @@ namespace DataDevelop.Data
 		{
 			lock (this) {
 				try {
-					this.DoDisconnect();
+					DoDisconnect();
 				} catch (Exception) {
 					// Ignore error because we will try to reconnect
 				}
-				this.DoConnect();
+				DoConnect();
 			}
 		}
 
 		public IEnumerable<Table> GetViews()
 		{
-			foreach (var t in this.Tables) {
+			foreach (var t in Tables) {
 				if (t.IsView) {
 					yield return t;
 				}
@@ -156,7 +128,7 @@ namespace DataDevelop.Data
 
 		public IEnumerable<Table> GetTables()
 		{
-			foreach (var t in this.Tables) {
+			foreach (var t in Tables) {
 				if (!t.IsView) {
 					yield return t;
 				}
@@ -173,7 +145,7 @@ namespace DataDevelop.Data
 
 		public virtual string QuoteObjectName(string name)
 		{
-			return this.QuotePrefix + name + this.QuoteSuffix;
+			return QuotePrefix + name + QuoteSuffix;
 		}
 
 		public DataTable Query(string commandText)
@@ -255,7 +227,7 @@ namespace DataDevelop.Data
 
 		public virtual DbDataAdapter CreateAdapter(Table table)
 		{
-			return this.CreateAdapter(table, new TableFilter(table));
+			return CreateAdapter(table, new TableFilter(table));
 		}
 		
 		public abstract DbDataAdapter CreateAdapter(Table table, TableFilter filter);
@@ -268,17 +240,17 @@ namespace DataDevelop.Data
 
 		public void RefreshTables()
 		{
-			this.tablesCollection = null;
+			tablesCollection = null;
 		}
 
 		public void RefreshStoredProcedures()
 		{
-			this.storedProceduresCollection = null;
+			storedProceduresCollection = null;
 		}
 
 		public void RefreshUserDefinedFunctions()
 		{
-			this.userDefinedFunctionsCollection = null;
+			userDefinedFunctionsCollection = null;
 		}
 
 		public IDisposable CreateConnectionScope()
@@ -296,7 +268,7 @@ namespace DataDevelop.Data
 
 		protected virtual void PopulateUserDefinedFunctions(DbObjectCollection<UserDefinedFunction> userDefinedFunctionsCollection)
 		{
-			if (this.SupportUserDefinedFunctions) {
+			if (SupportUserDefinedFunctions) {
 				throw new NotSupportedException();
 			}
 			throw new NotImplementedException();
@@ -308,16 +280,12 @@ namespace DataDevelop.Data
 
 		protected virtual void OnConnected(DatabaseEventArgs args)
 		{
-			if (Connected != null) {
-				Connected(this, new DatabaseEventArgs(this));
-			}
+			Connected?.Invoke(this, new DatabaseEventArgs(this));
 		}
 
 		protected virtual void OnDisconnected(DatabaseEventArgs args)
 		{
-			if (Disconnected != null) {
-				Disconnected(this, new DatabaseEventArgs(this));
-			}
+			Disconnected?.Invoke(this, new DatabaseEventArgs(this));
 		}
 	}
 }

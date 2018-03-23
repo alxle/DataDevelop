@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.ComponentModel;
 
 namespace DataDevelop.Data
@@ -6,33 +6,19 @@ namespace DataDevelop.Data
 	[ReadOnly(true)]
 	public abstract class Trigger : ITableObject, IDbObject
 	{
-		private Table table;
-		private string name;
-
 		protected Trigger(Table table)
 		{
-			this.table = table;
+			Table = table;
 		}
 
-		public string Name
-		{
-			get { return this.name ?? String.Empty; }
-			set { this.name = value; }
-		}
+		public string Name { get; set; }
 
 		[Browsable(false)]
-		public Table Table
-		{
-			get { return this.table; }
-			set { this.table = value; }
-		}
+		public Table Table { get; set; }
 
 		[Browsable(false)]
-		public Database Database
-		{
-			get { return this.table.Database; }
-		}
-		
+		public Database Database => Table.Database;
+
 		public abstract string GenerateCreateStatement();
 
 		public abstract string GenerateAlterStatement();

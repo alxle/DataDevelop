@@ -1,6 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 
 namespace DataDevelop.Data
 {
@@ -18,9 +16,9 @@ namespace DataDevelop.Data
 		public void Dispose()
 		{
 			lock (this) {
-				if (!this.disposed) {
-					this.disposed = true;
-					this.database.Disconnect();
+				if (!disposed) {
+					disposed = true;
+					database.Disconnect();
 					GC.SuppressFinalize(this);
 				}
 			}

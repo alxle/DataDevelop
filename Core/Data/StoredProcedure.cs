@@ -1,6 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace DataDevelop.Data
@@ -14,24 +12,24 @@ namespace DataDevelop.Data
 			: base(database)
 		{
 		}
-		
+
 		[Browsable(false)]
 		public IList<Parameter> Parameters
 		{
 			get
 			{
-				if (this.parameters == null) {
+				if (parameters == null) {
 					var parametersList = new List<Parameter>();
-					this.PopulateParameters(parametersList);
-					this.parameters = parametersList;
+					PopulateParameters(parametersList);
+					parameters = parametersList;
 				}
-				return this.parameters;
+				return parameters;
 			}
 		}
-		
+
 		public void RefreshParameters()
 		{
-			this.parameters = null;
+			parameters = null;
 		}
 
 		public abstract string GenerateAlterStatement();

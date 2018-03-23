@@ -1,5 +1,6 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace DataDevelop.Data
@@ -7,12 +8,11 @@ namespace DataDevelop.Data
 	public class TableFilter : ICloneable
 	{
 		private Table table;
-		private List<ColumnFilter> filters;
+		private List<ColumnFilter> filters = new List<ColumnFilter>();
 
 		public TableFilter(Table table)
 		{
 			this.table = table;
-			this.filters = new List<ColumnFilter>();
 
 			foreach (var column in table.Columns) {
 				filters.Add(new ColumnFilter(column));
@@ -21,48 +21,22 @@ namespace DataDevelop.Data
 
 		private TableFilter(TableFilter baseFilter)
 		{
-			this.table = baseFilter.table;
-			this.filters = new List<ColumnFilter>();
+			table = baseFilter.table;
 
 			foreach (var filter in baseFilter.filters) {
-				this.filters.Add(filter.Clone());
+				filters.Add(filter.Clone());
 			}
 		}
 
-		public IList<ColumnFilter> ColumnFilters
-		{
-			get { return filters; }
-		}
+		public IList<ColumnFilter> ColumnFilters => filters;
 
-		public bool IsColumnFiltered
-		{
-			get
-			{
-				foreach (var f in filters) {
-					if (!f.Output) {
-						return true;
-					}
-				}
-				return false;
-			}
-		}
+		public bool IsColumnFiltered => filters.Any(f => !f.Output);
 
-		public bool IsRowFiltered
-		{
-			get
-			{
-				foreach (var f in filters) {
-					if (!f.IsEmpty) {
-						return true;
-					}
-				}
-				return false;
-			}
-		}
+		public bool IsRowFiltered => filters.Any(f => !f.IsEmpty);
 
 		public IEnumerable<string> GetOutputColumns()
 		{
-			foreach (var filter in this.ColumnFilters) {
+			foreach (var filter in ColumnFilters) {
 				if (filter.Output) {
 					yield return filter.QuotedName;
 				}
@@ -71,7 +45,7 @@ namespace DataDevelop.Data
 
 		public void WriteColumnsProjection(StringBuilder b)
 		{
-			bool first = true;
+			var first = true;
 			foreach (var f in filters) {
 				if (f.InPrimaryKey || f.Output) {
 					if (first) {
@@ -86,7 +60,7 @@ namespace DataDevelop.Data
 
 		public void WriteWhereStatement(StringBuilder b)
 		{
-			bool first = true;
+			var first = true;
 			foreach (var f in filters) {
 				if (!f.IsEmpty) {
 					if (first) {
@@ -107,7 +81,7 @@ namespace DataDevelop.Data
 
 		object ICloneable.Clone()
 		{
-			return this.Clone();
+			return Clone();
 		}
 
 		public TableFilter Clone()

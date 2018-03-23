@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Data;
+﻿using System;
 using System.ComponentModel;
 
 namespace DataDevelop.Data
@@ -9,74 +6,35 @@ namespace DataDevelop.Data
 	[ReadOnly(true)]
 	public class Column : ITableObject
 	{
-		private Table table;
-		private string name;
-		private string quotedName;
-		private bool isIdentity;
-		private bool inPrimaryKey;
-		private string providerType = String.Empty;
-		private Type type;
+		private string providerType = string.Empty;
+		private Type type = typeof(object);
 
 		public Column(Table table)
 		{
-			this.table = table;
+			Table = table;
 		}
 
 		[Browsable(false)]
-		public Table Table
-		{
-			get { return this.table; }
-			set { this.table = value; }
-		}
+		public Table Table { get; set; }
 
-		public string Name
-		{
-			get { return this.name; }
-			set { this.name = value; }
-		}
+		public string Name { get; set; }
 
-		public string QuotedName
-		{
-			get
-			{
-				if (this.quotedName == null) {
-					this.quotedName = this.Table.Database.QuoteObjectName(this.name);
-				}
-				return quotedName;
-			}
-		}
+		public string QuotedName => Table.Database.QuoteObjectName(Name);
 
-		public bool InPrimaryKey
-		{
-			get { return this.inPrimaryKey; }
-			set { this.inPrimaryKey = value; }
-		}
+		public bool InPrimaryKey { get; set; }
 
-		public bool IsIdentity
-		{
-			get { return this.isIdentity; }
-			set { this.isIdentity = value; }
-		}
+		public bool IsIdentity { get; set; }
 
 		public string ProviderType
 		{
-			get
-			{
-				return this.providerType;
-			}
-			set
-			{
-				if (value == null) {
-					throw new ArgumentNullException("value");
-				}
-				this.providerType = value;
-			}
+			get => providerType;
+			set => providerType = value ?? throw new ArgumentNullException(nameof(value));
 		}
 
 		public Type Type
 		{
-			get { return this.type ?? typeof(object); }
-			set { this.type = value; }
+			get => type;
+			set => type = value ?? throw new ArgumentNullException(nameof(value));
 		}
 	}
 }

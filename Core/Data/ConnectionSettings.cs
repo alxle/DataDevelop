@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace DataDevelop.Data
 {
@@ -8,26 +8,14 @@ namespace DataDevelop.Data
 
 		public ConnectionSettings(Database database)
 		{
-			if (database == null) {
-				throw new ArgumentNullException("database");
-			}
-			this.database = database;
+			this.database = database ?? throw new ArgumentNullException(nameof(database));
 		}
 
-		public string ProviderName
-		{
-			get { return this.database.Provider.Name; }
-		}
+		public string ProviderName => database.Provider.Name;
 
-		public string DatabaseName
-		{
-			get { return this.database.Name; }
-		}
+		public string DatabaseName => database.Name;
 
-		public string ConnectionString
-		{
-			get { return this.database.ConnectionString; }
-		}
+		public string ConnectionString => database.ConnectionString;
 
 		public static bool operator ==(ConnectionSettings x, ConnectionSettings y)
 		{
@@ -41,7 +29,7 @@ namespace DataDevelop.Data
 
 		public override int GetHashCode()
 		{
-			return base.GetHashCode();
+			return database.Name.GetHashCode();
 		}
 
 		public override bool Equals(object obj)

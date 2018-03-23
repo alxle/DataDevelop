@@ -1,6 +1,5 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Data.Common;
 using DataDevelop.Collections;
 
@@ -23,15 +22,9 @@ namespace DataDevelop.Data
 			}
 		}
 
-		public abstract string Name
-		{
-			get;
-		}
+		public abstract string Name { get; }
 
-		public virtual bool IsFileBased
-		{
-			get { return false; }
-		}
+		public virtual bool IsFileBased => false;
 
 		public static DbProvider GetProvider(string name)
 		{
@@ -45,7 +38,7 @@ namespace DataDevelop.Data
 
 		public virtual string CreateDatabaseFile(string fileName)
 		{
-			if (this.IsFileBased) {
+			if (IsFileBased) {
 				throw new NotImplementedException();
 			}
 			throw new InvalidOperationException();

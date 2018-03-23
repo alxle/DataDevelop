@@ -1,11 +1,10 @@
-using System;
+﻿using System;
 
 namespace DataDevelop.Data
 {
 	public class ColumnFilter : ICloneable
 	{
 		private Column column;
-		private string filter;
 		private bool output = true;
 
 		public ColumnFilter(Column column)
@@ -13,60 +12,45 @@ namespace DataDevelop.Data
 			this.column = column;
 		}
 
-		public string ColumnName
-		{
-			get { return this.column.Name; }
-		}
+		public string ColumnName => column.Name;
 
-		public string QuotedName
-		{
-			get { return this.column.QuotedName; }
-		}
+		public string QuotedName => column.QuotedName;
 
-		public string Filter
-		{
-			get { return this.filter; }
-			set { this.filter = value; }
-		}
+		public string Filter { get; set; }
 
-		public bool IsEmpty
-		{
-			get { return String.IsNullOrEmpty(this.filter); }
-		}
+		public bool IsEmpty => string.IsNullOrEmpty(Filter);
 
-		public bool InPrimaryKey
-		{
-			get { return this.column.InPrimaryKey; }
-		}
+		public bool InPrimaryKey => column.InPrimaryKey;
 
 		public bool Output
 		{
-			get { return this.output; }
+			get => output;
 			set
 			{
-				if (!value && this.column.InPrimaryKey) {
+				if (!value && column.InPrimaryKey) {
 					throw new InvalidOperationException("All columns in primary key must be outputted");
 				}
-				this.output = value;
+				output = value;
 			}
 		}
 
 		public void Clear()
 		{
-			this.filter = null;
+			Filter = null;
 		}
 
 		public ColumnFilter Clone()
 		{
-			var columnFilter = new ColumnFilter(this.column);
-			columnFilter.output = this.output;
-			columnFilter.filter = this.filter;
+			var columnFilter = new ColumnFilter(column) {
+				output = output,
+				Filter = Filter
+			};
 			return columnFilter;
 		}
 
 		object ICloneable.Clone()
 		{
-			return this.Clone();
+			return Clone();
 		}
 	}
 }

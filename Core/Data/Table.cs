@@ -1,9 +1,10 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Data;
 using System.Data.Common;
 using System.ComponentModel;
+using System.Linq;
 
 namespace DataDevelop.Data
 {
@@ -24,12 +25,12 @@ namespace DataDevelop.Data
 		{
 			get
 			{
-				if (this.columnsCollection == null) {
+				if (columnsCollection == null) {
 					var columns = new List<Column>();
-					this.PopulateColumns(columns);
-					this.columnsCollection = columns;
+					PopulateColumns(columns);
+					columnsCollection = columns;
 				}
-				return this.columnsCollection;
+				return columnsCollection;
 			}
 		}
 
@@ -38,12 +39,12 @@ namespace DataDevelop.Data
 		{
 			get
 			{
-				if (this.keysCollection == null) {
+				if (keysCollection == null) {
 					var keys = new List<ForeignKey>();
-					this.PopulateForeignKeys(keys);
-					this.keysCollection = keys;
+					PopulateForeignKeys(keys);
+					keysCollection = keys;
 				}
-				return this.keysCollection;
+				return keysCollection;
 			}
 		}
 
@@ -52,51 +53,28 @@ namespace DataDevelop.Data
 		{
 			get
 			{
-				if (this.triggersCollection == null) {
+				if (triggersCollection == null) {
 					var triggers = new List<Trigger>();
-					this.PopulateTriggers(triggers);
-					this.triggersCollection = triggers;
+					PopulateTriggers(triggers);
+					triggersCollection = triggers;
 				}
-				return this.triggersCollection;
+				return triggersCollection;
 			}
 		}
 
-		public virtual bool IsView
-		{
-			get { return false; }
-		}
+		public virtual bool IsView => false;
 
-		protected bool HasPrimaryKey
-		{
-			get
-			{
-				foreach (Column c in this.Columns) {
-					if (c.InPrimaryKey) {
-						return true;
-					}
-				}
-				return false;
-			}
-		}
+		protected bool HasPrimaryKey => Columns.Any(c => c.InPrimaryKey);
 
-		public virtual bool IsReadOnly
-		{
-			get { return false; }
-		}
+		public virtual bool IsReadOnly => false;
 
-		public virtual string DisplayName
-		{
-			get { return this.Name; }
-		}
+		public virtual string DisplayName => Name;
 
-		public virtual string QuotedName
-		{
-			get { return this.Database.QuoteObjectName(this.Name); }
-		}
+		public virtual string QuotedName => Database.QuoteObjectName(Name);
 
 		public void RefreshColumns()
 		{
-			this.columnsCollection = null;
+			columnsCollection = null;
 		}
 
 		public abstract bool Rename(string newName);
@@ -104,7 +82,7 @@ namespace DataDevelop.Data
 		public virtual bool Delete()
 		{
 			using (var create = Database.CreateCommand()) {
-				create.CommandText = "DROP " + (this.IsView ? "VIEW " : "TABLE ") + this.QuotedName;
+				create.CommandText = "DROP " + (IsView ? "VIEW " : "TABLE ") + QuotedName;
 				try {
 					create.ExecuteNonQuery();
 					return true;
@@ -116,16 +94,16 @@ namespace DataDevelop.Data
 
 		public int GetRowCount()
 		{
-			return this.GetRowCount(null);
+			return GetRowCount(null);
 		}
 
 		public virtual int GetRowCount(TableFilter filter)
 		{
-			int count = -1;
-			using (var command = this.Database.CreateCommand()) {
+			var count = -1;
+			using (var command = Database.CreateCommand()) {
 				var sql = new StringBuilder();
 				sql.Append("SELECT COUNT(*) FROM ");
-				sql.Append(this.QuotedName);
+				sql.Append(QuotedName);
 
 				if (filter != null && filter.IsRowFiltered) {
 					sql.Append(" WHERE ");
@@ -133,7 +111,7 @@ namespace DataDevelop.Data
 				}
 
 				command.CommandText = sql.ToString();
-				using (this.Database.CreateConnectionScope()) {
+				using (Database.CreateConnectionScope()) {
 					count = Convert.ToInt32(command.ExecuteScalar());
 				}
 			}
@@ -142,13 +120,13 @@ namespace DataDevelop.Data
 
 		public DataTable GetData()
 		{
-			return this.GetData(new TableFilter(this));
+			return GetData(new TableFilter(this));
 		}
 
 		public DataTable GetData(TableFilter filter)
 		{
-			using (var adapter = this.Database.CreateAdapter(this, filter)) {
-				var data = new DataTable(this.Name);
+			using (var adapter = Database.CreateAdapter(this, filter)) {
+				var data = new DataTable(Name);
 				adapter.Fill(data);
 				return data;
 			}
@@ -156,12 +134,12 @@ namespace DataDevelop.Data
 
 		public DataTable GetData(int startIndex, int count)
 		{
-			return this.GetData(startIndex, count, new TableFilter(this));
+			return GetData(startIndex, count, new TableFilter(this));
 		}
 
 		public DataTable GetData(int startIndex, int count, TableFilter filter)
 		{
-			return this.GetData(startIndex, count, filter, null);
+			return GetData(startIndex, count, filter, null);
 		}
 
 		public abstract DataTable GetData(int startIndex, int count, TableFilter filter, TableSort sort);
@@ -176,7 +154,7 @@ namespace DataDevelop.Data
 				select.Append('*');
 			}
 			select.Append(" FROM ");
-			select.Append(this.QuotedName);
+			select.Append(QuotedName);
 			if (filter.IsRowFiltered) {
 				select.Append(" WHERE ");
 				filter.WriteWhereStatement(select);
@@ -186,15 +164,15 @@ namespace DataDevelop.Data
 
 		public string GenerateSelectStatement()
 		{
-			return this.GenerateSelectStatement(false);
+			return GenerateSelectStatement(false);
 		}
 
 		public virtual string GenerateSelectStatement(bool singleResult)
 		{
 			var select = new StringBuilder();
 			select.AppendLine("SELECT ");
-			bool first = true;
-			foreach (Column column in this.Columns) {
+			var first = true;
+			foreach (var column in Columns) {
 				select.Append('\t');
 				if (first) {
 					first = false;
@@ -204,10 +182,10 @@ namespace DataDevelop.Data
 				select.AppendLine(column.QuotedName);
 			}
 			select.Append("FROM ");
-			select.Append(this.QuotedName);
+			select.Append(QuotedName);
 			if (singleResult) {
 				select.Append(" WHERE ");
-				this.InsertWhere(select);
+				InsertWhere(select);
 			}
 			return select.ToString();
 		}
@@ -216,18 +194,18 @@ namespace DataDevelop.Data
 		{
 			var insert = new StringBuilder();
 			insert.Append("INSERT INTO ");
-			insert.Append(this.Name);
+			insert.Append(Name);
 			insert.AppendLine();
 
-			for (int i = 0; i < this.Columns.Count; i++) {
+			for (var i = 0; i < Columns.Count; i++) {
 				insert.Append('\t');
 				if (i == 0) {
 					insert.Append('(');
 				} else {
 					insert.Append(',');
 				}
-				insert.Append(this.Columns[i].Name);
-				if (i + 1 >= this.Columns.Count) {
+				insert.Append(Columns[i].Name);
+				if (i + 1 >= Columns.Count) {
 					insert.Append(')');
 				}
 				insert.AppendLine();
@@ -235,16 +213,16 @@ namespace DataDevelop.Data
 
 			insert.AppendLine("VALUES");
 
-			for (int i = 0; i < this.Columns.Count; i++) {
+			for (var i = 0; i < Columns.Count; i++) {
 				insert.Append('\t');
 				if (i == 0) {
 					insert.Append('(');
 				} else {
 					insert.Append(',');
 				}
-				insert.Append(this.Database.ParameterPrefix);
-				insert.Append(this.Columns[i].Name);
-				if (i + 1 >= this.Columns.Count) {
+				insert.Append(Database.ParameterPrefix);
+				insert.Append(Columns[i].Name);
+				if (i + 1 >= Columns.Count) {
 					insert.Append(')');
 				}
 				insert.AppendLine();
@@ -256,10 +234,10 @@ namespace DataDevelop.Data
 		{
 			var update = new StringBuilder();
 			update.Append("UPDATE ");
-			update.AppendLine(this.Name);
+			update.AppendLine(Name);
 
-			bool first = true;
-			foreach (Column column in this.Columns) {
+			var first = true;
+			foreach (var column in Columns) {
 				update.Append('\t');
 				if (first) {
 					update.Append("SET ");
@@ -273,7 +251,7 @@ namespace DataDevelop.Data
 				update.AppendLine(column.Name);
 			}
 			update.AppendLine("WHERE");
-			this.InsertWhere(update);
+			InsertWhere(update);
 			return update.ToString();
 		}
 
@@ -281,12 +259,12 @@ namespace DataDevelop.Data
 		{
 			var delete = new StringBuilder();
 			delete.Append("DELETE FROM ");
-			delete.Append(this.Name);
+			delete.Append(Name);
 			delete.Append(" WHERE ");
-			this.InsertWhere(delete);
+			InsertWhere(delete);
 			return delete.ToString();
 		}
-		
+
 		public virtual string GenerateCreateStatement()
 		{
 			return null;
@@ -294,7 +272,7 @@ namespace DataDevelop.Data
 
 		public IEnumerable<string> GetColumnNames()
 		{
-			foreach (var column in this.Columns) {
+			foreach (var column in Columns) {
 				yield return column.Name;
 			}
 		}
@@ -311,8 +289,8 @@ namespace DataDevelop.Data
 
 		protected virtual void InsertWhere(StringBuilder builder)
 		{
-			bool first = true;
-			foreach (var column in this.Columns) {
+			var first = true;
+			foreach (var column in Columns) {
 				if (column.InPrimaryKey) {
 					builder.Append('\t');
 					if (first) {
@@ -331,10 +309,10 @@ namespace DataDevelop.Data
 		protected virtual void SetColumnTypes(IList<Column> columns)
 		{
 			using (var command = Database.CreateCommand()) {
-				command.CommandText = "SELECT * FROM " + this.QuotedName;
+				command.CommandText = "SELECT * FROM " + QuotedName;
 				using (var reader = command.ExecuteReader(CommandBehavior.SchemaOnly)) {
 					foreach (var column in columns) {
-						int ordinal = reader.GetOrdinal(column.Name);
+						var ordinal = reader.GetOrdinal(column.Name);
 						if (ordinal != -1) {
 							column.Type = reader.GetFieldType(ordinal);
 						}
@@ -344,10 +322,9 @@ namespace DataDevelop.Data
 		}
 
 		protected abstract void PopulateColumns(IList<Column> columnsCollection);
-		
-		protected abstract void PopulateTriggers(IList<Trigger> triggersCollection);
-		
-		protected abstract void PopulateForeignKeys(IList<ForeignKey> foreignKeysCollection);
 
+		protected abstract void PopulateTriggers(IList<Trigger> triggersCollection);
+
+		protected abstract void PopulateForeignKeys(IList<ForeignKey> foreignKeysCollection);
 	}
 }

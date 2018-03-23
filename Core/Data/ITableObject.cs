@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DataDevelop.Data
+﻿namespace DataDevelop.Data
 {
 	internal interface ITableObject
 	{

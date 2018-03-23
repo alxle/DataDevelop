@@ -1,7 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace DataDevelop.Data
 {
@@ -12,41 +11,41 @@ namespace DataDevelop.Data
 
 		public DbObjectCollection()
 		{
-			this.objects = new SortedList<string, T>(StringComparer.OrdinalIgnoreCase);
+			objects = new SortedList<string, T>(StringComparer.OrdinalIgnoreCase);
 		}
 
 		public int Count
 		{
-			get { return this.objects.Count; }
+			get { return objects.Count; }
 		}
 
 		public bool IsReadOnly
 		{
-			get { return ((IDictionary<string, T>)this.objects).IsReadOnly; }
+			get { return ((IDictionary<string, T>)objects).IsReadOnly; }
 		}
 
 		public T this[int index]
 		{
-			get { return this.objects.Values[index]; }
+			get { return objects.Values[index]; }
 			set { throw new InvalidOperationException(); }
 		}
 
 		public T this[string name]
 		{
-			get { return this.objects[name]; }
+			get { return objects[name]; }
 			set { throw new InvalidOperationException(); }
 		}
 
 		public T GetOrDefault(string name)
 		{
 			T value = default(T);
-			this.objects.TryGetValue(name, out value);
+			objects.TryGetValue(name, out value);
 			return value;
 		}
 
 		public int IndexOf(T item)
 		{
-			return this.objects.IndexOfValue(item);
+			return objects.IndexOfValue(item);
 		}
 
 		void IList<T>.Insert(int index, T item)
@@ -56,47 +55,47 @@ namespace DataDevelop.Data
 
 		public void RemoveAt(int index)
 		{
-			this.objects.RemoveAt(index);
+			objects.RemoveAt(index);
 		}
 
 		public void Add(T item)
 		{
-			this.objects.Add(item.Name, item);
+			objects.Add(item.Name, item);
 		}
 
 		public void Clear()
 		{
-			this.objects.Clear();
+			objects.Clear();
 		}
 
 		public bool Contains(T item)
 		{
-			return this.objects.Keys.Contains(item.Name);
+			return objects.Keys.Contains(item.Name);
 		}
 
 		public bool Contains(string name)
 		{
-			return this.objects.Keys.Contains(name);
+			return objects.Keys.Contains(name);
 		}
 
 		public void CopyTo(T[] array, int arrayIndex)
 		{
-			this.objects.Values.CopyTo(array, arrayIndex);
+			objects.Values.CopyTo(array, arrayIndex);
 		}
 
 		public bool Remove(T item)
 		{
-			return this.objects.Remove(item.Name);
+			return objects.Remove(item.Name);
 		}
 
 		public IEnumerator<T> GetEnumerator()
 		{
-			return this.objects.Values.GetEnumerator();
+			return objects.Values.GetEnumerator();
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()
 		{
-			return this.GetEnumerator();
+			return GetEnumerator();
 		}
 	}
 }

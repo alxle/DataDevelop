@@ -1,51 +1,37 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using DataDevelop.Data;
+﻿using System;
 
 namespace DataDevelop.Data
 {
 	public class ColumnOrder : ICloneable
 	{
 		private Column column;
-		private OrderType orderType = OrderType.None;
 
 		public ColumnOrder(Column column)
 		{
 			this.column = column;
 		}
 
-		public string ColumnName
-		{
-			get { return column.Name; }
-		}
+		public string ColumnName => column.Name;
 
-		public string QuotedName
-		{
-			get { return column.QuotedName; }
-		}
+		public string QuotedName => column.QuotedName;
 
-		public OrderType OrderType
-		{
-			get { return orderType; }
-			set { orderType = value; }
-		}
+		public OrderType OrderType { get; set; } = OrderType.None;
 
 		public ColumnOrder Clone()
 		{
-			var order = new ColumnOrder(this.column);
-			order.orderType = this.orderType;
-			return order;
+			return new ColumnOrder(column) {
+				OrderType = OrderType
+			};
 		}
 
 		object ICloneable.Clone()
 		{
-			return this.Clone();
+			return Clone();
 		}
 
 		public void Clear()
 		{
-			this.orderType = OrderType.None;
+			OrderType = OrderType.None;
 		}
 	}
 }

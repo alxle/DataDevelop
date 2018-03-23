@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Common;
 using System.IO;
 using System.Text;
+using static System.Char;
 
 namespace DataDevelop.Data
 {
@@ -62,8 +63,8 @@ namespace DataDevelop.Data
 		public static void BindParameters(IDbCommand command, params object[] values)
 		{
 			foreach (IDataParameter parameter in command.Parameters) {
-				int index = Convert.ToInt32(parameter.SourceColumn.Substring(1));
-				object value = values[index];
+				var index = Convert.ToInt32(parameter.SourceColumn.Substring(1));
+				var value = values[index];
 
 				if (value == null) {
 					parameter.DbType = DbType.Object;
@@ -78,7 +79,7 @@ namespace DataDevelop.Data
 		public static void BindParameters(IDbCommand command, DataRow row)
 		{
 			foreach (IDataParameter parameter in command.Parameters) {
-				object value = row[parameter.SourceColumn];
+				var value = row[parameter.SourceColumn];
 
 				if (value == null) {
 					parameter.DbType = DbType.Object;
@@ -93,7 +94,7 @@ namespace DataDevelop.Data
 		public static void BindParameters(IDbCommand command, Dictionary<string, object> parameters)
 		{
 			foreach (IDataParameter parameter in command.Parameters) {
-				object value = parameters[parameter.SourceColumn];
+				var value = parameters[parameter.SourceColumn];
 
 				if (value == null) {
 					parameter.DbType = DbType.Object;
@@ -115,7 +116,7 @@ namespace DataDevelop.Data
 			using (var reader = new StringReader(commandText)) {
 				var state = State.OnCommandText;
 				do {
-					int @char = reader.Read();
+					var @char = reader.Read();
 					switch (state) {
 						case State.OnCommandText:
 							switch (@char) {
@@ -157,7 +158,7 @@ namespace DataDevelop.Data
 											var p = parameters[paramName];
 											if (dbType != DbType.Object) {
 												if (p.DbType != dbType) {
-													throw new FormatException(String.Format("Parameter {0} already declared with diferent DbType", paramName));
+													throw new FormatException($"Parameter {paramName} already declared with diferent DbType");
 												}
 											}
 										}
@@ -200,7 +201,7 @@ namespace DataDevelop.Data
 		{
 			var paramName = new StringBuilder();
 			if (IsIdentifierChar((char)reader.Peek(), false)) {
-				if (Char.IsDigit((char)reader.Peek())) {
+				if (IsDigit((char)reader.Peek())) {
 					paramName.Append('p');
 				}
 				do {
@@ -212,12 +213,12 @@ namespace DataDevelop.Data
 
 		private static bool IsIdentifierChar(char c, bool first)
 		{
-			return (c == '_') || (first ? Char.IsLetter(c) : Char.IsLetterOrDigit(c));
+			return (c == '_') || (first ? IsLetter(c) : IsLetterOrDigit(c));
 		}
 
 		private static string ReadWhites(StringReader reader)
 		{
-			while (Char.IsWhiteSpace((char)reader.Peek())) {
+			while (IsWhiteSpace((char)reader.Peek())) {
 				reader.Read();
 			}
 			return " ";
