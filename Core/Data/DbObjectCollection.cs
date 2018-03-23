@@ -38,8 +38,7 @@ namespace DataDevelop.Data
 
 		public T GetOrDefault(string name)
 		{
-			T value = default(T);
-			objects.TryGetValue(name, out value);
+			objects.TryGetValue(name, out var value);
 			return value;
 		}
 
