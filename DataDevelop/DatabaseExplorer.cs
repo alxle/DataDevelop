@@ -121,7 +121,7 @@ namespace DataDevelop
 
 			TreeNodeController controller = new TreeNodeController();
 			controller.Populate += delegate { AddColumns(node); };
-			controller.Refresh += delegate { table.RefreshColumns(); Unpopulate(node); };
+			controller.Refresh += delegate { table.Refresh(); Unpopulate(node); };
 			controller.Tag = table;
 			node.Tag = controller;
 

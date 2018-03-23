@@ -72,9 +72,11 @@ namespace DataDevelop.Data
 
 		public virtual string QuotedName => Database.QuoteObjectName(Name);
 
-		public void RefreshColumns()
+		public void Refresh()
 		{
 			columnsCollection = null;
+			triggersCollection = null;
+			keysCollection = null;
 		}
 
 		public abstract bool Rename(string newName);
