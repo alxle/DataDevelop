@@ -146,6 +146,7 @@
     <Compile Include="Data\SQLite\SQLiteProvider.cs" />
     <Compile Include="Data\SQLite\SQLiteTable.cs" />
     <Compile Include="Data\SQLite\SQLiteTrigger.cs" />
+    <Compile Include="Data\SqlServer\ISqlObject.cs" />
     <Compile Include="Data\SqlServer\SqlDatabase.cs" />
     <Compile Include="Data\SqlServer\SqlProvider.cs" />
     <Compile Include="Data\SqlServer\SqlStoredProcedure.cs" />
