@@ -1,5 +1,4 @@
-using System;
-using System.Data.Common;
+﻿using System.Data.Common;
 using System.Data.SqlClient;
 
 namespace DataDevelop.Data.SqlServer
@@ -7,26 +6,12 @@ namespace DataDevelop.Data.SqlServer
 	internal class SqlProvider : DbProvider
 	{
 		private static SqlProvider provider;
-		
-		private SqlProvider()
-		{
-		}
 
-		public static SqlProvider Instance
-		{
-			get
-			{
-				if (provider == null) {
-					provider = new SqlProvider();
-				}
-				return provider;
-			}
-		}
+		private SqlProvider() { }
 
-		public override string Name
-		{
-			get { return "SqlServer"; }
-		}
+		public static SqlProvider Instance => provider ?? (provider = new SqlProvider());
+
+		public override string Name => "SqlServer";
 
 		public override Database CreateDatabase(string name, string connectionString)
 		{

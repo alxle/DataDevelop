@@ -7,7 +7,7 @@ using System.ComponentModel;
 
 namespace DataDevelop.Data.SqlServer
 {
-	internal sealed class SqlTable : Table
+	internal sealed class SqlTable : Table, ISqlObject
 	{
 		private bool isView;
 		private bool isReadOnly;
@@ -26,7 +26,9 @@ namespace DataDevelop.Data.SqlServer
 
 		public string SchemaName { get; internal set; }
 
-		public string TableName { get; internal set; }
+		public string TableName { get; private set; }
+
+		public string ObjectName => TableName;
 
 		public override bool IsView => isView;
 
@@ -50,22 +52,22 @@ namespace DataDevelop.Data.SqlServer
 
 		public void SetView(bool value)
 		{
-			this.isView = value;
+			isView = value;
 		}
 
 		public void SetReadOnly(bool value)
 		{
-			this.isReadOnly = value;
+			isReadOnly = value;
 		}
 
 		public override bool Rename(string newName)
 		{
-			bool success = true;
-			using (this.Database.CreateConnectionScope()) {
-				using (var command = this.Database.Connection.CreateCommand()) {
+			var success = true;
+			using (Database.CreateConnectionScope()) {
+				using (var command = Database.Connection.CreateCommand()) {
 					command.CommandText = "sp_rename";
 					command.CommandType = CommandType.StoredProcedure;
-					command.Parameters.AddWithValue("@objname", this.QuotedName);
+					command.Parameters.AddWithValue("@objname", QuotedName);
 					command.Parameters.AddWithValue("@newname", newName);
 					command.Parameters.AddWithValue("@objtype", "OBJECT");
 					try {
@@ -77,16 +79,16 @@ namespace DataDevelop.Data.SqlServer
 			}
 			if (success) {
 				TableName = newName;
-				Name = $"{SchemaName}.{TableName}";
+				Name = $"{SchemaName}.{newName}";
 			}
 			return success;
 		}
 
 		public override bool Delete()
 		{
-			bool success = true;
-			using (this.Database.CreateConnectionScope()) {
-				using (var command = this.Database.Connection.CreateCommand()) {
+			var success = true;
+			using (Database.CreateConnectionScope()) {
+				using (var command = Database.Connection.CreateCommand()) {
 					command.CommandText = $"DROP TABLE {QuotedName}";
 					try {
 						command.ExecuteNonQuery();
@@ -118,38 +120,40 @@ namespace DataDevelop.Data.SqlServer
 
 		protected override void PopulateColumns(IList<Column> columnsCollection)
 		{
-			using (this.Database.CreateConnectionScope()) {
-				var columns = this.Connection.GetSchema("Columns", new string[] { null, this.SchemaName, this.TableName, null });
+			using (Database.CreateConnectionScope()) {
+				var columns = Connection.GetSchema("Columns", new string[] { null, SchemaName, TableName, null });
 
 				// Fix because Column are sorted by Name rather than Ordinal Position
 				var rows = new DataRow[columns.Rows.Count];
 				foreach (DataRow row in columns.Rows) {
-					int i = Convert.ToInt32(row["ORDINAL_POSITION"]) - 1;
+					var i = Convert.ToInt32(row["ORDINAL_POSITION"]) - 1;
 					rows[i] = row;
 				} // End of Fix
 
-				var keys = this.GetPrimaryKeyColumns();
-				foreach (DataRow row in rows) {
-					var column = new Column(this);
-					column.Name = row["COLUMN_NAME"].ToString();
-					column.InPrimaryKey = keys.Contains(column.Name);
-					column.ProviderType = (string)row["DATA_TYPE"];
-					string maxLength = row["CHARACTER_MAXIMUM_LENGTH"].ToString();
-					if (!String.IsNullOrEmpty(maxLength)) {
-						column.ProviderType = String.Format("{0}({1})", column.ProviderType, maxLength);
+				var keys = GetPrimaryKeyColumns();
+				foreach (var row in rows) {
+					var name = (string)row["COLUMN_NAME"];
+					var column = new Column(this) {
+						Name = name,
+						InPrimaryKey = keys.Contains(name),
+						ProviderType = (string)row["DATA_TYPE"]
+					};
+					var maxLength = row["CHARACTER_MAXIMUM_LENGTH"].ToString();
+					if (!string.IsNullOrEmpty(maxLength)) {
+						column.ProviderType = $"{column.ProviderType}({maxLength})";
 					} else if (column.ProviderType.ToLower() == "numeric") {
-						column.ProviderType = String.Format("numeric({0}, {1})", row["NUMERIC_PRECISION"], row["NUMERIC_SCALE"]);
+						column.ProviderType = $"numeric({row["NUMERIC_PRECISION"]}, {row["NUMERIC_SCALE"]})";
 					}
 					columnsCollection.Add(column);
 				}
-				this.SetColumnTypes(columnsCollection);
+				SetColumnTypes(columnsCollection);
 			}
 		}
 
 		protected override void PopulateForeignKeys(IList<ForeignKey> foreignKeysCollection)
 		{
-			using (this.Database.CreateConnectionScope()) {
-				using (var select = this.Connection.CreateCommand()) {
+			using (Database.CreateConnectionScope()) {
+				using (var select = Connection.CreateCommand()) {
 					select.CommandText =
 						"select object_name(fk.constraint_object_id) as ForeignKeyName, " +
 						"       t1.name as ParentTable, " +
@@ -167,17 +171,18 @@ namespace DataDevelop.Data.SqlServer
 						"inner join sys.columns as c1 on fk.referenced_object_id = c1.object_id and fk.referenced_column_id = c1.column_id " +
 						"where t.name = @TableName and s.name = @SchemaName " +
 						"order by fk.constraint_object_id, fk.constraint_column_id";
-					select.Parameters.AddWithValue("@SchemaName", this.SchemaName);
-					select.Parameters.AddWithValue("@TableName", this.TableName);
+					select.Parameters.AddWithValue("@SchemaName", SchemaName);
+					select.Parameters.AddWithValue("@TableName", TableName);
 					using (var reader = select.ExecuteReader()) {
 						ForeignKey key = null;
 						while (reader.Read()) {
-							string name = reader.GetString(0);
+							var name = reader.GetString(0);
 							if (key == null || key.Name != name) {
-								key = new ForeignKey(name, this);
-								key.Name = name;
-								key.PrimaryTable = reader.GetString(2) + "." + reader.GetString(1);
-								key.ChildTable = reader.GetString(5) + "." + reader.GetString(4);
+								key = new ForeignKey(name, this) {
+									Name = name,
+									PrimaryTable = reader.GetString(2) + "." + reader.GetString(1),
+									ChildTable = reader.GetString(5) + "." + reader.GetString(4)
+								};
 								foreignKeysCollection.Add(key);
 							}
 							key.Columns.Add(new ColumnsPair(reader.GetString(3), reader.GetString(6)));
@@ -189,8 +194,8 @@ namespace DataDevelop.Data.SqlServer
 
 		protected override void PopulateTriggers(IList<Trigger> triggersCollection)
 		{
-			using (this.Database.CreateConnectionScope()) {
-				using (var select = this.Connection.CreateCommand()) {
+			using (Database.CreateConnectionScope()) {
+				using (var select = Connection.CreateCommand()) {
 					select.CommandText =
 						"select tr.name from sys.triggers tr " +
 						"inner join sys.tables ta on tr.parent_id = ta.object_id " +
@@ -200,8 +205,7 @@ namespace DataDevelop.Data.SqlServer
 					select.Parameters.AddWithValue("@TableName", TableName);
 					using (var reader = select.ExecuteReader()) {
 						while (reader.Read()) {
-							var trigger = new SqlTrigger(this);
-							trigger.Name = reader.GetString(0);
+							var trigger = new SqlTrigger(this, reader.GetString(0));
 							triggersCollection.Add(trigger);
 						}
 					}
@@ -212,8 +216,8 @@ namespace DataDevelop.Data.SqlServer
 		private HashSet<string> GetPrimaryKeyColumns()
 		{
 			var primaryKeys = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-			using (this.Database.CreateConnectionScope()) {
-				using (var select = this.Connection.CreateCommand()) {
+			using (Database.CreateConnectionScope()) {
+				using (var select = Connection.CreateCommand()) {
 					select.CommandText =
 						"select c.name from sys.key_constraints k " +
 						"inner join sys.tables t on k.parent_object_id = t.object_id " +
@@ -331,12 +335,12 @@ namespace DataDevelop.Data.SqlServer
 
 		public override string GenerateCreateStatement()
 		{
-			if (this.IsView) {
-				using (var select = this.Connection.CreateCommand()) {
+			if (IsView) {
+				using (var select = Connection.CreateCommand()) {
 					select.CommandText =
 						"SELECT Definition FROM sys.sql_modules " +
 						"WHERE object_id = OBJECT_ID(@name)";
-					select.Parameters.AddWithValue("@name", this.QuotedName);
+					select.Parameters.AddWithValue("@name", QuotedName);
 					return select.ExecuteScalar() as string;
 				}
 			} else {

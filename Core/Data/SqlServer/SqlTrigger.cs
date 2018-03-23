@@ -2,15 +2,23 @@
 
 namespace DataDevelop.Data.SqlServer
 {
-	internal sealed class SqlTrigger : Trigger
+	internal sealed class SqlTrigger : Trigger, ISqlObject
 	{
 		private SqlTable table;
 
-		public SqlTrigger(SqlTable table)
+		public SqlTrigger(SqlTable table, string triggerName)
 			: base(table)
 		{
 			this.table = table;
+			SchemaName = table.SchemaName;
+			TriggerName = triggerName;
 		}
+
+		public string SchemaName { get; set; }
+
+		public string TriggerName { get; set; }
+
+		public string ObjectName => TriggerName;
 
 		public override string GenerateCreateStatement()
 		{
