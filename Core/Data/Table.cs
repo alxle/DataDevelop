@@ -72,6 +72,8 @@ namespace DataDevelop.Data
 
 		public virtual string QuotedName => Database.QuoteObjectName(Name);
 
+		public virtual string ObjectName => Name;
+
 		public void Refresh()
 		{
 			columnsCollection = null;

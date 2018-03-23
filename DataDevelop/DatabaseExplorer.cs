@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Common;
@@ -520,7 +520,7 @@ namespace DataDevelop
 		{
 			var tableNode = treeView.SelectedNode as TableNode;
 			if (tableNode != null) {
-				tableNode.Text = tableNode.Table.Name;
+				tableNode.Text = tableNode.Table.ObjectName;
 				treeView.LabelEdit = true;
 				treeView.SelectedNode.BeginEdit();
 			}

@@ -28,7 +28,7 @@ namespace DataDevelop.Data.SqlServer
 
 		public string TableName { get; private set; }
 
-		public string ObjectName => TableName;
+		public override string ObjectName => TableName;
 
 		public override bool IsView => isView;
 
