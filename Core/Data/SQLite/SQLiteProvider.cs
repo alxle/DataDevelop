@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data.Common;
 using System.Data.SQLite;
 using System.IO;
@@ -8,31 +8,14 @@ namespace DataDevelop.Data.SQLite
 	public class SQLiteProvider : DbProvider
 	{
 		private static SQLiteProvider provider;
-		
-		private SQLiteProvider()
-		{
-		}
-		
-		public static SQLiteProvider Instance
-		{
-			get
-			{
-				if (provider == null) {
-					provider = new SQLiteProvider();
-				}
-				return provider;
-			}
-		}
 
-		public override string Name
-		{
-			get { return "SQLite"; }
-		}
+		public static SQLiteProvider Instance => provider ?? (provider = new SQLiteProvider());
 
-		public override bool IsFileBased
-		{
-			get { return true; }
-		}
+		private SQLiteProvider() { }
+
+		public override string Name => "SQLite";
+
+		public override bool IsFileBased => true;
 
 		public override string CreateDatabaseFile(string fileName)
 		{

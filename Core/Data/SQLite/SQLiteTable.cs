@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Data;
@@ -17,60 +17,53 @@ namespace DataDevelop.Data.SQLite
 		{
 		}
 
-		public override bool IsReadOnly
-		{
-			get { return this.isReadOnly; }
-		}
+		public override bool IsReadOnly => isReadOnly;
 
-		public override bool IsView
-		{
-			get { return this.isView; }
-		}
+		public override bool IsView => isView;
 
-		private SQLiteConnection Connection
-		{
-			get { return ((SQLiteDatabase)Database).Connection; }
-		}
+		private SQLiteConnection Connection => ((SQLiteDatabase)Database).Connection;
 
 		public void SetView(bool value)
 		{
-			this.isView = this.isReadOnly = value;
+			isView = isReadOnly = value;
 		}
 
 		public void SetReadOnly()
 		{
-			this.isReadOnly = true;
+			isReadOnly = true;
 		}
 
 		protected override void PopulateColumns(IList<Column> columnsCollection)
 		{
-			using (this.Database.CreateConnectionScope()) {
-				var columns = this.Connection.GetSchema("Columns", new string[] { null, null, this.Name, null });
+			using (Database.CreateConnectionScope()) {
+				var columns = Connection.GetSchema("Columns", new[] { null, null, Name, null });
 				foreach (DataRow row in columns.Rows) {
-					var column = new Column(this);
-					column.Name = row["COLUMN_NAME"].ToString();
-					if (!this.IsReadOnly) {
+					var column = new Column(this) {
+						Name = row["COLUMN_NAME"].ToString()
+					};
+					if (!IsReadOnly) {
 						column.InPrimaryKey = (bool)row["PRIMARY_KEY"];
-						object type = row["DATA_TYPE"];
+						var type = row["DATA_TYPE"];
 						column.ProviderType = (type == DBNull.Value) ? "OBJECT" : (string)type;
 					}
 
 					columnsCollection.Add(column);
 				}
-				this.SetColumnTypes(columnsCollection);
+				SetColumnTypes(columnsCollection);
 			}
 		}
 
 		protected override void PopulateTriggers(IList<Trigger> triggersCollection)
 		{
-			using (this.Database.CreateConnectionScope()) {
-				using (var command = this.Connection.CreateCommand()) {
+			using (Database.CreateConnectionScope()) {
+				using (var command = Connection.CreateCommand()) {
 					command.CommandText = "SELECT name FROM sqlite_master WHERE type = 'trigger' AND tbl_name = @tbl_name";
-					command.Parameters.AddWithValue("@tbl_name", this.Name);
+					command.Parameters.AddWithValue("@tbl_name", Name);
 					using (var reader = command.ExecuteReader()) {
 						while (reader.Read()) {
-							var trigger = new SQLiteTrigger(this);
-							trigger.Name = reader.GetString(0);
+							var trigger = new SQLiteTrigger(this) {
+								Name = reader.GetString(0)
+							};
 							triggersCollection.Add(trigger);
 						}
 					}
@@ -81,17 +74,16 @@ namespace DataDevelop.Data.SQLite
 		protected override void PopulateForeignKeys(IList<ForeignKey> foreignKeysCollection)
 		{
 			var ids = new Dictionary<int, ForeignKey>();
-			using (this.Database.CreateConnectionScope()) {
-				var keys = this.Connection.GetSchema("ForeignKeys", new string[] { null, null, this.Name, null });
+			using (Database.CreateConnectionScope()) {
+				var keys = Connection.GetSchema("ForeignKeys", new[] { null, null, Name });
 				foreach (DataRow row in keys.Rows) {
-					var name = row["CONSTRAINT_NAME"] as string;
-					if (name != null) {
+					if (row["CONSTRAINT_NAME"] is string name) {
 						var id = (int)row["FKEY_ID"];
-						ForeignKey key;
-						if (!ids.TryGetValue(id, out key)) {
-							key = new ForeignKey(String.Format("FK_{0}_{1}", this.Name, id), this);
-							key.PrimaryTable = row["FKEY_TO_TABLE"] as string;
-							key.ChildTable = row["TABLE_NAME"] as string;
+						if (!ids.TryGetValue(id, out var key)) {
+							key = new ForeignKey(String.Format("FK_{0}_{1}", this.Name, id), this) {
+								PrimaryTable = row["FKEY_TO_TABLE"] as string,
+								ChildTable = row["TABLE_NAME"] as string
+							};
 							foreignKeysCollection.Add(key);
 							ids.Add(id, key);
 						}
@@ -105,15 +97,15 @@ namespace DataDevelop.Data.SQLite
 
 		public override bool Rename(string newName)
 		{
-			if (this.isView) {
+			if (isView) {
 				return false;
 			}
 			newName = newName.Replace("]", "]]");
 			using (var rename = Database.CreateCommand()) {
-				rename.CommandText = "ALTER TABLE " + this.QuotedName + " RENAME TO [" + newName + "]";
+				rename.CommandText = "ALTER TABLE " + QuotedName + " RENAME TO [" + newName + "]";
 				try {
 					rename.ExecuteNonQuery();
-					this.Name = newName;
+					Name = newName;
 					return true;
 				} catch (SQLiteException) {
 					return false;
@@ -126,13 +118,13 @@ namespace DataDevelop.Data.SQLite
 			var select = new StringBuilder();
 			select.Append("SELECT ");
 			
-			if (!this.IsView && !this.HasPrimaryKey) {
+			if (!IsView && !HasPrimaryKey) {
 				select.Append("RowId, ");
 			}
 			
 			filter.WriteColumnsProjection(select);
 			select.Append(" FROM ");
-			select.Append(this.QuotedName);
+			select.Append(QuotedName);
 			if (filter.IsRowFiltered) {
 				select.Append(" WHERE ");
 				filter.WriteWhereStatement(select);
@@ -145,14 +137,14 @@ namespace DataDevelop.Data.SQLite
 			var sql = new StringBuilder();
 			sql.Append("SELECT ");
 
-			if (!this.IsView && !this.HasPrimaryKey) {
+			if (!IsView && !HasPrimaryKey) {
 				sql.Append("RowId, ");
 			}
 
 			filter.WriteColumnsProjection(sql);
 
 			sql.Append(" FROM ");
-			sql.Append(this.QuotedName);
+			sql.Append(QuotedName);
 
 			if (filter.IsRowFiltered) {
 				sql.Append(" WHERE ");
@@ -165,11 +157,11 @@ namespace DataDevelop.Data.SQLite
 			}
 			sql.AppendFormat(" LIMIT {0}, {1}", startIndex, count);
 
-			var data = new DataTable(this.Name);
-			using (var select = this.Connection.CreateCommand()) {
+			var data = new DataTable(Name);
+			using (var select = Connection.CreateCommand()) {
 				select.CommandText = sql.ToString();
-				using (this.Database.CreateConnectionScope()) {
-					using (var adapter = (SQLiteDataAdapter)this.Database.CreateAdapter(this, filter)) {
+				using (Database.CreateConnectionScope()) {
+					using (var adapter = (SQLiteDataAdapter)Database.CreateAdapter(this, filter)) {
 						adapter.SelectCommand = select;
 						adapter.Fill(data);
 					}
@@ -180,10 +172,10 @@ namespace DataDevelop.Data.SQLite
 
 		public override string GenerateCreateStatement()
 		{
-			using (var select = (SQLiteCommand)this.Database.CreateCommand()) {
+			using (var select = (SQLiteCommand)Database.CreateCommand()) {
 				select.CommandText = "SELECT sql FROM sqlite_master WHERE type = @type AND name = @name";
-				select.Parameters.AddWithValue("@type", this.isView ? "view" : "table");
-				select.Parameters.AddWithValue("@name", this.Name);
+				select.Parameters.AddWithValue("@type", isView ? "view" : "table");
+				select.Parameters.AddWithValue("@name", Name);
 				return select.ExecuteScalar() as string;
 			}
 		}
@@ -192,22 +184,22 @@ namespace DataDevelop.Data.SQLite
 		{
 			var statement = new StringBuilder();
 			statement.AppendLine("BEGIN;");
-			if (this.IsView) {
+			if (IsView) {
 				statement.Append("DROP VIEW ");
 				statement.Append(QuotedName);
 				statement.AppendLine(";");
-				statement.Append(this.GenerateCreateStatement());
+				statement.Append(GenerateCreateStatement());
 				statement.AppendLine(";");
 			} else {
 				statement.Append("ALTER TABLE ");
 				statement.Append(QuotedName);
 				statement.Append(" RENAME TO ");
-				statement.AppendLine("[" + this.Name + "_AlterTableTemp];");
-				statement.Append(this.GenerateCreateStatement());
+				statement.AppendLine("[" + Name + "_AlterTableTemp];");
+				statement.Append(GenerateCreateStatement());
 				statement.AppendLine(";");
 				statement.AppendLine();
 				statement.Append("INSERT INTO ");
-				statement.AppendLine(this.QuotedName);
+				statement.AppendLine(QuotedName);
 				statement.Append("      (");
 				var filter = new TableFilter(this);
 				filter.WriteColumnsProjection(statement);
@@ -215,13 +207,13 @@ namespace DataDevelop.Data.SQLite
 				statement.Append("SELECT ");
 				filter.WriteColumnsProjection(statement);
 				statement.AppendLine();
-				statement.AppendLine("FROM [" + this.Name + "_AlterTableTemp];");
+				statement.AppendLine("FROM [" + Name + "_AlterTableTemp];");
 				statement.AppendLine();
-				statement.AppendLine("DROP TABLE [" + this.Name + "_AlterTableTemp];");
+				statement.AppendLine("DROP TABLE [" + Name + "_AlterTableTemp];");
 			}
 			if (Triggers.Count > 0) {
 				statement.AppendLine("/* RESTORE TRIGGERS */");
-				foreach (var trigger in this.Triggers) {
+				foreach (var trigger in Triggers) {
 					statement.Append(trigger.GenerateCreateStatement());
 					statement.AppendLine(";");
 				}
@@ -232,10 +224,10 @@ namespace DataDevelop.Data.SQLite
 
 		public override string GenerateDropStatement()
 		{
-			if (this.IsView) {
-				return "DROP VIEW " + this.QuotedName;
+			if (IsView) {
+				return "DROP VIEW " + QuotedName;
 			}
-			return "DROP TABLE " + this.QuotedName;
+			return "DROP TABLE " + QuotedName;
 		}
 	}
 }

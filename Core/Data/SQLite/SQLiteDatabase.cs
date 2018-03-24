@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 using System.Data.SQLite;
 using System.IO;
@@ -10,57 +10,45 @@ namespace DataDevelop.Data.SQLite
 	public sealed class SQLiteDatabase : Database, IDisposable
 	{
 		private string name;
-		private readonly SQLiteConnection connection;
 		private SQLiteConnectionStringBuilder connectionStringBuilder;
 
 		public SQLiteDatabase(string name, string connectionString)
 		{
 			this.name = name;
-			this.connection = new SQLiteConnection(connectionString);
-			this.connectionStringBuilder = new SQLiteConnectionStringBuilder(connectionString);
+			Connection = new SQLiteConnection(connectionString);
+			connectionStringBuilder = new SQLiteConnectionStringBuilder(connectionString);
 		}
 
-		public override string Name
-		{
-			get { return this.name; }
-		}
+		public override string Name => name;
 
-		public override DbProvider Provider
-		{
-			get { return SQLiteProvider.Instance; }
-		}
+		public override DbProvider Provider => SQLiteProvider.Instance;
 
-		public override string ConnectionString
-		{
-			get { return this.connection.ConnectionString; }
-		}
+		public override string ConnectionString => Connection.ConnectionString;
 
-		internal SQLiteConnection Connection
-		{
-			get { return this.connection; }
-		}
+		internal SQLiteConnection Connection { get; }
 
 		public override DbDataAdapter CreateAdapter(Table table, TableFilter filter)
 		{
 			if (!(table is SQLiteTable)) {
 				throw new ArgumentException("Table must be of type SQLiteTable", "table");
 			}
-			var adapter = new SQLiteDataAdapter(table.GetBaseSelectCommandText(filter), this.connection);
+			var adapter = new SQLiteDataAdapter(table.GetBaseSelectCommandText(filter), Connection);
 			if (!table.IsReadOnly) {
-				var builder = new SQLiteCommandBuilder(adapter);
-				builder.ConflictOption = ConflictOption.OverwriteChanges;
+				var builder = new SQLiteCommandBuilder(adapter) {
+					ConflictOption = ConflictOption.OverwriteChanges
+				};
 
 				SQLiteCommand updateCommand = null;
 				try {
 					updateCommand = builder.GetUpdateCommand();
 				} catch (InvalidOperationException) {
-					StringBuilder selectSql = new StringBuilder();
+					var selectSql = new StringBuilder();
 					selectSql.Append("SELECT RowId, ");
 					filter.WriteColumnsProjection(selectSql);
 					selectSql.Append(" FROM ");
 					selectSql.Append(table.QuotedName);
 					
-					adapter = new SQLiteDataAdapter(selectSql.ToString(), this.connection);
+					adapter = new SQLiteDataAdapter(selectSql.ToString(), Connection);
 					builder = new SQLiteCommandBuilder(adapter);
 					updateCommand = builder.GetUpdateCommand();
 				}
@@ -70,12 +58,13 @@ namespace DataDevelop.Data.SQLite
 					if (column.IsIdentity) {
 						insertCommand.CommandText = insertCommand.CommandText + "; SELECT @RowId = last_insert_rowid()";
 						insertCommand.UpdatedRowSource = UpdateRowSource.OutputParameters;
-						var parameter = new SQLiteParameter();
-						parameter.ParameterName = "@RowId";
-						parameter.Direction = ParameterDirection.Output;
-						parameter.SourceColumn = column.Name;
-						parameter.SourceVersion = DataRowVersion.Current;
-						parameter.Value = DBNull.Value;
+						var parameter = new SQLiteParameter {
+							ParameterName = "@RowId",
+							Direction = ParameterDirection.Output,
+							SourceColumn = column.Name,
+							SourceVersion = DataRowVersion.Current,
+							Value = DBNull.Value
+						};
 						insertCommand.Parameters.Add(parameter);
 						break;
 					}
@@ -90,17 +79,17 @@ namespace DataDevelop.Data.SQLite
 
 		public override DbCommand CreateCommand()
 		{
-			return this.Connection.CreateCommand();
+			return Connection.CreateCommand();
 		}
 
 		public override DbTransaction BeginTransaction()
 		{
-			return this.Connection.BeginTransaction();
+			return Connection.BeginTransaction();
 		}
 
 		public override int ExecuteNonQuery(string commandText)
 		{
-			using (var command = this.connection.CreateCommand()) {
+			using (var command = Connection.CreateCommand()) {
 				command.CommandText = commandText;
 				return command.ExecuteNonQuery();
 			}
@@ -108,7 +97,7 @@ namespace DataDevelop.Data.SQLite
 
 		public override DataTable ExecuteTable(string commandText)
 		{
-			using (var command = this.connection.CreateCommand()) {
+			using (var command = Connection.CreateCommand()) {
 				command.CommandText = commandText;
 				using (var adapter = new SQLiteDataAdapter(command)) {
 					var table = new DataTable();
@@ -120,10 +109,10 @@ namespace DataDevelop.Data.SQLite
 
 		public override int ExecuteNonQuery(string commandText, DbTransaction transaction)
 		{
-			if ((object)transaction.Connection != (object)this.connection) {
+			if ((object)transaction.Connection != (object)Connection) {
 				throw new InvalidOperationException();
 			}
-			using (var command = this.connection.CreateCommand()) {
+			using (var command = Connection.CreateCommand()) {
 				command.Transaction = (SQLiteTransaction)transaction;
 				command.CommandText = commandText;
 				return command.ExecuteNonQuery();
@@ -132,52 +121,54 @@ namespace DataDevelop.Data.SQLite
 
 		public void Dispose()
 		{
-			if (this.connection != null) {
-				this.connection.Dispose();
+			if (Connection != null) {
+				Connection.Dispose();
 			}
 		}
 
 		public override void ChangeConnectionString(string newConnectionString)
 		{
-			if (this.IsConnected) {
+			if (IsConnected) {
 				throw new InvalidOperationException("Database must be disconnected in order to change the ConnectionString");
 			} else {
-				this.connectionStringBuilder.ConnectionString = newConnectionString;
-				this.connection.ConnectionString = newConnectionString;
+				connectionStringBuilder.ConnectionString = newConnectionString;
+				Connection.ConnectionString = newConnectionString;
 			}
 		}
 
 		protected override void DoConnect()
 		{
-			var fileName = this.connectionStringBuilder.DataSource;
+			var fileName = connectionStringBuilder.DataSource;
 			if (fileName.Contains("\"")) {
 				fileName = fileName.Replace("\"", "");
 			}
 			if (!File.Exists(fileName)) {
-				throw new InvalidOperationException(String.Format("The file '{0}' does not exists.", fileName));
+				throw new InvalidOperationException($"The file '{fileName}' does not exists.");
 			} else {
-				this.connection.Open();
+				Connection.Open();
 			}
 		}
 
 		protected override void DoDisconnect()
 		{
-			this.connection.Close();
+			Connection.Close();
 		}
 
 		protected override void PopulateTables(DbObjectCollection<Table> tablesCollection)
 		{
-			var tables = this.Connection.GetSchema("Tables");
-			foreach (DataRow row in tables.Rows) {
-				var table = new SQLiteTable(this);
-				table.Name = row["TABLE_NAME"].ToString();
+			var tables = Connection.GetSchema("Tables");
+				foreach (DataRow row in tables.Rows) {
+				var table = new SQLiteTable(this) {
+					Name = row["TABLE_NAME"].ToString()
+				};
 				tablesCollection.Add(table);
 			}
 
-			var views = this.Connection.GetSchema("Views");
+			var views = Connection.GetSchema("Views");
 			foreach (DataRow row in views.Rows) {
-				var table = new SQLiteTable(this);
-				table.Name = row["TABLE_NAME"].ToString();
+				var table = new SQLiteTable(this) {
+					Name = row["TABLE_NAME"].ToString()
+				};
 				table.SetView(true);
 				tablesCollection.Add(table);
 			}
