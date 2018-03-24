@@ -53,8 +53,8 @@ namespace DataDevelop.Data
 			providers.Add("SqlCe", SqlCe.SqlCeProvider.Instance);
 			providers.Add("OleDb", OleDb.OleDbProvider.Instance);
 			providers.Add("Access", Access.AccessProvider.Instance);
-			providers.Add("MySql", new MySql.MySqlProvider());
-			providers.Add("PgSql", new PostgreSql.PgSqlProvider());
+			providers.Add("MySql", MySql.MySqlProvider.Instance);
+			providers.Add("PgSql", PostgreSql.PgSqlProvider.Instance);
 		}
 	}
 }

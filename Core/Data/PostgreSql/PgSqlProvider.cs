@@ -1,15 +1,17 @@
-using System;
-using System.Data.Common;
+﻿using System.Data.Common;
 using Npgsql;
 
 namespace DataDevelop.Data.PostgreSql
 {
 	public class PgSqlProvider : DbProvider
 	{
-		public override string Name
-		{
-			get { return "PgSql"; }
-		}
+		private static PgSqlProvider provider;
+
+		public static PgSqlProvider Instance => provider ?? (provider = new PgSqlProvider());
+
+		private PgSqlProvider() { }
+
+		public override string Name => "PgSql";
 
 		public override Database CreateDatabase(string name, string connectionString)
 		{
