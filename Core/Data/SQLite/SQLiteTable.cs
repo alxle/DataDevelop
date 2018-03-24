@@ -80,7 +80,7 @@ namespace DataDevelop.Data.SQLite
 					if (row["CONSTRAINT_NAME"] is string name) {
 						var id = (int)row["FKEY_ID"];
 						if (!ids.TryGetValue(id, out var key)) {
-							key = new ForeignKey(String.Format("FK_{0}_{1}", this.Name, id), this) {
+							key = new ForeignKey(name, this) {
 								PrimaryTable = row["FKEY_TO_TABLE"] as string,
 								ChildTable = row["TABLE_NAME"] as string
 							};
