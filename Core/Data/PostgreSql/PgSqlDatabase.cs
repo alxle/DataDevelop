@@ -8,57 +8,34 @@ namespace DataDevelop.Data.PostgreSql
 	internal sealed class PgSqlDatabase : Database, IDisposable
 	{
 		private string name;
-		private NpgsqlConnection connection;
 
 		public PgSqlDatabase(string name, string connectionString)
 		{
 			this.name = name;
-			this.connection = new NpgsqlConnection(connectionString);
+			Connection = new NpgsqlConnection(connectionString);
 		}
 
-		public override string Name
-		{
-			get { return this.name; }
-		}
+		public override string Name => name;
 
-		public override bool SupportStoredProcedures
-		{
-			get { return true; }
-		}
+		public override bool SupportStoredProcedures => false;
 
-		public override string ParameterPrefix
-		{
-			get { return ":"; }
-		}
+		public override bool SupportUserDefinedFunctions => true;
 
-		public override string QuotePrefix
-		{
-			get { return "\""; }
-		}
+		public override string ParameterPrefix => ":";
 
-		public override string QuoteSuffix
-		{
-			get { return "\""; }
-		}
+		public override string QuotePrefix => "\"";
 
-		public override DbProvider Provider
-		{
-			get { return new PgSqlProvider(); }
-		}
+		public override string QuoteSuffix => "\"";
 
-		public override string ConnectionString
-		{
-			get { return this.connection.ConnectionString; }
-		}
+		public override DbProvider Provider => PgSqlProvider.Instance;
 
-		internal NpgsqlConnection Connection
-		{
-			get { return this.connection; }
-		}
+		public override string ConnectionString => Connection.ConnectionString;
+
+		internal NpgsqlConnection Connection { get; }
 
 		public override int ExecuteNonQuery(string commandText)
 		{
-			using (var command = this.connection.CreateCommand()) {
+			using (var command = Connection.CreateCommand()) {
 				command.CommandText = commandText;
 				return command.ExecuteNonQuery();
 			}
@@ -66,8 +43,8 @@ namespace DataDevelop.Data.PostgreSql
 
 		public override int ExecuteNonQuery(string commandText, DbTransaction transaction)
 		{
-			using (this.CreateConnectionScope()) {
-				using (var command = this.connection.CreateCommand()) {
+			using (CreateConnectionScope()) {
+				using (var command = Connection.CreateCommand()) {
 					command.Transaction = (NpgsqlTransaction)transaction;
 					command.CommandText = commandText;
 					return command.ExecuteNonQuery();
@@ -78,7 +55,7 @@ namespace DataDevelop.Data.PostgreSql
 		public override DataTable ExecuteTable(string commandText)
 		{
 			var data = new DataTable();
-			using (var adapter = new NpgsqlDataAdapter(commandText, this.connection)) {
+			using (var adapter = new NpgsqlDataAdapter(commandText, Connection)) {
 				adapter.Fill(data);
 			}
 			return data;
@@ -86,7 +63,7 @@ namespace DataDevelop.Data.PostgreSql
 
 		public override DbDataAdapter CreateAdapter(Table table, TableFilter filter)
 		{
-			var adapter = new NpgsqlDataAdapter(table.GetBaseSelectCommandText(filter), this.connection);
+			var adapter = new NpgsqlDataAdapter(table.GetBaseSelectCommandText(filter), Connection);
 			var builder = new NpgsqlCommandBuilder(adapter);
 			try {
 				adapter.InsertCommand = builder.GetInsertCommand();
@@ -99,39 +76,39 @@ namespace DataDevelop.Data.PostgreSql
 
 		public override DbCommand CreateCommand()
 		{
-			return this.connection.CreateCommand();
+			return Connection.CreateCommand();
 		}
 
 		public override DbTransaction BeginTransaction()
 		{
-			return this.connection.BeginTransaction();
+			return Connection.BeginTransaction();
 		}
 
 		public void Dispose()
 		{
-			if (this.connection != null) {
-				this.connection.Dispose();
+			if (Connection != null) {
+				Connection.Dispose();
 				GC.SuppressFinalize(this);
 			}
 		}
 
 		public override void ChangeConnectionString(string newConnectionString)
 		{
-			if (this.IsConnected) {
+			if (IsConnected) {
 				throw new InvalidOperationException("Database must be disconnected in order to change the ConnectionString");
 			} else {
-				this.connection.ConnectionString = newConnectionString;
+				Connection.ConnectionString = newConnectionString;
 			}
 		}
 
 		protected override void DoConnect()
 		{
-			this.connection.Open();
+			Connection.Open();
 		}
 
 		protected override void DoDisconnect()
 		{
-			this.connection.Close();
+			Connection.Close();
 		}
 
 		protected override void PopulateTables(DbObjectCollection<Table> tablesCollection)
@@ -145,16 +122,47 @@ namespace DataDevelop.Data.PostgreSql
 
 			using (var views = Connection.GetSchema("Views", new[] { Connection.Database, "public" })) {
 				foreach (DataRow row in views.Rows) {
-					var table = new PgSqlTable(this, (string)row["table_name"], 
+					var table = new PgSqlTable(this, (string)row["table_name"],
 						isView: true, isReadOnly: (string)row["is_updatable"] == "NO");
-					tablesCollection.Add(table);					
+					tablesCollection.Add(table);
 				}
 			}
 		}
 
 		protected override void PopulateStoredProcedures(DbObjectCollection<StoredProcedure> storedProceduresCollection)
 		{
-			// TODO
+		}
+
+		protected override void PopulateUserDefinedFunctions(DbObjectCollection<UserDefinedFunction> userDefinedFunctionsCollection)
+		{
+			using (var command = Connection.CreateCommand()) {
+				command.CommandText =
+					"SELECT n.nspname as \"Schema\", " +
+					" p.proname as \"Name\", " +
+					" pg_catalog.pg_get_function_result(p.oid) as \"Result data type\", " +
+					" pg_catalog.pg_get_function_arguments(p.oid) as \"Argument data types\", " +
+					"CASE " +
+					" WHEN p.proisagg THEN 'agg' " +
+					" WHEN p.proiswindow THEN 'window' " +
+					" WHEN p.prorettype = 'pg_catalog.trigger'::pg_catalog.regtype THEN 'trigger' " +
+					" ELSE 'normal' " +
+					"END as \"Type\" " +
+					"FROM pg_catalog.pg_proc p " +
+					" LEFT JOIN pg_catalog.pg_namespace n ON n.oid = p.pronamespace " +
+					"WHERE pg_catalog.pg_function_is_visible(p.oid) " +
+					"  AND n.nspname <> 'pg_catalog' " +
+					"  AND n.nspname <> 'information_schema' " +
+					"  AND n.nspname = :schema " +
+					"ORDER BY 1, 2, 4; ";
+				command.Parameters.AddWithValue(":schema", "public");
+				using (var reader = command.ExecuteReader()) {
+					while (reader.Read()) {
+						var fn = new PgSqlUserDefinedFunction(this, reader.GetString(1));
+						fn.ReturnType = reader.GetString(2);
+						userDefinedFunctionsCollection.Add(fn);
+					}
+				}
+			}
 		}
 	}
 }
