@@ -34,13 +34,13 @@ namespace DataDevelop.Data.PostgreSql
 
 		public void SetView(bool value)
 		{
-			this.isView = value;
+			isView = value;
 		}
 
 		public override bool Rename(string newName)
 		{
-			using (var alter = this.Connection.CreateCommand()) {
-				alter.CommandText = "RENAME TABLE \"" + Name + "\" TO \"" + newName + "\"";
+			using (var alter = Connection.CreateCommand()) {
+				alter.CommandText = $@"RENAME TABLE ""{Name}"" TO ""{newName}""";
 				try {
 					alter.ExecuteNonQuery();
 					return true;
@@ -52,8 +52,8 @@ namespace DataDevelop.Data.PostgreSql
 
 		public override bool Delete()
 		{
-			using (var drop = this.Connection.CreateCommand()) {
-				drop.CommandText = "DROP TABLE " + this.QuotedName;
+			using (var drop = Connection.CreateCommand()) {
+				drop.CommandText = "DROP TABLE " + QuotedName;
 				try {
 					drop.ExecuteNonQuery();
 					return true;
@@ -65,13 +65,13 @@ namespace DataDevelop.Data.PostgreSql
 
 		public override DataTable GetData(int startIndex, int count, TableFilter filter, TableSort sort)
 		{
-			var data = new DataTable(this.Name);
+			var data = new DataTable(Name);
 
 			var sql = new StringBuilder();
 			sql.Append("SELECT ");
 			filter.WriteColumnsProjection(sql);
 			sql.Append(" FROM ");
-			sql.Append(this.QuotedName);
+			sql.Append(QuotedName);
 
 			if (filter.IsRowFiltered) {
 				sql.Append(" WHERE ");
@@ -83,10 +83,10 @@ namespace DataDevelop.Data.PostgreSql
 			}
 			sql.AppendFormat(" LIMIT {0} OFFSET {1}", count, startIndex);
 
-			using (var select = this.Connection.CreateCommand()) {
+			using (var select = Connection.CreateCommand()) {
 				select.CommandText = sql.ToString();
-				using (this.Database.CreateConnectionScope()) {
-					using (var adapter = (NpgsqlDataAdapter)this.Database.CreateAdapter(this, filter)) {
+				using (Database.CreateConnectionScope()) {
+					using (var adapter = (NpgsqlDataAdapter)Database.CreateAdapter(this, filter)) {
 						adapter.SelectCommand = select;
 						adapter.Fill(data);
 					}
@@ -97,23 +97,22 @@ namespace DataDevelop.Data.PostgreSql
 
 		protected override void PopulateColumns(IList<Column> columnsCollection)
 		{
-			using (this.Database.CreateConnectionScope()) {
+			using (Database.CreateConnectionScope()) {
 				var primaryKeys = new HashSet<string>();
 				if (!IsReadOnly) {
-					// TODO: Add Schema
-					using (var command = this.Connection.CreateCommand()) {
+					using (var command = Connection.CreateCommand()) {
 						command.CommandText =
 							"select column_name " +
 							"from information_schema.table_constraints t " +
 							"inner join information_schema.key_column_usage k " +
 							"           on k.constraint_name = t.constraint_name " +
 							"where t.table_catalog = :table_catalog " +
-							////"      and table_schema = :table_schema " +
+							"      and t.table_schema = :table_schema " +
 							"      and t.table_name = :table_name " +
 							"      and t.constraint_type = 'PRIMARY KEY'";
-						command.Parameters.AddWithValue(":table_catalog", this.Connection.Database);
-						////command.Parameters.AddWithValue(":table_schema", null);
-						command.Parameters.AddWithValue(":table_name", this.Name);
+						command.Parameters.AddWithValue(":table_catalog", Connection.Database);
+						command.Parameters.AddWithValue(":table_schema", "public");
+						command.Parameters.AddWithValue(":table_name", Name);
 						using (var reader = command.ExecuteReader()) {
 							while (reader.Read()) {
 								primaryKeys.Add(reader.GetString(0));
@@ -122,7 +121,7 @@ namespace DataDevelop.Data.PostgreSql
 					}
 				}
 
-				var columns = this.Connection.GetSchema("Columns", new string[] { this.Connection.Database, null, this.Name });
+				var columns = Connection.GetSchema("Columns", new[] { Connection.Database, "public", Name });
 				columns.DefaultView.Sort = "ordinal_position";
 				foreach (DataRowView row in columns.DefaultView) {
 					var column = new Column(this) {
@@ -136,7 +135,7 @@ namespace DataDevelop.Data.PostgreSql
 					column.InPrimaryKey = primaryKeys.Contains(column.Name);
 					columnsCollection.Add(column);
 				}
-				this.SetColumnTypes(columnsCollection);
+				SetColumnTypes(columnsCollection);
 			}
 		}
 
@@ -179,10 +178,11 @@ namespace DataDevelop.Data.PostgreSql
 						while (reader.Read()) {
 							var name = reader.GetString(0);
 							if (key == null || key.Name != name) {
-								key = new ForeignKey(name, this);
-								key.Name = name;
-								key.PrimaryTable = reader.GetString(2);
-								key.ChildTable = Name;
+								key = new ForeignKey(name, this) {
+									Name = name,
+									PrimaryTable = reader.GetString(2),
+									ChildTable = Name
+								};
 								foreignKeysCollection.Add(key);
 							}
 							key.Columns.Add(new ColumnsPair(reader.GetString(3), reader.GetString(1)));

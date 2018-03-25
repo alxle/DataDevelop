@@ -50,11 +50,16 @@ namespace DataDevelop.Data.PostgreSql
 					var fields = arguments.Split(',');
 					foreach (var field in fields) {
 						var parts = field.Trim().Split(' ');
-						if (parts.Length > 0) {
-							var parameter = new Parameter() {
-								Name = parts[0]
-							};
-							parameter.ProviderType = string.Join(" ", parts.Skip(1).ToArray());
+						if (parts.Length > 1) {
+							var parameter = new Parameter();
+							if (parts[0] == "OUT") {
+								parameter.IsOutput = true;
+								parameter.Name = parts[1];
+								parameter.ProviderType = string.Join(" ", parts.Skip(2).ToArray());
+							} else {
+								parameter.Name = parts[0];
+								parameter.ProviderType = string.Join(" ", parts.Skip(1).ToArray());
+							}
 							parametersCollection.Add(parameter);
 						}
 					}
