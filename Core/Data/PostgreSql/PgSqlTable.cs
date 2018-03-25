@@ -197,17 +197,22 @@ namespace DataDevelop.Data.PostgreSql
 			if (IsView) {
 				using (Database.CreateConnectionScope()) {
 					using (var command = Connection.CreateCommand()) {
-						command.CommandText = "select pg_get_viewdef(:ViewName, true)";
+						command.CommandText = "select pg_get_viewdef(:ViewName)";
 						command.Parameters.AddWithValue(":ViewName", Name);
 						var viewStatement = command.ExecuteScalar() as string;
 						if (!string.IsNullOrEmpty(viewStatement)) {
-							return "CREATE VIEW " + QuotedName + Environment.NewLine +
-								"AS " + Environment.NewLine + viewStatement;
+							return "CREATE OR REPLACE VIEW " + QuotedName + " AS " +
+								Environment.NewLine + viewStatement;
 						}
 					}
 				}
 			}
 			return null;
+		}
+
+		public override string GenerateAlterStatement()
+		{
+			return GenerateCreateStatement();
 		}
 
 		public override string GenerateDropStatement()

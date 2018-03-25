@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace DataDevelop.Data.PostgreSql
 {
@@ -16,12 +17,23 @@ namespace DataDevelop.Data.PostgreSql
 
 		public override string GenerateAlterStatement()
 		{
-			return null;
+			return GenerateCreateStatement();
 		}
 
 		public override string GenerateCreateStatement()
 		{
-			return null;
+			using (var command = database.Connection.CreateCommand()) {
+				command.CommandText =
+					"SELECT pg_get_functiondef(p.oid) " +
+					"FROM pg_catalog.pg_proc p " +
+					" LEFT JOIN pg_catalog.pg_namespace n ON n.oid = p.pronamespace " +
+					"WHERE pg_catalog.pg_function_is_visible(p.oid) " +
+					"  AND n.nspname = :schema " +
+					"  AND p.proname = :name ";
+				command.Parameters.AddWithValue(":schema", "public");
+				command.Parameters.AddWithValue(":name", Name);
+				return command.ExecuteScalar() as string;
+			}
 		}
 
 		public override string GenerateDropStatement()
