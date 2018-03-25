@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 using System.Data;
 using System.Collections.Generic;
@@ -15,12 +15,12 @@ namespace DataDevelop.Data.MySql
 		{
 			this.database = database;
 			this.schemaRow = schemaRow;
-			this.Name = (string)schemaRow["SPECIFIC_NAME"];
+			Name = (string)schemaRow["SPECIFIC_NAME"];
 		}
 
 		public override string GenerateAlterStatement()
 		{
-			return this.GenerateDropStatement() + ";" + Environment.NewLine + this.GenerateCreateStatement();
+			return GenerateDropStatement() + ";" + Environment.NewLine + GenerateCreateStatement();
 		}
 
 		public override string GenerateCreateStatement()
@@ -29,8 +29,8 @@ namespace DataDevelop.Data.MySql
 			create.AppendLine("DELIMITER $$");
 			create.AppendLine();
 			create.Append("CREATE PROCEDURE ");
-			create.AppendLine(this.Name);
-			create.Append(this.schemaRow["ROUTINE_DEFINITION"]);
+			create.AppendLine(Name);
+			create.Append(schemaRow["ROUTINE_DEFINITION"]);
 			create.AppendLine();
 			create.AppendLine("END $$");
 			create.AppendLine("DELIMITER ;");
@@ -39,14 +39,14 @@ namespace DataDevelop.Data.MySql
 
 		public override string GenerateDropStatement()
 		{
-			return "DROP PROCEDURE " + this.Name;
+			return "DROP PROCEDURE " + Name;
 		}
 
 		public override string GenerateExecuteStatement()
 		{
 			var statement = new StringBuilder();
 			statement.Append("CALL ");
-			statement.AppendLine(this.Name);
+			statement.AppendLine(Name);
 			statement.AppendLine("(");
 			bool first = true;
 			foreach (var p in Parameters) {
@@ -69,18 +69,16 @@ namespace DataDevelop.Data.MySql
 
 		protected override void PopulateParameters(IList<Parameter> parametersCollection)
 		{
-			var connection = this.database.Connection;
-			var parameters = connection.GetSchema("Procedure Parameters", 
-				new string[] { null, connection.Database, this.Name });
-			var view = new DataView(parameters);
-			view.Sort = "ORDINAL_POSITION";
-			foreach (DataRow row in view.ToTable().Rows) {
-				parametersCollection.Add(new Parameter()
-				{
-					Name = (string)row["PARAMETER_NAME"],
-					IsOutput = (string)row["PARAMETER_MODE"] == "OUT",
-					ProviderType = (string)row["DATA_TYPE"]
-				});
+			var connection = database.Connection;
+			using (var parameters = connection.GetSchema("Procedure Parameters", new[] { null, connection.Database, Name })) {
+				parameters.DefaultView.Sort = "ORDINAL_POSITION";
+				foreach (DataRowView row in parameters.DefaultView) {
+					parametersCollection.Add(new Parameter() {
+						Name = (string)row["PARAMETER_NAME"],
+						IsOutput = (string)row["PARAMETER_MODE"] == "OUT",
+						ProviderType = (string)row["DATA_TYPE"]
+					});
+				}
 			}
 		}
 	}

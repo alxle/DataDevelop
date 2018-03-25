@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Data.Common;
 using MySql.Data.MySqlClient;
@@ -8,57 +8,32 @@ namespace DataDevelop.Data.MySql
 	internal sealed class MySqlDatabase : Database, IDisposable
 	{
 		private string name;
-		private MySqlConnection connection;
 
 		public MySqlDatabase(string name, string connectionString)
 		{
 			this.name = name;
-			this.connection = new MySqlConnection(connectionString);
+			Connection = new MySqlConnection(connectionString);
 		}
 
-		public override string Name
-		{
-			get { return this.name; }
-		}
+		public override string Name => name;
 
-		public override bool SupportStoredProcedures
-		{
-			get { return true; }
-		}
+		public override bool SupportStoredProcedures => true;
 
-		public override string ParameterPrefix
-		{
-			get { return "?"; }
-		}
+		public override string ParameterPrefix => "?";
 
-		public override string QuotePrefix
-		{
-			get { return "`"; }
-		}
+		public override string QuotePrefix => "`";
 
-		public override string QuoteSuffix
-		{
-			get { return "`"; }
-		}
+		public override string QuoteSuffix => "`";
 
-		public override DbProvider Provider
-		{
-			get { return new MySqlProvider(); }
-		}
+		public override DbProvider Provider=> MySqlProvider.Instance;
 
-		public override string ConnectionString
-		{
-			get { return this.connection.ConnectionString; }
-		}
+		public override string ConnectionString => Connection.ConnectionString;
 
-		internal MySqlConnection Connection
-		{
-			get { return this.connection; }
-		}
+		internal MySqlConnection Connection { get; }
 
 		public override int ExecuteNonQuery(string commandText)
 		{
-			using (var command = this.connection.CreateCommand()) {
+			using (var command = Connection.CreateCommand()) {
 				command.CommandText = commandText;
 				return command.ExecuteNonQuery();
 			}
@@ -66,9 +41,9 @@ namespace DataDevelop.Data.MySql
 
 		public override int ExecuteNonQuery(string commandText, DbTransaction transaction)
 		{
-			int rows = 0;
-			using (this.CreateConnectionScope()) {
-				using (var command = this.connection.CreateCommand()) {
+			var rows = 0;
+			using (CreateConnectionScope()) {
+				using (var command = Connection.CreateCommand()) {
 					command.Transaction = (MySqlTransaction)transaction;
 					command.CommandText = commandText;
 					rows = command.ExecuteNonQuery();
@@ -80,7 +55,7 @@ namespace DataDevelop.Data.MySql
 		public override DataTable ExecuteTable(string commandText)
 		{
 			var data = new DataTable();
-			using (var adapter = new MySqlDataAdapter(commandText, this.connection)) {
+			using (var adapter = new MySqlDataAdapter(commandText, Connection)) {
 				adapter.Fill(data);
 			}
 			return data;
@@ -88,7 +63,7 @@ namespace DataDevelop.Data.MySql
 
 		public override DbDataAdapter CreateAdapter(Table table, TableFilter filter)
 		{
-			var adapter = new MySqlDataAdapter(table.GetBaseSelectCommandText(filter), this.connection);
+			var adapter = new MySqlDataAdapter(table.GetBaseSelectCommandText(filter), Connection);
 			var builder = new MySqlCommandBuilder(adapter);
 			////builder.ReturnGeneratedIdentifiers = true;
 			try {
@@ -102,54 +77,56 @@ namespace DataDevelop.Data.MySql
 
 		public override DbCommand CreateCommand()
 		{
-			return this.connection.CreateCommand();
+			return Connection.CreateCommand();
 		}
 
 		public override DbTransaction BeginTransaction()
 		{
-			return this.connection.BeginTransaction();
+			return Connection.BeginTransaction();
 		}
 
 		public void Dispose()
 		{
-			if (this.connection != null) {
-				this.connection.Dispose();
+			if (Connection != null) {
+				Connection.Dispose();
 				GC.SuppressFinalize(this);
 			}
 		}
 
 		public override void ChangeConnectionString(string newConnectionString)
 		{
-			if (this.IsConnected) {
+			if (IsConnected) {
 				throw new InvalidOperationException("Database must be disconnected in order to change the ConnectionString");
 			} else {
-				this.connection.ConnectionString = newConnectionString;
+				Connection.ConnectionString = newConnectionString;
 			}
 		}
 
 		protected override void DoConnect()
 		{
-			this.connection.Open();
+			Connection.Open();
 		}
 
 		protected override void DoDisconnect()
 		{
-			this.connection.Close();
+			Connection.Close();
 		}
 
 		protected override void PopulateTables(DbObjectCollection<Table> tablesCollection)
 		{
-			var tables = this.Connection.GetSchema("Tables", new string[] { null, this.connection.Database });
+			var tables = Connection.GetSchema("Tables", new[] { null, Connection.Database });
 			foreach (DataRow row in tables.Rows) {
-				var table = new MySqlTable(this);
-				table.Name = row["TABLE_NAME"].ToString();
+				var table = new MySqlTable(this) {
+					Name = row["TABLE_NAME"].ToString()
+				};
 				tablesCollection.Add(table);
 			}
 
-			var views = this.Connection.GetSchema("Views", new string[] { null, this.connection.Database });
+			var views = Connection.GetSchema("Views", new[] { null, Connection.Database });
 			foreach (DataRow row in views.Rows) {
-				var table = new MySqlTable(this);
-				table.Name = row["TABLE_NAME"].ToString();
+				var table = new MySqlTable(this) {
+					Name = row["TABLE_NAME"].ToString()
+				};
 				table.SetView(true);
 				tablesCollection.Add(table);
 			}
@@ -157,7 +134,7 @@ namespace DataDevelop.Data.MySql
 
 		protected override void PopulateStoredProcedures(DbObjectCollection<StoredProcedure> storedProceduresCollection)
 		{
-			var procedures = this.Connection.GetSchema("Procedures", new string[] { null, this.connection.Database });
+			var procedures = Connection.GetSchema("Procedures", new[] { null, Connection.Database });
 			foreach (DataRow row in procedures.Rows) {
 				var sp = new MySqlStoredProcedure(this, row);
 				storedProceduresCollection.Add(sp);

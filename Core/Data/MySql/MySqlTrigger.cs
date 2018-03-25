@@ -1,5 +1,4 @@
-using System;
-using System.Data;
+﻿using System;
 using System.Text;
 
 namespace DataDevelop.Data.MySql
@@ -7,39 +6,41 @@ namespace DataDevelop.Data.MySql
 	internal class MySqlTrigger : Trigger
 	{
 		private MySqlTable table;
-		private DataRow schemaRow;
 
-		public MySqlTrigger(MySqlTable table, DataRow schemaRow)
+		public MySqlTrigger(MySqlTable table, string name)
 			: base(table)
 		{
 			this.table = table;
-			this.schemaRow = schemaRow;
-			this.Name = (string)schemaRow["TRIGGER_NAME"];
+			Name = name;
 		}
 
 		public override string GenerateCreateStatement()
 		{
+			var triggers = table.Connection.GetSchema("Triggers", new[] { null, table.Connection.Database, table.Name, Name });
+			if (triggers.Rows.Count != 1)
+				return "-- Trigger not found in database.";
+			var row = triggers.Rows[0];
 			var create = new StringBuilder();
 			create.Append("CREATE TRIGGER ");
-			create.Append(this.Name);
+			create.Append(Name);
 			create.Append(' ');
-			create.Append(this.schemaRow["ACTION_TIMING"]);
+			create.Append(row["ACTION_TIMING"]);
 			create.Append(' ');
-			create.Append(this.schemaRow["EVENT_MANIPULATION"]);
+			create.Append(row["EVENT_MANIPULATION"]);
 			create.Append(" ON ");
-			create.Append(this.Table.QuotedName);
-			create.Append(this.schemaRow["ACTION_STATEMENT"]);
+			create.Append(Table.QuotedName);
+			create.Append(row["ACTION_STATEMENT"]);
 			return create.ToString();
 		}
 
 		public override string GenerateAlterStatement()
 		{
-			return this.GenerateDropStatement() + ";" + Environment.NewLine + this.GenerateCreateStatement();
+			return GenerateDropStatement() + ";" + Environment.NewLine + GenerateCreateStatement();
 		}
 
 		public override string GenerateDropStatement()
 		{
-			return "DROP TRIGGER " + this.Name;
+			return "DROP TRIGGER " + Name;
 		}
 	}
 }
