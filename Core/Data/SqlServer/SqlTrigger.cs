@@ -12,11 +12,14 @@ namespace DataDevelop.Data.SqlServer
 			this.table = table;
 			SchemaName = table.SchemaName;
 			TriggerName = triggerName;
+			Name = $"{SchemaName}.{TriggerName}";
 		}
 
 		public string SchemaName { get; set; }
 
 		public string TriggerName { get; set; }
+
+		public string QuotedName => $"[{SchemaName}].[{TriggerName}]";
 
 		public string ObjectName => TriggerName;
 
@@ -34,7 +37,7 @@ namespace DataDevelop.Data.SqlServer
 						"WHERE tbl.name = @TableName AND SCHEMA_NAME(tbl.schema_id) = @TableSchema AND tr.name = @Name";
 					select.Parameters.AddWithValue("@TableName", table.TableName);
 					select.Parameters.AddWithValue("@TableSchema", table.SchemaName);
-					select.Parameters.AddWithValue("@Name", Name);
+					select.Parameters.AddWithValue("@Name", TriggerName);
 					using (var reader = select.ExecuteReader()) {
 						if (reader.Read()) {
 							return reader.GetString(reader.GetOrdinal("Definition"));
