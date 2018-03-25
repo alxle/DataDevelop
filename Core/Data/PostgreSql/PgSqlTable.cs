@@ -141,7 +141,28 @@ namespace DataDevelop.Data.PostgreSql
 
 		protected override void PopulateTriggers(IList<Trigger> triggersCollection)
 		{
-			// TODO
+			using (Database.CreateConnectionScope()) {
+				using (var command = Connection.CreateCommand()) {
+					command.CommandText =
+						"select trigger_name " +
+						"from information_schema.triggers t " +
+						"where t.event_object_schema = :table_schema " +
+						"      and t.event_object_table = :table_name ";
+					command.Parameters.AddWithValue(":table_catalog", Connection.Database);
+					command.Parameters.AddWithValue(":table_schema", "public");
+					command.Parameters.AddWithValue(":table_name", Name);
+					using (var reader = command.ExecuteReader()) {
+						var triggers = new HashSet<string>();
+						while (reader.Read()) {
+							var triggerName = reader.GetString(0);
+							if (!triggers.Contains(triggerName)) {
+								triggers.Add(triggerName);
+								triggersCollection.Add(new PgSqlTrigger(this, triggerName));
+							}
+						}
+					}
+				}
+			}
 		}
 
 		protected override void PopulateForeignKeys(IList<ForeignKey> foreignKeysCollection)
@@ -149,25 +170,25 @@ namespace DataDevelop.Data.PostgreSql
 			using (Database.CreateConnectionScope()) {
 				using (var command = Connection.CreateCommand()) {
 					command.CommandText =
-						@"select conname, " +
+						"select conname, " +
 						"    att2.attname as child_column, " +
-						"	cl.relname as parent_table, " +
+						"    cl.relname as parent_table, " +
 						"    att.attname as parent_column " +
 						"from " +
 						"   (select" +
-						"		unnest(con1.conkey) as parent, " +
-						"		unnest(con1.confkey) as child, " +
-						"		con1.confrelid, " +
-						"		con1.conrelid, " +
-						"		con1.conname " +
-						"	from " +
-						"		pg_class cl " +
-						"		join pg_namespace ns on cl.relnamespace = ns.oid " +
-						"		join pg_constraint con1 on con1.conrelid = cl.oid " +
-						"	where " +
-						"		cl.relname = :TableName " +
-						"		and ns.nspname = 'public' " +
-						"		and con1.contype = 'f' " +
+						"       unnest(con1.conkey) as parent, " +
+						"       unnest(con1.confkey) as child, " +
+						"       con1.confrelid, " +
+						"       con1.conrelid, " +
+						"       con1.conname " +
+						"   from " +
+						"       pg_class cl " +
+						"       join pg_namespace ns on cl.relnamespace = ns.oid " +
+						"       join pg_constraint con1 on con1.conrelid = cl.oid " +
+						"   where " +
+						"       cl.relname = :TableName " +
+						"       and ns.nspname = 'public' " +
+						"       and con1.contype = 'f' " +
 						"   ) con " +
 						"inner join pg_attribute att on att.attrelid = con.confrelid and att.attnum = con.child " +
 						"inner join pg_class cl on cl.oid = con.confrelid " +
