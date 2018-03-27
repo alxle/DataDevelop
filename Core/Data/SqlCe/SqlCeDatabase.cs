@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlServerCe;
@@ -8,38 +8,22 @@ namespace DataDevelop.Data.SqlCe
 	internal sealed class SqlCeDatabase : Database, IDisposable
 	{
 		private string name;
-		private SqlCeConnection connection;
 
 		public SqlCeDatabase(string name, string connectionString)
 		{
 			this.name = name;
-			this.connection = new SqlCeConnection(connectionString);
+			Connection = new SqlCeConnection(connectionString);
 		}
 
-		public SqlCeConnection Connection
-		{
-			get { return this.connection; }
-		}
-		
-		public override string Name
-		{
-			get { return this.name; }
-		}
+		public SqlCeConnection Connection { get; }
 
-		public override DbProvider Provider
-		{
-			get { return SqlCeProvider.Instance; }
-		}
+		public override string Name => name;
 
-		public override string ConnectionString
-		{
-			get { return this.connection.ConnectionString; }
-		}
+		public override DbProvider Provider => SqlCeProvider.Instance;
 
-		public override bool SupportStoredProcedures
-		{
-			get { return false; }
-		}
+		public override string ConnectionString => Connection.ConnectionString;
+
+		public override bool SupportStoredProcedures => false;
 
 		public override DbDataAdapter CreateAdapter(Table table, TableFilter filter)
 		{
@@ -47,10 +31,11 @@ namespace DataDevelop.Data.SqlCe
 			if (sqlTable == null) {
 				throw new InvalidOperationException("Table should be an SqlCeTable");
 			}
-			var adapter = new SqlCeDataAdapter(table.GetBaseSelectCommandText(filter), this.connection);
+			var adapter = new SqlCeDataAdapter(table.GetBaseSelectCommandText(filter), Connection);
 			if (!table.IsReadOnly) {
-				var builder = new SqlCeCommandBuilder(adapter);
-				builder.ConflictOption = ConflictOption.OverwriteChanges;
+				var builder = new SqlCeCommandBuilder(adapter) {
+					ConflictOption = ConflictOption.OverwriteChanges
+				};
 				try {
 					adapter.UpdateCommand = builder.GetUpdateCommand();
 					adapter.InsertCommand = builder.GetInsertCommand();
@@ -65,17 +50,17 @@ namespace DataDevelop.Data.SqlCe
 
 		public override DbCommand CreateCommand()
 		{
-			return this.Connection.CreateCommand();
+			return Connection.CreateCommand();
 		}
 
 		public override DbTransaction BeginTransaction()
 		{
-			return this.Connection.BeginTransaction();
+			return Connection.BeginTransaction();
 		}
 
 		public override int ExecuteNonQuery(string commandText)
 		{
-			using (var command = this.connection.CreateCommand()) {
+			using (var command = Connection.CreateCommand()) {
 				command.CommandText = commandText;
 				return command.ExecuteNonQuery();
 			}
@@ -83,7 +68,7 @@ namespace DataDevelop.Data.SqlCe
 
 		public override DataTable ExecuteTable(string commandText)
 		{
-			using (var command = this.connection.CreateCommand()) {
+			using (var command = Connection.CreateCommand()) {
 				command.CommandText = commandText;
 				var table = new DataTable();
 				using (var adapter = new SqlCeDataAdapter(command)) {
@@ -95,10 +80,10 @@ namespace DataDevelop.Data.SqlCe
 
 		public override int ExecuteNonQuery(string commandText, DbTransaction transaction)
 		{
-			if ((object)transaction.Connection != (object)this.connection) {
+			if ((object)transaction.Connection != (object)Connection) {
 				throw new InvalidOperationException();
 			}
-			using (var command = this.connection.CreateCommand()) {
+			using (var command = Connection.CreateCommand()) {
 				command.Transaction = (SqlCeTransaction)transaction;
 				command.CommandText = commandText;
 				return command.ExecuteNonQuery();
@@ -109,8 +94,8 @@ namespace DataDevelop.Data.SqlCe
 
 		public void Dispose()
 		{
-			if (this.connection != null) {
-				this.connection.Dispose();
+			if (Connection != null) {
+				Connection.Dispose();
 				GC.SuppressFinalize(this);
 			}
 		}
@@ -119,30 +104,31 @@ namespace DataDevelop.Data.SqlCe
 
 		public override void ChangeConnectionString(string newConnectionString)
 		{
-			if (this.IsConnected) {
+			if (IsConnected) {
 				throw new InvalidOperationException("Database must be disconnected in order to change the ConnectionString");
 			} else {
-				this.connection.ConnectionString = newConnectionString;
+				Connection.ConnectionString = newConnectionString;
 			}
 		}
 
 		protected override void DoConnect()
 		{
-			this.connection.Open();
+			Connection.Open();
 		}
 
 		protected override void DoDisconnect()
 		{
-			this.connection.Close();
+			Connection.Close();
 		}
 
 		protected override void PopulateTables(DbObjectCollection<Table> tablesCollection)
 		{
-			using (var tables = this.Connection.GetSchema("Tables")) {
+			using (var tables = Connection.GetSchema("Tables")) {
 				foreach (DataRow row in tables.Rows) {
-					var table = new SqlCeTable(this);
-					table.Schema = row["TABLE_SCHEMA"] as string;
-					table.Name = row["TABLE_NAME"] as string;
+					var table = new SqlCeTable(this) {
+						Schema = row["TABLE_SCHEMA"] as string,
+						Name = row["TABLE_NAME"] as string
+					};
 					tablesCollection.Add(table);
 				}
 			}

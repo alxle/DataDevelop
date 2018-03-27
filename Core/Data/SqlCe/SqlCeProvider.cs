@@ -1,5 +1,4 @@
-using System;
-using System.Data.Common;
+﻿using System.Data.Common;
 using System.Data.SqlServerCe;
 
 namespace DataDevelop.Data.SqlCe
@@ -7,31 +6,14 @@ namespace DataDevelop.Data.SqlCe
 	internal class SqlCeProvider : DbProvider
 	{
 		private static SqlCeProvider provider;
-		
-		private SqlCeProvider()
-		{
-		}
 
-		public static SqlCeProvider Instance
-		{
-			get
-			{
-				if (provider == null) {
-					provider = new SqlCeProvider();
-				}
-				return provider;
-			}
-		}
+		public static SqlCeProvider Instance => provider ?? (provider = new SqlCeProvider());
 
-		public override string Name
-		{
-			get { return "SqlCe"; }
-		}
+		private SqlCeProvider() { }
 
-		public override bool IsFileBased
-		{
-			get { return true; }
-		}
+		public override string Name => "SqlCe";
+
+		public override bool IsFileBased => true;
 
 		public override Database CreateDatabase(string name, string connectionString)
 		{
