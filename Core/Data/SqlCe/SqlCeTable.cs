@@ -8,11 +8,13 @@ namespace DataDevelop.Data.SqlCe
 {
 	internal sealed class SqlCeTable : Table
 	{
+		private SqlCeDatabase database;
 		private bool isReadOnly;
 
 		public SqlCeTable(SqlCeDatabase database, string name)
 			: base(database)
 		{
+			this.database = database;
 			Name = name;
 		}
 
@@ -34,8 +36,8 @@ namespace DataDevelop.Data.SqlCe
 		public override bool Rename(string newName)
 		{
 			var success = true;
-			using (Database.CreateConnectionScope()) {
-				using (var command = Database.Connection.CreateCommand()) {
+			using (database.CreateConnectionScope()) {
+				using (var command = database.Connection.CreateCommand()) {
 					var nameUnquoted = Name.Replace("'", "''");
 					var newNameUnquoted = newName.Replace("'", "''");
 					command.CommandText = $"sp_rename '{nameUnquoted}', '{newNameUnquoted}'";
@@ -55,8 +57,8 @@ namespace DataDevelop.Data.SqlCe
 		public override bool Delete()
 		{
 			var success = true;
-			using (Database.CreateConnectionScope()) {
-				using (var command = Database.Connection.CreateCommand()) {
+			using (database.CreateConnectionScope()) {
+				using (var command = database.Connection.CreateCommand()) {
 					command.CommandText = $"DROP TABLE {QuotedName}";
 					try {
 						command.ExecuteNonQuery();
@@ -71,8 +73,8 @@ namespace DataDevelop.Data.SqlCe
 		public override DataTable GetData(int startIndex, int count, TableFilter filter, TableSort sort)
 		{
 			var data = new DataTable(Name);
-			using (Database.CreateConnectionScope()) {
-				using (var adapter = (SqlCeDataAdapter)Database.CreateAdapter(this, filter)) {
+			using (database.CreateConnectionScope()) {
+				using (var adapter = database.CreateAdapter(this, filter)) {
 					adapter.SelectCommand.CommandText = GetSelectStatement(startIndex, count, filter, sort);
 					adapter.Fill(data);
 				}
@@ -82,7 +84,7 @@ namespace DataDevelop.Data.SqlCe
 
 		protected override void PopulateColumns(IList<Column> columnsCollection)
 		{
-			using (Database.CreateConnectionScope()) {
+			using (database.CreateConnectionScope()) {
 				var columns = Connection.GetSchema("Columns", new[] { null, null, Name });
 
 				var rows = new DataRow[columns.Rows.Count];
@@ -115,15 +117,36 @@ namespace DataDevelop.Data.SqlCe
 
 		protected override void PopulateForeignKeys(IList<ForeignKey> foreignKeysCollection)
 		{
-			using (Database.CreateConnectionScope()) {
-				var restrictions = new[] { null, null, Name };
-				var schema = Connection.GetSchema("ForeignKeys", restrictions);
-				foreach (DataRow row in schema.Rows) {
-					var name = (string)row["CONSTRAINT_NAME"];
-					var key = new ForeignKey(name, this) {
-						ChildTable = Name
-					};
-					foreignKeysCollection.Add(key);
+			using (database.CreateConnectionScope()) {
+				var dictionary = new Dictionary<string, ForeignKey>();
+				using (var command = database.Connection.CreateCommand()) {
+					command.CommandText =
+						"SELECT c.CONSTRAINT_NAME, C.CONSTRAINT_TABLE_NAME, C.UNIQUE_CONSTRAINT_TABLE_NAME, C.UNIQUE_CONSTRAINT_NAME, " +
+						"FKC.TABLE_NAME, FKC.COLUMN_NAME, RK.TABLE_NAME, RK.COLUMN_NAME " +
+						"FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS C " +
+						"INNER JOIN INFORMATION_SCHEMA.TABLE_CONSTRAINTS FK ON C.CONSTRAINT_NAME = FK.CONSTRAINT_NAME " +
+						"INNER JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE FKC ON C.CONSTRAINT_NAME = FKC.CONSTRAINT_NAME " +
+						"INNER JOIN INFORMATION_SCHEMA.INDEXES RK ON C.UNIQUE_CONSTRAINT_NAME = RK.INDEX_NAME " +
+						"           AND C.UNIQUE_CONSTRAINT_TABLE_NAME = RK.TABLE_NAME AND RK.ORDINAL_POSITION = FKC.ORDINAL_POSITION " +
+						"WHERE CONSTRAINT_TABLE_NAME = @TableName " +
+						"ORDER BY C.CONSTRAINT_TABLE_NAME";
+					command.Parameters.AddWithValue("@TableName", Name);
+					using (var reader = command.ExecuteReader()) {
+						while (reader.Read()) {
+							var name = reader.GetString(0);
+							ForeignKey key;
+							if (dictionary.ContainsKey(name)) {
+								key = dictionary[name];
+							} else {
+								key = new ForeignKey(name, this);
+								dictionary.Add(name, key);
+								foreignKeysCollection.Add(key);
+							}
+							key.PrimaryTable = reader.GetString(2);
+							key.ChildTable = reader.GetString(1);
+							key.Columns.Add(new ColumnsPair(reader.GetString(7), reader.GetString(5)));
+						}
+					}
 				}
 			}
 		}
