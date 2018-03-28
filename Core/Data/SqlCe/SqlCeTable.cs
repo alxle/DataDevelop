@@ -8,17 +8,17 @@ namespace DataDevelop.Data.SqlCe
 {
 	internal sealed class SqlCeTable : Table
 	{
-		private bool isView;
 		private bool isReadOnly;
 
-		public SqlCeTable(SqlCeDatabase database)
+		public SqlCeTable(SqlCeDatabase database, string name)
 			: base(database)
 		{
+			Name = name;
 		}
 
-		public string Schema { get; internal set; }
+		public override string QuotedName => $"[{Name}]";
 
-		public override bool IsView => isView;
+		public override bool IsView => false;
 
 		public override bool IsReadOnly => isReadOnly;
 
@@ -26,12 +26,7 @@ namespace DataDevelop.Data.SqlCe
 
 		private SqlCeConnection Connection => Database.Connection;
 
-		public void SetView(bool value)
-		{
-			isView = value;
-		}
-
-		public void SetReadOnly(bool value)
+		internal void SetReadOnly(bool value)
 		{
 			isReadOnly = value;
 		}
@@ -46,7 +41,7 @@ namespace DataDevelop.Data.SqlCe
 			var success = true;
 			using (Database.CreateConnectionScope()) {
 				using (var command = Database.Connection.CreateCommand()) {
-					command.CommandText = "DROP TABLE [" + Schema + "].[" + Name + "]";
+					command.CommandText = $"DROP TABLE {QuotedName}";
 					try {
 						command.ExecuteNonQuery();
 					} catch (SqlCeException) {
@@ -150,6 +145,10 @@ namespace DataDevelop.Data.SqlCe
 		{
 			var sql = new StringBuilder();
 			sql.Append("SELECT ");
+			if (startIndex == 0 || count == 0) {
+				sql.AppendFormat("TOP {0} ", count);
+			}
+
 			filter.WriteColumnsProjection(sql);
 			sql.Append(" FROM ");
 			sql.Append(QuotedName);
@@ -172,7 +171,11 @@ namespace DataDevelop.Data.SqlCe
 				}
 				sql.Append(string.Join(", ", columns.ToArray()));
 			}
-			sql.AppendFormat(" OFFSET {0} ROWS FETCH NEXT {1} ROWS ONLY", startIndex, count);
+
+			if (startIndex > 0 && count > 0) {
+				sql.AppendFormat(" OFFSET {0} ROWS FETCH NEXT {1} ROWS ONLY", startIndex, count);
+			}
+			
 			return sql.ToString();
 		}
 	}

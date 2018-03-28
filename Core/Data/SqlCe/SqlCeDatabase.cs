@@ -17,6 +17,12 @@ namespace DataDevelop.Data.SqlCe
 
 		public SqlCeConnection Connection { get; }
 
+		public override string ParameterPrefix => "@";
+
+		public override string QuotePrefix => "[";
+
+		public override string QuoteSuffix => "]";
+
 		public override string Name => name;
 
 		public override DbProvider Provider => SqlCeProvider.Instance;
@@ -24,6 +30,8 @@ namespace DataDevelop.Data.SqlCe
 		public override string ConnectionString => Connection.ConnectionString;
 
 		public override bool SupportStoredProcedures => false;
+
+		public override bool SupportUserDefinedFunctions => false;
 
 		public override DbDataAdapter CreateAdapter(Table table, TableFilter filter)
 		{
@@ -125,10 +133,7 @@ namespace DataDevelop.Data.SqlCe
 		{
 			using (var tables = Connection.GetSchema("Tables")) {
 				foreach (DataRow row in tables.Rows) {
-					var table = new SqlCeTable(this) {
-						Schema = row["TABLE_SCHEMA"] as string,
-						Name = row["TABLE_NAME"] as string
-					};
+					var table = new SqlCeTable(this, (string)row["TABLE_NAME"]);
 					tablesCollection.Add(table);
 				}
 			}
