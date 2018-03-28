@@ -33,7 +33,23 @@ namespace DataDevelop.Data.SqlCe
 
 		public override bool Rename(string newName)
 		{
-			throw new NotImplementedException();
+			var success = true;
+			using (Database.CreateConnectionScope()) {
+				using (var command = Database.Connection.CreateCommand()) {
+					var nameUnquoted = Name.Replace("'", "''");
+					var newNameUnquoted = newName.Replace("'", "''");
+					command.CommandText = $"sp_rename '{nameUnquoted}', '{newNameUnquoted}'";
+					try {
+						command.ExecuteNonQuery();
+					} catch (SqlCeException) {
+						success = false;
+					}
+				}
+			}
+			if (success) {
+				Name = newName;
+			}
+			return success;
 		}
 
 		public override bool Delete()
