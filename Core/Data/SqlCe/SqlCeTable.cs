@@ -86,7 +86,7 @@ namespace DataDevelop.Data.SqlCe
 						Name = row["COLUMN_NAME"].ToString()
 					};
 
-					if (InPrimaryKey(keys, column.Name)) {
+					if (keys.Contains(column.Name)) {
 						column.InPrimaryKey = true;
 					}
 					column.ProviderType = (string)row["DATA_TYPE"];
@@ -119,29 +119,22 @@ namespace DataDevelop.Data.SqlCe
 
 		protected override void PopulateTriggers(IList<Trigger> triggersCollection)
 		{
-			// TODO
+			// Not supported
 		}
 
-		private static bool InPrimaryKey(string[] primaryKeys, string columnName)
+		private HashSet<string> GetPrimaryKeyColumns()
 		{
-			foreach (var key in primaryKeys) {
-				if (string.Equals(key, columnName, StringComparison.InvariantCultureIgnoreCase)) {
-					return true;
-				}
-			}
-			return false;
-		}
-
-		private string[] GetPrimaryKeyColumns()
-		{
-			var primaryKeys = new List<string>();
+			var primaryKeys = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 			using (Database.CreateConnectionScope()) {
 				using (var select = Connection.CreateCommand()) {
 					select.CommandText =
 						"SELECT u.COLUMN_NAME, c.CONSTRAINT_NAME, c.TABLE_NAME " +
-						"FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS AS c INNER JOIN " +
-						"INFORMATION_SCHEMA.KEY_COLUMN_USAGE AS u ON c.CONSTRAINT_NAME = u.CONSTRAINT_NAME AND u.TABLE_NAME = c.TABLE_NAME " +
-						"where c.CONSTRAINT_TYPE = 'PRIMARY KEY' ORDER BY c.CONSTRAINT_NAME";
+						"FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS AS c " +
+						"INNER JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE AS u " +
+						"  ON c.CONSTRAINT_NAME = u.CONSTRAINT_NAME AND u.TABLE_NAME = c.TABLE_NAME " +
+						"WHERE c.CONSTRAINT_TYPE = 'PRIMARY KEY' " +
+						"  AND u.TABLE_NAME = @TableName " +
+						"ORDER BY c.CONSTRAINT_NAME";
 					select.Parameters.AddWithValue("@TableName", Name);
 					using (var reader = select.ExecuteReader()) {
 						while (reader.Read()) {
@@ -149,7 +142,7 @@ namespace DataDevelop.Data.SqlCe
 						}
 					}
 				}
-				return primaryKeys.ToArray();
+				return primaryKeys;
 			}
 		}
 
