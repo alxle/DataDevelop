@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data;
 using System.Data.SQLite;
+using System.Linq;
 
 namespace DataDevelop.Data.SQLite
 {
@@ -36,7 +37,7 @@ namespace DataDevelop.Data.SQLite
 		protected override void PopulateColumns(IList<Column> columnsCollection)
 		{
 			using (Database.CreateConnectionScope()) {
-				var columns = Connection.GetSchema("Columns", new[] { null, null, Name, null });
+				var columns = Connection.GetSchema("Columns", new[] { null, null, Name });
 				foreach (DataRow row in columns.Rows) {
 					var column = new Column(this) {
 						Name = row["COLUMN_NAME"].ToString()
@@ -90,6 +91,34 @@ namespace DataDevelop.Data.SQLite
 						var fromColumn = row["FKEY_FROM_COLUMN"] as string;
 						var toColumn = row["FKEY_TO_COLUMN"] as string;
 						key.Columns.Add(new ColumnsPair(toColumn, fromColumn));
+					}
+				}
+			}
+		}
+
+		protected override void PopulateIndexes(IList<Index> indexesCollection)
+		{
+			using (Database.CreateConnectionScope()) {
+				var indexes = Connection.GetSchema("Indexes", new[] { null, null, Name });
+				var indexesDictionary = new Dictionary<string, Index>();
+				foreach (DataRow row in indexes.Rows) {
+					var index = new Index(this, (string)row["INDEX_NAME"]) {
+						IsPrimaryKey = (bool)row["PRIMARY_KEY"],
+						IsUniqueKey = (bool)row["UNIQUE"]
+					};
+					indexesCollection.Add(index);
+					indexesDictionary.Add(index.Name, index);
+				}
+				var indexColumns = Connection.GetSchema("IndexColumns", new[] { null, null, Name });
+				indexColumns.DefaultView.Sort = "INDEX_NAME, ORDINAL_POSITION";
+				foreach (DataRowView row in indexColumns.DefaultView) {
+					var indexName = (string)row["INDEX_NAME"];
+					if (indexesDictionary.TryGetValue(indexName, out var index)) {
+						var columnName = (string)row["COLUMN_NAME"];
+						var sortMode = (string)row["SORT_MODE"];
+						var column = Columns.Single(c => c.Name == columnName);
+						var columnOrder = new ColumnOrder(column) { OrderType = (sortMode == "ASC") ? OrderType.Ascending : OrderType.Descending };
+						index.Columns.Add(columnOrder);
 					}
 				}
 			}
