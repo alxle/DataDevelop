@@ -14,6 +14,7 @@ namespace DataDevelop.Data
 		private IList<Column> columnsCollection;
 		private IList<ForeignKey> keysCollection;
 		private IList<Trigger> triggersCollection;
+		private IList<Index> indexesCollection;
 
 		protected Table(Database database)
 			: base(database)
@@ -62,6 +63,20 @@ namespace DataDevelop.Data
 			}
 		}
 
+		[Browsable(false)]
+		public IList<Index> Indexes
+		{
+			get
+			{
+				if (indexesCollection == null) {
+					var indexes = new List<Index>();
+					PopulateIndexes(indexes);
+					indexesCollection = indexes;
+				}
+				return indexesCollection;
+			}
+		}
+
 		public virtual bool IsView => false;
 
 		protected bool HasPrimaryKey => Columns.Any(c => c.InPrimaryKey);
@@ -79,6 +94,7 @@ namespace DataDevelop.Data
 			columnsCollection = null;
 			triggersCollection = null;
 			keysCollection = null;
+			indexesCollection = null;
 		}
 
 		public abstract bool Rename(string newName);
@@ -330,5 +346,7 @@ namespace DataDevelop.Data
 		protected abstract void PopulateTriggers(IList<Trigger> triggersCollection);
 
 		protected abstract void PopulateForeignKeys(IList<ForeignKey> foreignKeysCollection);
+
+		protected virtual void PopulateIndexes(IList<Index> indexesCollection) { }
 	}
 }

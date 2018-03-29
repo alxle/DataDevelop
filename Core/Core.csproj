@@ -111,6 +111,7 @@
     <Compile Include="Data\ColumnOrder.cs" />
     <Compile Include="Data\ConnectionScope.cs" />
     <Compile Include="Data\ConnectionSettings.cs" />
+    <Compile Include="Data\Index.cs" />
     <Compile Include="Data\OleDb\OleDbDatabase.cs" />
     <Compile Include="Data\OleDb\OleDbProvider.cs" />
     <Compile Include="Data\OleDb\OleDbTable.cs" />
