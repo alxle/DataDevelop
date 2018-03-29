@@ -247,6 +247,7 @@ namespace DataDevelop
 			this.nodesImageList.Images.SetKeyName(8, "storedProcedure");
 			this.nodesImageList.Images.SetKeyName(9, "foreingKey");
 			this.nodesImageList.Images.SetKeyName(10, "function");
+			this.nodesImageList.Images.SetKeyName(11, "index");
 			// 
 			// databaseContextMenu
 			// 
@@ -328,7 +329,7 @@ namespace DataDevelop
             this.scriptAsToolStripMenuItem,
             this.renameToolStripMenuItem});
 			this.tableContextMenu.Name = "tableContextMenu";
-			this.tableContextMenu.Size = new System.Drawing.Size(195, 136);
+			this.tableContextMenu.Size = new System.Drawing.Size(195, 114);
 			// 
 			// openTableDataMenuItem
 			// 
@@ -370,61 +371,61 @@ namespace DataDevelop
 			// selectToolStripMenuItem
 			// 
 			this.selectToolStripMenuItem.Name = "selectToolStripMenuItem";
-			this.selectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.selectToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
 			this.selectToolStripMenuItem.Text = "SELECT";
 			this.selectToolStripMenuItem.Click += new System.EventHandler(this.selectToolStripMenuItem_Click);
 			// 
 			// joinToolStripMenuItem
 			// 
 			this.joinToolStripMenuItem.Name = "joinToolStripMenuItem";
-			this.joinToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.joinToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
 			this.joinToolStripMenuItem.Text = "JOIN";
 			this.joinToolStripMenuItem.Click += new System.EventHandler(this.joinToolStripMenuItem_Click);
 			// 
 			// insertToolStripMenuItem
 			// 
 			this.insertToolStripMenuItem.Name = "insertToolStripMenuItem";
-			this.insertToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.insertToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
 			this.insertToolStripMenuItem.Text = "INSERT";
 			this.insertToolStripMenuItem.Click += new System.EventHandler(this.insertToolStripMenuItem_Click);
 			// 
 			// updateToolStripMenuItem
 			// 
 			this.updateToolStripMenuItem.Name = "updateToolStripMenuItem";
-			this.updateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.updateToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
 			this.updateToolStripMenuItem.Text = "UPDATE";
 			this.updateToolStripMenuItem.Click += new System.EventHandler(this.updateToolStripMenuItem_Click);
 			// 
 			// deleteToolStripMenuItem
 			// 
 			this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-			this.deleteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.deleteToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
 			this.deleteToolStripMenuItem.Text = "DELETE";
 			this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator6
 			// 
 			this.toolStripSeparator6.Name = "toolStripSeparator6";
-			this.toolStripSeparator6.Size = new System.Drawing.Size(177, 6);
+			this.toolStripSeparator6.Size = new System.Drawing.Size(114, 6);
 			// 
 			// createToolStripMenuItem
 			// 
 			this.createToolStripMenuItem.Name = "createToolStripMenuItem";
-			this.createToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.createToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
 			this.createToolStripMenuItem.Text = "CREATE";
 			this.createToolStripMenuItem.Click += new System.EventHandler(this.createToolStripMenuItem_Click);
 			// 
 			// alterToolStripMenuItem
 			// 
 			this.alterToolStripMenuItem.Name = "alterToolStripMenuItem";
-			this.alterToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.alterToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
 			this.alterToolStripMenuItem.Text = "ALTER";
 			this.alterToolStripMenuItem.Click += new System.EventHandler(this.alterToolStripMenuItem_Click);
 			// 
 			// dropToolStripMenuItem
 			// 
 			this.dropToolStripMenuItem.Name = "dropToolStripMenuItem";
-			this.dropToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.dropToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
 			this.dropToolStripMenuItem.Text = "DROP";
 			this.dropToolStripMenuItem.Click += new System.EventHandler(this.dropToolStripMenuItem_Click);
 			// 

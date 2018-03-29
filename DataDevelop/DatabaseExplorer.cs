@@ -266,6 +266,15 @@ namespace DataDevelop
 						keys.Nodes.Add(keyNode);
 					}
 				}
+				if (node.Table.Indexes.Count > 0) {
+					var indexes = node.Nodes.Add("Indexes");
+					indexes.SelectedImageKey = indexes.ImageKey = "folder";
+					foreach (var index in node.Table.Indexes) {
+						var indexNode = CreateTreeNode(index.Name, index.IsPrimaryKey ? "primaryKey" : "index", null);
+						indexNode.Tag = new TreeNodeController(index);
+						indexes.Nodes.Add(indexNode);
+					}
+				}
 			} catch (DbException ex) {
 				MessageBox.Show(ex.Message);
 			} finally {
