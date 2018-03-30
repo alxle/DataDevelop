@@ -4,6 +4,7 @@ using System.Text;
 using System.Data.SqlClient;
 using System.Data;
 using System.ComponentModel;
+using System.Linq;
 
 namespace DataDevelop.Data.SqlServer
 {
@@ -147,6 +148,48 @@ namespace DataDevelop.Data.SqlServer
 					columnsCollection.Add(column);
 				}
 				SetColumnTypes(columnsCollection);
+			}
+		}
+
+		protected override void PopulateIndexes(IList<Index> indexesCollection)
+		{
+			using (Database.CreateConnectionScope()) {
+				using (var select = Connection.CreateCommand()) {
+					select.CommandText =
+						"SELECT x.name AS IndexName, x.is_unique AS IsUnique, x.is_primary_key AS IsPrimaryKey, " +
+						"       c.name AS ColumnName, xc.is_descending_key AS IsDescendingKey " +
+						"FROM sys.objects o " +
+						"LEFT JOIN sys.indexes x ON x.object_id = o.object_id " +
+						"LEFT JOIN sys.index_columns xc ON xc.object_id = x.object_id AND xc.index_id = x.index_id " +
+						"LEFT JOIN sys.columns c ON c.object_id = x.object_id AND xc.column_id = c.column_id " +
+						"WHERE o.name = @TableName AND o.type = 'U' AND schema_name(o.schema_id) = @SchemaName " +
+						"ORDER BY x.name, xc.key_ordinal";
+					select.Parameters.AddWithValue("@SchemaName", SchemaName);
+					select.Parameters.AddWithValue("@TableName", TableName);
+					using (var reader = select.ExecuteReader()) {
+						var indexes = new Dictionary<string, Index>(StringComparer.OrdinalIgnoreCase);
+						while (reader.Read()) {
+							var name = reader.GetString(0);
+							if (!indexes.TryGetValue(name, out var index)) {
+								index = new Index(this, name) {
+									Name = name,
+									IsUniqueKey = reader.GetBoolean(1),
+									IsPrimaryKey = reader.GetBoolean(2),
+								};
+								indexes.Add(name, index);
+								indexesCollection.Add(index);
+							}
+							var columnName = reader.GetString(3);
+							var isDescendingKey = reader.GetBoolean(4);
+							var column = Columns.Single(i => i.Name.Equals(columnName, StringComparison.OrdinalIgnoreCase));
+							var columnOrder = new ColumnOrder(column);
+							if (isDescendingKey) {
+								columnOrder.OrderType = OrderType.Descending;
+							}
+							index.Columns.Add(columnOrder);
+						}
+					}
+				}
 			}
 		}
 
