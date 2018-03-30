@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Data.Common;
 using System.Data.OleDb;
@@ -8,41 +8,29 @@ namespace DataDevelop.Data.Access
 	internal sealed class AccessDatabase : Database, IDisposable
 	{
 		private string name;
-		private OleDbConnection connection;
 
 		public AccessDatabase(string name, string connectionString)
 		{
 			this.name = name;
-			this.connection = new OleDbConnection(connectionString);
+			Connection = new OleDbConnection(connectionString);
 		}
 
-		public OleDbConnection Connection
-		{
-			get { return this.connection; }
-		}
+        public OleDbConnection Connection { get; }
 
-		public override string Name
-		{
-			get { return this.name; }
-		}
+		public override string Name => name;
 
-		public override DbProvider Provider
-		{
-			get { return AccessProvider.Instance; }
-		}
+		public override DbProvider Provider => AccessProvider.Instance;
 
-		public override string ConnectionString
-		{
-			get { return this.connection.ConnectionString; }
-		}
+		public override string ConnectionString => Connection.ConnectionString;
 
 		public override DbDataAdapter CreateAdapter(Table table, TableFilter filter)
 		{
 			var accessTable = (AccessTable)table;
-			var adapter = new OleDbDataAdapter(table.GetBaseSelectCommandText(filter), this.connection);
+			var adapter = new OleDbDataAdapter(table.GetBaseSelectCommandText(filter), Connection);
 			if (!table.IsReadOnly) {
-				var builder = new OleDbCommandBuilder(adapter);
-				builder.ConflictOption = ConflictOption.OverwriteChanges;
+				var builder = new OleDbCommandBuilder(adapter) {
+					ConflictOption = ConflictOption.OverwriteChanges
+				};
 				try {
 					builder.GetUpdateCommand();
 				} catch (InvalidOperationException) {
@@ -58,17 +46,17 @@ namespace DataDevelop.Data.Access
 
 		public override DbCommand CreateCommand()
 		{
-			return this.Connection.CreateCommand();
+			return Connection.CreateCommand();
 		}
 
 		public override DbTransaction BeginTransaction()
 		{
-			return this.Connection.BeginTransaction();
+			return Connection.BeginTransaction();
 		}
 
 		public override int ExecuteNonQuery(string commandText)
 		{
-			using (var command = this.connection.CreateCommand()) {
+			using (var command = Connection.CreateCommand()) {
 				command.CommandText = commandText;
 				return command.ExecuteNonQuery();
 			}
@@ -76,7 +64,7 @@ namespace DataDevelop.Data.Access
 
 		public override DataTable ExecuteTable(string commandText)
 		{
-			using (var command = this.connection.CreateCommand()) {
+			using (var command = Connection.CreateCommand()) {
 				command.CommandText = commandText;
 				var table = new DataTable();
 				using (var reader = command.ExecuteReader()) {
@@ -88,10 +76,10 @@ namespace DataDevelop.Data.Access
 
 		public override int ExecuteNonQuery(string commandText, DbTransaction transaction)
 		{
-			if ((object)transaction.Connection != (object)this.connection) {
+			if (!ReferenceEquals(transaction.Connection, Connection)) {
 				throw new InvalidOperationException();
 			}
-			using (var command = this.connection.CreateCommand()) {
+			using (var command = Connection.CreateCommand()) {
 				command.Transaction = (OleDbTransaction)transaction;
 				command.CommandText = commandText;
 				return command.ExecuteNonQuery();
@@ -102,8 +90,8 @@ namespace DataDevelop.Data.Access
 
 		public void Dispose()
 		{
-			if (this.connection != null) {
-				this.connection.Dispose();
+			if (Connection != null) {
+				Connection.Dispose();
 			}
 			GC.SuppressFinalize(this);
 		}
@@ -112,40 +100,38 @@ namespace DataDevelop.Data.Access
 
 		public override void ChangeConnectionString(string newConnectionString)
 		{
-			if (this.IsConnected) {
+			if (IsConnected) {
 				throw new InvalidOperationException("Database must be disconnected in order to change the ConnectionString");
 			} else {
-				this.connection.ConnectionString = newConnectionString;
+				Connection.ConnectionString = newConnectionString;
 			}
 		}
 
 		protected override void DoConnect()
 		{
-			this.connection.Open();
+			Connection.Open();
 		}
 
 		protected override void DoDisconnect()
 		{
-			this.connection.Close();
+			Connection.Close();
 		}
 
 		protected override void PopulateTables(DbObjectCollection<Table> tablesCollection)
 		{
-			string[] restrictions = new string[4];
-			restrictions[3] = "Table";
-
-			var tables = this.Connection.GetSchema("Tables", restrictions);
+			var tables = Connection.GetSchema("Tables", new[] { null, null, null, "Table" });
 			foreach (DataRow row in tables.Rows) {
-				var table = new AccessTable(this);
-				table.Name = row["TABLE_NAME"].ToString();
+				var table = new AccessTable(this) {
+					Name = (string)row["TABLE_NAME"]
+				};
 				tablesCollection.Add(table);
 			}
 
-			restrictions[3] = "View";
-			var views = this.Connection.GetSchema("Tables", restrictions);
+			var views = Connection.GetSchema("Tables", new[] { null, null, null, "View" });
 			foreach (DataRow row in views.Rows) {
-				var table = new AccessTable(this);
-				table.Name = row["TABLE_NAME"].ToString();
+				var table = new AccessTable(this) {
+					Name = (string)row["TABLE_NAME"]
+				};
 				table.SetView(true);
 				tablesCollection.Add(table);
 			}

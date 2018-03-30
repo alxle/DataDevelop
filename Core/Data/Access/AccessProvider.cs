@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data.Common;
 using System.Data.OleDb;
 
@@ -7,26 +7,12 @@ namespace DataDevelop.Data.Access
 	internal sealed class AccessProvider : DbProvider
 	{
 		private static AccessProvider provider;
-		
-		private AccessProvider()
-		{
-		}
 
-		public static AccessProvider Instance
-		{
-			get
-			{
-				if (provider == null) {
-					provider = new AccessProvider();
-				}
-				return provider;
-			}
-		}
+		private AccessProvider() { }
 
-		public override string Name
-		{
-			get { return "Access"; }
-		}
+		public static AccessProvider Instance => provider ?? (provider = new AccessProvider());
+
+		public override string Name => "Access";
 
 		public override Database CreateDatabase(string name, string connectionString)
 		{
