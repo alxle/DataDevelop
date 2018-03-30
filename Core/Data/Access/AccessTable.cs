@@ -208,6 +208,31 @@ namespace DataDevelop.Data.Access
 			}
 		}
 
+		protected override void PopulateIndexes(IList<Index> indexesCollection)
+		{
+			using (Database.CreateConnectionScope()) {
+				var schema = Connection.GetOleDbSchemaTable(OleDbSchemaGuid.Indexes, null);
+				schema.DefaultView.Sort = "INDEX_NAME, ORDINAL_POSITION";
+				var indexes = new Dictionary<string, Index>();
+				foreach (DataRowView row in schema.DefaultView) {
+					if ((string)row["TABLE_NAME"] == Name) {
+						var indexName = (string)row["INDEX_NAME"];
+						if (!indexes.TryGetValue(indexName, out var index)) {
+							index = new Index(this, indexName) {
+								IsPrimaryKey = (bool)row["PRIMARY_KEY"],
+								IsUniqueKey = (bool)row["UNIQUE"]
+							};
+							indexes.Add(indexName, index);
+							indexesCollection.Add(index);
+						}
+						var columName = (string)row["COLUMN_NAME"];
+						var column = Columns.Single(i => i.Name == columName);
+						index.Columns.Add(new ColumnOrder(column));
+					}
+				}
+			}
+		}
+
 		protected override void PopulateForeignKeys(IList<ForeignKey> foreignKeysCollection)
 		{
 		}
