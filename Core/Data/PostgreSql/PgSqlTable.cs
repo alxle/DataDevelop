@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Data;
+using System.Linq;
+using System.Text;
 using Npgsql;
 
 namespace DataDevelop.Data.PostgreSql
@@ -136,6 +137,34 @@ namespace DataDevelop.Data.PostgreSql
 					columnsCollection.Add(column);
 				}
 				SetColumnTypes(columnsCollection);
+			}
+		}
+
+		protected override void PopulateIndexes(IList<Index> indexesCollection)
+		{
+			using (Database.CreateConnectionScope()) {
+				var indexes = Connection.GetSchema("Indexes", new[] { Connection.Database, "public", Name });
+				var indexesDictionary = new Dictionary<string, Index>();
+				foreach (DataRow row in indexes.Rows) {
+					var index = new Index(this, (string)row["INDEX_NAME"]) {
+						IsPrimaryKey = (bool)row["PRIMARY_KEY"],
+						IsUniqueKey = (bool)row["UNIQUE"]
+					};
+					indexesCollection.Add(index);
+					indexesDictionary.Add(index.Name, index);
+				}
+				var indexColumns = Connection.GetSchema("IndexColumns", new[] { null, null, Name });
+				indexColumns.DefaultView.Sort = "INDEX_NAME, ORDINAL_POSITION";
+				foreach (DataRowView row in indexColumns.DefaultView) {
+					var indexName = (string)row["INDEX_NAME"];
+					if (indexesDictionary.TryGetValue(indexName, out var index)) {
+						var columnName = (string)row["COLUMN_NAME"];
+						var sortMode = (string)row["SORT_MODE"];
+						var column = Columns.Single(c => c.Name == columnName);
+						var columnOrder = new ColumnOrder(column) { OrderType = (sortMode == "ASC") ? OrderType.Ascending : OrderType.Descending };
+						index.Columns.Add(columnOrder);
+					}
+				}
 			}
 		}
 
