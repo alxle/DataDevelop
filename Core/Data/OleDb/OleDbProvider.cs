@@ -1,5 +1,4 @@
-using System;
-using System.Data.Common;
+﻿using System.Data.Common;
 using System.Data.OleDb;
 
 namespace DataDevelop.Data.OleDb
@@ -8,25 +7,11 @@ namespace DataDevelop.Data.OleDb
 	{
 		private static OleDbProvider provider;
 
-		private OleDbProvider()
-		{
-		}
+		private OleDbProvider() { }
 
-		public static OleDbProvider Instance
-		{
-			get
-			{
-				if (provider == null) {
-					provider = new OleDbProvider();
-				}
-				return provider;
-			}
-		}
+		public static OleDbProvider Instance => provider ?? (provider = new OleDbProvider());
 
-		public override string Name
-		{
-			get { return "OleDb"; }
-		}
+		public override string Name => "OleDb";
 
 		public override Database CreateDatabase(string name, string connectionString)
 		{

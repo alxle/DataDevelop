@@ -1,14 +1,14 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Data.OleDb;
 using System.Data;
+using System.Data.OleDb;
+using System.Linq;
+using System.Text;
 
 namespace DataDevelop.Data.OleDb
 {
 	internal class OleDbTable : Table
 	{
-		private string schema;
 		private bool isView;
 		private bool isReadOnly;
 
@@ -17,73 +17,39 @@ namespace DataDevelop.Data.OleDb
 		{
 		}
 
-		public override string DisplayName
+		public override string DisplayName => string.IsNullOrEmpty(Schema) ? Name : $"{Schema}.{Name}";
+
+		public override string QuotedName => string.IsNullOrEmpty(Schema) ? $"[{Name}]" : $"[{Schema}].[{Name}]";
+
+		public virtual string Schema { get; internal set; }
+
+		public override bool IsView => isView;
+
+		public override bool IsReadOnly => isReadOnly;
+
+		protected OleDbConnection Connection => ((OleDbDatabase)Database).Connection;
+
+		protected virtual string[] GetPrimaryKey()
 		{
-			get
-			{
-				if (String.IsNullOrEmpty(this.Schema)) {
-					return this.Name;
+			using (Database.CreateConnectionScope()) {
+				var schema = Connection.GetOleDbSchemaTable(OleDbSchemaGuid.Primary_Keys, new[] { null, Schema, Name });
+				var primaryKey = new string[schema.Rows.Count];
+				foreach (DataRowView row in schema.DefaultView) {
+					var i = Convert.ToInt32(row["ORDINAL"]) - 1;
+					primaryKey[i] = (string)row["COLUMN_NAME"];
 				}
-				return String.Format("{0}.{1}", this.Schema, base.Name);
-			}
-		}
-
-		public override string QuotedName
-		{
-			get
-			{
-				if (String.IsNullOrEmpty(this.Schema)) {
-					return String.Format("[{0}]", base.Name);
-				}
-				return String.Format("[{0}].[{1}]", this.Schema, base.Name);
-			}
-		}
-
-		public string Schema
-		{
-			get { return this.schema; }
-			internal set { this.schema = value; }
-		}
-
-		public override bool IsView
-		{
-			get { return this.isView; }
-		}
-
-		public override bool IsReadOnly
-		{
-			get { return this.isReadOnly; }
-		}
-
-		private OleDbConnection Connection
-		{
-			get { return ((OleDbDatabase)Database).Connection; }
-		}
-
-		public string[] GetPrimaryKey()
-		{
-			using (this.Database.CreateConnectionScope()) {
-				var primaryKey = new List<string>();
-				var schema = this.Connection.GetOleDbSchemaTable(OleDbSchemaGuid.Indexes, null);
-				foreach (DataRow row in schema.Rows) {
-					if ((string)row["TABLE_NAME"] == this.Name) {
-						if ((bool)row["PRIMARY_KEY"]) {
-							primaryKey.Add((string)row["COLUMN_NAME"]);
-						}
-					}
-				}
-				return primaryKey.ToArray();
+				return primaryKey;
 			}
 		}
 
 		public void SetView(bool value)
 		{
-			this.isView = value;
+			isView = value;
 		}
 
 		public void SetReadOnly(bool value)
 		{
-			this.isReadOnly = value;
+			isReadOnly = value;
 		}
 
 		public override bool Rename(string newName)
@@ -98,11 +64,11 @@ namespace DataDevelop.Data.OleDb
 
 		public override int GetRowCount(TableFilter filter)
 		{
-			int count = -1;
-			using (var command = this.Connection.CreateCommand()) {
+			var count = -1;
+			using (var command = Connection.CreateCommand()) {
 				var sql = new StringBuilder();
 				sql.Append("SELECT COUNT(*) FROM ");
-				sql.Append(this.QuotedName);
+				sql.Append(QuotedName);
 
 				if (filter != null && filter.IsRowFiltered) {
 					sql.Append(" WHERE ");
@@ -110,7 +76,7 @@ namespace DataDevelop.Data.OleDb
 				}
 
 				command.CommandText = sql.ToString();
-				using (this.Database.CreateConnectionScope()) {
+				using (Database.CreateConnectionScope()) {
 					count = Convert.ToInt32(command.ExecuteScalar());
 				}
 			}
@@ -122,20 +88,15 @@ namespace DataDevelop.Data.OleDb
 			return GetDataSecuencial(startIndex, count, filter, sort);
 		}
 
-		private DataTable GetDataSecuencial(int startIndex, int count, TableFilter filter, TableSort sort)
+		protected virtual DataTable GetDataSecuencial(int startIndex, int count, TableFilter filter, TableSort sort)
 		{
 			var sql = new StringBuilder();
 			sql.Append("SELECT ");
-
-			if (!this.IsView && !this.HasPrimaryKey) {
-				// TODO
-			}
-
 			filter.WriteColumnsProjection(sql);
 			sql.Append(" FROM ");
-			sql.Append(this.QuotedName);
+			sql.Append(QuotedName);
 
-			if (filter.IsRowFiltered) {
+			if (filter != null && filter.IsRowFiltered) {
 				sql.Append(" WHERE ");
 				filter.WriteWhereStatement(sql);
 			}
@@ -145,13 +106,14 @@ namespace DataDevelop.Data.OleDb
 				sort.WriteOrderBy(sql);
 			}
 
-			var data = new DataTable(this.Name);
-			using (var select = this.Connection.CreateCommand()) {
+			using (var select = Connection.CreateCommand()) {
 				select.CommandText = sql.ToString();
 
-				using (this.Database.CreateConnectionScope()) {
+				using (Database.CreateConnectionScope()) {
 					using (var reader = select.ExecuteReader(CommandBehavior.SequentialAccess)) {
-						for (int i = 0; i < reader.FieldCount; i++) {
+						var data = new DataTable(Name);
+						data.BeginLoadData();
+						for (var i = 0; i < reader.FieldCount; i++) {
 							data.Columns.Add(new DataColumn(reader.GetName(i), reader.GetFieldType(i)));
 						}
 
@@ -161,44 +123,71 @@ namespace DataDevelop.Data.OleDb
 
 						if (reader.Read()) {
 							do {
-								DataRow row = data.NewRow();
-								for (int i = 0; i < reader.FieldCount; i++) {
+								var row = data.NewRow();
+								for (var i = 0; i < reader.FieldCount; i++) {
 									row[i] = reader[i];
 								}
 								data.Rows.Add(row);
 								count--;
 							} while (reader.Read() && count > 0);
 						}
+						data.EndLoadData();
+						data.AcceptChanges();
+						return data;
 					}
 				}
 			}
-			data.AcceptChanges();
-			return data;
 		}
 
 		protected override void PopulateColumns(IList<Column> columnsCollection)
 		{
-			using (this.Database.CreateConnectionScope()) {
-				var columns = this.Connection.GetSchema("Columns", new string[] { null, null, this.Name, null });
-
-				// Fix because Column are sorted by Name rather than Ordinal Position
+			using (Database.CreateConnectionScope()) {
+				var columns = Connection.GetSchema("Columns", new[] { null, Schema, Name, null });
 				var rows = new DataRow[columns.Rows.Count];
 				foreach (DataRow row in columns.Rows) {
-					int i = Convert.ToInt32(row["ORDINAL_POSITION"]) - 1;
+					var i = Convert.ToInt32(row["ORDINAL_POSITION"]) - 1;
 					rows[i] = row;
-				} // End of Fix
+				}
 
-				var primaryKey = this.GetPrimaryKey();
-				foreach (DataRow row in rows) {
-					var column = new Column(this);
-					column.Name = row["COLUMN_NAME"].ToString();
-					if (InPrimaryKey(primaryKey, column.Name)) {
+				var primaryKey = GetPrimaryKey();
+				foreach (var row in rows) {
+					var column = new Column(this) {
+						Name = row["COLUMN_NAME"].ToString()
+					};
+					if (primaryKey.Contains(column.Name, StringComparer.OrdinalIgnoreCase)) {
 						column.InPrimaryKey = true;
 					}
 					column.ProviderType = ((OleDbType)row["DATA_TYPE"]).ToString();
 					columnsCollection.Add(column);
 				}
-				this.SetColumnTypes(columnsCollection);
+				SetColumnTypes(columnsCollection);
+			}
+		}
+
+		protected override void PopulateIndexes(IList<Index> indexesCollection)
+		{
+			using (Database.CreateConnectionScope()) {
+				var schema = Connection.GetOleDbSchemaTable(OleDbSchemaGuid.Indexes, null);
+				schema.DefaultView.Sort = "INDEX_NAME, ORDINAL_POSITION";
+				var indexes = new Dictionary<string, Index>();
+				foreach (DataRowView row in schema.DefaultView) {
+					var schemaName = row["TABLE_SCHEMA"] as string;
+					var tableName = row["TABLE_NAME"] as string;
+					if (tableName == Name && schemaName == Schema) {
+						var indexName = (string)row["INDEX_NAME"];
+						if (!indexes.TryGetValue(indexName, out var index)) {
+							index = new Index(this, indexName) {
+								IsPrimaryKey = (bool)row["PRIMARY_KEY"],
+								IsUniqueKey = (bool)row["UNIQUE"]
+							};
+							indexes.Add(indexName, index);
+							indexesCollection.Add(index);
+						}
+						var columName = (string)row["COLUMN_NAME"];
+						var column = Columns.Single(i => i.Name == columName);
+						index.Columns.Add(new ColumnOrder(column));
+					}
+				}
 			}
 		}
 
@@ -208,16 +197,6 @@ namespace DataDevelop.Data.OleDb
 
 		protected override void PopulateTriggers(IList<Trigger> triggersCollection)
 		{
-		}
-
-		private static bool InPrimaryKey(string[] primaryKey, string columnName)
-		{
-			foreach (string column in primaryKey) {
-				if (column == columnName) {
-					return true;
-				}
-			}
-			return false;
 		}
 	}
 }
