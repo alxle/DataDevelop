@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Data;
+using System.Linq;
+using System.Text;
 using MySql.Data.MySqlClient;
 
 namespace DataDevelop.Data.MySql
@@ -17,15 +17,9 @@ namespace DataDevelop.Data.MySql
 			this.database = database;
 		}
 
-		public MySqlConnection Connection
-		{
-			get { return database.Connection; }
-		}
+		public MySqlConnection Connection => database.Connection;
 
-		public override bool IsView
-		{
-			get { return isView; }
-		}
+		public override bool IsView => isView;
 
 		public void SetView(bool value)
 		{
@@ -60,16 +54,14 @@ namespace DataDevelop.Data.MySql
 
 		public override DataTable GetData(int startIndex, int count, TableFilter filter, TableSort sort)
 		{
-			var data = new DataTable(Name);
-
 			var text = new StringBuilder();
 			text.Append("SELECT ");
 			filter.WriteColumnsProjection(text);
 			text.Append(" FROM ");
 			text.Append(QuotedName);
 
-			if (filter.IsRowFiltered) {
-				text.Append(" WHERE " );
+			if (filter != null && filter.IsRowFiltered) {
+				text.Append(" WHERE ");
 				filter.WriteWhereStatement(text);
 			}
 			if (sort != null && sort.IsSorted) {
@@ -83,20 +75,22 @@ namespace DataDevelop.Data.MySql
 				using (Database.CreateConnectionScope()) {
 					using (var adapter = (MySqlDataAdapter)Database.CreateAdapter(this, filter)) {
 						adapter.SelectCommand = select;
+						var data = new DataTable(Name);
 						adapter.Fill(data);
+						return data;
 					}
 				}
 			}
-			return data;
 		}
 
 		protected override void PopulateColumns(IList<Column> columnsCollection)
 		{
 			using (Database.CreateConnectionScope()) {
-				var columns = Connection.GetSchema("Columns", new [] { null, Connection.Database, Name });
+				var columns = Connection.GetSchema("Columns", new[] { null, Connection.Database, Name });
 				foreach (DataRow row in columns.Rows) {
-					var column = new Column(this);
-					column.Name = row["COLUMN_NAME"].ToString();
+					var column = new Column(this) {
+						Name = row["COLUMN_NAME"].ToString()
+					};
 					if (!IsReadOnly) {
 						column.InPrimaryKey = row["COLUMN_KEY"].ToString() == "PRI";
 					}
@@ -104,6 +98,35 @@ namespace DataDevelop.Data.MySql
 					columnsCollection.Add(column);
 				}
 				SetColumnTypes(columnsCollection);
+			}
+		}
+
+		protected override void PopulateIndexes(IList<Index> indexesCollection)
+		{
+			using (Database.CreateConnectionScope()) {
+				var indexes = Connection.GetSchema("Indexes", new[] { null, Connection.Database, Name });
+				var indexesDictionary = new Dictionary<string, Index>();
+				foreach (DataRow row in indexes.Rows) {
+					var indexName = (string)row["INDEX_NAME"];
+					var index = new Index(this, indexName) {
+						IsPrimaryKey = (bool)row["PRIMARY"],
+						IsUniqueKey = (bool)row["UNIQUE"]
+					};
+					indexesDictionary.Add(indexName, index);
+					indexesCollection.Add(index);
+				}
+				var indexColumns = Connection.GetSchema("IndexColumns", new[] { null, Connection.Database, Name });
+				indexColumns.DefaultView.Sort = "INDEX_NAME, ORDINAL_POSITION";
+				foreach (DataRowView row in indexColumns.DefaultView) {
+					var indexName = (string)row["INDEX_NAME"];
+					if (indexesDictionary.TryGetValue(indexName, out var index)) {
+						var columnName = (string)row["COLUMN_NAME"];
+						var sortMode = (string)row["SORT_ORDER"];
+						var column = Columns.Single(c => c.Name == columnName);
+						var columnOrder = new ColumnOrder(column);
+						index.Columns.Add(columnOrder);
+					}
+				}
 			}
 		}
 
