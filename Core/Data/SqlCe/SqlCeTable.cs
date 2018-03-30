@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data.SqlServerCe;
 using System.Data;
+using System.Linq;
 
 namespace DataDevelop.Data.SqlCe
 {
@@ -146,6 +147,36 @@ namespace DataDevelop.Data.SqlCe
 							key.ChildTable = reader.GetString(1);
 							key.Columns.Add(new ColumnsPair(reader.GetString(7), reader.GetString(5)));
 						}
+					}
+				}
+			}
+		}
+
+		protected override void PopulateIndexes(IList<Index> indexesCollection)
+		{
+			using (var command = database.Connection.CreateCommand()) {
+				command.CommandText =
+					"SELECT TABLE_NAME, INDEX_NAME, COLUMN_NAME, "+
+					"   ORDINAL_POSITION, PRIMARY_KEY, [UNIQUE] " +
+					"FROM INFORMATION_SCHEMA.INDEXES " +
+					"WHERE TABLE_NAME = @TableName " +
+					"ORDER BY INDEX_NAME, ORDINAL_POSITION";
+				command.Parameters.AddWithValue("@TableName", Name);
+				var indexes = new Dictionary<string, Index>(StringComparer.OrdinalIgnoreCase);
+				using (var reader = command.ExecuteReader()) {
+					while (reader.Read()) {
+						var indexName = reader.GetString(1);
+						var columnName = reader.GetString(2);
+						var column = Columns.Single(i => i.Name == columnName);
+						if (!indexes.TryGetValue(indexName, out var index)) {
+							index = new Index(this, indexName) {
+								IsPrimaryKey = reader.GetBoolean(4),
+								IsUniqueKey = reader.GetBoolean(5)
+							};
+							indexes.Add(indexName, index);
+							indexesCollection.Add(index);
+						}
+						index.Columns.Add(new ColumnOrder(column));
 					}
 				}
 			}
