@@ -142,7 +142,7 @@ namespace DataDevelop.Data.SQLite
 			}
 		}
 
-		public override string GetBaseSelectCommandText(TableFilter filter)
+		public override string GetBaseSelectCommandText(TableFilter filter, bool excludeWhere)
 		{
 			var select = new StringBuilder();
 			select.Append("SELECT ");
@@ -154,7 +154,7 @@ namespace DataDevelop.Data.SQLite
 			filter.WriteColumnsProjection(select);
 			select.Append(" FROM ");
 			select.Append(QuotedName);
-			if (filter.IsRowFiltered) {
+			if (filter != null && filter.IsRowFiltered && !excludeWhere) {
 				select.Append(" WHERE ");
 				filter.WriteWhereStatement(select);
 			}
@@ -170,12 +170,16 @@ namespace DataDevelop.Data.SQLite
 				sql.Append("RowId, ");
 			}
 
-			filter.WriteColumnsProjection(sql);
+			if (filter == null) {
+				sql.Append('*');
+			} else {
+				filter.WriteColumnsProjection(sql);
+			}
 
 			sql.Append(" FROM ");
 			sql.Append(QuotedName);
 
-			if (filter.IsRowFiltered) {
+			if (filter != null && filter.IsRowFiltered) {
 				sql.Append(" WHERE ");
 				filter.WriteWhereStatement(sql);
 			}

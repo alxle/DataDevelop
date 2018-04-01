@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Data;
-using System.Data.Common;
 using System.ComponentModel;
+using System.Data;
 using System.Linq;
+using System.Text;
 
 namespace DataDevelop.Data
 {
@@ -164,7 +163,7 @@ namespace DataDevelop.Data
 
 		public abstract DataTable GetData(int startIndex, int count, TableFilter filter, TableSort sort);
 
-		public virtual string GetBaseSelectCommandText(TableFilter filter)
+		public virtual string GetBaseSelectCommandText(TableFilter filter, bool excludeWhere)
 		{
 			var select = new StringBuilder();
 			select.Append("SELECT ");
@@ -175,11 +174,16 @@ namespace DataDevelop.Data
 			}
 			select.Append(" FROM ");
 			select.Append(QuotedName);
-			if (filter.IsRowFiltered) {
+			if (filter != null && filter.IsRowFiltered && !excludeWhere) {
 				select.Append(" WHERE ");
 				filter.WriteWhereStatement(select);
 			}
 			return select.ToString();
+		}
+
+		public string GetBaseSelectCommandText(TableFilter filter)
+		{
+			return GetBaseSelectCommandText(filter, false);
 		}
 
 		public string GenerateSelectStatement()
