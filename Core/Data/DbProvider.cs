@@ -43,7 +43,7 @@ namespace DataDevelop.Data
 			}
 			throw new InvalidOperationException();
 		}
-		
+
 		public abstract DbConnectionStringBuilder CreateConnectionStringBuilder();
 
 		private static void LoadProviders()
@@ -55,6 +55,7 @@ namespace DataDevelop.Data
 			providers.Add("Access", Access.AccessProvider.Instance);
 			providers.Add("MySql", MySql.MySqlProvider.Instance);
 			providers.Add("PgSql", PostgreSql.PgSqlProvider.Instance);
+			providers.Add("Firebird", Firebird.FbProvider.Instance);
 		}
 	}
 }
