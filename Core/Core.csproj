@@ -57,6 +57,9 @@
     <Reference Include="DocumentFormat.OpenXml">
       <HintPath>..\References\DocumentFormat.OpenXml.dll</HintPath>
     </Reference>
+    <Reference Include="FirebirdSql.Data.FirebirdClient">
+      <HintPath>..\References\FirebirdSql.Data.FirebirdClient.dll</HintPath>
+    </Reference>
     <Reference Include="IronPython, Version=2.7.5.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
       <HintPath>..\References\IronPython.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
@@ -111,6 +114,12 @@
     <Compile Include="Data\ColumnOrder.cs" />
     <Compile Include="Data\ConnectionScope.cs" />
     <Compile Include="Data\ConnectionSettings.cs" />
+    <Compile Include="Data\Firebird\FbDatabase.cs" />
+    <Compile Include="Data\Firebird\FbProvider.cs" />
+    <Compile Include="Data\Firebird\FbStoredProcedure.cs" />
+    <Compile Include="Data\Firebird\FbTable.cs" />
+    <Compile Include="Data\Firebird\FbTrigger.cs" />
+    <Compile Include="Data\Firebird\FbUserDefinedFunction.cs" />
     <Compile Include="Data\Index.cs" />
     <Compile Include="Data\OleDb\OleDbDatabase.cs" />
     <Compile Include="Data\OleDb\OleDbProvider.cs" />
