@@ -116,10 +116,12 @@ namespace DataDevelop.Data.MySql
 		{
 			var tables = Connection.GetSchema("Tables", new[] { null, Connection.Database });
 			foreach (DataRow row in tables.Rows) {
-				var table = new MySqlTable(this) {
-					Name = row["TABLE_NAME"].ToString()
-				};
-				tablesCollection.Add(table);
+				if ((string)row["TABLE_TYPE"] == "BASE TABLE") {
+					var table = new MySqlTable(this) {
+						Name = row["TABLE_NAME"].ToString()
+					};
+					tablesCollection.Add(table);
+				}
 			}
 
 			var views = Connection.GetSchema("Views", new[] { null, Connection.Database });
