@@ -20,7 +20,7 @@
         <End>*/</End>
       </Span>
 
-      <Span name="String" bold="false" italic="false" color="DarkRed" stopateol="false">
+      <Span name="String" bold="false" italic="false" color="DarkRed" stopateol="false" escapecharacter="\">
         <Begin>"</Begin>
         <End>"</End>
       </Span>
@@ -29,13 +29,6 @@
         <Begin>&apos;</Begin>
         <End>&apos;</End>
       </Span>
-
-      <!--Span name="Identifier" bold="false" italic="false" color="CadetBlue" stopateol="false">
-        <Begin>[</Begin>
-        <End>]</End>
-      </Span-->
-
-      <!--MarkPrevious bold="true" italic="false" color="MidnightBlue">(</MarkPrevious-->
 
       <KeyWords name="Punctuation" bold="false" italic="false" color="DarkGreen">
         <Key word="?" />
