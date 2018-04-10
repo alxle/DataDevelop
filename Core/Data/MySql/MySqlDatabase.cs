@@ -138,7 +138,8 @@ namespace DataDevelop.Data.MySql
 		{
 			var procedures = Connection.GetSchema("Procedures", new[] { null, Connection.Database });
 			foreach (DataRow row in procedures.Rows) {
-				var sp = new MySqlStoredProcedure(this, row);
+				var name = (string)row["SPECIFIC_NAME"];
+				var sp = new MySqlStoredProcedure(this, name);
 				storedProceduresCollection.Add(sp);
 			}
 		}
