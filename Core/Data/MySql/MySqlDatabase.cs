@@ -19,13 +19,15 @@ namespace DataDevelop.Data.MySql
 
 		public override bool SupportStoredProcedures => true;
 
+		public override bool SupportUserDefinedFunctions => true;
+
 		public override string ParameterPrefix => "?";
 
 		public override string QuotePrefix => "`";
 
 		public override string QuoteSuffix => "`";
 
-		public override DbProvider Provider=> MySqlProvider.Instance;
+		public override DbProvider Provider => MySqlProvider.Instance;
 
 		public override string ConnectionString => Connection.ConnectionString;
 
@@ -136,11 +138,24 @@ namespace DataDevelop.Data.MySql
 
 		protected override void PopulateStoredProcedures(DbObjectCollection<StoredProcedure> storedProceduresCollection)
 		{
-			var procedures = Connection.GetSchema("Procedures", new[] { null, Connection.Database });
+			var procedures = Connection.GetSchema("Procedures", new[] { null, Connection.Database, null, "PROCEDURE" });
 			foreach (DataRow row in procedures.Rows) {
 				var name = (string)row["SPECIFIC_NAME"];
 				var sp = new MySqlStoredProcedure(this, name);
 				storedProceduresCollection.Add(sp);
+			}
+		}
+
+		protected override void PopulateUserDefinedFunctions(DbObjectCollection<UserDefinedFunction> userDefinedFunctionsCollection)
+		{
+			var functions = Connection.GetSchema("Procedures", new[] { null, Connection.Database, null, "FUNCTION" });
+			foreach (DataRow row in functions.Rows) {
+				var name = (string)row["SPECIFIC_NAME"];
+				var returnType = (string)row["DTD_IDENTIFIER"];
+				var fn = new MySqlUserDefinedFunction(this, name) {
+					ReturnType = returnType
+				};
+				userDefinedFunctionsCollection.Add(fn);
 			}
 		}
 	}

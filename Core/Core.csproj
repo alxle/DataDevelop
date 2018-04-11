@@ -121,6 +121,7 @@
     <Compile Include="Data\Firebird\FbTrigger.cs" />
     <Compile Include="Data\Firebird\FbUserDefinedFunction.cs" />
     <Compile Include="Data\Index.cs" />
+    <Compile Include="Data\MySql\MySqlUserDefinedFunction.cs" />
     <Compile Include="Data\OleDb\OleDbDatabase.cs" />
     <Compile Include="Data\OleDb\OleDbProvider.cs" />
     <Compile Include="Data\OleDb\OleDbTable.cs" />
