@@ -8,7 +8,7 @@
         <expiration maximumAge="7" unit="days" />
       </update>
     </subscription>
-    <deploymentProvider codebase="file:///Z:/GoogleDrive_anighost/FaaS/C%23/datadevelop_vs2017/DataDevelop/DataDevelop/deploy/DataDevelop.application" />
+    <deploymentProvider codebase="file:///Z:/GoogleDrive_anighost/FaaS/C%23/DataDevelop/DataDevelop/DataDevelop/deploy/DataDevelop.application" />
   </deployment>
   <compatibleFrameworks xmlns="urn:schemas-microsoft-com:clickonce.v2">
     <framework targetVersion="4.7.1" profile="Full" supportedRuntime="4.0.30319" />
@@ -21,7 +21,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>5u0O7EFvIIuAjyuXGUBYcLueKmNIM5br5K2dohMYJ1Q=</dsig:DigestValue>
+        <dsig:DigestValue>S7bX0uuZy1EhZ3iwY+4KjhKnrBaX2KNMahzkU4sZThY=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

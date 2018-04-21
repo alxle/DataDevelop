@@ -43,7 +43,7 @@
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
-      <assemblyIdentity name="Jint" version="0.0.0.0" publicKeyToken="2E92BA9C8D81157F" language="neutral" processorArchitecture="msil" />
+      <assemblyIdentity name="Jint" version="2.4.0.0" publicKeyToken="2E92BA9C8D81157F" language="neutral" processorArchitecture="msil" />
     </dependentAssembly>
   </dependency>
   <dependency>
@@ -64,7 +64,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>czcNdwTjvZ17A/XrnaRiA28Moua8687wS1B2gXWTV7Q=</dsig:DigestValue>
+        <dsig:DigestValue>BQyk6gaEgiqVVrADwDl3GvYvTbe3UjPKttHas0lVwq0=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -213,14 +213,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Jint.dll" size="238080">
-      <assemblyIdentity name="Jint" version="2.4.0.0" publicKeyToken="2E92BA9C8D81157F" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Jint.dll" size="249856">
+      <assemblyIdentity name="Jint" version="0.0.0.0" publicKeyToken="2E92BA9C8D81157F" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>ZOpq13M+lNwuVTJieYgSm++In8l2hj16bxnAzBQEwAA=</dsig:DigestValue>
+        <dsig:DigestValue>7WGGaK6efALHwrczLdCQeRaMypZDKgUQRGg8mWM3ABw=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -376,7 +376,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>rFyCyEglzwoNDUJK1BKA4GyTdJkMuxtglhEHFWXnqwE=</dsig:DigestValue>
+        <dsig:DigestValue>xMO/+3oLbMmQj6ojdcpwAnZpVVRST4ePX273dxOGx/M=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

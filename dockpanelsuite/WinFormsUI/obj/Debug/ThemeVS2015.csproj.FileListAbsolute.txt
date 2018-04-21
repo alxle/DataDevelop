@@ -23,3 +23,16 @@ Z:\GoogleDrive_anighost\FaaS\C#\datadevelop_vs2017\dockpanelsuite\WinFormsUI\obj
 Z:\GoogleDrive_anighost\FaaS\C#\datadevelop_vs2017\dockpanelsuite\WinFormsUI\obj\Debug\ThemeVS2015.csproj.CopyComplete
 Z:\GoogleDrive_anighost\FaaS\C#\datadevelop_vs2017\dockpanelsuite\WinFormsUI\obj\Debug\WeifenLuo.WinFormsUI.Docking.ThemeVS2015.dll
 Z:\GoogleDrive_anighost\FaaS\C#\datadevelop_vs2017\dockpanelsuite\WinFormsUI\obj\Debug\WeifenLuo.WinFormsUI.Docking.ThemeVS2015.pdb
+Z:\GoogleDrive_anighost\FaaS\C#\DataDevelop\dockpanelsuite\WinFormsUI\bin\Debug\license.txt
+Z:\GoogleDrive_anighost\FaaS\C#\DataDevelop\dockpanelsuite\WinFormsUI\bin\Debug\WeifenLuo.WinFormsUI.Docking.ThemeVS2015.dll
+Z:\GoogleDrive_anighost\FaaS\C#\DataDevelop\dockpanelsuite\WinFormsUI\bin\Debug\WeifenLuo.WinFormsUI.Docking.ThemeVS2015.pdb
+Z:\GoogleDrive_anighost\FaaS\C#\DataDevelop\dockpanelsuite\WinFormsUI\bin\Debug\WeifenLuo.WinFormsUI.Docking.pdb
+Z:\GoogleDrive_anighost\FaaS\C#\DataDevelop\dockpanelsuite\WinFormsUI\obj\Debug\ThemeVS2015.csprojResolveAssemblyReference.cache
+Z:\GoogleDrive_anighost\FaaS\C#\DataDevelop\dockpanelsuite\WinFormsUI\obj\Debug\WeifenLuo.WinFormsUI.ThemeVS2012.Resources.resources
+Z:\GoogleDrive_anighost\FaaS\C#\DataDevelop\dockpanelsuite\WinFormsUI\obj\Debug\WeifenLuo.WinFormsUI.ThemeVS2012.Strings.resources
+Z:\GoogleDrive_anighost\FaaS\C#\DataDevelop\dockpanelsuite\WinFormsUI\obj\Debug\WeifenLuo.WinFormsUI.ThemeVS2015.Resources.resources
+Z:\GoogleDrive_anighost\FaaS\C#\DataDevelop\dockpanelsuite\WinFormsUI\obj\Debug\ThemeVS2015.csproj.GenerateResource.cache
+Z:\GoogleDrive_anighost\FaaS\C#\DataDevelop\dockpanelsuite\WinFormsUI\obj\Debug\ThemeVS2015.csproj.CoreCompileInputs.cache
+Z:\GoogleDrive_anighost\FaaS\C#\DataDevelop\dockpanelsuite\WinFormsUI\obj\Debug\ThemeVS2015.csproj.CopyComplete
+Z:\GoogleDrive_anighost\FaaS\C#\DataDevelop\dockpanelsuite\WinFormsUI\obj\Debug\WeifenLuo.WinFormsUI.Docking.ThemeVS2015.dll
+Z:\GoogleDrive_anighost\FaaS\C#\DataDevelop\dockpanelsuite\WinFormsUI\obj\Debug\WeifenLuo.WinFormsUI.Docking.ThemeVS2015.pdb

@@ -342,11 +342,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "Z:\\GoogleDrive_anighost\\FaaS\\C#\\datadevelop_vs2017\\dockpanelsuite\\Tests\\Tests.csproj",
+      "projectUniqueName": "Z:\\GoogleDrive_anighost\\FaaS\\C#\\DataDevelop\\dockpanelsuite\\Tests\\Tests.csproj",
       "projectName": "Tests",
-      "projectPath": "Z:\\GoogleDrive_anighost\\FaaS\\C#\\datadevelop_vs2017\\dockpanelsuite\\Tests\\Tests.csproj",
+      "projectPath": "Z:\\GoogleDrive_anighost\\FaaS\\C#\\DataDevelop\\dockpanelsuite\\Tests\\Tests.csproj",
       "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-      "outputPath": "Z:\\GoogleDrive_anighost\\FaaS\\C#\\datadevelop_vs2017\\dockpanelsuite\\Tests\\obj\\",
+      "outputPath": "Z:\\GoogleDrive_anighost\\FaaS\\C#\\DataDevelop\\dockpanelsuite\\Tests\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "fallbackFolders": [
@@ -368,17 +368,17 @@
       "frameworks": {
         "net461": {
           "projectReferences": {
-            "Z:\\GoogleDrive_anighost\\FaaS\\C#\\datadevelop_vs2017\\dockpanelsuite\\WinFormsUI\\ThemeVS2012.csproj": {
-              "projectPath": "Z:\\GoogleDrive_anighost\\FaaS\\C#\\datadevelop_vs2017\\dockpanelsuite\\WinFormsUI\\ThemeVS2012.csproj"
+            "Z:\\GoogleDrive_anighost\\FaaS\\C#\\DataDevelop\\dockpanelsuite\\WinFormsUI\\ThemeVS2012.csproj": {
+              "projectPath": "Z:\\GoogleDrive_anighost\\FaaS\\C#\\DataDevelop\\dockpanelsuite\\WinFormsUI\\ThemeVS2012.csproj"
             },
-            "Z:\\GoogleDrive_anighost\\FaaS\\C#\\datadevelop_vs2017\\dockpanelsuite\\WinFormsUI\\ThemeVS2013.csproj": {
-              "projectPath": "Z:\\GoogleDrive_anighost\\FaaS\\C#\\datadevelop_vs2017\\dockpanelsuite\\WinFormsUI\\ThemeVS2013.csproj"
+            "Z:\\GoogleDrive_anighost\\FaaS\\C#\\DataDevelop\\dockpanelsuite\\WinFormsUI\\ThemeVS2013.csproj": {
+              "projectPath": "Z:\\GoogleDrive_anighost\\FaaS\\C#\\DataDevelop\\dockpanelsuite\\WinFormsUI\\ThemeVS2013.csproj"
             },
-            "Z:\\GoogleDrive_anighost\\FaaS\\C#\\datadevelop_vs2017\\dockpanelsuite\\WinFormsUI\\ThemeVS2015.csproj": {
-              "projectPath": "Z:\\GoogleDrive_anighost\\FaaS\\C#\\datadevelop_vs2017\\dockpanelsuite\\WinFormsUI\\ThemeVS2015.csproj"
+            "Z:\\GoogleDrive_anighost\\FaaS\\C#\\DataDevelop\\dockpanelsuite\\WinFormsUI\\ThemeVS2015.csproj": {
+              "projectPath": "Z:\\GoogleDrive_anighost\\FaaS\\C#\\DataDevelop\\dockpanelsuite\\WinFormsUI\\ThemeVS2015.csproj"
             },
-            "Z:\\GoogleDrive_anighost\\FaaS\\C#\\datadevelop_vs2017\\dockpanelsuite\\WinFormsUI\\WinFormsUI.csproj": {
-              "projectPath": "Z:\\GoogleDrive_anighost\\FaaS\\C#\\datadevelop_vs2017\\dockpanelsuite\\WinFormsUI\\WinFormsUI.csproj"
+            "Z:\\GoogleDrive_anighost\\FaaS\\C#\\DataDevelop\\dockpanelsuite\\WinFormsUI\\WinFormsUI.csproj": {
+              "projectPath": "Z:\\GoogleDrive_anighost\\FaaS\\C#\\DataDevelop\\dockpanelsuite\\WinFormsUI\\WinFormsUI.csproj"
             }
           }
         }
