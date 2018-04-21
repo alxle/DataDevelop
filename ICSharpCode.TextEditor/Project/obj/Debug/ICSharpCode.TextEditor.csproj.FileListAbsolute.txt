@@ -1,0 +1,5 @@
+Z:\GoogleDrive_anighost\FaaS\C#\ICSharpCode.TextEditor\Project\bin\ICSharpCode.TextEditor.dll
+Z:\GoogleDrive_anighost\FaaS\C#\ICSharpCode.TextEditor\Project\bin\ICSharpCode.TextEditor.pdb
+Z:\GoogleDrive_anighost\FaaS\C#\ICSharpCode.TextEditor\Project\obj\Debug\ICSharpCode.TextEditor.csproj.CoreCompileInputs.cache
+Z:\GoogleDrive_anighost\FaaS\C#\ICSharpCode.TextEditor\Project\obj\Debug\ICSharpCode.TextEditor.dll
+Z:\GoogleDrive_anighost\FaaS\C#\ICSharpCode.TextEditor\Project\obj\Debug\ICSharpCode.TextEditor.pdb

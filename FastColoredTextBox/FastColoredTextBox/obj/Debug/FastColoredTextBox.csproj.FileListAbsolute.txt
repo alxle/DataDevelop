@@ -1,0 +1,13 @@
+Z:\GoogleDrive_anighost\FaaS\C#\FastColoredTextBox\FastColoredTextBox\bin\Debug\FastColoredTextBox.XML
+Z:\GoogleDrive_anighost\FaaS\C#\FastColoredTextBox\FastColoredTextBox\bin\Debug\FastColoredTextBox.dll
+Z:\GoogleDrive_anighost\FaaS\C#\FastColoredTextBox\FastColoredTextBox\bin\Debug\FastColoredTextBox.pdb
+Z:\GoogleDrive_anighost\FaaS\C#\FastColoredTextBox\FastColoredTextBox\obj\Debug\FastColoredTextBoxNS.FastColoredTextBox.resources
+Z:\GoogleDrive_anighost\FaaS\C#\FastColoredTextBox\FastColoredTextBox\obj\Debug\FastColoredTextBoxNS.FindForm.resources
+Z:\GoogleDrive_anighost\FaaS\C#\FastColoredTextBox\FastColoredTextBox\obj\Debug\FastColoredTextBoxNS.GoToForm.resources
+Z:\GoogleDrive_anighost\FaaS\C#\FastColoredTextBox\FastColoredTextBox\obj\Debug\FastColoredTextBoxNS.HotkeysEditorForm.resources
+Z:\GoogleDrive_anighost\FaaS\C#\FastColoredTextBox\FastColoredTextBox\obj\Debug\FastColoredTextBoxNS.ReplaceForm.resources
+Z:\GoogleDrive_anighost\FaaS\C#\FastColoredTextBox\FastColoredTextBox\obj\Debug\FastColoredTextBox.csproj.GenerateResource.cache
+Z:\GoogleDrive_anighost\FaaS\C#\FastColoredTextBox\FastColoredTextBox\obj\Debug\FastColoredTextBox.csproj.CoreCompileInputs.cache
+Z:\GoogleDrive_anighost\FaaS\C#\FastColoredTextBox\FastColoredTextBox\obj\Debug\FastColoredTextBox.dll
+Z:\GoogleDrive_anighost\FaaS\C#\FastColoredTextBox\FastColoredTextBox\obj\Debug\FastColoredTextBox.pdb
+Z:\GoogleDrive_anighost\FaaS\C#\FastColoredTextBox\FastColoredTextBox\obj\Debug\FastColoredTextBox.csprojResolveAssemblyReference.cache

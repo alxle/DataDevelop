@@ -1,0 +1,611 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{FA92F479-FF36-4E30-B6E1-BB1AF2BCCAC2}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DataDevelop</RootNamespace>
+    <AssemblyName>DataDevelop</AssemblyName>
+    <ApplicationIcon>DataDevelop.ico</ApplicationIcon>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <ManifestCertificateThumbprint>898826E6F02970A79E6732F7B92BFE1CA63CE92C</ManifestCertificateThumbprint>
+    <ManifestKeyFile>AlejandroLopez.pfx</ManifestKeyFile>
+    <GenerateManifests>true</GenerateManifests>
+    <SignManifests>false</SignManifests>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+    <PublishUrl>deploy\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Background</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>true</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <InstallUrl>
+    </InstallUrl>
+    <ProductName>DataDevelop</ProductName>
+    <PublisherName>Alex LE</PublisherName>
+    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
+    <WebPage>default.htm</WebPage>
+    <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>0.17.0.0</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>false</BootstrapperEnabled>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug_AllDb|AnyCPU' ">
+    <OutputPath>bin\Debug_AllDb\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;ALL_DB</DefineConstants>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug_AllDb|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug_AllDb\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;ALL_DB</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\dockpanelsuite\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\dockpanelsuite\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="IronJint, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\dockpanelsuite\packages\IronJint.1.0.0.1\lib\net40\IronJint.dll</HintPath>
+    </Reference>
+    <Reference Include="IronPython, Version=2.7.8.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\..\dockpanelsuite\packages\IronPython.2.7.8.1\lib\net45\IronPython.dll</HintPath>
+    </Reference>
+    <Reference Include="IronPython.Modules, Version=2.7.8.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\..\dockpanelsuite\packages\IronPython.2.7.8.1\lib\net45\IronPython.Modules.dll</HintPath>
+    </Reference>
+    <Reference Include="IronPython.SQLite, Version=2.7.8.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\..\dockpanelsuite\packages\IronPython.2.7.8.1\lib\net45\IronPython.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="IronPython.Wpf, Version=2.7.8.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\..\dockpanelsuite\packages\IronPython.2.7.8.1\lib\net45\IronPython.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="Jint, Version=2.4.0.0, Culture=neutral, PublicKeyToken=2e92ba9c8d81157f, processorArchitecture=MSIL">
+      <HintPath>..\..\dockpanelsuite\packages\Jint.2.4.0\lib\portable-net40+sl50+win+wpa81+wp80\Jint.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Dynamic, Version=1.2.0.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\..\dockpanelsuite\packages\DynamicLanguageRuntime.1.2.1\lib\net45\Microsoft.Dynamic.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Scripting, Version=1.2.0.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\..\dockpanelsuite\packages\DynamicLanguageRuntime.1.2.1\lib\net45\Microsoft.Scripting.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Scripting.Metadata, Version=1.2.0.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\..\dockpanelsuite\packages\DynamicLanguageRuntime.1.2.1\lib\net45\Microsoft.Scripting.Metadata.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.CodeCoverage.Shim, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\dockpanelsuite\packages\DynamicLanguageRuntime.1.2.1\lib\net45\Microsoft.VisualStudio.CodeCoverage.Shim.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite, Version=1.0.108.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\..\dockpanelsuite\packages\System.Data.SQLite.Core.1.0.108.0\lib\net46\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SQLite.EF6, Version=1.0.108.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\..\dockpanelsuite\packages\System.Data.SQLite.EF6.1.0.108.0\lib\net46\System.Data.SQLite.EF6.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SQLite.Linq, Version=1.0.108.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\..\dockpanelsuite\packages\System.Data.SQLite.Linq.1.0.108.0\lib\net46\System.Data.SQLite.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AboutBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutBox.Designer.cs">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AssemblyExplorer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AssemblyExplorer.Designer.cs">
+      <DependentUpon>AssemblyExplorer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CommandDocument.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CommandDocument.Designer.cs">
+      <DependentUpon>CommandDocument.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConnectionStringForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConnectionStringForm.Designer.cs">
+      <DependentUpon>ConnectionStringForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\BaseDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\BaseDialog.Designer.cs">
+      <DependentUpon>BaseDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\FindAndReplaceDialog.cs" />
+    <Compile Include="Dialogs\FindAndReplaceDialog.designer.cs">
+      <DependentUpon>FindAndReplaceDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\ParamsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\ParamsDialog.Designer.cs">
+      <DependentUpon>ParamsDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\RowsPerPageDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\RowsPerPageDialog.Designer.cs">
+      <DependentUpon>RowsPerPageDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Services\DatabasesManager.cs" />
+    <Compile Include="OutputWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OutputWindow.Designer.cs">
+      <DependentUpon>OutputWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PreferencesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PreferencesForm.Designer.cs">
+      <DependentUpon>PreferencesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reflection\AssemblyNode.cs" />
+    <Compile Include="Reflection\NamespaceNode.cs" />
+    <Compile Include="Reflection\TypeNode.cs" />
+    <Compile Include="Services\AssembliesManager.cs" />
+    <Compile Include="ScriptDocument.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ScriptDocument.Designer.cs">
+      <DependentUpon>ScriptDocument.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseExplorer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DatabaseExplorer.Designer.cs">
+      <DependentUpon>DatabaseExplorer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Printing\DataTablePrintDocument.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Dialogs\SelectProviderDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\SelectProviderDialog.Designer.cs">
+      <DependentUpon>SelectProviderDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Services\SettingsManager.cs" />
+    <Compile Include="Dialogs\SortDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\SortDialog.Designer.cs">
+      <DependentUpon>SortDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TypeDocument.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TypeDocument.Designer.cs">
+      <DependentUpon>TypeDocument.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIComponents\AlphaPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UIComponents\AsyncTreeNode.cs" />
+    <Compile Include="UIComponents\CalendarColumn.cs" />
+    <Compile Include="UIComponents\LogTextBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UIComponents\LogTextBox.Designer.cs">
+      <DependentUpon>LogTextBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIComponents\DateTimeVisualizer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIComponents\DateTimeVisualizer.Designer.cs">
+      <DependentUpon>DateTimeVisualizer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIComponents\FormExtensions.cs" />
+    <Compile Include="UIComponents\ListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UIComponents\ListView.Designer.cs">
+      <DependentUpon>ListView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\ProgressDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\ProgressDialog.Designer.cs">
+      <DependentUpon>ProgressDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIComponents\SortPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UIComponents\SortPanel.Designer.cs">
+      <DependentUpon>SortPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIComponents\SortToolStripItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UIComponents\TextEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UIComponents\TextEditor.Designer.cs">
+      <DependentUpon>TextEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIComponents\TextVisualizer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIComponents\TextVisualizer.Designer.cs">
+      <DependentUpon>TextVisualizer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIComponents\TreeNodeController.cs" />
+    <Compile Include="UIComponents\TreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UIComponents\TreeView.Designer.cs">
+      <DependentUpon>TreeView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utils\BackgroundWorkerEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Utils\DataUtils.cs" />
+    <Compile Include="Utils\StreamDelegator.cs" />
+    <Compile Include="Utils\StringStream.cs" />
+    <Compile Include="UIComponents\BinaryVisualizer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIComponents\BinaryVisualizer.Designer.cs">
+      <DependentUpon>BinaryVisualizer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIComponents\DataGridViewBinaryCell.cs">
+    </Compile>
+    <Compile Include="UIComponents\DockPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UIComponents\Highlighters.cs" />
+    <Compile Include="UIComponents\PictureBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UIComponents\TableNode.cs" />
+    <Compile Include="UIComponents\DatabaseNode.cs" />
+    <Compile Include="UIComponents\FolderNode.cs" />
+    <Compile Include="UIComponents\DataGridView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UIComponents\DataGridView.Designer.cs">
+      <DependentUpon>DataGridView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIComponents\Document.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIComponents\Document.Designer.cs">
+      <DependentUpon>Document.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\FilterDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\FilterDialog.Designer.cs">
+      <DependentUpon>FilterDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OpenPropertiesEventArgs.cs" />
+    <Compile Include="UIComponents\ToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UIComponents\ToolStrip.Designer.cs">
+      <DependentUpon>ToolStrip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utils\StringUtils.cs" />
+    <Compile Include="PropertiesToolbox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PropertiesToolbox.Designer.cs">
+      <DependentUpon>PropertiesToolbox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIComponents\PropertyGrid.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VisualStyles\VS2012ColorTable.cs" />
+    <Compile Include="VisualStyles\VS2012ToolStripRenderer.cs" />
+    <Compile Include="VisualStyles\VS2015ColorTable.cs" />
+    <Compile Include="VisualStyles\VS2015ToolStripRenderer.cs" />
+    <EmbeddedResource Include="AboutBox.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AssemblyExplorer.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AssemblyExplorer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CommandDocument.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CommandDocument.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConnectionStringForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ConnectionStringForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\BaseDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>BaseDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\FindAndReplaceDialog.resx">
+      <DependentUpon>FindAndReplaceDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\ParamsDialog.resx">
+      <DependentUpon>ParamsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\RowsPerPageDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>RowsPerPageDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OutputWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>OutputWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PreferencesForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PreferencesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ScriptDocument.resx">
+      <DependentUpon>ScriptDocument.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DatabaseExplorer.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DatabaseExplorer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\SelectProviderDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SelectProviderDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\SortDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SortDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TypeDocument.resx">
+      <DependentUpon>TypeDocument.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIComponents\BinaryVisualizer.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>BinaryVisualizer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIComponents\DataGridView.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DataGridView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIComponents\DateTimeVisualizer.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DateTimeVisualizer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIComponents\Document.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Document.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\FilterDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FilterDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PropertiesToolbox.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PropertiesToolbox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\ProgressDialog.resx">
+      <DependentUpon>ProgressDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIComponents\PropertyGrid.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PropertyGrid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TableDocument.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TableDocument.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIComponents\SortPanel.resx">
+      <DependentUpon>SortPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIComponents\TextEditor.resx">
+      <DependentUpon>TextEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIComponents\TextVisualizer.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TextVisualizer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIComponents\Toolbox.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Toolbox.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Resources\SqlSyntaxDefinition.xml" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="TableDocument.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TableDocument.Designer.cs">
+      <DependentUpon>TableDocument.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIComponents\Toolbox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UIComponents\Toolbox.Designer.cs">
+      <DependentUpon>Toolbox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VisualStyles\SystemToolStripRenderers.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <Content Include="DataDevelop.ico" />
+    <None Include="app.manifest" />
+    <None Include="Resources\AutoResizeColumns.png" />
+    <None Include="Resources\AutoResizeRows.png" />
+    <None Include="Resources\BinaryImage.png" />
+    <None Include="Resources\ClearAll.png" />
+    <None Include="Resources\Copy.png" />
+    <None Include="Resources\Cut.png" />
+    <None Include="Resources\ExcelTable.png" />
+    <None Include="Resources\Find.png" />
+    <None Include="Resources\JavascriptSyntaxDefinition.xml" />
+    <None Include="Resources\NavBack.png" />
+    <None Include="Resources\NavForward.png" />
+    <None Include="Resources\NewDocument.png" />
+    <None Include="Resources\Open.png" />
+    <None Include="Resources\Output.png" />
+    <None Include="Resources\Paste.png" />
+    <None Include="Resources\Print.png" />
+    <None Include="Resources\PrintPreview.png" />
+    <None Include="Resources\PythonSyntaxDefinition.xml" />
+    <None Include="Resources\Redo.png" />
+    <None Include="Resources\Refresh.png" />
+    <None Include="Resources\RefreshPage.png" />
+    <None Include="Resources\Revert.png" />
+    <None Include="Resources\SaveChanges.png" />
+    <None Include="Resources\Start.png" />
+    <None Include="Resources\Stop.png" />
+    <None Include="Resources\Undo.png" />
+    <None Include="Resources\Web.png" />
+    <None Include="Resources\WordWrap.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\dockpanelsuite\WinFormsUI\ThemeVS2015.csproj">
+      <Project>{007d4ac8-948f-4816-86ad-b9d1343672c1}</Project>
+      <Name>ThemeVS2015</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dockpanelsuite\WinFormsUI\WinFormsUI.csproj">
+      <Project>{c75532c4-765b-418e-b09b-46d36b2abdb1}</Project>
+      <Name>WinFormsUI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\FastColoredTextBox\FastColoredTextBox\FastColoredTextBox.csproj">
+      <Project>{6dd14a85-ccfc-4774-bd26-0f5772512319}</Project>
+      <Name>FastColoredTextBox</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ICSharpCode.TextEditor\Project\ICSharpCode.TextEditor.csproj">
+      <Project>{2d18be89-d210-49eb-a9dd-2246fbb3df6d}</Project>
+      <Name>ICSharpCode.TextEditor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{dca7e7dc-93f3-42f9-999f-3935db3bd249}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\..\dockpanelsuite\packages\System.Data.SQLite.Core.1.0.108.0\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\..\dockpanelsuite\packages\System.Data.SQLite.Core.1.0.108.0\build\net46\System.Data.SQLite.Core.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\dockpanelsuite\packages\System.Data.SQLite.Core.1.0.108.0\build\net46\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\dockpanelsuite\packages\System.Data.SQLite.Core.1.0.108.0\build\net46\System.Data.SQLite.Core.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
