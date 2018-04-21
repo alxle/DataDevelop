@@ -38,11 +38,10 @@ namespace DataDevelop.Data.SqlServer
 		{
 			using (database.CreateConnectionScope()) {
 				using (var select = database.Connection.CreateCommand()) {
-					select.CommandText = 
-						"SELECT ISNULL(smsp.definition, ssmsp.definition) AS [Definition] "+
-						"FROM sys.all_objects AS fn "+
+					select.CommandText =
+						"SELECT smsp.definition " +
+						"FROM sys.objects AS fn "+
 						"LEFT OUTER JOIN sys.sql_modules AS smsp ON smsp.object_id = fn.object_id "+
-						"LEFT OUTER JOIN sys.system_sql_modules AS ssmsp ON ssmsp.object_id = fn.object_id "+
 						"WHERE fn.type in ('FN', 'IF', 'TF') "+
 						"  AND fn.name = @Name AND SCHEMA_NAME(fn.schema_id) = @Schema";
 					select.Parameters.AddWithValue("@Name", FunctionName);
@@ -58,17 +57,22 @@ namespace DataDevelop.Data.SqlServer
 
 		public override string GenerateDropStatement()
 		{
-			return "DROP FUNCTION [" + SchemaName + "].[" + FunctionName + "]";
+			return $"DROP FUNCTION [{SchemaName}].[{FunctionName}]";
 		}
 
 		public override string GenerateExecuteStatement()
 		{
 			var statement = new StringBuilder();
-			statement.Append("SELECT [");
+			statement.Append("SELECT ");
+			if (ReturnType == "table") {
+				statement.Append("* FROM ");
+			}
+			statement.Append('[');
 			statement.Append(SchemaName);
 			statement.Append("].[");
 			statement.Append(FunctionName);
-			statement.Append("](");
+			statement.Append(']');
+			statement.Append('(');
 			var first = true;
 			foreach (var p in Parameters) {
 				if (first) {

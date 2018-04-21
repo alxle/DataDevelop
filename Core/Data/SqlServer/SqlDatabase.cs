@@ -217,18 +217,18 @@ namespace DataDevelop.Data.SqlServer
 		{
 			using (var select = Connection.CreateCommand()) {
 				select.CommandText =
-					"SELECT b.Name AS [Schema], a.Name, type_name(p.system_type_id) " +
+					"SELECT b.Name AS [Schema], a.Name, a.type, type_name(p.system_type_id) " +
 					"FROM sys.objects a " +
 					"INNER JOIN sys.schemas b ON a.schema_id = b.schema_id " +
-					"INNER JOIN sys.parameters p ON p.object_id = a.object_id " +
-					"WHERE a.type in ('FN', 'IF', 'TF') AND p.parameter_id = 0";
+					"LEFT JOIN sys.parameters p ON p.object_id = a.object_id AND p.parameter_id = 0 " +
+					"WHERE a.type in ('FN', 'IF', 'TF')";
 				using (var reader = select.ExecuteReader()) {
 					while (reader.Read()) {
 						var fn = new SqlUserDefinedFunction(this,
 							reader.GetString(0),
-							reader.GetString(1)) {
-							ReturnType = reader.GetString(2)
-						};
+							reader.GetString(1));
+						var functionType = reader.GetString(2);
+						fn.ReturnType = (functionType == "FN") ? reader.GetString(3) : "table";
 						userDefinedFunctionsCollection.Add(fn);
 					}
 				}
