@@ -122,7 +122,7 @@ namespace DataDevelop.Data.SqlServer
 		protected override void PopulateColumns(IList<Column> columnsCollection)
 		{
 			using (Database.CreateConnectionScope()) {
-				var columns = Connection.GetSchema("Columns", new string[] { null, SchemaName, TableName, null });
+				var columns = Connection.GetSchema("Columns", new[] { null, SchemaName, TableName, null });
 
 				// Fix because Column are sorted by Name rather than Ordinal Position
 				var rows = new DataRow[columns.Rows.Count];
@@ -162,7 +162,7 @@ namespace DataDevelop.Data.SqlServer
 						"INNER JOIN sys.indexes x ON x.object_id = o.object_id " +
 						"INNER JOIN sys.index_columns xc ON xc.object_id = x.object_id AND xc.index_id = x.index_id " +
 						"INNER JOIN sys.columns c ON c.object_id = x.object_id AND xc.column_id = c.column_id " +
-						"WHERE o.name = @TableName o.name IS NOT NULL " +
+						"WHERE o.name = @TableName AND o.name IS NOT NULL " +
 						"      AND o.type = 'U' AND schema_name(o.schema_id) = @SchemaName " +
 						"ORDER BY x.name, xc.key_ordinal";
 					select.Parameters.AddWithValue("@SchemaName", SchemaName);
