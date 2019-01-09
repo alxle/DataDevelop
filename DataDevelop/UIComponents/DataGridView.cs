@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -260,6 +260,11 @@ namespace DataDevelop
 			e.Graphics.DrawString(strRowNumber, this.Font, b, e.RowBounds.Location.X + 15, e.RowBounds.Location.Y + ((e.RowBounds.Height - size.Height) / 2));
 
 			base.OnRowPostPaint(e);
+		}
+
+		private void DeleteRowsMenuItem_Click(object sender, EventArgs e)
+		{
+			ProcessDeleteKey(Keys.Delete);
 		}
 
 		private class TextCell : DataGridViewTextBoxCell
