@@ -4,7 +4,9 @@ using DocumentFormat.OpenXml.Spreadsheet;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Text;
 
 namespace DataDevelop.Core.Excel
@@ -17,33 +19,56 @@ namespace DataDevelop.Core.Excel
 				workbook.Write(sheetName, reader);
 			}
 		}
+
+		public static void OpenInTemp(DataTable dataTable)
+		{
+			var sheetName = !string.IsNullOrEmpty(dataTable.TableName) ? dataTable.TableName : "Data";
+			OpenInTemp(sheetName, dataTable);
+		}
+
+		public static void OpenInTemp(string sheetName, DataTable dataTable)
+		{
+			using (var reader = dataTable.CreateDataReader()) {
+				OpenInTemp(sheetName, reader);
+			}
+		}
+
+		public static void OpenInTemp(string sheetName, IDataReader reader)
+		{
+			var tempFile = Path.Combine(Path.GetTempPath(), $"DataDevelop-{DateTime.Now:yyMMddHHmmss}.xlsx");
+			using (var workbook = SpreadsheetDocument.Create(tempFile, SpreadsheetDocumentType.Workbook)) {
+				workbook.Write(sheetName, reader);
+			}
+			File.SetAttributes(tempFile, FileAttributes.ReadOnly);
+			Process.Start(tempFile);
+		}
 	}
 
 	static class ExcelExtensions
 	{
-		struct ColumnDef
+		struct ExcelColumn
 		{
 			public int Index;
 			public string Name;
 			public CellValues CellValues;
 
-			public ColumnDef(int index, string name, Type dataType)
+			public ExcelColumn(int index, string name, Type dataType)
 			{
-				this.Index = index;
-				this.Name = name;
-				if (dataType == typeof(Int16) ||
-					dataType == typeof(Int32) ||
-					dataType == typeof(Int64) ||
-					dataType == typeof(Single) ||
-					dataType == typeof(Double) ||
-					dataType == typeof(Decimal)) {
-					this.CellValues = CellValues.Number;
-				} else if (dataType == typeof(Boolean)) {
-					this.CellValues = CellValues.Boolean;
+				Index = index;
+				Name = name;
+				if (dataType == typeof(short) ||
+					dataType == typeof(int) ||
+					dataType == typeof(long) ||
+					dataType == typeof(float) ||
+					dataType == typeof(double) ||
+					dataType == typeof(decimal)) {
+					CellValues = CellValues.Number;
+				} else if (dataType == typeof(bool)) {
+					CellValues = CellValues.Boolean;
 				} else if (dataType == typeof(DateTime)) {
-					this.CellValues = CellValues.Date;
+					CellValues = CellValues.Date;
 				} else {
-					this.CellValues = CellValues.String;
+					CellValues = CellValues.String;
 				}
 			}
 		}
@@ -79,8 +104,7 @@ namespace DataDevelop.Core.Excel
 					new Fill(                                                           // Index 2 - The yellow fill.
 						new PatternFill(
 							new ForegroundColor() { Rgb = new HexBinaryValue() { Value = "FFFFFF00" } }
-						)
-						{ PatternType = PatternValues.Solid })
+						) { PatternType = PatternValues.Solid })
 				),
 				new Borders(
 					new Border(                                                         // Index 0 - The default border.
@@ -90,22 +114,10 @@ namespace DataDevelop.Core.Excel
 						new BottomBorder(),
 						new DiagonalBorder()),
 					new Border(                                                         // Index 1 - Applies a Left, Right, Top, Bottom border to a cell
-						new LeftBorder(
-							new Color() { Auto = true }
-						)
-						{ Style = BorderStyleValues.Thin },
-						new RightBorder(
-							new Color() { Auto = true }
-						)
-						{ Style = BorderStyleValues.Thin },
-						new TopBorder(
-							new Color() { Auto = true }
-						)
-						{ Style = BorderStyleValues.Thin },
-						new BottomBorder(
-							new Color() { Auto = true }
-						)
-						{ Style = BorderStyleValues.Thin },
+						new LeftBorder(new Color() { Auto = true }) { Style = BorderStyleValues.Thin },
+						new RightBorder(new Color() { Auto = true }) { Style = BorderStyleValues.Thin },
+						new TopBorder(new Color() { Auto = true }) { Style = BorderStyleValues.Thin },
+						new BottomBorder(new Color() { Auto = true }) { Style = BorderStyleValues.Thin },
 						new DiagonalBorder())
 				),
 				new CellFormats(
@@ -116,8 +128,7 @@ namespace DataDevelop.Core.Excel
 					new CellFormat() { FontId = 0, FillId = 2, BorderId = 0, ApplyFill = true },       // Index 4 - Yellow Fill
 					new CellFormat(                                                                   // Index 5 - Alignment
 						new Alignment() { Horizontal = HorizontalAlignmentValues.Center, Vertical = VerticalAlignmentValues.Center }
-					)
-					{ FontId = 0, FillId = 0, BorderId = 0, ApplyAlignment = true },
+					) { FontId = 0, FillId = 0, BorderId = 0, ApplyAlignment = true },
 					new CellFormat() { FontId = 0, FillId = 0, BorderId = 1, ApplyBorder = true },      // Index 6 - Border
 					new CellFormat() { ApplyNumberFormat = true, NumberFormatId = 14 } // Index 7 - Date
 
@@ -156,33 +167,33 @@ namespace DataDevelop.Core.Excel
 
 		public static void Write(this SpreadsheetDocument spreadsheet, string sheetName, IDataReader reader)
 		{
-			var columns = new List<ColumnDef>();
-			var rowRead = reader.Read();
 			var fieldCount = reader.FieldCount;
+			var columns = new List<ExcelColumn>(fieldCount);
+			var rowRead = reader.Read();
 			for (var index = 0; index < fieldCount; index++) {
-				columns.Add(new ColumnDef(index, reader.GetName(index), reader.GetFieldType(index)));
+				columns.Add(new ExcelColumn(index, reader.GetName(index), reader.GetFieldType(index)));
 			}
 
 			//create workbook part
-			WorkbookPart wbp = spreadsheet.AddWorkbookPart();
+			var wbp = spreadsheet.AddWorkbookPart();
 			wbp.Workbook = new Workbook();
 			wbp.Workbook.Append(new BookViews(new WorkbookView()));
-			Sheets sheets = wbp.Workbook.AppendChild<Sheets>(new Sheets());
+			var sheets = wbp.Workbook.AppendChild<Sheets>(new Sheets());
 
 			var stylesPart = wbp.AddNewPart<WorkbookStylesPart>();
 			stylesPart.Stylesheet = GenerateStyleSheet();
 			stylesPart.Stylesheet.Save();
 
 			//create worksheet part, and add it to the sheets collection in workbook
-			WorksheetPart wsp = wbp.AddNewPart<WorksheetPart>();
-			Sheet sheet = new Sheet() { Id = spreadsheet.WorkbookPart.GetIdOfPart(wsp), SheetId = 1, Name = sheetName };
+			var wsp = wbp.AddNewPart<WorksheetPart>();
+			var sheet = new Sheet() { Id = spreadsheet.WorkbookPart.GetIdOfPart(wsp), SheetId = 1, Name = sheetName };
 			sheets.Append(sheet);
 
 			var sheetCount = 1;
 
 			// Start Writing Values
-			OpenXmlWriter writer = OpenXmlWriter.Create(wsp);
-			writer.WriteStartElement(new DocumentFormat.OpenXml.Spreadsheet.Worksheet());
+			var writer = OpenXmlWriter.Create(wsp);
+			writer.WriteStartElement(new Worksheet());
 
 			WriteFreezeTopRow(writer);
 			writer.WriteStartElement(new SheetData());
@@ -193,15 +204,19 @@ namespace DataDevelop.Core.Excel
 				do {
 					writer.WriteStartElement(new Row());
 					foreach (var col in columns) {
-						var cell = new Cell();
+						var cell = new Cell() { DataType = col.CellValues };
+						if (col.CellValues == CellValues.Date) {
+							cell.DataType = CellValues.Number;
+							cell.StyleIndex = 7; // Date (Stylesheet)
+						}
 						if (!reader.IsDBNull(col.Index)) {
 							if (col.CellValues == CellValues.Date) {
-								cell.DataType = CellValues.Number;
 								cell.CellValue = new CellValue(reader.GetDateTime(col.Index).ToOADate().ToString(CultureInfo.InvariantCulture));
-								cell.StyleIndex = 7; // Date (Stylesheet)
+							} else if (col.CellValues == CellValues.Boolean) {
+								cell.CellValue = new CellValue(reader.GetBoolean(col.Index) ? "1" : "0");
 							} else {
-								cell.DataType = col.CellValues;
-								cell.CellValue = new CellValue(reader[col.Index].ToString());
+								var str = reader[col.Index].ToString().Replace("\a", "");
+								cell.CellValue = new CellValue(str);
 							}
 						}
 						writer.WriteElement(cell);
@@ -224,7 +239,7 @@ namespace DataDevelop.Core.Excel
 						sheets.Append(sheet);
 
 						writer = OpenXmlWriter.Create(wsp);
-						writer.WriteStartElement(new DocumentFormat.OpenXml.Spreadsheet.Worksheet());
+						writer.WriteStartElement(new Worksheet());
 						WriteFreezeTopRow(writer);
 						writer.WriteStartElement(new SheetData());
 						WriteColumnsHeader(writer, columns);
@@ -277,7 +292,7 @@ namespace DataDevelop.Core.Excel
 			writer.WriteEndElement();
 		}
 
-		private static void WriteColumnsHeader(OpenXmlWriter writer, List<ColumnDef> columns)
+		private static void WriteColumnsHeader(OpenXmlWriter writer, IEnumerable<ExcelColumn> columns)
 		{
 			writer.WriteStartElement(new Row());
 			foreach (var column in columns) {
