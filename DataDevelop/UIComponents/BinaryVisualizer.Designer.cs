@@ -1,4 +1,4 @@
-namespace DataDevelop.UIComponents
+﻿namespace DataDevelop.UIComponents
 {
 	partial class BinaryVisualizer
 	{
@@ -28,7 +28,6 @@ namespace DataDevelop.UIComponents
 		private void InitializeComponent()
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BinaryVisualizer));
-			this.hexTextBox = new System.Windows.Forms.RichTextBox();
 			this.toolStrip = new System.Windows.Forms.ToolStrip();
 			this.newToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.openToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -40,31 +39,25 @@ namespace DataDevelop.UIComponents
 			this.sizeModeToolStripDropDownButton = new System.Windows.Forms.ToolStripDropDownButton();
 			this.normalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.stretchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+			this.viewHexButton = new System.Windows.Forms.ToolStripButton();
 			this.statusStrip = new System.Windows.Forms.StatusStrip();
 			this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
 			this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
 			this.picturePanel = new System.Windows.Forms.Panel();
 			this.pictureBox = new DataDevelop.UIComponents.PictureBox();
+			this.hexSplitContainer = new System.Windows.Forms.SplitContainer();
+			this.hexTextBox = new System.Windows.Forms.RichTextBox();
+			this.strTextBox = new System.Windows.Forms.RichTextBox();
 			this.toolStrip.SuspendLayout();
 			this.statusStrip.SuspendLayout();
 			this.picturePanel.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
+			this.hexSplitContainer.Panel1.SuspendLayout();
+			this.hexSplitContainer.Panel2.SuspendLayout();
+			this.hexSplitContainer.SuspendLayout();
 			this.SuspendLayout();
-			// 
-			// hexTextBox
-			// 
-			this.hexTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.hexTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.hexTextBox.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.hexTextBox.Location = new System.Drawing.Point(0, 25);
-			this.hexTextBox.Name = "hexTextBox";
-			this.hexTextBox.ReadOnly = true;
-			this.hexTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-			this.hexTextBox.Size = new System.Drawing.Size(384, 319);
-			this.hexTextBox.TabIndex = 0;
-			this.hexTextBox.Text = "";
-			this.hexTextBox.Visible = false;
 			// 
 			// toolStrip
 			// 
@@ -76,10 +69,12 @@ namespace DataDevelop.UIComponents
             this.copyToolStripButton,
             this.pasteToolStripButton,
             this.toolStripSeparator1,
-            this.sizeModeToolStripDropDownButton});
+            this.sizeModeToolStripDropDownButton,
+            this.toolStripSeparator2,
+            this.viewHexButton});
 			this.toolStrip.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip.Name = "toolStrip";
-			this.toolStrip.Size = new System.Drawing.Size(384, 25);
+			this.toolStrip.Size = new System.Drawing.Size(684, 25);
 			this.toolStrip.TabIndex = 2;
 			// 
 			// newToolStripButton
@@ -170,20 +165,34 @@ namespace DataDevelop.UIComponents
 			this.stretchToolStripMenuItem.Text = "Stretch";
 			this.stretchToolStripMenuItem.Click += new System.EventHandler(this.stretchToolStripMenuItem_Click);
 			// 
+			// toolStripSeparator2
+			// 
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+			// 
+			// viewHexButton
+			// 
+			this.viewHexButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.viewHexButton.Name = "viewHexButton";
+			this.viewHexButton.Size = new System.Drawing.Size(33, 22);
+			this.viewHexButton.Text = "HEX";
+			this.viewHexButton.Visible = false;
+			this.viewHexButton.Click += new System.EventHandler(this.viewHexButton_Click);
+			// 
 			// statusStrip
 			// 
 			this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusLabel});
-			this.statusStrip.Location = new System.Drawing.Point(0, 344);
+			this.statusStrip.Location = new System.Drawing.Point(0, 399);
 			this.statusStrip.Name = "statusStrip";
 			this.statusStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.ManagerRenderMode;
-			this.statusStrip.Size = new System.Drawing.Size(384, 22);
+			this.statusStrip.Size = new System.Drawing.Size(684, 22);
 			this.statusStrip.TabIndex = 3;
 			// 
 			// statusLabel
 			// 
 			this.statusLabel.Name = "statusLabel";
-			this.statusLabel.Size = new System.Drawing.Size(369, 17);
+			this.statusLabel.Size = new System.Drawing.Size(638, 17);
 			this.statusLabel.Spring = true;
 			this.statusLabel.Text = "[Status]";
 			// 
@@ -202,7 +211,7 @@ namespace DataDevelop.UIComponents
 			this.picturePanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.picturePanel.Location = new System.Drawing.Point(0, 25);
 			this.picturePanel.Name = "picturePanel";
-			this.picturePanel.Size = new System.Drawing.Size(384, 319);
+			this.picturePanel.Size = new System.Drawing.Size(684, 374);
 			this.picturePanel.TabIndex = 5;
 			this.picturePanel.VisibleChanged += new System.EventHandler(this.picturePanel_VisibleChanged);
 			this.picturePanel.Resize += new System.EventHandler(this.picturePanel_Resize);
@@ -218,14 +227,59 @@ namespace DataDevelop.UIComponents
 			this.pictureBox.TabIndex = 4;
 			this.pictureBox.TabStop = false;
 			// 
+			// hexSplitContainer
+			// 
+			this.hexSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.hexSplitContainer.Location = new System.Drawing.Point(0, 25);
+			this.hexSplitContainer.Name = "hexSplitContainer";
+			// 
+			// hexSplitContainer.Panel1
+			// 
+			this.hexSplitContainer.Panel1.Controls.Add(this.hexTextBox);
+			// 
+			// hexSplitContainer.Panel2
+			// 
+			this.hexSplitContainer.Panel2.Controls.Add(this.strTextBox);
+			this.hexSplitContainer.Size = new System.Drawing.Size(684, 374);
+			this.hexSplitContainer.SplitterDistance = 411;
+			this.hexSplitContainer.TabIndex = 6;
+			// 
+			// hexTextBox
+			// 
+			this.hexTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.hexTextBox.DetectUrls = false;
+			this.hexTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.hexTextBox.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.hexTextBox.Location = new System.Drawing.Point(0, 0);
+			this.hexTextBox.Name = "hexTextBox";
+			this.hexTextBox.ReadOnly = true;
+			this.hexTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+			this.hexTextBox.Size = new System.Drawing.Size(411, 374);
+			this.hexTextBox.TabIndex = 0;
+			this.hexTextBox.Text = "";
+			// 
+			// strTextBox
+			// 
+			this.strTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.strTextBox.DetectUrls = false;
+			this.strTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.strTextBox.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.strTextBox.Location = new System.Drawing.Point(0, 0);
+			this.strTextBox.Name = "strTextBox";
+			this.strTextBox.ReadOnly = true;
+			this.strTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+			this.strTextBox.Size = new System.Drawing.Size(269, 374);
+			this.strTextBox.TabIndex = 1;
+			this.strTextBox.Text = "";
+			// 
 			// BinaryVisualizer
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.SystemColors.AppWorkspace;
-			this.ClientSize = new System.Drawing.Size(384, 366);
+			this.ClientSize = new System.Drawing.Size(684, 421);
 			this.Controls.Add(this.picturePanel);
-			this.Controls.Add(this.hexTextBox);
+			this.Controls.Add(this.hexSplitContainer);
 			this.Controls.Add(this.toolStrip);
 			this.Controls.Add(this.statusStrip);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
@@ -236,6 +290,7 @@ namespace DataDevelop.UIComponents
 			this.Name = "BinaryVisualizer";
 			this.ShowIcon = false;
 			this.ShowInTaskbar = false;
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Binary Visualizer";
 			this.Load += new System.EventHandler(this.BinaryVisualizer_Load);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.BinaryVisualizer_KeyDown);
@@ -246,14 +301,15 @@ namespace DataDevelop.UIComponents
 			this.picturePanel.ResumeLayout(false);
 			this.picturePanel.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
+			this.hexSplitContainer.Panel1.ResumeLayout(false);
+			this.hexSplitContainer.Panel2.ResumeLayout(false);
+			this.hexSplitContainer.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
 		}
 
 		#endregion
-
-		private System.Windows.Forms.RichTextBox hexTextBox;
 		private System.Windows.Forms.ToolStrip toolStrip;
 		private System.Windows.Forms.ToolStripButton newToolStripButton;
 		private System.Windows.Forms.ToolStripButton openToolStripButton;
@@ -271,5 +327,10 @@ namespace DataDevelop.UIComponents
 		private System.Windows.Forms.OpenFileDialog openFileDialog;
 		private System.Windows.Forms.SaveFileDialog saveFileDialog;
 		private System.Windows.Forms.Panel picturePanel;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+		private System.Windows.Forms.ToolStripButton viewHexButton;
+		private System.Windows.Forms.SplitContainer hexSplitContainer;
+		private System.Windows.Forms.RichTextBox hexTextBox;
+		private System.Windows.Forms.RichTextBox strTextBox;
 	}
 }
