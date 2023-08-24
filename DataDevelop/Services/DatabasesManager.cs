@@ -1,19 +1,17 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
-using System.Collections;
-using DataDevelop.Collections;
 
 namespace DataDevelop.Data
 {
+	using Collections;
+
 	public static class DatabasesManager
 	{
 		private static bool isCollectionDirty;
 
 		private static Dictionary<string, Database> collection = new Dictionary<string, Database>(StringComparer.OrdinalIgnoreCase);
 		
-		private static ReadOnlyDictionary<string, Database> readOnlyCollection;// = new ReadOnlyDictionary<string, Database>(collection);
+		private static ReadOnlyDictionary<string, Database> readOnlyCollection;
 
 		public static IDictionary<string, Database> Databases
 		{

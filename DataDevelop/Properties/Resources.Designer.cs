@@ -19,7 +19,7 @@ namespace DataDevelop.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -200,23 +200,23 @@ namespace DataDevelop.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
-        ///&lt;SyntaxDefinition name =&quot;JavaScript&quot; extensions = &quot;.js&quot;&gt;
+        ///&lt;SyntaxDefinition name=&quot;JavaScript&quot; extensions=&quot;.js&quot;&gt;
         ///
         ///  &lt;Properties&gt;
         ///    &lt;Property name=&quot;LineComment&quot; value=&quot;//&quot;/&gt;
         ///  &lt;/Properties&gt;
         ///
-        ///  &lt;Digits name =&quot;Digits&quot; bold =&quot;false&quot; italic =&quot;false&quot; color =&quot;DarkBlue&quot;/&gt;
+        ///  &lt;Digits name=&quot;Digits&quot; bold=&quot;false&quot; italic=&quot;false&quot; color=&quot;DarkBlue&quot;/&gt;
         ///
         ///  &lt;RuleSets&gt;
-        ///    &lt;RuleSet ignorecase = &quot;false&quot;&gt;
+        ///    &lt;RuleSet ignorecase=&quot;false&quot;&gt;
         ///      &lt;Delimiters&gt;=!&amp;gt;&amp;lt;+-/*%&amp;amp;|^~.}{,;][?:()&lt;/Delimiters&gt;
         ///
-        ///      &lt;Span name =&quot;LineComment&quot; bold =&quot;false&quot; italic =&quot;false&quot; color =&quot;Green&quot; stopateol =&quot;true&quot;&gt;
+        ///      &lt;Span name=&quot;LineComment&quot; bold=&quot;false&quot; italic=&quot;false&quot; color=&quot;Green&quot; stopateol=&quot;true&quot;&gt;
         ///        &lt;Begin&gt;//&lt;/Begin&gt;
         ///      &lt;/Span&gt;
         ///
-        ///      &lt;Sp [rest of string was truncated]&quot;;.
+        ///      &lt;Span name=&quot;Block [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string JavascriptSyntaxDefinition {
             get {
@@ -376,11 +376,13 @@ namespace DataDevelop.Properties {
         ///
         ///  &lt;RuleSets&gt;
         ///    &lt;RuleSet ignorecase=&quot;false&quot;&gt;
-        ///      &lt;Delimiters&gt;&amp;amp;&amp;lt;&amp;gt;~!%^*()-+=|\#/{}[]:;&quot;&apos; ,	.?&lt;/Delimiters&gt;
+        ///			&lt;Delimiters&gt;&amp;amp;&amp;lt;&amp;gt;~!%^*()-+=|\#/{}[]:;&quot;&apos; ,	.?&lt;/Delimiters&gt;
         ///
-        ///      &lt;Span name = &quot;LineComment&quot; rule = &quot;CommentMarkerSet&quot; bold = &quot;false&quot; italic = &quot;false&quot; color = &quot;Green&quot; stopateol = &quot;true&quot;&gt;
+        ///      &lt;Span name=&quot;LineComment&quot; rule=&quot;CommentMarkerSet&quot; bold=&quot;false&quot; italic=&quot;false&quot; color=&quot;Green&quot; stopateol=&quot;true&quot;&gt;
         ///        &lt;Begin&gt;#&lt;/Begin&gt;
-        ///     [rest of string was truncated]&quot;;.
+        ///      &lt;/Span&gt;
+        ///
+        ///   [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string PythonLexer {
             get {
@@ -465,15 +467,15 @@ namespace DataDevelop.Properties {
         ///    &lt;Property name=&quot;LineComment&quot; value=&quot;--&quot;/&gt;
         ///  &lt;/Properties&gt;
         ///
-        ///	&lt;Digits name=&quot;Digits&quot; bold=&quot;false&quot; italic=&quot;false&quot; color=&quot;DarkBlue&quot;/&gt;
+        ///  &lt;Digits name=&quot;Digits&quot; bold=&quot;false&quot; italic=&quot;false&quot; color=&quot;DarkBlue&quot;/&gt;
         ///
         ///  &lt;RuleSets&gt;
         ///    &lt;RuleSet ignorecase=&quot;true&quot;&gt;
         ///      &lt;Delimiters&gt;&amp;amp;&amp;lt;&amp;gt;~!%^*()-+=|\#/{}[]:;&quot;&apos; ,	.?&lt;/Delimiters&gt;
         ///
-        ///      &lt;Span name = &quot;LineComment&quot; rule = &quot;CommentMarkerSet&quot; bold = &quot;false&quot; italic = &quot;false&quot; color = &quot;Green&quot; stopateol = &quot;true&quot;&gt;
+        ///      &lt;Span name=&quot;LineComment&quot; rule=&quot;CommentMarkerSet&quot; bold=&quot;false&quot; italic=&quot;false&quot; color=&quot;Green&quot; stopateol=&quot;true&quot;&gt;
         ///        &lt;Begin&gt;--@!/@&lt;/Begin&gt;
-        ///   [rest of string was truncated]&quot;;.
+        ///      &lt;/Span&gt; [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SqlLexer {
             get {
