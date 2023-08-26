@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace DataDevelop.Data
 {
-	using Collections;
-
 	public static class DatabasesManager
 	{
 		private static bool isCollectionDirty;

@@ -114,7 +114,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Collections\ReadOnlyDictionary.cs" />
     <Compile Include="Data\Access\AccessDatabase.cs" />
     <Compile Include="Data\Access\AccessProvider.cs" />
     <Compile Include="Data\Access\AccessTable.cs" />
