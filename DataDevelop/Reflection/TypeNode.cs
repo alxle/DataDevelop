@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -42,7 +42,7 @@ namespace DataDevelop.Reflection
 			}
 		}
 
-		public IList<ConstructorInfo> Contructors
+		public IList<ConstructorInfo> Constructors
 		{
 			get
 			{

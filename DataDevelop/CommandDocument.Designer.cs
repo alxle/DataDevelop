@@ -1,4 +1,4 @@
-namespace DataDevelop
+﻿namespace DataDevelop
 {
 	partial class CommandDocument
 	{
@@ -28,6 +28,8 @@ namespace DataDevelop
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CommandDocument));
 			this.textEditorControl = new DataDevelop.UIComponents.TextEditor();
 			this.splitContainer = new System.Windows.Forms.SplitContainer();
@@ -63,7 +65,7 @@ namespace DataDevelop
 			this.executeQueryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.executeNonQueryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.executeEachStatementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.executeAndSaveToXslxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.executeAndSaveToXlsxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.abortButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.showResultPanelToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -92,6 +94,7 @@ namespace DataDevelop
 			this.excelWorker = new System.ComponentModel.BackgroundWorker();
 			this.executingTimer = new System.Windows.Forms.Timer(this.components);
 			this.executeToXlsxWorker = new System.ComponentModel.BackgroundWorker();
+			((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
 			this.splitContainer.Panel1.SuspendLayout();
 			this.splitContainer.Panel2.SuspendLayout();
 			this.splitContainer.SuspendLayout();
@@ -174,8 +177,24 @@ namespace DataDevelop
 			this.dataGridView.AllowUserToDeleteRows = false;
 			this.dataGridView.BackgroundColor = System.Drawing.SystemColors.Window;
 			this.dataGridView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+			dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
 			this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.dataGridView.ContextMenuStrip = this.resultsContextMenuStrip;
+			dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+			dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.dataGridView.DefaultCellStyle = dataGridViewCellStyle2;
 			this.dataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
 			this.dataGridView.Location = new System.Drawing.Point(3, 3);
@@ -192,7 +211,7 @@ namespace DataDevelop
             this.exportToToolStripMenuItem,
             this.printPreviewToolStripMenuItem});
 			this.resultsContextMenuStrip.Name = "resultsContextMenuStrip";
-			this.resultsContextMenuStrip.Size = new System.Drawing.Size(153, 92);
+			this.resultsContextMenuStrip.Size = new System.Drawing.Size(153, 70);
 			// 
 			// saveToFileToolStripMenuItem
 			// 
@@ -434,41 +453,41 @@ namespace DataDevelop
             this.executeQueryToolStripMenuItem,
             this.executeNonQueryToolStripMenuItem,
             this.executeEachStatementToolStripMenuItem,
-            this.executeAndSaveToXslxToolStripMenuItem});
+            this.executeAndSaveToXlsxToolStripMenuItem});
 			this.executeButton.Image = global::DataDevelop.Properties.Resources.Start;
 			this.executeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.executeButton.Name = "executeButton";
-			this.executeButton.Size = new System.Drawing.Size(79, 22);
+			this.executeButton.Size = new System.Drawing.Size(80, 22);
 			this.executeButton.Text = "Execute";
 			this.executeButton.ButtonClick += new System.EventHandler(this.executeButton_Click);
 			// 
 			// executeQueryToolStripMenuItem
 			// 
 			this.executeQueryToolStripMenuItem.Name = "executeQueryToolStripMenuItem";
-			this.executeQueryToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
+			this.executeQueryToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
 			this.executeQueryToolStripMenuItem.Text = "Execute &Query";
 			this.executeQueryToolStripMenuItem.Click += new System.EventHandler(this.executeQueryToolStripMenuItem_Click);
 			// 
 			// executeNonQueryToolStripMenuItem
 			// 
 			this.executeNonQueryToolStripMenuItem.Name = "executeNonQueryToolStripMenuItem";
-			this.executeNonQueryToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
+			this.executeNonQueryToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
 			this.executeNonQueryToolStripMenuItem.Text = "Execute &Non Query";
 			this.executeNonQueryToolStripMenuItem.Click += new System.EventHandler(this.executeNonQueryToolStripMenuItem_Click);
 			// 
 			// executeEachStatementToolStripMenuItem
 			// 
 			this.executeEachStatementToolStripMenuItem.Name = "executeEachStatementToolStripMenuItem";
-			this.executeEachStatementToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
+			this.executeEachStatementToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
 			this.executeEachStatementToolStripMenuItem.Text = "Execute &Each Statement";
 			this.executeEachStatementToolStripMenuItem.Click += new System.EventHandler(this.ExecuteEachStatement);
 			// 
-			// executeAndSaveToXslxToolStripMenuItem
+			// executeAndSaveToXlsxToolStripMenuItem
 			// 
-			this.executeAndSaveToXslxToolStripMenuItem.Name = "executeAndSaveToXslxToolStripMenuItem";
-			this.executeAndSaveToXslxToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
-			this.executeAndSaveToXslxToolStripMenuItem.Text = "Execute and Save to Xslx";
-			this.executeAndSaveToXslxToolStripMenuItem.Click += new System.EventHandler(this.executeAndSaveToXslxToolStripMenuItem_Click);
+			this.executeAndSaveToXlsxToolStripMenuItem.Name = "executeAndSaveToXlsxToolStripMenuItem";
+			this.executeAndSaveToXlsxToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
+			this.executeAndSaveToXlsxToolStripMenuItem.Text = "Execute and Save to Xlsx";
+			this.executeAndSaveToXlsxToolStripMenuItem.Click += new System.EventHandler(this.ExecuteAndSaveToXlsxToolStripMenuItem_Click);
 			// 
 			// abortButton
 			// 
@@ -663,7 +682,7 @@ namespace DataDevelop
 			this.executeToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Start;
 			this.executeToolStripMenuItem.Name = "executeToolStripMenuItem";
 			this.executeToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-			this.executeToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+			this.executeToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
 			this.executeToolStripMenuItem.Text = "Execute";
 			this.executeToolStripMenuItem.Click += new System.EventHandler(this.executeButton_Click);
 			// 
@@ -725,6 +744,7 @@ namespace DataDevelop
 			this.DragEnter += new System.Windows.Forms.DragEventHandler(this.textEditorControl_DragEnter);
 			this.splitContainer.Panel1.ResumeLayout(false);
 			this.splitContainer.Panel2.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
 			this.splitContainer.ResumeLayout(false);
 			this.outputTabControl.ResumeLayout(false);
 			this.resultsTabPage.ResumeLayout(false);
@@ -806,7 +826,7 @@ namespace DataDevelop
 		private System.Windows.Forms.Timer executingTimer;
 		private System.Windows.Forms.ToolStripButton abortButton;
 		private System.Windows.Forms.ToolStripStatusLabel fileNameStatusLabel;
-		private System.Windows.Forms.ToolStripMenuItem executeAndSaveToXslxToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem executeAndSaveToXlsxToolStripMenuItem;
 		private System.ComponentModel.BackgroundWorker executeToXlsxWorker;
 	}
 }

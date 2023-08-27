@@ -389,7 +389,7 @@ namespace DataDevelop
 				return;
 			}
 			using (FilterDialog filterDialog = new FilterDialog(this.filter.Clone())) {
-				FormExtensions.DownPositionate(filterDialog, filterToolStripButton, this);
+				FormExtensions.PositionDown(filterDialog, filterToolStripButton, this);
 				if (filterDialog.ShowDialog(this) == DialogResult.OK) {
 					TableFilter lastGood = this.filter;
 					this.filter = filterDialog.Filter;
@@ -423,7 +423,7 @@ namespace DataDevelop
 				return;
 			}
 			using (SortDialog sortDialog = new SortDialog(this.sort)) {
-				FormExtensions.DownPositionate(sortDialog, sortToolStripButton, this);
+				FormExtensions.PositionDown(sortDialog, sortToolStripButton, this);
 				if (sortDialog.ShowDialog(this) == DialogResult.OK) {
 					TableSort lastGood = this.sort;
 					this.sort = sortDialog.Sort;
@@ -519,7 +519,7 @@ namespace DataDevelop
 			}
 			using (RowsPerPageDialog dialog = new RowsPerPageDialog()) {
 				dialog.RowsPerPage = rowsPerPage;
-				FormExtensions.DownPositionate(dialog, rowsPerPageButton, this);
+				FormExtensions.PositionDown(dialog, rowsPerPageButton, this);
 				if (dialog.ShowDialog(this) == DialogResult.OK) {
 					if (rowsPerPage != dialog.RowsPerPage) {
 						rowsPerPage = dialog.RowsPerPage;

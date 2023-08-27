@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -6,7 +6,7 @@ namespace DataDevelop
 {
 	static class FormExtensions
 	{
-		public static void LeftPositionate(Form form, Control relativeTo)
+		public static void PositionLeft(Form form, Control relativeTo)
 		{
 			form.StartPosition = FormStartPosition.Manual;
 			Point point = new Point(0, 0);
@@ -16,7 +16,7 @@ namespace DataDevelop
 			EnsureVisibility(form);
 		}
 
-		public static void DownPositionate(Form form, Control relativeTo)
+		public static void PositionDown(Form form, Control relativeTo)
 		{
 			form.StartPosition = FormStartPosition.Manual;
 			Point point = new Point(0, 0);
@@ -26,7 +26,7 @@ namespace DataDevelop
 			EnsureVisibility(form);
 		}
 
-		public static void DownPositionate(Form form, ToolStripItem relativeTo, Control parent)
+		public static void PositionDown(Form form, ToolStripItem relativeTo, Control parent)
 		{
 			form.StartPosition = FormStartPosition.Manual;
 			Point point = relativeTo.Bounds.Location;

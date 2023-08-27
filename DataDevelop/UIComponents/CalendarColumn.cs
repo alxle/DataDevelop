@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Windows.Forms;
 
 namespace DataDevelop.UIComponents
@@ -53,7 +53,7 @@ namespace DataDevelop.UIComponents
 		{
 			get
 			{
-				// Return the type of the editing contol that CalendarCell uses.
+				// Return the type of the editing control that CalendarCell uses.
 				return typeof(CalendarEditingControl);
 			}
 		}
@@ -209,13 +209,13 @@ namespace DataDevelop.UIComponents
 			}
 		}
 
-		protected override void OnValueChanged(EventArgs eventargs)
+		protected override void OnValueChanged(EventArgs e)
 		{
 			// Notify the DataGridView that the contents of the cell
 			// have changed.
 			valueChanged = true;
 			this.EditingControlDataGridView.NotifyCurrentCellDirty(true);
-			base.OnValueChanged(eventargs);
+			base.OnValueChanged(e);
 		}
 	}
 }

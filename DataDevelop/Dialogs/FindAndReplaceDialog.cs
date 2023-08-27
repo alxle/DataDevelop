@@ -251,9 +251,9 @@ namespace DataDevelop.Dialogs
 				_editor.Document.UndoStack.EndUndoGroup();
 			}
 			if (count == 0)
-				MessageBox.Show("No occurrances found.");
+				MessageBox.Show("No occurrences found.");
 			else {
-				MessageBox.Show(string.Format("Replaced {0} occurrances.", count));
+				MessageBox.Show(string.Format("Replaced {0} occurrences.", count));
 				Close();
 			}
 		}
@@ -287,7 +287,7 @@ namespace DataDevelop.Dialogs
 		}
 	}
 
-	/// <summary>This class finds occurrances of a search string in a text 
+	/// <summary>This class finds occurrences of a search string in a text 
 	/// editor's IDocument... it's like Find box without a GUI.</summary>
 	public class TextEditorSearcher : IDisposable
 	{

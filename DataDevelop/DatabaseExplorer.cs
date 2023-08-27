@@ -155,7 +155,7 @@ namespace DataDevelop
 
 		private TreeNode CreateKeyNode(ForeignKey key)
 		{
-			TreeNode node = CreateTreeNode(key.Name, "foreingKey", null);
+			TreeNode node = CreateTreeNode(key.Name, "foreignKey", null);
 			node.Tag = new TreeNodeController(key);
 			return node;
 		}
@@ -286,7 +286,7 @@ namespace DataDevelop
 		{
 			DbProvider provider = null;
 			using (SelectProviderDialog providerDialog = new SelectProviderDialog()) {
-				FormExtensions.DownPositionate(providerDialog, this.toolStrip);
+				FormExtensions.PositionDown(providerDialog, this.toolStrip);
 				if (providerDialog.ShowDialog(this) == DialogResult.OK) {
 					provider = providerDialog.Provider;
 				}

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Reflection;
@@ -22,7 +22,7 @@ namespace DataDevelop
 			InitializeComponent();
 			typeLabel.Font = new Font(typeLabel.Font.FontFamily, 14F);
 			fieldsGroup = new ListViewGroup("Fields");
-			constructorsGroup = new ListViewGroup("Contructors");
+			constructorsGroup = new ListViewGroup("Constructors");
 			methodsGroup = new ListViewGroup("Methods");
 			propertiesGroup = new ListViewGroup("Properties");
 			eventsGroup = new ListViewGroup("Events");
@@ -52,7 +52,7 @@ namespace DataDevelop
 			foreach (FieldInfo f in typeNode.Fields) {
 				AddField(f);
 			}
-			foreach (ConstructorInfo c in typeNode.Contructors) {
+			foreach (ConstructorInfo c in typeNode.Constructors) {
 				AddConstructor(c);
 			}
 			foreach (PropertyInfo p in typeNode.Properties) {

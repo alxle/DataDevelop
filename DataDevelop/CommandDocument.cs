@@ -596,13 +596,13 @@ namespace DataDevelop
 
 		private void Find(object sender, EventArgs e)
 		{
-			FormExtensions.DownPositionate(this.findDialog, this.findToolStripButton, this);
+			FormExtensions.PositionDown(this.findDialog, this.findToolStripButton, this);
 			this.findDialog.ShowFor(this.textEditorControl, false);
 		}
 
 		private void Replace(object sender, EventArgs e)
 		{
-			FormExtensions.DownPositionate(this.findDialog, this.findToolStripButton, this);
+			FormExtensions.PositionDown(this.findDialog, this.findToolStripButton, this);
 			this.findDialog.ShowFor(this.textEditorControl, true);
 		}
 
@@ -671,7 +671,7 @@ namespace DataDevelop
 			public string FileName { get; set; }
 		}
 
-		private void executeAndSaveToXslxToolStripMenuItem_Click(object sender, EventArgs e)
+		private void ExecuteAndSaveToXlsxToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			var command = DbCommandParser.Parse(this.database, SelectedText);
 			if (command.Parameters.Count > 0) {

@@ -158,7 +158,7 @@ namespace DataDevelop.Data
 											var p = parameters[paramName];
 											if (dbType != DbType.Object) {
 												if (p.DbType != dbType) {
-													throw new FormatException($"Parameter {paramName} already declared with diferent DbType");
+													throw new FormatException($"Parameter {paramName} already declared with different DbType");
 												}
 											}
 										}
