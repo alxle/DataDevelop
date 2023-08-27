@@ -308,9 +308,7 @@
     <Compile Include="Utils\BackgroundWorkerEx.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Utils\DataUtils.cs" />
     <Compile Include="Utils\StreamDelegator.cs" />
-    <Compile Include="Utils\StringStream.cs" />
     <Compile Include="UIComponents\BinaryVisualizer.cs">
       <SubType>Form</SubType>
     </Compile>

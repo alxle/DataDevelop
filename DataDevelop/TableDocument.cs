@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Data;
 using System.Data.Common;
@@ -8,9 +8,9 @@ using System.Windows.Forms;
 
 namespace DataDevelop
 {
-	using Core.Excel;
 	using Data;
 	using Dialogs;
+	using IO;
 	using Properties;
 
 	public partial class TableDocument : Document, IDbObject

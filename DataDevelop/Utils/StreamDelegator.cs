@@ -1,6 +1,5 @@
-using System;
+﻿using System;
 using System.IO;
-using System.Text;
 
 namespace DataDevelop.Utils
 {
@@ -8,26 +7,25 @@ namespace DataDevelop.Utils
 
 	class StreamWriteDelegator : Stream
 	{
-		private StreamWriteHandler write;
+		private readonly StreamWriteHandler write;
 
 		public StreamWriteDelegator(StreamWriteHandler write)
 		{
-			if (write == null) {
-				throw new ArgumentNullException("write");
-			}
-			this.write = write;
+			this.write = write ?? throw new ArgumentNullException(nameof(write));
 		}
 
-		public override bool CanRead { get { return false; } }
-		public override bool CanSeek { get { return false; } }
-		public override bool CanWrite { get { return true; } }
+		public override bool CanRead => false;
+		
+		public override bool CanSeek => false;
+		
+		public override bool CanWrite => true;
 
-		public override long Length { get { throw new NotSupportedException(); } }
+		public override long Length => throw new NotSupportedException();
 
 		public override long Position
 		{
 			get { throw new NotSupportedException(); }
-			set	{ throw new NotSupportedException(); }
+			set { throw new NotSupportedException(); }
 		}
 
 		public override long Seek(long offset, SeekOrigin origin)
@@ -45,9 +43,7 @@ namespace DataDevelop.Utils
 			write(buffer, offset, count);
 		}
 
-		public override void Flush()
-		{
-		}
+		public override void Flush() { }
 
 		public override void SetLength(long value)
 		{

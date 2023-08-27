@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -11,12 +11,12 @@ using System.Windows.Forms;
 
 namespace DataDevelop
 {
-	using Core.Excel;
+	using System.Linq;
 	using Data;
 	using Dialogs;
+	using IO;
 	using Printing;
 	using UIComponents;
-	using Utils;
 
 	public partial class CommandDocument : Document, IDbObject
 	{
@@ -354,25 +354,45 @@ namespace DataDevelop
 			get { return dataGridView.DataSource as DataTable; }
 		}
 
+
+		private static void SaveToFile(string fileName, DataTable dataTable, char rowSeparator)
+		{
+			using (var writer = new CsvWriter(fileName) { Delimiter = rowSeparator }) {
+				var headerRow = dataTable.Columns.Cast<DataColumn>().Select(i => i.ColumnName).ToArray();
+				writer.WriteRow(headerRow);
+				foreach (DataRow row in dataTable.Rows) {
+					var rowValues = row.ItemArray.Select(i => (i ?? "").ToString()).ToArray();
+					writer.WriteRow(rowValues);
+				}
+			}
+		}
+
 		private void saveToFileToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			DataTable table = this.DataTable;
-			if (table != null) {
-				if (resultSaveFileDialog.ShowDialog(this) == DialogResult.OK) {
-					string ext = Path.GetExtension(resultSaveFileDialog.FileName).ToLower();
-					if (ext == ".txt" || ext == ".csv") {
-						char separator = (ext == ".txt") ? '\t' : ',';
-						DataUtils.WriteToFile(resultSaveFileDialog.FileName, table, separator);
-					} else if (ext == ".xml") {
-						if (String.IsNullOrEmpty(table.TableName)) {
-							table.TableName = Path.GetFileNameWithoutExtension(resultSaveFileDialog.FileName);
-						}
-						table.WriteXml(resultSaveFileDialog.FileName);
-					} else {
+			var table = DataTable;
+			if (table == null) {
+				return;
+			}
+			if (resultSaveFileDialog.ShowDialog(this) == DialogResult.OK) {
+				var fileName = resultSaveFileDialog.FileName;
+				var ext = Path.GetExtension(fileName).ToLower();
+				switch (ext) {
+					case ".txt":
+						SaveToFile(fileName, table, '\t');
+						break;
+					case ".csv":
+						SaveToFile(fileName, table, ',');
+						break;
+					case ".xml":
+						if (string.IsNullOrEmpty(table.TableName))
+							table.TableName = Path.GetFileNameWithoutExtension(fileName);
+						table.WriteXml(fileName);
+						break;
+					case ".xlsx":
 						using (var reader = table.CreateDataReader()) {
-							Xlsx.Save(resultSaveFileDialog.FileName, "Result", reader);
+							Xlsx.Save(fileName, "Result", reader);
 						}
-					}
+						break;
 				}
 			}
 		}
