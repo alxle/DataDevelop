@@ -1,4 +1,4 @@
-namespace DataDevelop
+﻿namespace DataDevelop
 {
 	partial class TableDocument
 	{
@@ -69,6 +69,8 @@ namespace DataDevelop
 			this.progressBar1 = new System.Windows.Forms.ProgressBar();
 			this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
 			this.excelWorker = new System.ComponentModel.BackgroundWorker();
+			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+			this.PasteButton = new System.Windows.Forms.ToolStripButton();
 			this.tableToolStrip.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
 			this.menuStrip.SuspendLayout();
@@ -101,7 +103,9 @@ namespace DataDevelop
             this.exportToExcelToolStripDropDownButton,
             this.toolStripDropDownButton1,
             this.toolStripSeparator5,
-            this.viewSqlToolStripButton});
+            this.viewSqlToolStripButton,
+            this.toolStripSeparator6,
+            this.PasteButton});
 			this.tableToolStrip.Location = new System.Drawing.Point(0, 0);
 			this.tableToolStrip.Name = "tableToolStrip";
 			this.tableToolStrip.Padding = new System.Windows.Forms.Padding(4, 0, 4, 0);
@@ -269,14 +273,14 @@ namespace DataDevelop
 			// exportAllToExcelToolStripMenuItem
 			// 
 			this.exportAllToExcelToolStripMenuItem.Name = "exportAllToExcelToolStripMenuItem";
-			this.exportAllToExcelToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+			this.exportAllToExcelToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
 			this.exportAllToExcelToolStripMenuItem.Text = "Export All to Excel";
 			this.exportAllToExcelToolStripMenuItem.Click += new System.EventHandler(this.exportAllToExcelToolStripMenuItem_Click);
 			// 
 			// exportCurrentPageToExcelToolStripMenuItem
 			// 
 			this.exportCurrentPageToExcelToolStripMenuItem.Name = "exportCurrentPageToExcelToolStripMenuItem";
-			this.exportCurrentPageToExcelToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+			this.exportCurrentPageToExcelToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
 			this.exportCurrentPageToExcelToolStripMenuItem.Text = "Export Page to Excel";
 			this.exportCurrentPageToExcelToolStripMenuItem.Click += new System.EventHandler(this.exportCurrentPageToExcelToolStripMenuItem_Click);
 			// 
@@ -297,7 +301,7 @@ namespace DataDevelop
 			// 
 			this.printPreviewToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.PrintPreview;
 			this.printPreviewToolStripMenuItem.Name = "printPreviewToolStripMenuItem";
-			this.printPreviewToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+			this.printPreviewToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.printPreviewToolStripMenuItem.Text = "Print Preview";
 			this.printPreviewToolStripMenuItem.Click += new System.EventHandler(this.printPreviewButton_Click);
 			// 
@@ -305,7 +309,7 @@ namespace DataDevelop
 			// 
 			this.changeFontToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Font;
 			this.changeFontToolStripMenuItem.Name = "changeFontToolStripMenuItem";
-			this.changeFontToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+			this.changeFontToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.changeFontToolStripMenuItem.Text = "Change Font";
 			this.changeFontToolStripMenuItem.Click += new System.EventHandler(this.fontButton_Click);
 			// 
@@ -313,7 +317,7 @@ namespace DataDevelop
 			// 
 			this.pageSetupToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.PageSetup;
 			this.pageSetupToolStripMenuItem.Name = "pageSetupToolStripMenuItem";
-			this.pageSetupToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+			this.pageSetupToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.pageSetupToolStripMenuItem.Text = "Page Setup";
 			this.pageSetupToolStripMenuItem.Click += new System.EventHandler(this.pageSetupButton_Click);
 			// 
@@ -379,7 +383,7 @@ namespace DataDevelop
 			this.tableToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
 			this.tableToolStripMenuItem.MergeIndex = 2;
 			this.tableToolStripMenuItem.Name = "tableToolStripMenuItem";
-			this.tableToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
+			this.tableToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
 			this.tableToolStripMenuItem.Text = "&Table";
 			// 
 			// loadingPanel
@@ -435,6 +439,21 @@ namespace DataDevelop
 			this.excelWorker.WorkerReportsProgress = true;
 			this.excelWorker.WorkerSupportsCancellation = true;
 			this.excelWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.excelWorker_DoWork);
+			// 
+			// toolStripSeparator6
+			// 
+			this.toolStripSeparator6.Name = "toolStripSeparator6";
+			this.toolStripSeparator6.Size = new System.Drawing.Size(6, 25);
+			// 
+			// PasteButton
+			// 
+			this.PasteButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.PasteButton.Image = global::DataDevelop.Properties.Resources.Paste;
+			this.PasteButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.PasteButton.Name = "PasteButton";
+			this.PasteButton.Size = new System.Drawing.Size(23, 22);
+			this.PasteButton.Text = "Paste";
+			this.PasteButton.Click += new System.EventHandler(this.PasteButton_Click);
 			// 
 			// TableDocument
 			// 
@@ -505,5 +524,7 @@ namespace DataDevelop
 		private System.Windows.Forms.ToolStripMenuItem exportAllToExcelToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem exportCurrentPageToExcelToolStripMenuItem;
 		private System.ComponentModel.BackgroundWorker excelWorker;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
+		private System.Windows.Forms.ToolStripButton PasteButton;
 	}
 }

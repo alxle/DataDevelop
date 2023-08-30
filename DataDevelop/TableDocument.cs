@@ -565,6 +565,27 @@ namespace DataDevelop
 				}
 			}
 		}
+
+		private void PasteButton_Click(object sender, EventArgs e)
+		{
+			if (dataGridView.NewRowIndex >= 0) {
+				if (Clipboard.ContainsText()) {
+					var text = Clipboard.GetText();
+					var dataTable = dataGridView.DataSource as DataTable;
+					using (var reader = new CsvReader(new System.IO.StringReader(text))) {
+						reader.Delimiter = '\t';
+						string[] row;
+						while ((row = reader.ReadRow()) != null) {
+							var newRow = dataTable.NewRow();
+							for (var i = 0; i < row.Length; i++) {
+								if (!string.IsNullOrEmpty(row[i]))
+									newRow[i] = row[i];
+							}
+							dataTable.Rows.Add(newRow);
+						}
+					}
+				}
+			}
+		}
 	}
 }
-
