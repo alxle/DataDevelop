@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -19,7 +19,7 @@ namespace DataDevelop
 		{
 			InitializeComponent();
 			applicationPathTextBox.Text = Application.ExecutablePath;
-			dataDirectoryTextBox.Text = SettingsManager.GetDataDirectory();
+			dataDirectoryTextBox.Text = SettingsManager.DataDirectory;
 			editorFontTextBox.Text = Settings.Default.TextEditorFont.ToString();
 			visualizerFontTextBox.Text = Settings.Default.TextVisualizerFont.ToString();
 			rowsPerPageNumericUpDown.Value = Settings.Default.RowsPerPage;
