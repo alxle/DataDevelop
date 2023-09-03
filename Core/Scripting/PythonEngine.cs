@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using IronPython.Hosting;
 using DataDevelop.Data;
+using IronPython.Hosting;
 
 namespace DataDevelop.Scripting
 {
 	public class PythonScriptEngine : ScriptEngine
 	{
-		Microsoft.Scripting.Hosting.ScriptEngine engine;
-		Microsoft.Scripting.Hosting.ScriptScope scope;
+		readonly Microsoft.Scripting.Hosting.ScriptEngine engine;
+		readonly Microsoft.Scripting.Hosting.ScriptScope scope;
 
 		public PythonScriptEngine()
 		{
@@ -19,20 +17,14 @@ namespace DataDevelop.Scripting
 			scope = engine.CreateScope();
 		}
 
-		public override string Name
-		{
-			get { return "IronPython"; }
-		}
+		public override string Name => "IronPython";
 
-		public override string Extension
-		{
-			get { return ".py"; }
-		}
+		public override string Extension => ".py";
 
 		public override void Initialize(Stream output, IDictionary<string, Database> databases)
 		{
 			var runtime = engine.Runtime;
-			runtime.IO.SetOutput(output, Encoding.Unicode);
+			runtime.IO.SetOutput(output, Encoding.UTF8);
 			scope.SetVariable("_dbs", databases);
 			engine.Execute(Properties.Resources.PythonScript, scope);
 		}
