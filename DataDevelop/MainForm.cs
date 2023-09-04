@@ -1,9 +1,6 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Deployment.Application;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
@@ -14,26 +11,27 @@ namespace DataDevelop
 {
 	public partial class MainForm : Form
 	{
-		private AssemblyExplorer assemblyExplorer;
-		private DatabaseExplorer databaseExplorer;
-		private PropertiesToolbox propertiesToolbox;
-		private OutputWindow outputWindow;
 		private static MainForm instance;
+		private readonly AssemblyExplorer assemblyExplorer;
+		private readonly DatabaseExplorer databaseExplorer;
+		private readonly PropertiesToolbox propertiesToolbox;
+		private readonly OutputWindow outputWindow;
 
 		private MainForm()
 		{
 			InitializeComponent();
-			this.ApplyVisualStyle(Settings.Default.VisualStyle);
-			this.databaseExplorer = new DatabaseExplorer();
-			this.assemblyExplorer = new AssemblyExplorer();
-			this.propertiesToolbox = new PropertiesToolbox();
-			this.outputWindow = new OutputWindow();
-			this.databaseExplorer.ShowProperties += ShowProperties;
-			this.assemblyExplorer.ShowProperties += ShowProperties;
-			this.checkForUpdatesToolStripMenuItem.Enabled = ApplicationDeployment.IsNetworkDeployed;
+			ApplyVisualStyle(Settings.Default.VisualStyle);
+			databaseExplorer = new DatabaseExplorer();
+			assemblyExplorer = new AssemblyExplorer();
+			propertiesToolbox = new PropertiesToolbox();
+			outputWindow = new OutputWindow();
+			databaseExplorer.ShowProperties += ShowProperties;
+			assemblyExplorer.ShowProperties += ShowProperties;
 		}
 
-		public void ApplyVisualStyle(string visualStyle)
+		public static MainForm Instance => instance ?? (instance = new MainForm());
+
+		private void ApplyVisualStyle(string visualStyle)
 		{
 			if (visualStyle == "Classic") {
 				var theme = new VS2005Theme();
@@ -56,20 +54,27 @@ namespace DataDevelop
 			}
 		}
 
-		public static MainForm Instance
-		{
-			get { return instance ?? (instance = new MainForm()); }
-		}
-
 		private void MainForm_Load(object sender, EventArgs e)
 		{
-			this.Size = Settings.Default.MainFormSize;
-			this.Location = Settings.Default.MainFormLocation;
-			this.WindowState = Settings.Default.MainFormState;
+			Size = Settings.Default.MainFormSize;
+			Location = Settings.Default.MainFormLocation;
+			WindowState = Settings.Default.MainFormState;
 
 			if (File.Exists(SettingsManager.DockPropertiesFileName)) {
 				try {
-					dockPanel.LoadFromXml(SettingsManager.DockPropertiesFileName, GetContentFromPersistString);
+					dockPanel.LoadFromXml(SettingsManager.DockPropertiesFileName,
+						delegate (string persistString)
+						{
+							if (persistString == typeof(AssemblyExplorer).ToString())
+								return assemblyExplorer;
+							if (persistString == typeof(DatabaseExplorer).ToString())
+								return databaseExplorer;
+							if (persistString == typeof(PropertiesToolbox).ToString())
+								return propertiesToolbox;
+							if (persistString == typeof(OutputWindow).ToString())
+								return outputWindow;
+							return null;
+						});
 				} catch (Exception ex) {
 					LogManager.LogError("Loading DockingProperties.xml", ex);
 					ShowDefaultToolboxes();
@@ -82,15 +87,15 @@ namespace DataDevelop
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			if (CloseAllDocuments()) {
-				databaseExplorer.SaveDatabases();
+				SettingsManager.SaveDatabases();
 				dockPanel.SaveAsXml(SettingsManager.DockPropertiesFileName);
-				Settings.Default.MainFormState = this.WindowState;
-				if (this.WindowState == FormWindowState.Normal) {
-					Settings.Default.MainFormSize = this.Size;
-					Settings.Default.MainFormLocation = this.Location;
+				Settings.Default.MainFormState = WindowState;
+				if (WindowState == FormWindowState.Normal) {
+					Settings.Default.MainFormSize = Size;
+					Settings.Default.MainFormLocation = Location;
 				} else {
-					Settings.Default.MainFormSize = this.RestoreBounds.Size;
-					Settings.Default.MainFormLocation = this.RestoreBounds.Location;
+					Settings.Default.MainFormSize = RestoreBounds.Size;
+					Settings.Default.MainFormLocation = RestoreBounds.Location;
 				}
 				Settings.Default.Save();
 			} else {
@@ -114,38 +119,20 @@ namespace DataDevelop
 			ShowToolbox(outputWindow, DockState.DockBottomAutoHide);
 		}
 
-		public void ShowToolbox(Toolbox toolbox, DockState dockState)
+		private void ShowToolbox(Toolbox toolbox, DockState dockState)
 		{
 			if (toolbox.DockPanel == null) {
-				toolbox.Show(this.dockPanel, dockState);
+				toolbox.Show(dockPanel, dockState);
 			} else {
 				toolbox.Show();
 			}
-		}
-
-		private IDockContent GetContentFromPersistString(string name)
-		{
-			if (name == typeof(AssemblyExplorer).ToString()) {
-				return assemblyExplorer;
-			}
-			if (name == typeof(DatabaseExplorer).ToString()) {
-				return databaseExplorer;
-			}
-			if (name == typeof(PropertiesToolbox).ToString()) {
-				return propertiesToolbox;
-			}
-			if (name == typeof(OutputWindow).ToString()) {
-				return outputWindow;
-			}
-			return null;
 		}
 
 		private Document[] GetDocuments()
 		{
 			var documents = new List<Document>(dockPanel.DocumentsCount);
 			foreach (object obj in dockPanel.Contents) {
-				Document doc = obj as Document;
-				if (doc != null) {
+				if (obj is Document doc) {
 					documents.Add(doc);
 				}
 			}
@@ -154,9 +141,8 @@ namespace DataDevelop
 
 		private void CloseAllButCurrent()
 		{
-			var current = dockPanel.ActiveDocument as Document;
-			if (current != null) {
-				foreach (var document in this.GetDocuments()) {
+			if (dockPanel.ActiveDocument is Document current) {
+				foreach (var document in GetDocuments()) {
 					if (document != current) {
 						document.Close();
 					}
@@ -166,10 +152,9 @@ namespace DataDevelop
 
 		private bool CloseAllDocuments()
 		{
-			bool allClosed = true;
-			for (int i = 0; i < dockPanel.Contents.Count;) {
-				Document doc = dockPanel.Contents[i] as Document;
-				if (doc != null) {
+			var allClosed = true;
+			for (var i = 0; i < dockPanel.Contents.Count;) {
+				if (dockPanel.Contents[i] is Document doc) {
 					if (!FormExtensions.Close(doc)) {
 						allClosed = false;
 						i++;
@@ -181,41 +166,41 @@ namespace DataDevelop
 			return allClosed;
 		}
 
-		private void databaseExplorerToolStripMenuItem_Click(object sender, EventArgs e)
+		private void DatabaseExplorerToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			ShowToolbox(databaseExplorer, DockState.DockLeft);
 		}
 
-		private void propertiesWindowToolStripMenuItem_Click(object sender, EventArgs e)
+		private void PropertiesWindowToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			ShowToolbox(propertiesToolbox, DockState.DockRight);
 		}
 
-		private void assemblyExplorerToolStripMenuItem_Click(object sender, EventArgs e)
+		private void AssemblyExplorerToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			ShowToolbox(assemblyExplorer, DockState.DockLeft);
 		}
 
-		private void outputWindowToolStripMenuItem_Click(object sender, EventArgs e)
+		private void OutputWindowToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			ShowToolbox(outputWindow, DockState.DockBottomAutoHide);
 		}
 
-		private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+		private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (FormExtensions.Close(this)) { 
+			if (FormExtensions.Close(this)) {
 				Application.Exit();
 			}
 		}
 
-		private void aboutSQLiteStudioToolStripMenuItem_Click(object sender, EventArgs e)
+		private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			using (AboutBox aboutBox = new AboutBox()) {
+			using (var aboutBox = new AboutBox()) {
 				aboutBox.ShowDialog(this);
 			}
 		}
 
-		private void newDatabaseToolStripMenuItem_Click(object sender, EventArgs e)
+		private void NewDatabaseToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if (!databaseExplorer.Visible) {
 				ShowToolbox(databaseExplorer, DockState.DockLeft);
@@ -223,7 +208,7 @@ namespace DataDevelop
 			databaseExplorer.NewDatabase();
 		}
 
-		private void openDatabaseToolStripMenuItem_Click(object sender, EventArgs e)
+		private void OpenDatabaseToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if (!databaseExplorer.Visible) {
 				ShowToolbox(databaseExplorer, DockState.DockLeft);
@@ -231,50 +216,45 @@ namespace DataDevelop
 			databaseExplorer.OpenDatabase();
 		}
 
-		private void pythonConsole_Click(object sender, EventArgs e)
+		private void PythonConsole_Click(object sender, EventArgs e)
 		{
 			Application.DoEvents();
-			ScriptDocument script = new ScriptDocument(outputWindow, new PythonScriptEngine());
+			var script = new ScriptDocument(outputWindow, new PythonScriptEngine());
 			script.Show(dockPanel);
 			Application.DoEvents();
 		}
 
-		private void javascriptConsole_Click(object sender, EventArgs e)
+		private void JavascriptConsole_Click(object sender, EventArgs e)
 		{
 			Application.DoEvents();
-			ScriptDocument script = new ScriptDocument(outputWindow, new JavascriptEngine());
+			var script = new ScriptDocument(outputWindow, new JavascriptEngine());
 			script.Show(dockPanel);
 			Application.DoEvents();
 		}
 
-		private void updates_ApplicationRestarting(object sender, CancelEventArgs e)
+		private void PreferencesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			e.Cancel = !CloseAllDocuments() || !databaseExplorer.DisconnectAll();
-		}
-
-		private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			using (PreferencesForm preferences = new PreferencesForm()) {
+			using (var preferences = new PreferencesForm()) {
 				preferences.ShowDialog(this);
 			}
 		}
 
-		private void closeAllDocumentToolStripMenuItem_Click(object sender, EventArgs e)
+		private void CloseAllDocumentToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			CloseAllDocuments();
 		}
 
-		private void resetWindowLayoutToolStripMenuItem_Click(object sender, EventArgs e)
+		private void ResetWindowLayoutToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			ShowDefaultToolboxes();
 		}
 
-		private void closeAllButCurrentToolStripMenuItem_Click(object sender, EventArgs e)
+		private void CloseAllButCurrentToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			CloseAllButCurrent();
 		}
 
-		private void documentationToolStripMenuItem_Click(object sender, EventArgs e)
+		private void DocumentationToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			Process.Start(Program.Documentation);
 		}
