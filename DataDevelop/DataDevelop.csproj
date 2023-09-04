@@ -237,6 +237,7 @@
     <Compile Include="Dialogs\SelectProviderDialog.Designer.cs">
       <DependentUpon>SelectProviderDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Services\LogManager.cs" />
     <Compile Include="Services\SettingsManager.cs" />
     <Compile Include="Dialogs\SortDialog.cs">
       <SubType>Form</SubType>

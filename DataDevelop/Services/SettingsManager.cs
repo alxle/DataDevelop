@@ -41,7 +41,7 @@ namespace DataDevelop
 								var database = provider.CreateDatabase(name, connectionString);
 								DatabasesManager.Add(database);
 							} catch (Exception ex) {
-								LogError("Error Loading Databases", ex);
+								LogManager.LogError("Error Loading Databases", ex);
 							}
 						}
 					}
@@ -59,11 +59,11 @@ namespace DataDevelop
 					}
 				}
 				if (worldDbFile.Exists) {
-					var sqliteProvider = DbProvider.GetProvider("SQLite");
-					var connectionStringBuilder = sqliteProvider.CreateConnectionStringBuilder();
+					var provider = DbProvider.GetProvider("SQLite");
+					var connectionStringBuilder = provider.CreateConnectionStringBuilder();
 					connectionStringBuilder["Data Source"] = worldDbFile.FullName;
 					connectionStringBuilder["Fail If Missing"] = true;
-					var worldDb = sqliteProvider.CreateDatabase("World", connectionStringBuilder.ToString());
+					var worldDb = provider.CreateDatabase("World", connectionStringBuilder.ToString());
 					DatabasesManager.Add(worldDb);
 				}
 			}
@@ -85,7 +85,7 @@ namespace DataDevelop
 					}
 				} catch (Exception ex) {
 					error = true;
-					LogError("Error Saving Databases", ex);
+					LogManager.LogError("Error Saving Databases", ex);
 				} finally {
 					if (!error) {
 						writer.WriteFullEndElement();
@@ -98,20 +98,6 @@ namespace DataDevelop
 						DatabasesManager.IsCollectionDirty = false;
 					}
 				}
-			}
-		}
-
-		private static void LogError(string headerMessage, Exception ex)
-		{
-			var errorLogFile = "ErrorLog-" + DateTime.Now.ToString("yyyyMMdd") + ".txt";
-			using (var log = new StreamWriter(DataFilePath(errorLogFile))) {
-				log.WriteLine(headerMessage);
-				log.WriteLine("Date: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
-				log.WriteLine("==========================");
-				log.WriteLine();
-				log.WriteLine("Exception type: " + ex.GetType().FullName);
-				log.WriteLine(ex.ToString());
-				log.WriteLine();
 			}
 		}
 	}

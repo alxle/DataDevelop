@@ -70,7 +70,8 @@ namespace DataDevelop
 			if (File.Exists(SettingsManager.DockPropertiesFileName)) {
 				try {
 					dockPanel.LoadFromXml(SettingsManager.DockPropertiesFileName, GetContentFromPersistString);
-				} catch {
+				} catch (Exception ex) {
+					LogManager.LogError("Loading DockingProperties.xml", ex);
 					ShowDefaultToolboxes();
 				}
 			} else {
