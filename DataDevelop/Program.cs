@@ -14,16 +14,15 @@ namespace DataDevelop
 		[STAThread]
 		static void Main()
 		{
-			if (Properties.Settings.Default.CallUpgrade) {
-				Properties.Settings.Default.Upgrade();
-				Properties.Settings.Default.CallUpgrade = false;
-				Properties.Settings.Default.Save();
+			var settings = Properties.Settings.Default;
+			if (settings.CallUpgrade) {
+				settings.Upgrade();
+				settings.CallUpgrade = false;
+				settings.Save();
 			}
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 			Application.Run(MainForm.Instance);
 		}
 	}
-
-	public delegate void Action();
 }
