@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Windows.Forms;
 using DataDevelop.Data;
@@ -22,7 +22,7 @@ namespace DataDevelop
 
 			var isPython = (engine is PythonScriptEngine);
 			var highlighter = isPython ? Highlighters.Python : Highlighters.Javascript;
-			var outputStream = new StreamWriteDelegator(isPython ? Output.WriteUTF8 : Output.WriteUnicode);
+			var outputStream = new StreamWriteDelegator(Output.WriteUTF8);
 
 			textEditorControl.Document.HighlightingStrategy = highlighter;
 			this.Text = String.Concat(highlighter.Name, " Console");
@@ -33,6 +33,7 @@ namespace DataDevelop
 
 			this.engine = engine;
 			this.engine.Initialize(outputStream, DatabasesManager.Databases);
+			this.engine.SetOutputWrite(str => Output.Invoke(Output.AppendText, str));
 		}
 
 		public string SelectedText

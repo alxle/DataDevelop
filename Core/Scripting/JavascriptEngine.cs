@@ -1,33 +1,46 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Text;
-using System.IO;
-using DataDevelop.Data;
-using System.Data.Common;
 using System.Data;
+using System.Data.Common;
+using System.Diagnostics;
+using System.IO;
+using System.Text;
+using System.Xml;
+using DataDevelop.Data;
+using Jint;
 
 namespace DataDevelop.Scripting
 {
 	public class JavascriptEngine : ScriptEngine
 	{
-		private Jint.Engine engine = new Jint.Engine(cfg => cfg.AllowClr());
+		private readonly Engine engine = new Engine(cfg => cfg.AllowClr(
+			typeof(Stopwatch).Assembly, // System
+			typeof(DataTable).Assembly, // System.Data
+			typeof(XmlDocument).Assembly, // System.Xml
+			typeof(Database).Assembly // DataDevelop.Core
+			));
 		private Stream output;
+		private Action<string> writer;
 
-		public override string Name
-		{
-			get { return "Jint"; }
-		}
+		public override string Name => "Jint";
 
-		public override string Extension
+		public override string Extension => ".js";
+
+		public override void SetOutputWrite(Action<string> outputWrite)
 		{
-			get { return ".js"; }
+			writer = outputWrite;
 		}
 
 		private void Print(object obj)
 		{
 			var str = (obj == null) ? "null" : obj.ToString();
 			str += Environment.NewLine;
-			byte[] buffer = Encoding.Unicode.GetBytes(str);
+			if (writer != null) {
+				writer(str);
+				return;
+			}
+			byte[] buffer = Encoding.UTF8.GetBytes(str);
 			output.Write(buffer, 0, buffer.Length);
 		}
 
@@ -63,76 +76,82 @@ namespace DataDevelop.Scripting
 			return builder.ToString();
 		}
 
-		sealed class JTableAdapter : IDisposable
+		sealed class JTableAdapter : IDisposable, IEnumerable<DataRow>
 		{
-			private Table table;
-			private DbDataAdapter adapter;
-			private DataTable data = new DataTable();
+			private readonly Table table;
+			private readonly DbDataAdapter adapter;
+			private readonly DataTable data = new DataTable();
 
 			public JTableAdapter(Table table)
 			{
-				if (table == null) {
-					throw new ArgumentNullException("table");
-				}
-				this.table = table;
-				this.adapter = table.Database.CreateAdapter(table);
-				this.adapter.Fill(0, 0, data);
+				this.table = table ?? throw new ArgumentNullException(nameof(table));
+				adapter = table.Database.CreateAdapter(table);
+				adapter.Fill(0, 0, data);
 			}
 
-			public Table @base
-			{
-				get { return this.table; }
-			}
+			public Table @base => table;
 
 			public DataRow NewRow()
 			{
-				return this.data.NewRow();
+				return data.NewRow();
 			}
 
 			public void AddRow(DataRow row)
 			{
-				this.data.Rows.Add(row);
+				data.Rows.Add(row);
+			}
+
+			public IEnumerator<DataRow> GetEnumerator()
+			{
+				var rows = new DataTable();
+				adapter.Fill(rows);
+
+				foreach (DataRow row in rows.Rows) {
+					yield return row;
+					if (row.RowState != DataRowState.Unchanged) {
+						data.ImportRow(row);
+					}
+				}
+			}
+
+			IEnumerator IEnumerable.GetEnumerator()
+			{
+				return GetEnumerator();
 			}
 
 			public JTableAdapter Each(Action<DataRow> action)
 			{
-				var rows = new DataTable();
-				this.adapter.Fill(rows);
-
-				foreach (DataRow row in rows.Rows) {
+				foreach (var row in this) {
 					action(row);
-					if (row.RowState != DataRowState.Unchanged) {
-						data.ImportRow(row);
-					}
 				}
 				return this;
 			}
 
 			public void Import(DataRow row)
 			{
-				var newRow = this.data.NewRow();
+				var newRow = data.NewRow();
 				newRow.ItemArray = row.ItemArray;
-				this.data.Rows.Add(newRow);
-				this.SaveChanges();
+				data.Rows.Add(newRow);
+				SaveChanges();
 			}
 
 			public void ImportAll(DataTable fromTable)
 			{
 				foreach (DataRow row in fromTable.Rows) {
-					this.Import(row);
+					Import(row);
 				}
 			}
 
 			public int SaveChanges()
 			{
-				int rowsAffected = this.adapter.Update(this.data);
-				this.data.Rows.Clear();
+				int rowsAffected = adapter.Update(data);
+				data.Rows.Clear();
 				return rowsAffected;
 			}
 
 			public void ClearChanges()
 			{
-				this.data.Rows.Clear();
+				data.Rows.Clear();
 			}
 
 			public void Dispose()
@@ -144,35 +163,34 @@ namespace DataDevelop.Scripting
 
 		sealed class JDatabase
 		{
-			private Database database;
+			private readonly Database database;
 
 			public JDatabase(Database database)
 			{
 				this.database = database;
 			}
 
+			public Database @base => database;
+
 			public JTableAdapter this[string name]
 			{
 				get
 				{
-					var table = this.database.Tables[name];
-					return new JTableAdapter(table);
+					var table = @base.GetTable(name);
+					if (table == null)
+						table = @base.GetTable(name.Replace('_', ' '));
+					if (table != null)
+						return new JTableAdapter(table);
+					return null;
 				}
 			}
 
-			public Database @base
+			public DataTable Query(string command, params object[] values)
 			{
-				get { return this.database; }
+				return database.Query(command, values);
 			}
 
-			public IEnumerable<DataRow> Query(string command, params object[] values)
-			{
-				foreach (DataRow dataRow in database.Query(command, values).Rows) {
-					yield return dataRow;
-				}
-			}
-
-			public int NonQuery(string command, params object[] values)
+			public int Execute(string command, params object[] values)
 			{
 				return database.NonQuery(command, values);
 			}
@@ -190,16 +208,14 @@ namespace DataDevelop.Scripting
 		public override void Initialize(Stream output, IDictionary<string, Database> databases)
 		{
 			this.output = output;
-			this.engine.SetValue("print", new Action<object>(Print));
-			this.engine.SetValue("dir", new Func<object, string>(Dir));
-			this.engine.SetValue("Database", new Func<string, JDatabase>(name => new JDatabase(databases[name])));
-			this.engine.SetValue("get", new Func<DataRow, string, object>((row, column) => row[column]));
-			this.engine.SetValue("set", new Action<DataRow, string, object>((row, column, value) => row[column] = value));
+			engine.SetValue("print", new Action<object>(Print));
+			engine.SetValue("dir", new Func<object, string>(Dir));
+			engine.SetValue("Database", new Func<string, JDatabase>(name => new JDatabase(databases[name])));
 		}
 
 		public override void Execute(string scriptCode)
 		{
-			var result = engine.Execute(scriptCode);
+			engine.Execute(scriptCode);
 		}
 	}
 }

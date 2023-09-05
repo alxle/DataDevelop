@@ -16,5 +16,7 @@ namespace DataDevelop.Scripting
 		public abstract void Initialize(Stream output, IDictionary<string, Database> databases);
 
 		public abstract void Execute(string scriptCode);
+
+		public virtual void SetOutputWrite(Action<string> outputWrite) { }
 	}
 }
