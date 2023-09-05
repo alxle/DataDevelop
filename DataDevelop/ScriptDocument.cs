@@ -25,7 +25,7 @@ namespace DataDevelop
 			var outputStream = new StreamWriteDelegator(Output.WriteUTF8);
 
 			textEditorControl.Document.HighlightingStrategy = highlighter;
-			this.Text = String.Concat(highlighter.Name, " Console");
+			Text = $"{highlighter.Name} Console";
 
 			textEditorControl.ShowEOLMarkers = false;
 			textEditorControl.ShowSpaces = false;
@@ -36,15 +36,16 @@ namespace DataDevelop
 			this.engine.SetOutputWrite(str => Output.Invoke(Output.AppendText, str));
 		}
 
+		public OutputWindow Output => output;
+
 		public string SelectedText
 		{
 			get
 			{
 				if (textEditorControl.ActiveTextAreaControl.SelectionManager.HasSomethingSelected) {
 					return textEditorControl.ActiveTextAreaControl.SelectionManager.SelectedText;
-				} else {
-					return textEditorControl.Text;
 				}
+				return textEditorControl.Text;
 			}
 		}
 
@@ -88,8 +89,8 @@ namespace DataDevelop
 				if (e.Error != null) {
 					var syntaxError = e.Error as Microsoft.Scripting.SyntaxErrorException;
 					if (syntaxError != null) {
-						output.AppendError("Syntax Error: " + e.Error.Message);
-						output.AppendError(String.Format("Error Code: {0}, Line: {1}, Column: {2}", syntaxError.ErrorCode, syntaxError.Line, syntaxError.Column));
+						output.AppendError($"Syntax Error: {e.Error.Message}");
+						output.AppendError($"Error Code: {syntaxError.ErrorCode}, Line: {syntaxError.Line}, Column: {syntaxError.Column}");
 					} else {
 						output.AppendError(e.Error.ToString());
 					}
@@ -104,18 +105,13 @@ namespace DataDevelop
 		private void ShowOutput()
 		{
 			output.Show();
-			this.Focus();
-		}
-
-		public OutputWindow Output
-		{
-			get { return output; }
+			Focus();
 		}
 
 		private void editToolStripMenuItem1_DropDownOpening(object sender, EventArgs e)
 		{
-			this.undoToolStripMenuItem.Enabled = textEditorControl.EnableUndo;
-			this.redoToolStripMenuItem.Enabled = textEditorControl.EnableRedo;
+			undoToolStripMenuItem.Enabled = textEditorControl.EnableUndo;
+			redoToolStripMenuItem.Enabled = textEditorControl.EnableRedo;
 		}
 
 		private void undoToolStripMenuItem_Click(object sender, EventArgs e)
@@ -151,8 +147,8 @@ namespace DataDevelop
 		private void openToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if (AskToSaveChanges()) {
-				using (OpenFileDialog dialog = new OpenFileDialog()) {
-					dialog.Filter = String.Format("{0} Script (*{1})|*{1}|All Files (*.*)|*.*", engine.Name, engine.Extension);
+				using (var dialog = new OpenFileDialog()) {
+					dialog.Filter = string.Format("{0} Script (*{1})|*{1}|All Files (*.*)|*.*", engine.Name, engine.Extension);
 					dialog.Title = "Select File to open...";
 					dialog.Multiselect = false;
 					if (dialog.ShowDialog(this) == DialogResult.OK) {
@@ -174,8 +170,8 @@ namespace DataDevelop
 
 		private void SaveAs()
 		{
-			using (SaveFileDialog dialog = new SaveFileDialog()) {
-				dialog.Filter = String.Format("{0} Script (*{1})|*{1}|All Files (*.*)|*.*", engine.Name, engine.Extension);
+			using (var dialog = new SaveFileDialog()) {
+				dialog.Filter = string.Format("{0} Script (*{1})|*{1}|All Files (*.*)|*.*", engine.Name, engine.Extension);
 				dialog.FilterIndex = 0;
 				if (DialogResult.OK == dialog.ShowDialog()) {
 					textEditorControl.SaveFile(dialog.FileName);
@@ -196,19 +192,19 @@ namespace DataDevelop
 
 		private void exitToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			this.Close();
+			Close();
 		}
 
 		private void showResultPanelToolStripButton_Click(object sender, EventArgs e)
 		{
-			this.ShowOutput();
+			ShowOutput();
 		}
 
 		private void ScriptDocument_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			if (e.CloseReason == CloseReason.UserClosing) {
-				if (this.backgroundWorker.IsBusy) {
-					MessageBox.Show(this, "Script is executing, please wait...", this.ProductName);
+				if (backgroundWorker.IsBusy) {
+					MessageBox.Show(this, "Script is executing, please wait...", ProductName);
 					e.Cancel = true;
 					return;
 				}
@@ -223,7 +219,7 @@ namespace DataDevelop
 		private bool AskToSaveChanges()
 		{
 			if (textEditorControl.HasChanges) {
-				this.Activate();
+				Activate();
 				switch (MessageBox.Show(this, "Save Changes?", "Confirmation", MessageBoxButtons.YesNoCancel)) {
 					case DialogResult.Yes:
 						Save();
@@ -237,19 +233,19 @@ namespace DataDevelop
 
 		private void stopButton_Click(object sender, EventArgs e)
 		{
-			this.stopButton.Enabled = false;
-			this.statusLabel.Text = "Aborting...";
-			this.backgroundWorker.AbortAsync();
+			stopButton.Enabled = false;
+			statusLabel.Text = "Aborting...";
+			backgroundWorker.AbortAsync();
 		}
 
 		private void findToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			findDialog.ShowFor(this.textEditorControl, false);
+			findDialog.ShowFor(textEditorControl, false);
 		}
 
 		private void replaceToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			findDialog.ShowFor(this.textEditorControl, true);
+			findDialog.ShowFor(textEditorControl, true);
 		}
 
 		private void newToolStripMenuItem_Click(object sender, EventArgs e)

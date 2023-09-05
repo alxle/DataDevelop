@@ -31,6 +31,10 @@ namespace DataDevelop
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScriptDocument));
 			this.dataSet = new System.Data.DataSet();
 			this.toolStrip = new System.Windows.Forms.ToolStrip();
+			this.newToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.openToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
 			this.executeButton = new System.Windows.Forms.ToolStripButton();
 			this.stopButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -66,10 +70,6 @@ namespace DataDevelop
 			this.executeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.textEditorControl = new DataDevelop.UIComponents.TextEditor();
 			this.backgroundWorker = new DataDevelop.Utils.BackgroundWorkerEx();
-			this.newToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.openToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
 			((System.ComponentModel.ISupportInitialize)(this.dataSet)).BeginInit();
 			this.toolStrip.SuspendLayout();
 			this.menuStrip.SuspendLayout();
@@ -101,12 +101,50 @@ namespace DataDevelop
 			this.toolStrip.TabIndex = 5;
 			this.toolStrip.Text = "commandToolStrip";
 			// 
+			// newToolStripButton
+			// 
+			this.newToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.newToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("newToolStripButton.Image")));
+			this.newToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.newToolStripButton.MergeAction = System.Windows.Forms.MergeAction.Replace;
+			this.newToolStripButton.Name = "newToolStripButton";
+			this.newToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.newToolStripButton.Text = "&New";
+			this.newToolStripButton.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
+			// 
+			// openToolStripButton
+			// 
+			this.openToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.openToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("openToolStripButton.Image")));
+			this.openToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.openToolStripButton.MergeAction = System.Windows.Forms.MergeAction.Replace;
+			this.openToolStripButton.Name = "openToolStripButton";
+			this.openToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.openToolStripButton.Text = "&Open";
+			this.openToolStripButton.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+			// 
+			// saveToolStripButton
+			// 
+			this.saveToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.saveToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("saveToolStripButton.Image")));
+			this.saveToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.saveToolStripButton.MergeAction = System.Windows.Forms.MergeAction.Replace;
+			this.saveToolStripButton.Name = "saveToolStripButton";
+			this.saveToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.saveToolStripButton.Text = "&Save";
+			this.saveToolStripButton.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+			// 
+			// toolStripSeparator10
+			// 
+			this.toolStripSeparator10.Name = "toolStripSeparator10";
+			this.toolStripSeparator10.Size = new System.Drawing.Size(6, 25);
+			// 
 			// executeButton
 			// 
 			this.executeButton.Image = ((System.Drawing.Image)(resources.GetObject("executeButton.Image")));
 			this.executeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.executeButton.Name = "executeButton";
-			this.executeButton.Size = new System.Drawing.Size(67, 22);
+			this.executeButton.Size = new System.Drawing.Size(68, 22);
 			this.executeButton.Text = "Execute";
 			this.executeButton.Click += new System.EventHandler(this.executeButton_Click);
 			// 
@@ -406,7 +444,7 @@ namespace DataDevelop
 			this.executeToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Start;
 			this.executeToolStripMenuItem.Name = "executeToolStripMenuItem";
 			this.executeToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-			this.executeToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+			this.executeToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
 			this.executeToolStripMenuItem.Text = "Execute";
 			this.executeToolStripMenuItem.Click += new System.EventHandler(this.executeButton_Click);
 			// 
@@ -433,44 +471,6 @@ namespace DataDevelop
 			this.backgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_DoWork);
 			this.backgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker_RunWorkerCompleted);
 			// 
-			// newToolStripButton
-			// 
-			this.newToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.newToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("newToolStripButton.Image")));
-			this.newToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.newToolStripButton.MergeAction = System.Windows.Forms.MergeAction.Replace;
-			this.newToolStripButton.Name = "newToolStripButton";
-			this.newToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.newToolStripButton.Text = "&New";
-			this.newToolStripButton.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
-			// 
-			// openToolStripButton
-			// 
-			this.openToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.openToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("openToolStripButton.Image")));
-			this.openToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.openToolStripButton.MergeAction = System.Windows.Forms.MergeAction.Replace;
-			this.openToolStripButton.Name = "openToolStripButton";
-			this.openToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.openToolStripButton.Text = "&Open";
-			this.openToolStripButton.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
-			// 
-			// saveToolStripButton
-			// 
-			this.saveToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.saveToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("saveToolStripButton.Image")));
-			this.saveToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.saveToolStripButton.MergeAction = System.Windows.Forms.MergeAction.Replace;
-			this.saveToolStripButton.Name = "saveToolStripButton";
-			this.saveToolStripButton.Size = new System.Drawing.Size(23, 22);
-			this.saveToolStripButton.Text = "&Save";
-			this.saveToolStripButton.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
-			// 
-			// toolStripSeparator10
-			// 
-			this.toolStripSeparator10.Name = "toolStripSeparator10";
-			this.toolStripSeparator10.Size = new System.Drawing.Size(6, 25);
-			// 
 			// ScriptDocument
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -479,6 +479,7 @@ namespace DataDevelop
 			this.Controls.Add(this.toolStrip);
 			this.Controls.Add(this.menuStrip);
 			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MainMenuStrip = this.menuStrip;
 			this.Name = "ScriptDocument";
 			this.Text = "Scripting Console";
