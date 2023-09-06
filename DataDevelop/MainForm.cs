@@ -155,7 +155,7 @@ namespace DataDevelop
 			var allClosed = true;
 			for (var i = 0; i < dockPanel.Contents.Count;) {
 				if (dockPanel.Contents[i] is Document doc) {
-					if (!FormExtensions.Close(doc)) {
+					if (!doc.TryClose()) {
 						allClosed = false;
 						i++;
 					}
@@ -188,7 +188,7 @@ namespace DataDevelop
 
 		private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (FormExtensions.Close(this)) {
+			if (this.TryClose()) {
 				Application.Exit();
 			}
 		}

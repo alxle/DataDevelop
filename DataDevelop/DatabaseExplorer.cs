@@ -667,8 +667,8 @@ namespace DataDevelop
 				return false;
 			}
 
-			foreach (Document doc in documents) {
-				if (!FormExtensions.Close(doc)) {
+			foreach (var doc in documents) {
+				if (!doc.TryClose()) {
 					return false;
 				}
 			}
