@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
@@ -7,16 +7,16 @@ namespace DataDevelop.VisualStyles
 {
 	class SystemToolStripRenderers
 	{
-		private static ToolStripProfessionalRenderer profesionalRenderer;
+		private static ToolStripProfessionalRenderer professionalRenderer;
 
 		public static ToolStripProfessionalRenderer ToolStripProfessionalRenderer
 		{
 			get
 			{
-				if (profesionalRenderer == null) {
-					profesionalRenderer = new ToolStripProfessionalRenderer(ProfessionalColorTable);
+				if (professionalRenderer == null) {
+					professionalRenderer = new ToolStripProfessionalRenderer(ProfessionalColorTable);
 				}
-				return profesionalRenderer;
+				return professionalRenderer;
 			}
 		}
 

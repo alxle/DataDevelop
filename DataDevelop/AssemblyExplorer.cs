@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -25,8 +25,8 @@ namespace DataDevelop
 			var list = new List<AssemblyName>();
 			var runningAssembly = Assembly.GetExecutingAssembly();
 			list.Add(runningAssembly.GetName());
-			foreach (var assyName in runningAssembly.GetReferencedAssemblies()) {
-				list.Add(assyName);
+			foreach (var assemblyName in runningAssembly.GetReferencedAssemblies()) {
+				list.Add(assemblyName);
 			}
 
 			TryAddAssembly("mscorlib", list);
@@ -41,9 +41,9 @@ namespace DataDevelop
 
 		private void TryAddAssembly(string partialName, IEnumerable<AssemblyName> assemblies)
 		{
-			foreach (var assyName in assemblies) {
-				if (String.Equals(assyName.Name, partialName, StringComparison.OrdinalIgnoreCase)) {
-					AddAssembly(new AssemblyNode(Assembly.Load(assyName.FullName)));
+			foreach (var assemblyName in assemblies) {
+				if (String.Equals(assemblyName.Name, partialName, StringComparison.OrdinalIgnoreCase)) {
+					AddAssembly(new AssemblyNode(Assembly.Load(assemblyName.FullName)));
 				}
 			}
 		}

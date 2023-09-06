@@ -30,7 +30,7 @@ namespace DataDevelop.Data.Access
 						}
 					}
 				}
-				return GetDataSecuencial(startIndex, count, filter, sort);
+				return GetDataSequential(startIndex, count, filter, sort);
 			}
 		}
 

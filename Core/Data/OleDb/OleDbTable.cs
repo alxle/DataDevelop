@@ -85,10 +85,10 @@ namespace DataDevelop.Data.OleDb
 
 		public override DataTable GetData(int startIndex, int count, TableFilter filter, TableSort sort)
 		{
-			return GetDataSecuencial(startIndex, count, filter, sort);
+			return GetDataSequential(startIndex, count, filter, sort);
 		}
 
-		protected virtual DataTable GetDataSecuencial(int startIndex, int count, TableFilter filter, TableSort sort)
+		protected virtual DataTable GetDataSequential(int startIndex, int count, TableFilter filter, TableSort sort)
 		{
 			var sql = new StringBuilder();
 			sql.Append("SELECT ");
@@ -183,8 +183,8 @@ namespace DataDevelop.Data.OleDb
 							indexes.Add(indexName, index);
 							indexesCollection.Add(index);
 						}
-						var columName = (string)row["COLUMN_NAME"];
-						var column = Columns.Single(i => i.Name == columName);
+						var columnName = (string)row["COLUMN_NAME"];
+						var column = Columns.Single(i => i.Name == columnName);
 						index.Columns.Add(new ColumnOrder(column));
 					}
 				}

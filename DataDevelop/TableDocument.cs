@@ -229,7 +229,7 @@ namespace DataDevelop
 		{
 			this.Validate();
 			this.dataGridView.EndEdit();
-			// data can be null if an error ocurred
+			// data can be null if an error occurred
 			if (this.data == null) {
 				return null;
 			}
@@ -254,7 +254,7 @@ namespace DataDevelop
 		}
 
 		/// <summary></summary>
-		/// <returns>Returns True if updating was succesful, otherwise false.</returns>
+		/// <returns>Returns True if updating was successful, otherwise false.</returns>
 		private bool SaveChanges(DataTable changes)
 		{
 			try {

@@ -13,7 +13,7 @@ using ExcelWorksheet = Microsoft.Office.Interop.Excel.Worksheet;
 
 namespace DataDevelop.IO
 {
-	enum Agregate
+	enum Aggregate
 	{
 		None, Count, Sum, Average, Max, Min
 	}
@@ -28,14 +28,14 @@ namespace DataDevelop.IO
 		
 		public string Format { get; set; }
 		
-		public Agregate Summary { get; set; }
+		public Aggregate Summary { get; set; }
 		
 		public bool IsFormula
 		{
 			get { return this.Column == null && this.Format != null; }
 		}
 
-		public ColumnDef(string title, DataColumn column, string format, Agregate agregate)
+		public ColumnDef(string title, DataColumn column, string format, Aggregate aggregate)
 		{
 			if (column == null) {
 				throw new ArgumentNullException("column");
@@ -43,10 +43,10 @@ namespace DataDevelop.IO
 			this.Title = title;
 			this.Column = column;
 			this.Format = format;
-			this.Summary = agregate;
+			this.Summary = aggregate;
 		}
 
-		public ColumnDef(string title, string formula, string format, Agregate agregate)
+		public ColumnDef(string title, string formula, string format, Aggregate aggregate)
 		{
 			if (formula == null) {
 				throw new ArgumentNullException("formula");
@@ -54,7 +54,7 @@ namespace DataDevelop.IO
 			this.Title = title;
 			this.Formula = formula;
 			this.Format = format;
-			this.Summary = agregate;
+			this.Summary = aggregate;
 		}
 	}
 
@@ -216,7 +216,7 @@ namespace DataDevelop.IO
 		{
 			var columns = new List<ColumnDef>(data.Columns.Count);
 			foreach (DataColumn column in data.Columns) {
-				columns.Add(new ColumnDef(column.ColumnName, column, "", Agregate.None));
+				columns.Add(new ColumnDef(column.ColumnName, column, "", Aggregate.None));
 			}
 			return CreateWorksheet(caption, data, columns, worker);
 		}
@@ -285,7 +285,7 @@ namespace DataDevelop.IO
 					if (rowIndex == data.Rows.Count) {
 						var cell = worksheet.GetCell(rowIndex + 1, columnIndex);
 						cell.Font.Bold = true;
-						if (column.Summary != Agregate.None) {
+						if (column.Summary != Aggregate.None) {
 							value = String.Format("={0}({1}2:{1}{2})", column.Summary, (char)(columnIndex + 0x41), data.Rows.Count + 1);
 						}
 					} else {
@@ -302,7 +302,7 @@ namespace DataDevelop.IO
 								var strValue = (string)value;
 								if (strValue.Length > 255) {
 									value = "'" + strValue.Substring(0, 251) + "...";
-									// TODO: Show a warning that the string was cutted
+									// TODO: Show a warning that the string was cut
 								} else {
 									value = "'" + strValue;
 								}

@@ -133,7 +133,7 @@ namespace DataDevelop.Data.Firebird
 					Database.Disconnect();
 				}
 			} else {
-				return "-- Retrive CREATE Statement is only available to Views.";
+				return "-- Retrieve CREATE Statement is only available to Views.";
 			}
 		}
 

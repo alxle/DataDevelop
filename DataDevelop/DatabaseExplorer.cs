@@ -40,20 +40,20 @@ namespace DataDevelop
 					node.Nodes.Add(CreateStoredProcedureNode(sp));
 				}
 			};
-			controller.Refresh += delegate { db.RefreshStoredProcedures(); Unpopulate(node); };
+			controller.Refresh += delegate { db.RefreshStoredProcedures(); ClearNodes(node); };
 			node.Tag = controller;
 			return node;
 		}
 
-		private TreeNode CreateStoredProcedureNode(StoredProcedure storedProdecure)
+		private TreeNode CreateStoredProcedureNode(StoredProcedure storedProcedure)
 		{
-			TreeNode node = CreateTreeNode(storedProdecure.Name, "storedProcedure", procedureContextMenu);
+			TreeNode node = CreateTreeNode(storedProcedure.Name, "storedProcedure", procedureContextMenu);
 			node.Nodes.Add(String.Empty);
 
 			TreeNodeController controller = new TreeNodeController();
-			controller.Populate += delegate { AddParameters(node, storedProdecure); };
-			controller.Refresh += delegate { storedProdecure.RefreshParameters(); };
-			controller.Tag = storedProdecure;
+			controller.Populate += delegate { AddParameters(node, storedProcedure); };
+			controller.Refresh += delegate { storedProcedure.RefreshParameters(); };
+			controller.Tag = storedProcedure;
 			node.Tag = controller;
 
 			return node;
@@ -71,7 +71,7 @@ namespace DataDevelop
 					node.Nodes.Add(CreateUserDefinedFunctionNode(fn));
 				}
 			};
-			controller.Refresh += delegate { db.RefreshUserDefinedFunctions(); Unpopulate(node); };
+			controller.Refresh += delegate { db.RefreshUserDefinedFunctions(); ClearNodes(node); };
 			node.Tag = controller;
 			return node;
 		}
@@ -90,7 +90,7 @@ namespace DataDevelop
 			return node;
 		}
 
-		private void Unpopulate(TreeNode node)
+		private void ClearNodes(TreeNode node)
 		{
 			node.Nodes.Clear();
 			node.Nodes.Add(String.Empty);
@@ -106,7 +106,7 @@ namespace DataDevelop
 
 			TreeNodeController controller = new TreeNodeController();
 			controller.Populate += delegate { AddTables(node); };
-			controller.Refresh += delegate { db.RefreshTables(); Unpopulate(node); };
+			controller.Refresh += delegate { db.RefreshTables(); ClearNodes(node); };
 			controller.DoubleClick += delegate { if (!node.IsExpanded) { node.Expand(); } };
 			controller.Tag = new ConnectionSettings(db);
 			node.Tag = controller;
@@ -121,7 +121,7 @@ namespace DataDevelop
 
 			TreeNodeController controller = new TreeNodeController();
 			controller.Populate += delegate { AddColumns(node); };
-			controller.Refresh += delegate { table.Refresh(); Unpopulate(node); };
+			controller.Refresh += delegate { table.Refresh(); ClearNodes(node); };
 			controller.Tag = table;
 			node.Tag = controller;
 
@@ -325,11 +325,11 @@ namespace DataDevelop
 		{
 			int i = 0;
 			string name = System.IO.Path.GetFileNameWithoutExtension(fileName);
-			string dbname = name;
-			while (DatabasesManager.Contains(dbname)) {
-				dbname = name + i;
+			string dbName = name;
+			while (DatabasesManager.Contains(dbName)) {
+				dbName = name + i;
 			}
-			return dbname;
+			return dbName;
 		}
 
 		public void OpenDatabase()
@@ -676,7 +676,7 @@ namespace DataDevelop
 			if (dbNode.Database.IsConnected) {
 				return false;
 			}
-			Unpopulate(dbNode);
+			ClearNodes(dbNode);
 			return true;
 		}
 
@@ -791,26 +791,26 @@ namespace DataDevelop
 
 		private void scriptAsExecuteToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			StoredProcedure storedProdecure = SelectedStoredProcedure;
-			OpenQuery(storedProdecure.Database, storedProdecure.GenerateExecuteStatement());
+			StoredProcedure storedProcedure = SelectedStoredProcedure;
+			OpenQuery(storedProcedure.Database, storedProcedure.GenerateExecuteStatement());
 		}
 
 		private void scriptAsCreateToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			StoredProcedure storedProdecure = SelectedStoredProcedure;
-			OpenQuery(storedProdecure.Database, storedProdecure.GenerateCreateStatement());
+			StoredProcedure storedProcedure = SelectedStoredProcedure;
+			OpenQuery(storedProcedure.Database, storedProcedure.GenerateCreateStatement());
 		}
 
 		private void scriptAsAlterToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			StoredProcedure storedProdecure = SelectedStoredProcedure;
-			OpenQuery(storedProdecure.Database, storedProdecure.GenerateAlterStatement());
+			StoredProcedure storedProcedure = SelectedStoredProcedure;
+			OpenQuery(storedProcedure.Database, storedProcedure.GenerateAlterStatement());
 		}
 
 		private void scriptAsDropToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			StoredProcedure storedProdecure = SelectedStoredProcedure;
-			OpenQuery(storedProdecure.Database, storedProdecure.GenerateDropStatement());
+			StoredProcedure storedProcedure = SelectedStoredProcedure;
+			OpenQuery(storedProcedure.Database, storedProcedure.GenerateDropStatement());
 		}
 
 		private void disconnectAllToolStripMenuItem_Click(object sender, EventArgs e)

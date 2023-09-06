@@ -1,4 +1,4 @@
-using DataDevelop.Properties;
+﻿using DataDevelop.Properties;
 using ICSharpCode.TextEditor.Document;
 using System.Xml;
 
@@ -15,9 +15,9 @@ namespace DataDevelop.UIComponents
 			get
 			{
 				if (python == null) {
-					XmlDocument lexer = new XmlDocument();
-					lexer.LoadXml(Resources.PythonLexer);
-					python = GetHighlightingStrategy("Python", lexer);
+					var doc = new XmlDocument();
+					doc.LoadXml(Resources.PythonLexer);
+					python = GetHighlightingStrategy("Python", doc);
 				}
 				return python;
 			}
@@ -28,9 +28,9 @@ namespace DataDevelop.UIComponents
 			get
 			{
 				if (sql == null) {
-					XmlDocument lexer = new XmlDocument();
-					lexer.LoadXml(Resources.SqlLexer);
-					sql = GetHighlightingStrategy("SQL", lexer);
+					var doc = new XmlDocument();
+					doc.LoadXml(Resources.SqlLexer);
+					sql = GetHighlightingStrategy("SQL", doc);
 				}
 				return sql;
 			}
@@ -41,7 +41,7 @@ namespace DataDevelop.UIComponents
 			get
 			{
 				if (javascript == null) {
-					XmlDocument doc = new XmlDocument();
+					var doc = new XmlDocument();
 					doc.LoadXml(Resources.JavascriptSyntaxDefinition);
 					javascript = GetHighlightingStrategy("Javascript", doc);
 				}
@@ -63,9 +63,9 @@ namespace DataDevelop.UIComponents
 					if (node is XmlElement) {
 						XmlElement el = (XmlElement)node;
 						if (el.Name == "Custom") {
-							highlighter.SetColorFor(el.GetAttribute("name"), el.HasAttribute("bgcolor") ? new ICSharpCode.TextEditor.Document.HighlightBackground(el) : new ICSharpCode.TextEditor.Document.HighlightColor(el));
+							highlighter.SetColorFor(el.GetAttribute("name"), el.HasAttribute("bgcolor") ? new HighlightBackground(el) : new HighlightColor(el));
 						} else {
-							highlighter.SetColorFor(el.Name, el.HasAttribute("bgcolor") ? new ICSharpCode.TextEditor.Document.HighlightBackground(el) : new ICSharpCode.TextEditor.Document.HighlightColor(el));
+							highlighter.SetColorFor(el.Name, el.HasAttribute("bgcolor") ? new HighlightBackground(el) : new HighlightColor(el));
 						}
 					}
 				}
@@ -76,11 +76,11 @@ namespace DataDevelop.UIComponents
 				}
 			}
 			if (doc.DocumentElement["Digits"] != null) {
-				highlighter.DigitColor = new ICSharpCode.TextEditor.Document.HighlightColor(doc.DocumentElement["Digits"]);
+				highlighter.DigitColor = new HighlightColor(doc.DocumentElement["Digits"]);
 			}
 			XmlNodeList nodes = doc.DocumentElement.GetElementsByTagName("RuleSet");
 			foreach (XmlElement element in nodes) {
-				highlighter.AddRuleSet(new ICSharpCode.TextEditor.Document.HighlightRuleSet(element));
+				highlighter.AddRuleSet(new HighlightRuleSet(element));
 			}
 			highlighter.ResolveReferences();
 			return highlighter;

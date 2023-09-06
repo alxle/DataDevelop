@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
@@ -26,18 +26,18 @@ namespace DataDevelop
 			this.componentsListView.Items.Add(new ListViewItem(new string[] { ".NET Framework", Environment.Version.ToString() }));
 
 			var list = new List<AssemblyName>();
-			foreach (var assy in new Assembly[] { Assembly.GetExecutingAssembly(), typeof(DataDevelop.Data.DbProvider).Assembly }) {
-				foreach (var assyName in assy.GetReferencedAssemblies()) {
-					if (!list.Exists(i => i.Name == assyName.Name)) {
-						list.Add(assyName);
+			foreach (var assembly in new Assembly[] { Assembly.GetExecutingAssembly(), typeof(Data.DbProvider).Assembly }) {
+				foreach (var assemblyName in assembly.GetReferencedAssemblies()) {
+					if (!list.Exists(i => i.Name == assemblyName.Name)) {
+						list.Add(assemblyName);
 					}
 				}
 			}
 
 			list.Sort(new Comparison<AssemblyName>((x, y) => String.Compare(x.Name, y.Name)));
 
-			foreach (var assyName in list) {
-				var item = new ListViewItem(new string[] { assyName.Name, assyName.Version.ToString() });
+			foreach (var assemblyName in list) {
+				var item = new ListViewItem(new string[] { assemblyName.Name, assemblyName.Version.ToString() });
 				this.componentsListView.Items.Add(item);
 			}
 		}
