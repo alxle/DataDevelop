@@ -142,28 +142,51 @@ namespace DataDevelop.Data.PostgreSql
 
 		protected override void PopulateIndexes(IList<Index> indexesCollection)
 		{
-			using (Database.CreateConnectionScope()) {
-				var indexes = Connection.GetSchema("Indexes", new[] { Connection.Database, "public", Name });
-				var indexesDictionary = new Dictionary<string, Index>();
-				foreach (DataRow row in indexes.Rows) {
-					var index = new Index(this, (string)row["INDEX_NAME"]) {
-						IsPrimaryKey = (bool)row["PRIMARY_KEY"],
-						IsUniqueKey = (bool)row["UNIQUE"]
-					};
-					indexesCollection.Add(index);
-					indexesDictionary.Add(index.Name, index);
+			using (database.CreateConnectionScope())
+			using (var select = database.Connection.CreateCommand()) {
+				// TODO: Obtain Index Column Order ASC or DESC
+				select.CommandText =
+@"select
+    t.relname as table_name,
+    i.relname as index_name,
+    a.attname as column_name,
+    ix.indisunique as is_unique,
+    ix.indisprimary as is_primary,
+    ix.indisclustered as is_clustered,
+    ix.indisvalid as is_valid
+from
+    pg_class t,
+    pg_class i,
+    pg_index ix,
+    pg_attribute a
+where
+    t.oid = ix.indrelid
+    and i.oid = ix.indexrelid
+    and a.attrelid = t.oid
+    and a.attnum = ANY(ix.indkey)
+    and t.relkind = 'r'
+    and t.relname = :Name
+order by
+    t.relname,
+    i.relname;";
+				select.Parameters.AddWithValue(":Name", Name);
+				var data = new DataTable();
+				using (var reader = select.ExecuteReader()) {
+					data.Load(reader);
 				}
-				var indexColumns = Connection.GetSchema("IndexColumns", new[] { null, null, Name });
-				indexColumns.DefaultView.Sort = "INDEX_NAME, ORDINAL_POSITION";
-				foreach (DataRowView row in indexColumns.DefaultView) {
-					var indexName = (string)row["INDEX_NAME"];
-					if (indexesDictionary.TryGetValue(indexName, out var index)) {
-						var columnName = (string)row["COLUMN_NAME"];
-						var sortMode = (string)row["SORT_MODE"];
-						var column = Columns.Single(c => c.Name == columnName);
-						var columnOrder = new ColumnOrder(column) { OrderType = (sortMode == "ASC") ? OrderType.Ascending : OrderType.Descending };
-						index.Columns.Add(columnOrder);
+				var indexes = data.Rows.Cast<DataRow>().GroupBy(r => (string)r["index_name"]);
+				foreach (var index in indexes) {
+					var i = new Index(this, index.Key);
+					var first = index.First();
+					i.IsUniqueKey = (bool)first["is_unique"];
+					i.IsPrimaryKey = (bool)first["is_primary"];
+					foreach (var indexColumn in index) {
+						var columnName = (string)indexColumn["column_name"];
+						var column = Columns.Single(i => i.Name.Equals(columnName, StringComparison.OrdinalIgnoreCase));
+						var columnOrder = new ColumnOrder(column);
+						i.Columns.Add(columnOrder);
 					}
+					indexesCollection.Add(i);
 				}
 			}
 		}

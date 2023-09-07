@@ -17,7 +17,7 @@ namespace DataDevelop.Data.PostgreSql
 
 		public override string Name => name;
 
-		public override bool SupportStoredProcedures => false;
+		public override bool SupportStoredProcedures => true;
 
 		public override bool SupportUserDefinedFunctions => true;
 
@@ -131,34 +131,37 @@ namespace DataDevelop.Data.PostgreSql
 
 		protected override void PopulateStoredProcedures(DbObjectCollection<StoredProcedure> storedProceduresCollection)
 		{
+			using (var command = Connection.CreateCommand()) {
+				command.CommandText =
+					"SELECT routine_name " +
+					"FROM information_schema.routines " +
+					"WHERE routine_type = 'PROCEDURE' AND routine_schema = 'public' " +
+					"ORDER BY routine_name";
+				using (var reader = command.ExecuteReader()) {
+					while (reader.Read()) {
+						var name = reader.GetString(0);
+						var sp = new PgSqlStoredProcedure(this, name);
+						storedProceduresCollection.Add(sp);
+					}
+				}
+			}
 		}
 
 		protected override void PopulateUserDefinedFunctions(DbObjectCollection<UserDefinedFunction> userDefinedFunctionsCollection)
 		{
 			using (var command = Connection.CreateCommand()) {
 				command.CommandText =
-					"SELECT n.nspname as \"Schema\", " +
-					" p.proname as \"Name\", " +
-					" pg_catalog.pg_get_function_result(p.oid) as \"Result data type\", " +
-					" pg_catalog.pg_get_function_arguments(p.oid) as \"Argument data types\", " +
-					"CASE " +
-					" WHEN p.proisagg THEN 'agg' " +
-					" WHEN p.proiswindow THEN 'window' " +
-					" WHEN p.prorettype = 'pg_catalog.trigger'::pg_catalog.regtype THEN 'trigger' " +
-					" ELSE 'normal' " +
-					"END as \"Type\" " +
-					"FROM pg_catalog.pg_proc p " +
-					" LEFT JOIN pg_catalog.pg_namespace n ON n.oid = p.pronamespace " +
-					"WHERE pg_catalog.pg_function_is_visible(p.oid) " +
-					"  AND n.nspname <> 'pg_catalog' " +
-					"  AND n.nspname <> 'information_schema' " +
-					"  AND n.nspname = :schema " +
-					"ORDER BY 1, 2, 4; ";
-				command.Parameters.AddWithValue(":schema", "public");
+					"SELECT routine_name, data_type " +
+					"FROM information_schema.routines " +
+					"WHERE routine_type = 'FUNCTION' AND routine_schema = 'public' " +
+					"ORDER BY routine_name";
 				using (var reader = command.ExecuteReader()) {
 					while (reader.Read()) {
-						var fn = new PgSqlUserDefinedFunction(this, reader.GetString(1));
-						fn.ReturnType = reader.GetString(2);
+						var name = reader.GetString(0);
+						var returnType = reader.GetString(1);
+						var fn = new PgSqlUserDefinedFunction(this, name) {
+							ReturnType = returnType
+						};
 						userDefinedFunctionsCollection.Add(fn);
 					}
 				}

@@ -153,6 +153,7 @@
     <Compile Include="Data\OleDb\OleDbTable.cs" />
     <Compile Include="Data\PostgreSql\PgSqlDatabase.cs" />
     <Compile Include="Data\PostgreSql\PgSqlProvider.cs" />
+    <Compile Include="Data\PostgreSql\PgSqlStoredProcedure.cs" />
     <Compile Include="Data\PostgreSql\PgSqlTable.cs" />
     <Compile Include="Data\PostgreSql\PgSqlTrigger.cs" />
     <Compile Include="Data\PostgreSql\PgSqlUserDefinedFunction.cs" />
