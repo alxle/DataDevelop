@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+﻿using System;
 using System.Text;
-using System.Windows.Forms;
 
 namespace DataDevelop
 {
@@ -15,38 +10,22 @@ namespace DataDevelop
 			InitializeComponent();
 		}
 
-		public void WriteUTF8(byte[] buffer, int offset, int count)
+		public void WriteOutput(byte[] buffer, int offset, int count, Encoding encoding)
 		{
-			string text = Encoding.UTF8.GetString(buffer, offset, count);
-			if (count == 3 && buffer[offset] == 0xEF && buffer[offset + 1] == 0xBB && buffer[offset + 2] == 0xBF) { // Byte order mark 
-				return;
-			}
-			if (!this.Created) {
-				CreateControlsInstance();
-			}
-			this.Invoke(new Action<string>(this.AppendText), text);
-		}
-
-		public void WriteUnicode(byte[] buffer, int offset, int count)
-		{
-			string text = Encoding.Unicode.GetString(buffer, offset, count);
-			if (text == "\uFEFF") { // Byte order mark 
-				return;
-			}
-			if (!this.Created) {
-				CreateControlsInstance();
-			}
-			this.Invoke(new Action<string>(this.AppendText), text);
+			var text = encoding.GetString(buffer, offset, count);
+			Invoke(new Action<string>(AppendText), text);
 		}
 
 		public void AppendText(string text)
 		{
+			EnsureControlInstance();
 			outputTextBox.AppendText(text);
 			outputTextBox.GoEnd();
 		}
 
 		public void AppendMessage(string text)
 		{
+			EnsureControlInstance();
 			outputTextBox.AppendText(text);
 			outputTextBox.AppendText(Environment.NewLine);
 			outputTextBox.GoEnd();
@@ -54,31 +33,41 @@ namespace DataDevelop
 
 		public void AppendInfo(string text)
 		{
+			EnsureControlInstance();
 			outputTextBox.LogInfo(text);
 		}
 
 		public void AppendError(string text)
 		{
+			EnsureControlInstance();
 			outputTextBox.LogError(text);
 		}
 
 		public void FocusOutput()
 		{
+			EnsureControlInstance();
 			outputTextBox.GoEnd();
 			outputTextBox.Focus();
 		}
 
-		private void clearAllButton_Click(object sender, EventArgs e)
+		private void EnsureControlInstance()
+		{
+			if (!Created) {
+				CreateControlsInstance();
+			}
+		}
+
+		private void ClearAllButton_Click(object sender, EventArgs e)
 		{
 			outputTextBox.Clear();
 		}
 
-		private void toggleWordWrapButton_CheckedChanged(object sender, EventArgs e)
+		private void ToggleWordWrapButton_CheckedChanged(object sender, EventArgs e)
 		{
 			outputTextBox.WordWrap = wordWrapToolStripMenuItem.Checked;
 		}
 
-		private void copyToolStripMenuItem_Click(object sender, EventArgs e)
+		private void CopyToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			outputTextBox.Copy();
 		}

@@ -22,7 +22,7 @@ namespace DataDevelop
 
 			var isPython = (engine is PythonScriptEngine);
 			var highlighter = isPython ? Highlighters.Python : Highlighters.Javascript;
-			var outputStream = new StreamWriteDelegator(Output.WriteUTF8);
+			var outputStream = new IO.StreamWriteDelegator(Output.WriteOutput, engine.OutputEncoding);
 
 			textEditorControl.Document.HighlightingStrategy = highlighter;
 			Text = $"{highlighter.Name} Console";

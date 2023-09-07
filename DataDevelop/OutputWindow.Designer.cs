@@ -55,7 +55,7 @@ namespace DataDevelop
 			this.clearAllToolStripMenuItem.Name = "clearAllToolStripMenuItem";
 			this.clearAllToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.clearAllToolStripMenuItem.Text = "Clear All";
-			this.clearAllToolStripMenuItem.Click += new System.EventHandler(this.clearAllButton_Click);
+			this.clearAllToolStripMenuItem.Click += new System.EventHandler(this.ClearAllButton_Click);
 			// 
 			// wordWrapToolStripMenuItem
 			// 
@@ -64,7 +64,7 @@ namespace DataDevelop
 			this.wordWrapToolStripMenuItem.Name = "wordWrapToolStripMenuItem";
 			this.wordWrapToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.wordWrapToolStripMenuItem.Text = "Word Wrap";
-			this.wordWrapToolStripMenuItem.CheckedChanged += new System.EventHandler(this.toggleWordWrapButton_CheckedChanged);
+			this.wordWrapToolStripMenuItem.CheckedChanged += new System.EventHandler(this.ToggleWordWrapButton_CheckedChanged);
 			// 
 			// outputTextBox
 			// 
@@ -111,7 +111,7 @@ namespace DataDevelop
 			this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
 			this.copyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.copyToolStripMenuItem.Text = "Copy";
-			this.copyToolStripMenuItem.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
+			this.copyToolStripMenuItem.Click += new System.EventHandler(this.CopyToolStripMenuItem_Click);
 			// 
 			// OutputWindow
 			// 

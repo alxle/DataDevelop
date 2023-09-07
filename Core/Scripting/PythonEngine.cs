@@ -21,10 +21,12 @@ namespace DataDevelop.Scripting
 
 		public override string Extension => ".py";
 
+		public override Encoding OutputEncoding => Encoding.UTF7;
+
 		public override void Initialize(Stream output, IDictionary<string, Database> databases)
 		{
 			var runtime = engine.Runtime;
-			runtime.IO.SetOutput(output, Encoding.UTF8);
+			runtime.IO.SetOutput(output, OutputEncoding);
 			scope.SetVariable("_dbs", databases);
 			engine.Execute(Properties.Resources.PythonScript, scope);
 		}

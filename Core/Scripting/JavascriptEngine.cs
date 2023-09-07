@@ -40,7 +40,7 @@ namespace DataDevelop.Scripting
 				writer(str);
 				return;
 			}
-			byte[] buffer = Encoding.UTF8.GetBytes(str);
+			byte[] buffer = OutputEncoding.GetBytes(str);
 			output.Write(buffer, 0, buffer.Length);
 		}
 

@@ -312,7 +312,6 @@
     <Compile Include="Utils\BackgroundWorkerEx.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Utils\StreamDelegator.cs" />
     <Compile Include="UIComponents\BinaryVisualizer.cs">
       <SubType>Form</SubType>
     </Compile>
