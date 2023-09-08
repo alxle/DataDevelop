@@ -33,7 +33,11 @@ namespace DataDevelop.Scripting
 
 		public override void Execute(string scriptCode)
 		{
-			engine.Execute(scriptCode, scope);
+			try {
+				engine.Execute(scriptCode, scope);
+			} catch (Microsoft.Scripting.SyntaxErrorException e) {
+				throw new ScriptSyntaxException(e);
+			}
 		}
 	}
 }

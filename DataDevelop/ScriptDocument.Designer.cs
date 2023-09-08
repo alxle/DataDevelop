@@ -37,6 +37,9 @@ namespace DataDevelop
 			this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
 			this.executeButton = new System.Windows.Forms.ToolStripButton();
 			this.stopButton = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+			this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
+			this.outputFullExceptionDetailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.showResultPanelToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
@@ -90,6 +93,8 @@ namespace DataDevelop
             this.toolStripSeparator10,
             this.executeButton,
             this.stopButton,
+            this.toolStripSeparator6,
+            this.toolStripDropDownButton1,
             this.toolStripSeparator1,
             this.showResultPanelToolStripButton,
             this.toolStripSeparator8,
@@ -159,6 +164,27 @@ namespace DataDevelop
 			this.stopButton.Text = "Abort";
 			this.stopButton.Visible = false;
 			this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
+			// 
+			// toolStripSeparator6
+			// 
+			this.toolStripSeparator6.Name = "toolStripSeparator6";
+			this.toolStripSeparator6.Size = new System.Drawing.Size(6, 25);
+			// 
+			// toolStripDropDownButton1
+			// 
+			this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.outputFullExceptionDetailsToolStripMenuItem});
+			this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
+			this.toolStripDropDownButton1.Size = new System.Drawing.Size(62, 22);
+			this.toolStripDropDownButton1.Text = "Options";
+			// 
+			// outputFullExceptionDetailsToolStripMenuItem
+			// 
+			this.outputFullExceptionDetailsToolStripMenuItem.CheckOnClick = true;
+			this.outputFullExceptionDetailsToolStripMenuItem.Name = "outputFullExceptionDetailsToolStripMenuItem";
+			this.outputFullExceptionDetailsToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
+			this.outputFullExceptionDetailsToolStripMenuItem.Text = "Output Full Exception Details";
 			// 
 			// toolStripSeparator1
 			// 
@@ -537,5 +563,8 @@ namespace DataDevelop
 		private System.Windows.Forms.ToolStripButton openToolStripButton;
 		private System.Windows.Forms.ToolStripButton saveToolStripButton;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
+		private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
+		private System.Windows.Forms.ToolStripMenuItem outputFullExceptionDetailsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
 	}
 }

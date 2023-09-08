@@ -213,6 +213,7 @@
     <Compile Include="Scripting\JavascriptEngine.cs" />
     <Compile Include="Scripting\PythonEngine.cs" />
     <Compile Include="Scripting\ScriptEngine.cs" />
+    <Compile Include="Scripting\ScriptSyntaxException.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">

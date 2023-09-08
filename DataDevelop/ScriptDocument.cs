@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows.Forms;
 using DataDevelop.Data;
 using DataDevelop.Dialogs;
@@ -14,6 +15,7 @@ namespace DataDevelop
 		private ScriptEngine engine;
 		private OutputWindow output;
 		private FindAndReplaceDialog findDialog = new FindAndReplaceDialog();
+		private Stopwatch watch;
 
 		public ScriptDocument(OutputWindow output, ScriptEngine engine)
 		{
@@ -49,14 +51,17 @@ namespace DataDevelop
 			}
 		}
 
+		private bool ShowFullException => outputFullExceptionDetailsToolStripMenuItem.Checked;
+
 		private void executeButton_Click(object sender, EventArgs e)
 		{
-			string code = SelectedText;
+			var code = SelectedText;
 			if (code.Length > 0) {
 				EnableUI(false, "Executing...");
 
-				foreach (string line in StringUtils.GetLines(code)) {
-					output.AppendInfo(">>> " + line);
+				var lineNumber = 1;
+				foreach (var line in StringUtils.GetLines(code)) {
+					output.AppendInfo($"{lineNumber++,-3}|" + line);
 				}
 				output.FocusOutput();
 
@@ -76,27 +81,42 @@ namespace DataDevelop
 
 		private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
 		{
-			string code = (string)e.Argument;
+			watch = Stopwatch.StartNew();
+			var code = (string)e.Argument;
 			engine.Execute(code);
+		}
+
+		private void OutputError(Exception error)
+		{
+			if (error is ScriptSyntaxException syntaxError) {
+				output.AppendError(">>> Syntax Error: " + syntaxError.Message);
+				var errorMessage = ">>> ";
+				if (syntaxError.ErrorCode != null) {
+					errorMessage += ($"Error Code: {syntaxError.ErrorCode}, ");
+				}
+				errorMessage += $"Line: {syntaxError.Line}, Column: {syntaxError.Column}";
+				output.AppendError(errorMessage);
+			} else if (ShowFullException) {
+				output.AppendError($">>> {error}");
+			} else {
+				output.AppendError($">>> {error.GetType().Name}: {error.Message}");
+			}
 		}
 
 		private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
+			watch?.Stop();
 			EnableUI(true, "Ready...");
 
-			if (e.Error != null || e.Cancelled) {
-				output.AppendMessage("");
-				if (e.Error != null) {
-					var syntaxError = e.Error as Microsoft.Scripting.SyntaxErrorException;
-					if (syntaxError != null) {
-						output.AppendError($"Syntax Error: {e.Error.Message}");
-						output.AppendError($"Error Code: {syntaxError.ErrorCode}, Line: {syntaxError.Line}, Column: {syntaxError.Column}");
-					} else {
-						output.AppendError(e.Error.ToString());
-					}
-				} else {
-					output.AppendError("Script execution was cancelled.");
-				}
+			output.AppendMessage(""); // Append New Line
+			if (e.Error != null) {
+				OutputError(e.Error);
+			}
+			if (e.Cancelled) {
+				output.AppendError(">>> Script execution was cancelled.");
+			}
+			if (watch != null) {
+				output.AppendInfo($">>> Elapsed: {watch.Elapsed}");
 			}
 			output.Show();
 			textEditorControl.Focus();

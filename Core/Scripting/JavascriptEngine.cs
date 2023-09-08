@@ -215,7 +215,11 @@ namespace DataDevelop.Scripting
 
 		public override void Execute(string scriptCode)
 		{
-			engine.Execute(scriptCode);
+			try {
+				engine.Execute(scriptCode);
+			} catch (Esprima.ParserException e) {
+				throw new ScriptSyntaxException(e);
+			}
 		}
 	}
 }
