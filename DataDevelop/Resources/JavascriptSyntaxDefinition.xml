@@ -116,10 +116,6 @@
         <Key word="Infinity" />
       </KeyWords>
 
-      <KeyWords name="JavaScriptLiterals" bold="false" italic="false" color="Blue">
-        <Key word="" />
-      </KeyWords>
-
       <KeyWords name="JavaScriptGlobalFunctions" bold="false" italic="false" color="DarkBlue">
         <Key word="eval" />
         <Key word="parseInt" />

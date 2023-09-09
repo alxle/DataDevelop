@@ -511,6 +511,9 @@
     <Compile Include="VisualStyles\SystemToolStripRenderers.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\JavascriptSyntaxDefinitionDark.xml" />
+    <None Include="Resources\PythonSyntaxDefinitionDark.xml" />
+    <None Include="Resources\SqlSyntaxDefinitionDark.xml" />
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>

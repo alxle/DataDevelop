@@ -12,6 +12,7 @@ namespace DataDevelop
 	public partial class MainForm : Form
 	{
 		private static MainForm instance;
+		private static bool darkMode;
 		private readonly AssemblyExplorer assemblyExplorer;
 		private readonly DatabaseExplorer databaseExplorer;
 		private readonly PropertiesToolbox propertiesToolbox;
@@ -30,6 +31,8 @@ namespace DataDevelop
 		}
 
 		public static MainForm Instance => instance ?? (instance = new MainForm());
+		
+		public static bool DarkMode => darkMode;
 
 		private void ApplyVisualStyle(string visualStyle)
 		{
@@ -45,12 +48,19 @@ namespace DataDevelop
 				theme.ApplyTo(dockPanel);
 				ToolStripManager.VisualStylesEnabled = true;
 				ToolStripManager.Renderer = new VisualStyles.VS2012ToolStripRenderer();
-			} else { // Blue
+			} else if (visualStyle == "Blue") {
 				var theme = new VS2015BlueTheme();
 				dockPanel.Theme = theme;
 				theme.ApplyTo(dockPanel);
 				ToolStripManager.VisualStylesEnabled = true;
 				ToolStripManager.Renderer = new VisualStyles.VS2015ToolStripRenderer();
+			} else if (visualStyle == "Dark") {
+				var theme = new VS2015BlueTheme();
+				dockPanel.Theme = theme;
+				theme.ApplyTo(dockPanel);
+				ToolStripManager.VisualStylesEnabled = true;
+				ToolStripManager.Renderer = new VisualStyles.VS2015ToolStripRenderer();
+				darkMode = true;
 			}
 		}
 

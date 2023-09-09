@@ -19,7 +19,7 @@ namespace DataDevelop.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -218,9 +218,34 @@ namespace DataDevelop.Properties {
         ///
         ///      &lt;Span name=&quot;Block [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string JavascriptSyntaxDefinition {
+        internal static string JavascriptMode {
             get {
-                return ResourceManager.GetString("JavascriptSyntaxDefinition", resourceCulture);
+                return ResourceManager.GetString("JavascriptMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
+        ///&lt;SyntaxDefinition name=&quot;JavaScript&quot; extensions=&quot;.js&quot;&gt;
+        ///  
+        ///  &lt;Environment&gt;
+        ///    &lt;Default color=&quot;#FAFAFA&quot; bgcolor=&quot;#1F1F1F&quot; bold=&quot;false&quot; italic=&quot;false&quot;/&gt;
+        ///    &lt;LineNumbers color=&quot;#2B91AF&quot; bgcolor=&quot;#1F1F1F&quot;/&gt;
+        ///    &lt;SpaceMarkers color=&quot;#144852&quot;/&gt;
+        ///    &lt;TabMarkers color=&quot;#144852&quot;/&gt;
+        ///    &lt;EOLMarkers color=&quot;#144852&quot; /&gt;
+        ///    &lt;VRuler color=&quot;#144852&quot;/&gt;
+        ///  &lt;/Environment&gt;
+        ///  
+        ///  &lt;Properties&gt;
+        ///    &lt;Property name=&quot;LineComment&quot; value=&quot;//&quot;/&gt;
+        ///  &lt;/Properties&gt;
+        ///
+        ///  &lt;Digits name=&quot;Digits&quot; bold=&quot;false&quot; i [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string JavascriptModeDark {
+            get {
+                return ResourceManager.GetString("JavascriptModeDark", resourceCulture);
             }
         }
         
@@ -384,9 +409,34 @@ namespace DataDevelop.Properties {
         ///
         ///   [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string PythonLexer {
+        internal static string PythonMode {
             get {
-                return ResourceManager.GetString("PythonLexer", resourceCulture);
+                return ResourceManager.GetString("PythonMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
+        ///&lt;SyntaxDefinition name=&quot;Python&quot; extensions=&quot;.py&quot;&gt;
+        ///
+        ///  &lt;Environment&gt;
+        ///    &lt;Default color=&quot;#FAFAFA&quot; bgcolor=&quot;#1F1F1F&quot; bold=&quot;false&quot; italic=&quot;false&quot;/&gt;
+        ///    &lt;LineNumbers color=&quot;#2B91AF&quot; bgcolor=&quot;#1F1F1F&quot;/&gt;
+        ///    &lt;SpaceMarkers color=&quot;#144852&quot;/&gt;
+        ///    &lt;TabMarkers color=&quot;#144852&quot;/&gt;
+        ///    &lt;EOLMarkers color=&quot;#144852&quot; /&gt;
+        ///    &lt;VRuler color=&quot;#144852&quot;/&gt;
+        ///  &lt;/Environment&gt;
+        ///
+        ///  &lt;Properties&gt;
+        ///    &lt;Property name=&quot;LineComment&quot; value=&quot;#&quot;/&gt;
+        ///  &lt;/Properties&gt;
+        ///
+        ///  &lt;Digits name=&quot;Digits&quot; bold=&quot;false&quot; italic=&quot;fa [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string PythonModeDark {
+            get {
+                return ResourceManager.GetString("PythonModeDark", resourceCulture);
             }
         }
         
@@ -477,9 +527,34 @@ namespace DataDevelop.Properties {
         ///        &lt;Begin&gt;--@!/@&lt;/Begin&gt;
         ///      &lt;/Span&gt; [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SqlLexer {
+        internal static string SqlMode {
             get {
-                return ResourceManager.GetString("SqlLexer", resourceCulture);
+                return ResourceManager.GetString("SqlMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
+        ///&lt;SyntaxDefinition name=&quot;SQL&quot; extensions=&quot;.sql&quot;&gt;
+        ///
+        ///  &lt;Environment&gt;
+        ///    &lt;Default color=&quot;#FAFAFA&quot; bgcolor=&quot;#1F1F1F&quot; bold=&quot;false&quot; italic=&quot;false&quot;/&gt;
+        ///    &lt;LineNumbers color=&quot;#2B91AF&quot; bgcolor=&quot;#1F1F1F&quot;/&gt;
+        ///    &lt;SpaceMarkers color=&quot;#144852&quot;/&gt;
+        ///    &lt;TabMarkers color=&quot;#144852&quot;/&gt;
+        ///    &lt;EOLMarkers color=&quot;#144852&quot; /&gt;
+        ///    &lt;VRuler color=&quot;#144852&quot;/&gt;
+        ///  &lt;/Environment&gt;
+        ///
+        ///  &lt;Properties&gt;
+        ///    &lt;Property name=&quot;LineComment&quot; value=&quot;--&quot;/&gt;
+        ///  &lt;/Properties&gt;
+        ///
+        ///  &lt;Digits name=&quot;Digits&quot; bold=&quot;false&quot; italic=&quot;fal [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SqlModeDark {
+            get {
+                return ResourceManager.GetString("SqlModeDark", resourceCulture);
             }
         }
         

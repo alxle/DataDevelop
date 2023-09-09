@@ -16,7 +16,7 @@ namespace DataDevelop.UIComponents
 			{
 				if (python == null) {
 					var doc = new XmlDocument();
-					doc.LoadXml(Resources.PythonLexer);
+					doc.LoadXml(MainForm.DarkMode ? Resources.PythonModeDark : Resources.PythonMode);
 					python = GetHighlightingStrategy("Python", doc);
 				}
 				return python;
@@ -29,7 +29,7 @@ namespace DataDevelop.UIComponents
 			{
 				if (sql == null) {
 					var doc = new XmlDocument();
-					doc.LoadXml(Resources.SqlLexer);
+					doc.LoadXml(MainForm.DarkMode ? Resources.SqlModeDark : Resources.SqlMode);
 					sql = GetHighlightingStrategy("SQL", doc);
 				}
 				return sql;
@@ -42,7 +42,7 @@ namespace DataDevelop.UIComponents
 			{
 				if (javascript == null) {
 					var doc = new XmlDocument();
-					doc.LoadXml(Resources.JavascriptSyntaxDefinition);
+					doc.LoadXml(MainForm.DarkMode ? Resources.JavascriptModeDark : Resources.JavascriptMode);
 					javascript = GetHighlightingStrategy("Javascript", doc);
 				}
 				return javascript;
@@ -51,17 +51,17 @@ namespace DataDevelop.UIComponents
 
 		private static DefaultHighlightingStrategy GetHighlightingStrategy(string name, XmlDocument doc)
 		{
-			DefaultHighlightingStrategy highlighter = new DefaultHighlightingStrategy(name);
+			var highlighter = new DefaultHighlightingStrategy(name);
 
 			if (doc.DocumentElement.HasAttribute("extensions")) {
 				highlighter.Extensions = doc.DocumentElement.GetAttribute("extensions").Split(new char[] { ';', '|' });
 			}
 
-			XmlElement environment = doc.DocumentElement["Environment"];
+			var environment = doc.DocumentElement["Environment"];
 			if (environment != null) {
 				foreach (XmlNode node in environment.ChildNodes) {
 					if (node is XmlElement) {
-						XmlElement el = (XmlElement)node;
+						var el = (XmlElement)node;
 						if (el.Name == "Custom") {
 							highlighter.SetColorFor(el.GetAttribute("name"), el.HasAttribute("bgcolor") ? new HighlightBackground(el) : new HighlightColor(el));
 						} else {
@@ -78,7 +78,7 @@ namespace DataDevelop.UIComponents
 			if (doc.DocumentElement["Digits"] != null) {
 				highlighter.DigitColor = new HighlightColor(doc.DocumentElement["Digits"]);
 			}
-			XmlNodeList nodes = doc.DocumentElement.GetElementsByTagName("RuleSet");
+			var nodes = doc.DocumentElement.GetElementsByTagName("RuleSet");
 			foreach (XmlElement element in nodes) {
 				highlighter.AddRuleSet(new HighlightRuleSet(element));
 			}
