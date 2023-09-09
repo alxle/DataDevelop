@@ -239,7 +239,8 @@ namespace DataDevelop
 			this.visualStyleComboBox.Items.AddRange(new object[] {
             "Classic",
             "Light",
-            "Blue"});
+            "Blue",
+            "Dark"});
 			this.visualStyleComboBox.Location = new System.Drawing.Point(84, 20);
 			this.visualStyleComboBox.Name = "visualStyleComboBox";
 			this.visualStyleComboBox.Size = new System.Drawing.Size(121, 21);
