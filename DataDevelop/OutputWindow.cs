@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Text;
 
 namespace DataDevelop
@@ -8,6 +9,14 @@ namespace DataDevelop
 		public OutputWindow()
 		{
 			InitializeComponent();
+			if (MainForm.DarkMode) {
+				outputTextBox.ForeColor = Color.FromArgb(250, 250, 250);
+				outputTextBox.BackColor = Color.FromArgb(31, 31, 31);
+
+				outputTextBox.MessageTextColor = Color.FromArgb(250, 250, 250);
+				outputTextBox.InfoTextColor = Color.FromArgb(131, 190, 235);
+				outputTextBox.ErrorTextColor = Color.FromArgb(227, 93, 106);
+			}
 		}
 
 		public void WriteOutput(byte[] buffer, int offset, int count, Encoding encoding)

@@ -6,39 +6,80 @@ namespace DataDevelop.UIComponents
 {
 	public partial class LogTextBox : FastColoredTextBox
 	{
-		TextStyle textStyle = new TextStyle(Brushes.Black, null, FontStyle.Regular);
-		TextStyle infoStyle = new TextStyle(Brushes.DarkBlue, null, FontStyle.Regular);
-		TextStyle errorStyle = new TextStyle(Brushes.Red, null, FontStyle.Regular);
+		Color messageTextColor = Color.Black;
+		Color infoTextColor = Color.DarkBlue;
+		Color errorTextColor = Color.Red;
+
+		TextStyle messageStyle;
+		TextStyle infoStyle;
+		TextStyle errorStyle;
 
 		public LogTextBox()
 		{
 			InitializeComponent();
-			this.Font = new Font("Consolas", 8.0F);
-			this.IsReplaceMode = false;
-			this.ReadOnly = true;
-			this.ShowLineNumbers = false;
+			Font = new Font("Consolas", 8.0F);
+			IsReplaceMode = false;
+			ReadOnly = true;
+			ShowLineNumbers = false;
+
+			messageStyle = new TextStyle(new SolidBrush(messageTextColor), null, FontStyle.Regular);
+			infoStyle = new TextStyle(new SolidBrush(infoTextColor), null, FontStyle.Regular);
+			errorStyle = new TextStyle(new SolidBrush(errorTextColor), null, FontStyle.Regular);
+		}
+
+		public Color MessageTextColor
+		{
+			get => messageTextColor;
+			set
+			{
+				messageTextColor = value;
+				messageStyle.Dispose();
+				messageStyle = new TextStyle(new SolidBrush(messageTextColor), null, FontStyle.Regular);
+			}
+		}
+
+		public Color InfoTextColor
+		{
+			get => infoTextColor;
+			set
+			{
+				infoTextColor = value;
+				infoStyle.Dispose();
+				infoStyle = new TextStyle(new SolidBrush(infoTextColor), null, FontStyle.Regular);
+			}
+		}
+
+		public Color ErrorTextColor
+		{
+			get => errorTextColor;
+			set
+			{
+				errorTextColor = value;
+				errorStyle.Dispose();
+				errorStyle = new TextStyle(new SolidBrush(errorTextColor), null, FontStyle.Regular);
+			}
 		}
 
 		private void Log(string text, Style style)
 		{
-			this.BeginUpdate();
-			this.Selection.BeginUpdate();
-			this.TextSource.CurrentTB = this;
-			this.AppendText(text, style);
-			this.AppendText(Environment.NewLine);
-			this.GoEnd();
-			this.Selection.EndUpdate();
-			this.EndUpdate();
+			BeginUpdate();
+			Selection.BeginUpdate();
+			TextSource.CurrentTB = this;
+			AppendText(text, style);
+			AppendText(Environment.NewLine);
+			GoEnd();
+			Selection.EndUpdate();
+			EndUpdate();
 		}
 
 		public void LogInfo(string text)
 		{
-			this.Log(text, infoStyle);
+			Log(text, infoStyle);
 		}
 
 		public void LogError(string text)
 		{
-			this.Log(text, errorStyle);
+			Log(text, errorStyle);
 		}
 
 		/// <summary> 
@@ -48,10 +89,10 @@ namespace DataDevelop.UIComponents
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing) {
-				if (components != null) components.Dispose();
-				if (textStyle != null) textStyle.Dispose();
-				if (infoStyle != null) infoStyle.Dispose();
-				if (errorStyle != null) errorStyle.Dispose();
+				components?.Dispose();
+				messageStyle?.Dispose();
+				infoStyle?.Dispose();
+				errorStyle?.Dispose();
 			}
 			base.Dispose(disposing);
 		}
