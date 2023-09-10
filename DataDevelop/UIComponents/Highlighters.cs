@@ -1,6 +1,6 @@
-﻿using DataDevelop.Properties;
+﻿using System.Xml;
+using DataDevelop.Properties;
 using ICSharpCode.TextEditor.Document;
-using System.Xml;
 
 namespace DataDevelop.UIComponents
 {
@@ -11,72 +11,44 @@ namespace DataDevelop.UIComponents
 		private static DefaultHighlightingStrategy javascript;
 
 		public static DefaultHighlightingStrategy Python
-		{
-			get
-			{
-				if (python == null) {
-					var doc = new XmlDocument();
-					doc.LoadXml(MainForm.DarkMode ? Resources.PythonModeDark : Resources.PythonMode);
-					python = GetHighlightingStrategy("Python", doc);
-				}
-				return python;
-			}
-		}
+			=> python ?? (python = GetHighlightingStrategy(MainForm.DarkMode ? Resources.PythonModeDark : Resources.PythonMode));
 
 		public static DefaultHighlightingStrategy Sql
-		{
-			get
-			{
-				if (sql == null) {
-					var doc = new XmlDocument();
-					doc.LoadXml(MainForm.DarkMode ? Resources.SqlModeDark : Resources.SqlMode);
-					sql = GetHighlightingStrategy("SQL", doc);
-				}
-				return sql;
-			}
-		}
+			=> sql ?? (sql = GetHighlightingStrategy(MainForm.DarkMode ? Resources.SqlModeDark : Resources.SqlMode));
 
 		public static DefaultHighlightingStrategy Javascript
-		{
-			get
-			{
-				if (javascript == null) {
-					var doc = new XmlDocument();
-					doc.LoadXml(MainForm.DarkMode ? Resources.JavascriptModeDark : Resources.JavascriptMode);
-					javascript = GetHighlightingStrategy("Javascript", doc);
-				}
-				return javascript;
-			}
-		}
+			=> javascript ?? (javascript = GetHighlightingStrategy(MainForm.DarkMode ? Resources.JavascriptModeDark : Resources.JavascriptMode));
 
-		private static DefaultHighlightingStrategy GetHighlightingStrategy(string name, XmlDocument doc)
+		private static DefaultHighlightingStrategy GetHighlightingStrategy(string xml)
 		{
+			var doc = new XmlDocument();
+			doc.LoadXml(xml);
+			var name = doc.DocumentElement.HasAttribute("name") ? doc.DocumentElement.GetAttribute("name") : "default";
 			var highlighter = new DefaultHighlightingStrategy(name);
-
 			if (doc.DocumentElement.HasAttribute("extensions")) {
-				highlighter.Extensions = doc.DocumentElement.GetAttribute("extensions").Split(new char[] { ';', '|' });
+				highlighter.Extensions = doc.DocumentElement.GetAttribute("extensions").Split(';', '|');
 			}
-
 			var environment = doc.DocumentElement["Environment"];
 			if (environment != null) {
 				foreach (XmlNode node in environment.ChildNodes) {
-					if (node is XmlElement) {
-						var el = (XmlElement)node;
-						if (el.Name == "Custom") {
-							highlighter.SetColorFor(el.GetAttribute("name"), el.HasAttribute("bgcolor") ? new HighlightBackground(el) : new HighlightColor(el));
-						} else {
-							highlighter.SetColorFor(el.Name, el.HasAttribute("bgcolor") ? new HighlightBackground(el) : new HighlightColor(el));
-						}
+					if (node is XmlElement el) {
+						var itemName = (el.Name == "Custom") ? el.GetAttribute("name") : el.Name;
+						var itemColor = el.HasAttribute("bgcolor") ? new HighlightBackground(el) : new HighlightColor(el);
+						highlighter.SetColorFor(itemName, itemColor);
 					}
 				}
 			}
-			if (doc.DocumentElement["Properties"] != null) {
-				foreach (XmlElement propertyElement in doc.DocumentElement["Properties"].ChildNodes) {
-					highlighter.Properties[propertyElement.Attributes["name"].InnerText] = propertyElement.Attributes["value"].InnerText;
+			var propertiesElement = doc.DocumentElement["Properties"];
+			if (propertiesElement != null) {
+				foreach (XmlElement propertyElement in propertiesElement.ChildNodes) {
+					var propertyName = propertyElement.Attributes["name"].InnerText;
+					var propertyValue = propertyElement.Attributes["value"].InnerText;
+					highlighter.Properties[propertyName] = propertyValue;
 				}
 			}
-			if (doc.DocumentElement["Digits"] != null) {
-				highlighter.DigitColor = new HighlightColor(doc.DocumentElement["Digits"]);
+			var digitsElement = doc.DocumentElement["Digits"];
+			if (digitsElement != null) {
+				highlighter.DigitColor = new HighlightColor(digitsElement);
 			}
 			var nodes = doc.DocumentElement.GetElementsByTagName("RuleSet");
 			foreach (XmlElement element in nodes) {

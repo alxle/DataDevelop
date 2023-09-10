@@ -39,72 +39,54 @@
         <End>&apos;</End>
       </Span>
 
-      <KeyWords name="JavaScriptKeyWords" bold="false" italic="false" color="#569cd6">
+      <KeyWords name="KeyWords" bold="false" italic="false" color="#569cd6">
+        <Key word="await" />
         <Key word="break" />
+        <Key word="case" />
+        <Key word="catch" />
+        <Key word="class" />
+        <Key word="const" />
         <Key word="continue" />
+        <Key word="debugger" />
+        <Key word="default" />
         <Key word="delete" />
+        <Key word="do" />
         <Key word="else" />
+        <Key word="enum" />
+        <Key word="export" />
+        <Key word="extends" />
+        <Key word="false" />
+        <Key word="finally" />
         <Key word="for" />
         <Key word="function" />
         <Key word="if" />
+        <Key word="import" />
         <Key word="in" />
+        <Key word="instanceof" />
         <Key word="new" />
+        <Key word="null" />
         <Key word="return" />
+        <Key word="super" />
+        <Key word="switch" />
         <Key word="this" />
+        <Key word="throw" />
+        <Key word="true" />
+        <Key word="try" />
         <Key word="typeof" />
         <Key word="var" />
         <Key word="void" />
         <Key word="while" />
         <Key word="with" />
-      </KeyWords>
-      <KeyWords name="FutureKeyWords" bold="false" italic="false" color="#569cd6">
-        <!--ECMAScript keywords-->
-        <!-- Reserved for future use 
-          (some are already used in some Javascript Engines) 
-        -->
-        <Key word="abstract" />
-        <Key word="boolean" />
-        <Key word="byte" />
-        <Key word="case" />
-        <Key word="catch" />
-        <Key word="char" />
-        <Key word="class" />
-        <Key word="const" />
-        <Key word="debugger" />
-        <Key word="default" />
-        <Key word="do" />
-        <Key word="double" />
-        <Key word="enum" />
-        <Key word="export" />
-        <Key word="extends" />
-        <Key word="final" />
-        <Key word="finally" />
-        <Key word="float" />
-        <Key word="goto" />
-        <Key word="implements" />
-        <Key word="import" />
-        <Key word="instanceof" />
-        <Key word="int" />
-        <Key word="interface" />
-        <Key word="long" />
-        <Key word="native" />
-        <Key word="package" />
-        <Key word="private" />
-        <Key word="protected" />
-        <Key word="public" />
-        <Key word="short" />
-        <Key word="static" />
-        <Key word="super" />
-        <Key word="switch" />
-        <Key word="synchronized" />
-        <Key word="throw" />
-        <Key word="throws" />
-        <Key word="transient" />
-        <Key word="try" />
-        <Key word="volatile" />
+        <Key word="yield" />
       </KeyWords>
 
-      <KeyWords name="JavaScriptIntrinsics" bold="false" italic="false" color="#4ec9b0">
+      <KeyWords name="ContextualKeyWords" bold="false" italic="false" color="#569cd6">
+        <Key word="async" />
+        <Key word="of" />
+        <Key word="let" />
+      </KeyWords>
+
+      <KeyWords name="Intrinsics" bold="false" italic="false" color="#4ec9b0">
         <Key word="Array" />
         <Key word="Boolean" />
         <Key word="Date" />
@@ -117,15 +99,13 @@
         <Key word="String" />
       </KeyWords>
 
-      <KeyWords name="JavaScriptLiterals" bold="false" italic="false" color="#569cd6">
-        <Key word="false" />
-        <Key word="null" />
-        <Key word="true" />
-        <Key word="NaN" />
+      <KeyWords name="Literals" bold="false" italic="false" color="#569cd6">
         <Key word="Infinity" />
+        <Key word="NaN" />
+        <Key word="undefined" />
       </KeyWords>
 
-      <KeyWords name="JavaScriptGlobalFunctions" bold="false" italic="false" color="#4176a3">
+      <KeyWords name="GlobalFunctions" bold="false" italic="false" color="#92caf4">
         <Key word="eval" />
         <Key word="parseInt" />
         <Key word="parseFloat" />

@@ -213,5 +213,6 @@
     <RuleSet name="CommentMarkerSet" ignorecase="true"></RuleSet>
     <RuleSet name="DocCommentSet" ignorecase="false"></RuleSet>
     <RuleSet name="XmlDocSet" ignorecase="false"></RuleSet>
+
   </RuleSets>
 </SyntaxDefinition>
