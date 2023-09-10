@@ -16,6 +16,10 @@ namespace DataDevelop
 		public AssemblyExplorer()
 		{
 			InitializeComponent();
+			if (MainForm.DarkMode) {
+				mainTreeView.ForeColor = Color.FromArgb(250, 250, 250);
+				mainTreeView.BackColor = Color.FromArgb(31, 31, 31);
+			}
 		}
 
 		public event EventHandler<OpenPropertiesEventArgs> ShowProperties;

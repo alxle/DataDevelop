@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Common;
+using System.Drawing;
 using System.Windows.Forms;
 using DataDevelop.Data;
 using DataDevelop.Dialogs;
@@ -15,6 +16,10 @@ namespace DataDevelop
 		public DatabaseExplorer()
 		{
 			InitializeComponent();
+			if (MainForm.DarkMode) {
+				treeView.ForeColor = Color.FromArgb(250, 250, 250);
+				treeView.BackColor = Color.FromArgb(31, 31, 31);
+			}
 		}
 
 		private void DatabaseExplorer_Load(object sender, EventArgs e)

@@ -1,4 +1,4 @@
-namespace DataDevelop
+﻿namespace DataDevelop
 {
 	partial class AssemblyExplorer
 	{
@@ -64,6 +64,7 @@ namespace DataDevelop
 			// 
 			this.mainTreeView.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.mainTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.mainTreeView.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.mainTreeView.ImageIndex = 0;
 			this.mainTreeView.ImageList = this.imageList;
 			this.mainTreeView.LoadOnDemand = true;

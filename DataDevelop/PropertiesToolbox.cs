@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,12 +13,15 @@ namespace DataDevelop
 		public PropertiesToolbox()
 		{
 			InitializeComponent();
+			if (MainForm.DarkMode) {
+				propertyGrid.ViewBackColor = Color.FromArgb(31, 31, 31);
+				propertyGrid.ViewForeColor = Color.FromArgb(250, 250, 250);
+				propertyGrid.ViewBorderColor = Color.FromArgb(46, 46, 46);
+				propertyGrid.LineColor = Color.FromArgb(46, 46, 46);
+			}
 		}
 
-		public PropertyGrid PropertyGrid
-		{
-			get { return propertyGrid; }
-		}
+		public PropertyGrid PropertyGrid => propertyGrid;
 	}
 }
 

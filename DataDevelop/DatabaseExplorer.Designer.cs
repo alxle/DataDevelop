@@ -217,6 +217,7 @@ namespace DataDevelop
 			this.treeView.AllowDrop = true;
 			this.treeView.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.treeView.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.treeView.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.treeView.ImageIndex = 0;
 			this.treeView.ImageList = this.nodesImageList;
 			this.treeView.LoadOnDemand = true;

@@ -34,6 +34,7 @@ namespace DataDevelop
 			// propertyGrid
 			// 
 			this.propertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.propertyGrid.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.propertyGrid.HelpVisible = false;
 			this.propertyGrid.Location = new System.Drawing.Point(0, 0);
 			this.propertyGrid.Name = "propertyGrid";
@@ -49,7 +50,6 @@ namespace DataDevelop
 			this.Controls.Add(this.propertyGrid);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "PropertiesToolbox";
-			this.Padding = new System.Windows.Forms.Padding(0);
 			this.TabText = "Properties";
 			this.Text = "Properties";
 			this.ResumeLayout(false);
