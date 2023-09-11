@@ -33,8 +33,8 @@ namespace DataDevelop.UIComponents
 			set
 			{
 				messageTextColor = value;
-				messageStyle.Dispose();
-				messageStyle = new TextStyle(new SolidBrush(messageTextColor), null, FontStyle.Regular);
+				messageStyle.ForeBrush.Dispose();
+				messageStyle.ForeBrush = new SolidBrush(messageTextColor);
 			}
 		}
 
@@ -44,8 +44,8 @@ namespace DataDevelop.UIComponents
 			set
 			{
 				infoTextColor = value;
-				infoStyle.Dispose();
-				infoStyle = new TextStyle(new SolidBrush(infoTextColor), null, FontStyle.Regular);
+				infoStyle.ForeBrush.Dispose();
+				infoStyle.ForeBrush = new SolidBrush(infoTextColor);
 			}
 		}
 
@@ -55,8 +55,8 @@ namespace DataDevelop.UIComponents
 			set
 			{
 				errorTextColor = value;
-				errorStyle.Dispose();
-				errorStyle = new TextStyle(new SolidBrush(errorTextColor), null, FontStyle.Regular);
+				errorStyle.ForeBrush.Dispose();
+				errorStyle.ForeBrush = new SolidBrush(errorTextColor);
 			}
 		}
 

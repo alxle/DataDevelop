@@ -368,6 +368,7 @@
     <Compile Include="VisualStyles\VS2012ToolStripRenderer.cs" />
     <Compile Include="VisualStyles\VS2015ColorTable.cs" />
     <Compile Include="VisualStyles\VS2015ToolStripRenderer.cs" />
+    <Compile Include="VisualStyles\DarkToolStripRenderer.cs" />
     <EmbeddedResource Include="AboutBox.resx">
       <SubType>Designer</SubType>
       <DependentUpon>AboutBox.cs</DependentUpon>

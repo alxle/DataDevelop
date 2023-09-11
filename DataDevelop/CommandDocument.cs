@@ -64,6 +64,11 @@ namespace DataDevelop
 
 			//this.textEditorControl.HasChangesChanged += delegate { statusLabel.Text = textEditorControl.HasChanges ? "Changes" : "No changes"; };
 			messageTextBox.Font = new Font(FontFamily.GenericMonospace, 10F);
+
+			if (MainForm.DarkMode) {
+				statusStrip.ForeColor = Color.FromArgb(250, 250, 250);
+				statusStrip.BackColor = Color.FromArgb(46, 46, 46);
+		}
 		}
 
 		public string CommandText

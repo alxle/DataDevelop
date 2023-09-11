@@ -80,7 +80,7 @@
 			// imageList
 			// 
 			this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
-			this.imageList.TransparentColor = System.Drawing.Color.Magenta;
+			this.imageList.TransparentColor = System.Drawing.Color.Transparent;
 			this.imageList.Images.SetKeyName(0, "assembly");
 			this.imageList.Images.SetKeyName(1, "namespace");
 			this.imageList.Images.SetKeyName(2, "class");

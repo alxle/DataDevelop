@@ -59,7 +59,7 @@ namespace DataDevelop
 				dockPanel.Theme = theme;
 				theme.ApplyTo(dockPanel);
 				ToolStripManager.VisualStylesEnabled = true;
-				ToolStripManager.Renderer = new VisualStyles.VS2015ToolStripRenderer();
+				ToolStripManager.Renderer = new VisualStyles.DarkToolStripRenderer();
 				darkMode = true;
 			}
 		}
