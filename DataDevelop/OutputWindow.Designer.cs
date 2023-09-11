@@ -32,9 +32,9 @@ namespace DataDevelop
 			this.outputMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.clearAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.wordWrapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.outputTextBox = new DataDevelop.UIComponents.LogTextBox();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.outputTextBox = new DataDevelop.UIComponents.LogTextBox();
 			this.outputMenuStrip.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.outputTextBox)).BeginInit();
 			this.SuspendLayout();
@@ -47,24 +47,37 @@ namespace DataDevelop
             this.toolStripSeparator1,
             this.copyToolStripMenuItem});
 			this.outputMenuStrip.Name = "outputMenuStrip";
-			this.outputMenuStrip.Size = new System.Drawing.Size(153, 98);
+			this.outputMenuStrip.Size = new System.Drawing.Size(135, 76);
 			// 
 			// clearAllToolStripMenuItem
 			// 
-			this.clearAllToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.ClearAll;
+			this.clearAllToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.CleanData_16x;
 			this.clearAllToolStripMenuItem.Name = "clearAllToolStripMenuItem";
-			this.clearAllToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.clearAllToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
 			this.clearAllToolStripMenuItem.Text = "Clear All";
 			this.clearAllToolStripMenuItem.Click += new System.EventHandler(this.ClearAllButton_Click);
 			// 
 			// wordWrapToolStripMenuItem
 			// 
 			this.wordWrapToolStripMenuItem.CheckOnClick = true;
-			this.wordWrapToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.WordWrap;
+			this.wordWrapToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.WordWrap_16x;
 			this.wordWrapToolStripMenuItem.Name = "wordWrapToolStripMenuItem";
-			this.wordWrapToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.wordWrapToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
 			this.wordWrapToolStripMenuItem.Text = "Word Wrap";
 			this.wordWrapToolStripMenuItem.CheckedChanged += new System.EventHandler(this.ToggleWordWrapButton_CheckedChanged);
+			// 
+			// toolStripSeparator1
+			// 
+			this.toolStripSeparator1.Name = "toolStripSeparator1";
+			this.toolStripSeparator1.Size = new System.Drawing.Size(131, 6);
+			// 
+			// copyToolStripMenuItem
+			// 
+			this.copyToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Copy_16x;
+			this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
+			this.copyToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+			this.copyToolStripMenuItem.Text = "Copy";
+			this.copyToolStripMenuItem.Click += new System.EventHandler(this.CopyToolStripMenuItem_Click);
 			// 
 			// outputTextBox
 			// 
@@ -87,31 +100,21 @@ namespace DataDevelop
 			this.outputTextBox.Cursor = System.Windows.Forms.Cursors.IBeam;
 			this.outputTextBox.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
 			this.outputTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.outputTextBox.ErrorTextColor = System.Drawing.Color.Red;
 			this.outputTextBox.Font = new System.Drawing.Font("Consolas", 8.25F);
+			this.outputTextBox.InfoTextColor = System.Drawing.Color.DarkBlue;
 			this.outputTextBox.IsReplaceMode = false;
-			this.outputTextBox.Location = new System.Drawing.Point(1, 1);
+			this.outputTextBox.Location = new System.Drawing.Point(0, 0);
+			this.outputTextBox.MessageTextColor = System.Drawing.Color.Black;
 			this.outputTextBox.Name = "outputTextBox";
 			this.outputTextBox.Paddings = new System.Windows.Forms.Padding(0);
 			this.outputTextBox.ReadOnly = true;
 			this.outputTextBox.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
 			this.outputTextBox.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("outputTextBox.ServiceColors")));
 			this.outputTextBox.ShowLineNumbers = false;
-			this.outputTextBox.Size = new System.Drawing.Size(488, 168);
+			this.outputTextBox.Size = new System.Drawing.Size(490, 170);
 			this.outputTextBox.TabIndex = 1;
 			this.outputTextBox.Zoom = 100;
-			// 
-			// toolStripSeparator1
-			// 
-			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
-			// 
-			// copyToolStripMenuItem
-			// 
-			this.copyToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Copy;
-			this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
-			this.copyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.copyToolStripMenuItem.Text = "Copy";
-			this.copyToolStripMenuItem.Click += new System.EventHandler(this.CopyToolStripMenuItem_Click);
 			// 
 			// OutputWindow
 			// 

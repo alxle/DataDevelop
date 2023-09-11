@@ -28,6 +28,8 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TableDocument));
 			this.tableToolStrip = new System.Windows.Forms.ToolStrip();
 			this.firstButton = new System.Windows.Forms.ToolStripButton();
@@ -56,6 +58,8 @@
 			this.pageSetupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.viewSqlToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+			this.PasteButton = new System.Windows.Forms.ToolStripButton();
 			this.dataGridView = new DataDevelop.DataGridView();
 			this.dataTablePrintDocument = new DataDevelop.Printing.DataTablePrintDocument();
 			this.fontDialog = new System.Windows.Forms.FontDialog();
@@ -64,18 +68,16 @@
 			this.menuStrip = new System.Windows.Forms.MenuStrip();
 			this.tableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.loadingPanel = new DataDevelop.UIComponents.AlphaPanel();
-			this.panel2 = new DataDevelop.UIComponents.AlphaPanel();
+			this.loadingInnerPanel = new DataDevelop.UIComponents.AlphaPanel();
 			this.loadingLabel = new System.Windows.Forms.Label();
-			this.progressBar1 = new System.Windows.Forms.ProgressBar();
+			this.loadingProgressBar = new System.Windows.Forms.ProgressBar();
 			this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
 			this.excelWorker = new System.ComponentModel.BackgroundWorker();
-			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
-			this.PasteButton = new System.Windows.Forms.ToolStripButton();
 			this.tableToolStrip.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
 			this.menuStrip.SuspendLayout();
 			this.loadingPanel.SuspendLayout();
-			this.panel2.SuspendLayout();
+			this.loadingInnerPanel.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tableToolStrip
@@ -106,7 +108,7 @@
             this.viewSqlToolStripButton,
             this.toolStripSeparator6,
             this.PasteButton});
-			this.tableToolStrip.Location = new System.Drawing.Point(0, 0);
+			this.tableToolStrip.Location = new System.Drawing.Point(0, 24);
 			this.tableToolStrip.Name = "tableToolStrip";
 			this.tableToolStrip.Padding = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.tableToolStrip.Size = new System.Drawing.Size(612, 25);
@@ -115,7 +117,7 @@
 			// firstButton
 			// 
 			this.firstButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.firstButton.Image = global::DataDevelop.Properties.Resources.First;
+			this.firstButton.Image = global::DataDevelop.Properties.Resources.GoToFirst_16x;
 			this.firstButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.firstButton.Name = "firstButton";
 			this.firstButton.Size = new System.Drawing.Size(23, 22);
@@ -125,7 +127,7 @@
 			// prevButton
 			// 
 			this.prevButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.prevButton.Image = global::DataDevelop.Properties.Resources.Previous;
+			this.prevButton.Image = global::DataDevelop.Properties.Resources.Previous_16x;
 			this.prevButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.prevButton.Name = "prevButton";
 			this.prevButton.Size = new System.Drawing.Size(23, 22);
@@ -141,7 +143,7 @@
 			// nextButton
 			// 
 			this.nextButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.nextButton.Image = global::DataDevelop.Properties.Resources.Next;
+			this.nextButton.Image = global::DataDevelop.Properties.Resources.Next_16x;
 			this.nextButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.nextButton.Name = "nextButton";
 			this.nextButton.Size = new System.Drawing.Size(23, 22);
@@ -151,7 +153,7 @@
 			// lastButton
 			// 
 			this.lastButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.lastButton.Image = global::DataDevelop.Properties.Resources.Last;
+			this.lastButton.Image = global::DataDevelop.Properties.Resources.GoToLast_16x;
 			this.lastButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.lastButton.Name = "lastButton";
 			this.lastButton.Size = new System.Drawing.Size(23, 22);
@@ -161,7 +163,7 @@
 			// newRowButton
 			// 
 			this.newRowButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.newRowButton.Image = global::DataDevelop.Properties.Resources.NewRow;
+			this.newRowButton.Image = global::DataDevelop.Properties.Resources.NewRow_16x;
 			this.newRowButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.newRowButton.Name = "newRowButton";
 			this.newRowButton.Size = new System.Drawing.Size(23, 22);
@@ -176,7 +178,7 @@
 			// refreshButton
 			// 
 			this.refreshButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.refreshButton.Image = global::DataDevelop.Properties.Resources.Refresh;
+			this.refreshButton.Image = global::DataDevelop.Properties.Resources.Refresh_16x;
 			this.refreshButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.refreshButton.Name = "refreshButton";
 			this.refreshButton.Size = new System.Drawing.Size(23, 22);
@@ -186,7 +188,7 @@
 			// saveChangesButton
 			// 
 			this.saveChangesButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.saveChangesButton.Image = global::DataDevelop.Properties.Resources.SaveChanges;
+			this.saveChangesButton.Image = global::DataDevelop.Properties.Resources.Save_16x;
 			this.saveChangesButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.saveChangesButton.Name = "saveChangesButton";
 			this.saveChangesButton.Size = new System.Drawing.Size(23, 22);
@@ -196,7 +198,7 @@
 			// discardChangesButton
 			// 
 			this.discardChangesButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.discardChangesButton.Image = global::DataDevelop.Properties.Resources.Revert;
+			this.discardChangesButton.Image = global::DataDevelop.Properties.Resources.Restart_16x;
 			this.discardChangesButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.discardChangesButton.Name = "discardChangesButton";
 			this.discardChangesButton.Size = new System.Drawing.Size(23, 22);
@@ -211,7 +213,7 @@
 			// filterToolStripButton
 			// 
 			this.filterToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.filterToolStripButton.Image = global::DataDevelop.Properties.Resources.Filter;
+			this.filterToolStripButton.Image = global::DataDevelop.Properties.Resources.Filter_16x;
 			this.filterToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.filterToolStripButton.Name = "filterToolStripButton";
 			this.filterToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -221,7 +223,7 @@
 			// sortToolStripButton
 			// 
 			this.sortToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.sortToolStripButton.Image = global::DataDevelop.Properties.Resources.Sort;
+			this.sortToolStripButton.Image = global::DataDevelop.Properties.Resources.Sort_16x;
 			this.sortToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.sortToolStripButton.Name = "sortToolStripButton";
 			this.sortToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -236,7 +238,7 @@
 			// autoResizeColumnsDropDownButton
 			// 
 			this.autoResizeColumnsDropDownButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.autoResizeColumnsDropDownButton.Image = global::DataDevelop.Properties.Resources.AutoResizeColumns;
+			this.autoResizeColumnsDropDownButton.Image = global::DataDevelop.Properties.Resources.AutosizeFixedWidth_16x;
 			this.autoResizeColumnsDropDownButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.autoResizeColumnsDropDownButton.Name = "autoResizeColumnsDropDownButton";
 			this.autoResizeColumnsDropDownButton.Size = new System.Drawing.Size(32, 22);
@@ -264,7 +266,7 @@
 			this.exportToExcelToolStripDropDownButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.exportAllToExcelToolStripMenuItem,
             this.exportCurrentPageToExcelToolStripMenuItem});
-			this.exportToExcelToolStripDropDownButton.Image = global::DataDevelop.Properties.Resources.ExcelTable;
+			this.exportToExcelToolStripDropDownButton.Image = global::DataDevelop.Properties.Resources.ExportToExcel_16x;
 			this.exportToExcelToolStripDropDownButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.exportToExcelToolStripDropDownButton.Name = "exportToExcelToolStripDropDownButton";
 			this.exportToExcelToolStripDropDownButton.Size = new System.Drawing.Size(29, 22);
@@ -291,7 +293,7 @@
             this.printPreviewToolStripMenuItem,
             this.changeFontToolStripMenuItem,
             this.pageSetupToolStripMenuItem});
-			this.toolStripDropDownButton1.Image = global::DataDevelop.Properties.Resources.Print;
+			this.toolStripDropDownButton1.Image = global::DataDevelop.Properties.Resources.Print_16x;
 			this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
 			this.toolStripDropDownButton1.Size = new System.Drawing.Size(29, 22);
@@ -299,25 +301,25 @@
 			// 
 			// printPreviewToolStripMenuItem
 			// 
-			this.printPreviewToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.PrintPreview;
+			this.printPreviewToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.PrintPreview_16x;
 			this.printPreviewToolStripMenuItem.Name = "printPreviewToolStripMenuItem";
-			this.printPreviewToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.printPreviewToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
 			this.printPreviewToolStripMenuItem.Text = "Print Preview";
 			this.printPreviewToolStripMenuItem.Click += new System.EventHandler(this.printPreviewButton_Click);
 			// 
 			// changeFontToolStripMenuItem
 			// 
-			this.changeFontToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Font;
+			this.changeFontToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Font_16x;
 			this.changeFontToolStripMenuItem.Name = "changeFontToolStripMenuItem";
-			this.changeFontToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.changeFontToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
 			this.changeFontToolStripMenuItem.Text = "Change Font";
 			this.changeFontToolStripMenuItem.Click += new System.EventHandler(this.fontButton_Click);
 			// 
 			// pageSetupToolStripMenuItem
 			// 
-			this.pageSetupToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.PageSetup;
+			this.pageSetupToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.PrintSetup_16x;
 			this.pageSetupToolStripMenuItem.Name = "pageSetupToolStripMenuItem";
-			this.pageSetupToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.pageSetupToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
 			this.pageSetupToolStripMenuItem.Text = "Page Setup";
 			this.pageSetupToolStripMenuItem.Click += new System.EventHandler(this.pageSetupButton_Click);
 			// 
@@ -329,24 +331,55 @@
 			// viewSqlToolStripButton
 			// 
 			this.viewSqlToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.viewSqlToolStripButton.Image = global::DataDevelop.Properties.Resources.ViewSql;
+			this.viewSqlToolStripButton.Image = global::DataDevelop.Properties.Resources.SQL_16x;
 			this.viewSqlToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.viewSqlToolStripButton.Name = "viewSqlToolStripButton";
 			this.viewSqlToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.viewSqlToolStripButton.Text = "View SQL";
 			this.viewSqlToolStripButton.Click += new System.EventHandler(this.viewSqlToolStripButton_Click);
 			// 
+			// toolStripSeparator6
+			// 
+			this.toolStripSeparator6.Name = "toolStripSeparator6";
+			this.toolStripSeparator6.Size = new System.Drawing.Size(6, 25);
+			// 
+			// PasteButton
+			// 
+			this.PasteButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.PasteButton.Image = global::DataDevelop.Properties.Resources.Paste_16x;
+			this.PasteButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.PasteButton.Name = "PasteButton";
+			this.PasteButton.Size = new System.Drawing.Size(23, 22);
+			this.PasteButton.Text = "Paste";
+			this.PasteButton.Click += new System.EventHandler(this.PasteButton_Click);
+			// 
 			// dataGridView
 			// 
 			this.dataGridView.AllowUserToOrderColumns = true;
 			this.dataGridView.BackgroundColor = System.Drawing.SystemColors.Window;
 			this.dataGridView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+			dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+			this.dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
 			this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+			dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.dataGridView.DefaultCellStyle = dataGridViewCellStyle2;
 			this.dataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-			this.dataGridView.Location = new System.Drawing.Point(0, 25);
+			this.dataGridView.Location = new System.Drawing.Point(0, 49);
 			this.dataGridView.Name = "dataGridView";
-			this.dataGridView.Size = new System.Drawing.Size(612, 355);
+			this.dataGridView.Size = new System.Drawing.Size(612, 331);
 			this.dataGridView.StartRowNumber = 1;
 			this.dataGridView.TabIndex = 3;
 			this.dataGridView.ColumnAdded += new System.Windows.Forms.DataGridViewColumnEventHandler(this.dataGridView_ColumnAdded);
@@ -390,44 +423,45 @@
 			// 
 			this.loadingPanel.AlphaChannel = ((byte)(128));
 			this.loadingPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(233)))), ((int)(((byte)(237)))));
-			this.loadingPanel.Controls.Add(this.panel2);
+			this.loadingPanel.Controls.Add(this.loadingInnerPanel);
+			this.loadingPanel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.loadingPanel.Location = new System.Drawing.Point(216, 146);
 			this.loadingPanel.Name = "loadingPanel";
 			this.loadingPanel.Size = new System.Drawing.Size(200, 57);
 			this.loadingPanel.TabIndex = 8;
 			// 
-			// panel2
+			// loadingInnerPanel
 			// 
-			this.panel2.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.panel2.BackColor = System.Drawing.SystemColors.Window;
-			this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.panel2.Controls.Add(this.loadingLabel);
-			this.panel2.Controls.Add(this.progressBar1);
-			this.panel2.ForeColor = System.Drawing.SystemColors.WindowText;
-			this.panel2.Location = new System.Drawing.Point(3, 3);
-			this.panel2.Name = "panel2";
-			this.panel2.Size = new System.Drawing.Size(194, 51);
-			this.panel2.TabIndex = 0;
+			this.loadingInnerPanel.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.loadingInnerPanel.BackColor = System.Drawing.SystemColors.Window;
+			this.loadingInnerPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.loadingInnerPanel.Controls.Add(this.loadingLabel);
+			this.loadingInnerPanel.Controls.Add(this.loadingProgressBar);
+			this.loadingInnerPanel.ForeColor = System.Drawing.SystemColors.WindowText;
+			this.loadingInnerPanel.Location = new System.Drawing.Point(3, 3);
+			this.loadingInnerPanel.Name = "loadingInnerPanel";
+			this.loadingInnerPanel.Size = new System.Drawing.Size(194, 51);
+			this.loadingInnerPanel.TabIndex = 0;
 			// 
 			// loadingLabel
 			// 
 			this.loadingLabel.AutoSize = true;
 			this.loadingLabel.Location = new System.Drawing.Point(6, 6);
 			this.loadingLabel.Name = "loadingLabel";
-			this.loadingLabel.Size = new System.Drawing.Size(78, 13);
+			this.loadingLabel.Size = new System.Drawing.Size(85, 15);
 			this.loadingLabel.TabIndex = 1;
 			this.loadingLabel.Text = "Loading data...";
 			// 
-			// progressBar1
+			// loadingProgressBar
 			// 
-			this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+			this.loadingProgressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.progressBar1.Location = new System.Drawing.Point(3, 28);
-			this.progressBar1.MarqueeAnimationSpeed = 50;
-			this.progressBar1.Name = "progressBar1";
-			this.progressBar1.Size = new System.Drawing.Size(186, 18);
-			this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
-			this.progressBar1.TabIndex = 0;
+			this.loadingProgressBar.Location = new System.Drawing.Point(3, 28);
+			this.loadingProgressBar.MarqueeAnimationSpeed = 50;
+			this.loadingProgressBar.Name = "loadingProgressBar";
+			this.loadingProgressBar.Size = new System.Drawing.Size(186, 18);
+			this.loadingProgressBar.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+			this.loadingProgressBar.TabIndex = 0;
 			// 
 			// backgroundWorker
 			// 
@@ -439,21 +473,6 @@
 			this.excelWorker.WorkerReportsProgress = true;
 			this.excelWorker.WorkerSupportsCancellation = true;
 			this.excelWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.excelWorker_DoWork);
-			// 
-			// toolStripSeparator6
-			// 
-			this.toolStripSeparator6.Name = "toolStripSeparator6";
-			this.toolStripSeparator6.Size = new System.Drawing.Size(6, 25);
-			// 
-			// PasteButton
-			// 
-			this.PasteButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.PasteButton.Image = global::DataDevelop.Properties.Resources.Paste;
-			this.PasteButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.PasteButton.Name = "PasteButton";
-			this.PasteButton.Size = new System.Drawing.Size(23, 22);
-			this.PasteButton.Text = "Paste";
-			this.PasteButton.Click += new System.EventHandler(this.PasteButton_Click);
 			// 
 			// TableDocument
 			// 
@@ -475,8 +494,8 @@
 			this.menuStrip.ResumeLayout(false);
 			this.menuStrip.PerformLayout();
 			this.loadingPanel.ResumeLayout(false);
-			this.panel2.ResumeLayout(false);
-			this.panel2.PerformLayout();
+			this.loadingInnerPanel.ResumeLayout(false);
+			this.loadingInnerPanel.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -515,9 +534,9 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
 		private System.Windows.Forms.ToolStripButton rowsPerPageButton;
 		private DataDevelop.UIComponents.AlphaPanel loadingPanel;
-		private DataDevelop.UIComponents.AlphaPanel panel2;
+		private DataDevelop.UIComponents.AlphaPanel loadingInnerPanel;
 		private System.Windows.Forms.Label loadingLabel;
-		private System.Windows.Forms.ProgressBar progressBar1;
+		private System.Windows.Forms.ProgressBar loadingProgressBar;
 		private System.ComponentModel.BackgroundWorker backgroundWorker;
 		private System.Windows.Forms.ToolStripSplitButton autoResizeColumnsDropDownButton;
 		private System.Windows.Forms.ToolStripDropDownButton exportToExcelToolStripDropDownButton;

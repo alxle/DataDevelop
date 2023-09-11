@@ -83,9 +83,39 @@ namespace DataDevelop.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap AutosizeFixedHeight_16x {
+            get {
+                object obj = ResourceManager.GetObject("AutosizeFixedHeight_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap AutosizeFixedWidth_16x {
+            get {
+                object obj = ResourceManager.GetObject("AutosizeFixedWidth_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap BinaryImage {
             get {
                 object obj = ResourceManager.GetObject("BinaryImage", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap CleanData_16x {
+            get {
+                object obj = ResourceManager.GetObject("CleanData_16x", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -122,9 +152,39 @@ namespace DataDevelop.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Copy_16x {
+            get {
+                object obj = ResourceManager.GetObject("Copy_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Cut {
             get {
                 object obj = ResourceManager.GetObject("Cut", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Cut_16x {
+            get {
+                object obj = ResourceManager.GetObject("Cut_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap DeleteTableRow_16x {
+            get {
+                object obj = ResourceManager.GetObject("DeleteTableRow_16x", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -142,6 +202,16 @@ namespace DataDevelop.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Document_16x {
+            get {
+                object obj = ResourceManager.GetObject("Document_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap ExcelTable {
             get {
                 object obj = ResourceManager.GetObject("ExcelTable", resourceCulture);
@@ -152,9 +222,29 @@ namespace DataDevelop.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap ExportToExcel_16x {
+            get {
+                object obj = ResourceManager.GetObject("ExportToExcel_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Filter {
             get {
                 object obj = ResourceManager.GetObject("Filter", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Filter_16x {
+            get {
+                object obj = ResourceManager.GetObject("Filter_16x", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -185,6 +275,36 @@ namespace DataDevelop.Properties {
         internal static System.Drawing.Bitmap Font {
             get {
                 object obj = ResourceManager.GetObject("Font", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Font_16x {
+            get {
+                object obj = ResourceManager.GetObject("Font_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap GoToFirst_16x {
+            get {
+                object obj = ResourceManager.GetObject("GoToFirst_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap GoToLast_16x {
+            get {
+                object obj = ResourceManager.GetObject("GoToLast_16x", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -312,6 +432,16 @@ namespace DataDevelop.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap NewRow_16x {
+            get {
+                object obj = ResourceManager.GetObject("NewRow_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Next {
             get {
                 object obj = ResourceManager.GetObject("Next", resourceCulture);
@@ -322,9 +452,29 @@ namespace DataDevelop.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Next_16x {
+            get {
+                object obj = ResourceManager.GetObject("Next_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Open {
             get {
                 object obj = ResourceManager.GetObject("Open", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap OpenFolder_16x {
+            get {
+                object obj = ResourceManager.GetObject("OpenFolder_16x", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -362,9 +512,29 @@ namespace DataDevelop.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Paste_16x {
+            get {
+                object obj = ResourceManager.GetObject("Paste_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Previous {
             get {
                 object obj = ResourceManager.GetObject("Previous", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Previous_16x {
+            get {
+                object obj = ResourceManager.GetObject("Previous_16x", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -382,9 +552,39 @@ namespace DataDevelop.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Print_16x {
+            get {
+                object obj = ResourceManager.GetObject("Print_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap PrintPreview {
             get {
                 object obj = ResourceManager.GetObject("PrintPreview", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap PrintPreview_16x {
+            get {
+                object obj = ResourceManager.GetObject("PrintPreview_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap PrintSetup_16x {
+            get {
+                object obj = ResourceManager.GetObject("PrintSetup_16x", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -401,13 +601,12 @@ namespace DataDevelop.Properties {
         ///
         ///  &lt;RuleSets&gt;
         ///    &lt;RuleSet ignorecase=&quot;false&quot;&gt;
-        ///			&lt;Delimiters&gt;&amp;amp;&amp;lt;&amp;gt;~!%^*()-+=|\#/{}[]:;&quot;&apos; ,	.?&lt;/Delimiters&gt;
+        ///      &lt;Delimiters&gt;&amp;amp;&amp;lt;&amp;gt;~!%^*()-+=|\#/{}[]:;&quot;&apos; ,	.?&lt;/Delimiters&gt;
         ///
         ///      &lt;Span name=&quot;LineComment&quot; rule=&quot;CommentMarkerSet&quot; bold=&quot;false&quot; italic=&quot;false&quot; color=&quot;Green&quot; stopateol=&quot;true&quot;&gt;
         ///        &lt;Begin&gt;#&lt;/Begin&gt;
         ///      &lt;/Span&gt;
-        ///
-        ///   [rest of string was truncated]&quot;;.
+        ///        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string PythonMode {
             get {
@@ -452,9 +651,39 @@ namespace DataDevelop.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap QuickFind_16x {
+            get {
+                object obj = ResourceManager.GetObject("QuickFind_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap QuickReplace_16x {
+            get {
+                object obj = ResourceManager.GetObject("QuickReplace_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Redo {
             get {
                 object obj = ResourceManager.GetObject("Redo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Redo_16x {
+            get {
+                object obj = ResourceManager.GetObject("Redo_16x", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -472,6 +701,16 @@ namespace DataDevelop.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Refresh_16x {
+            get {
+                object obj = ResourceManager.GetObject("Refresh_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap RefreshPage {
             get {
                 object obj = ResourceManager.GetObject("RefreshPage", resourceCulture);
@@ -482,9 +721,39 @@ namespace DataDevelop.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Restart_16x {
+            get {
+                object obj = ResourceManager.GetObject("Restart_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Revert {
             get {
                 object obj = ResourceManager.GetObject("Revert", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Run_16x {
+            get {
+                object obj = ResourceManager.GetObject("Run_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Save_16x {
+            get {
+                object obj = ResourceManager.GetObject("Save_16x", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -505,6 +774,26 @@ namespace DataDevelop.Properties {
         internal static System.Drawing.Bitmap Sort {
             get {
                 object obj = ResourceManager.GetObject("Sort", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Sort_16x {
+            get {
+                object obj = ResourceManager.GetObject("Sort_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SQL_16x {
+            get {
+                object obj = ResourceManager.GetObject("SQL_16x", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -581,9 +870,29 @@ namespace DataDevelop.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Stop_16x {
+            get {
+                object obj = ResourceManager.GetObject("Stop_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Undo {
             get {
                 object obj = ResourceManager.GetObject("Undo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Undo_16x {
+            get {
+                object obj = ResourceManager.GetObject("Undo_16x", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -642,6 +951,16 @@ namespace DataDevelop.Properties {
         internal static System.Drawing.Bitmap WordWrap {
             get {
                 object obj = ResourceManager.GetObject("WordWrap", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap WordWrap_16x {
+            get {
+                object obj = ResourceManager.GetObject("WordWrap_16x", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

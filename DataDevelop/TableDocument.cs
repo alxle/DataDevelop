@@ -69,7 +69,7 @@ namespace DataDevelop
 
 		private void ShowLoadingPanel()
 		{
-			this.progressBar1.Show();
+			this.loadingProgressBar.Show();
 			this.Controls.Add(loadingPanel);
 			loadingPanel.Size = this.ClientSize;
 			loadingPanel.BringToFront();
@@ -79,7 +79,7 @@ namespace DataDevelop
 		private void HideLoadingPanel()
 		{
 			this.Controls.Remove(loadingPanel);
-			this.progressBar1.Hide();
+			this.loadingProgressBar.Hide();
 		}
 
 		private void TableDocument_Load(object sender, EventArgs e)

@@ -68,7 +68,11 @@ namespace DataDevelop
 			if (MainForm.DarkMode) {
 				statusStrip.ForeColor = Color.FromArgb(250, 250, 250);
 				statusStrip.BackColor = Color.FromArgb(46, 46, 46);
-		}
+
+				messageTextBox.ForeColor  = Color.FromArgb(250, 250, 250);
+				messageTextBox.BackColor = Color.FromArgb(31, 31, 31);
+				messageTextBox.BorderStyle = BorderStyle.FixedSingle;
+			}
 		}
 
 		public string CommandText
@@ -699,9 +703,9 @@ namespace DataDevelop
 			using (var xlsxDialog = new SaveFileDialog()) {
 				xlsxDialog.Filter = "Excel Spreadsheet Document (*.xlsx)|*.xlsx";
 				if (xlsxDialog.ShowDialog(this) == DialogResult.OK) {
-					var args = new ExecuteToXlsxArgs()
-					{
-						Command = command, FileName = xlsxDialog.FileName
+					var args = new ExecuteToXlsxArgs() {
+						Command = command,
+						FileName = xlsxDialog.FileName
 					};
 					ProgressDialog.Run(this, "Executing...", executeToXlsxWorker, true, args);
 				}

@@ -303,7 +303,6 @@ namespace DataDevelop
 			// 
 			// removeDatabaseMenuItem
 			// 
-			this.removeDatabaseMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("removeDatabaseMenuItem.Image")));
 			this.removeDatabaseMenuItem.Name = "removeDatabaseMenuItem";
 			this.removeDatabaseMenuItem.Size = new System.Drawing.Size(177, 22);
 			this.removeDatabaseMenuItem.Text = "Remove";
