@@ -58,6 +58,11 @@ namespace DataDevelop
 			SetupLoadingPanel();
 			HideLoadingPanel();
 			dataGridView.AutoGenerateColumns = true;
+
+			if (MainForm.DarkMode) {
+				dataGridView.SetDarkMode();
+				loadingPanel.BackColor = Color.FromArgb(61, 61, 61);
+			}
 		}
 
 		private void SetupLoadingPanel()

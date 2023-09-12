@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using DataDevelop.UIComponents;
 
@@ -11,69 +8,98 @@ namespace DataDevelop
 {
 	public partial class DataGridView : System.Windows.Forms.DataGridView
 	{
-		private int startRowNumber = 1;
-
 		public DataGridView()
 		{
 			InitializeComponent();
 
-			this.DoubleBuffered = true;
+			DoubleBuffered = true;
 
-			this.resizeColumnsAllCellsMenuItem.Click += delegate { this.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells); };
-			this.resizeColumnsAllCellsExceptHeaderMenuItem.Click += delegate { this.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCellsExceptHeader); };
-			this.resizeColumnsColumnHeaderMenuItem.Click += delegate { this.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.ColumnHeader); };
+			resizeColumnsAllCellsMenuItem.Click += delegate { AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells); };
+			resizeColumnsAllCellsExceptHeaderMenuItem.Click += delegate { AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCellsExceptHeader); };
+			resizeColumnsColumnHeaderMenuItem.Click += delegate { AutoResizeColumns(DataGridViewAutoSizeColumnsMode.ColumnHeader); };
 
-			this.resizeRowsAllCellsMenuItem.Click += delegate { this.AutoResizeRows(DataGridViewAutoSizeRowsMode.AllCells); };
-			this.resizeRowsRowHeaderMenuItem.Click += delegate { this.AutoResizeRows(DataGridViewAutoSizeRowsMode.AllHeaders); };
-			
-			this.AutoResizeRows(DataGridViewAutoSizeRowsMode.AllCells);
+			resizeRowsAllCellsMenuItem.Click += delegate { AutoResizeRows(DataGridViewAutoSizeRowsMode.AllCells); };
+			resizeRowsRowHeaderMenuItem.Click += delegate { AutoResizeRows(DataGridViewAutoSizeRowsMode.AllHeaders); };
+
+			//this.AutoResizeRows(DataGridViewAutoSizeRowsMode.AllCells);
+			NullCellStyle = GetDefaultNullStyle();
 		}
 
 		[Browsable(false)]
-		public ContextMenuStrip MainMenu
-		{
-			get { return this.mainContextMenuStrip; }
-		}
+		public ContextMenuStrip MainMenu => mainContextMenuStrip;
 
 		[Browsable(false)]
-		public ContextMenuStrip AutoResizeColumnsMenu
-		{
-			get { return this.autoSizeColumnsContextMenuStrip; }
-		}
+		public ContextMenuStrip AutoResizeColumnsMenu => autoSizeColumnsContextMenuStrip;
 
 		[Browsable(false)]
-		public ContextMenuStrip AutoResizeRowsMenu
-		{
-			get { return this.autoSizeRowsContextMenuStrip; }
-		}
+		public ContextMenuStrip AutoResizeRowsMenu => autoSizeRowsContextMenuStrip;
 
 		[Browsable(false)]
-		public int StartRowNumber
+		public int StartRowNumber { get; set; } = 1;
+
+		[Browsable(false)]
+		public DataGridViewCellStyle NullCellStyle { get; set; }
+
+		public void SetDarkMode()
 		{
-			get { return startRowNumber; }
-			set { startRowNumber = value; }
+			BackgroundColor = Color.FromArgb(64, 64, 64);
+			GridColor = Color.FromArgb(102, 102, 102);
+			BorderStyle = BorderStyle.FixedSingle;
+			ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+			RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+
+			DefaultCellStyle = new DataGridViewCellStyle {
+				BackColor = Color.FromArgb(31, 31, 31),
+				ForeColor = Color.FromArgb(251, 251, 251),
+			};
+
+			EnableHeadersVisualStyles = false;
+			ColumnHeadersDefaultCellStyle = new DataGridViewCellStyle {
+				BackColor = Color.FromArgb(56, 56, 56),
+				ForeColor = Color.FromArgb(251, 251, 251),
+			};
+			RowHeadersDefaultCellStyle = ColumnHeadersDefaultCellStyle;
+
+			NullCellStyle.ForeColor = Color.FromArgb(251, 251, 251);
+			NullCellStyle.BackColor = Color.FromArgb(11, 45, 92);
+		}
+
+		private DataGridViewCellStyle GetDefaultNullStyle()
+		{
+			var style = new DataGridViewCellStyle {
+				Font = new Font(SystemFonts.DefaultFont, FontStyle.Italic),
+				BackColor = SystemColors.Info,
+				ForeColor = SystemColors.InfoText,
+			};
+			var stringFormat = new StringFormat {
+				LineAlignment = StringAlignment.Center,
+				Trimming = StringTrimming.EllipsisCharacter
+			};
+			stringFormat.FormatFlags |= StringFormatFlags.NoWrap | StringFormatFlags.MeasureTrailingSpaces;
+			style.Tag = stringFormat;
+			return style;
 		}
 
 		#region EditProgramatically
 
 		protected override void OnCellEnter(DataGridViewCellEventArgs e)
 		{
-			if (this.Focused) {
-				if (!this.CurrentRow.Selected && !this.CurrentCell.IsInEditMode) {
-					this.BeginEdit(true);
+			if (Focused) {
+				if (!CurrentRow.Selected && !CurrentCell.IsInEditMode) {
+					BeginEdit(true);
 				}
 			}
-			
+
 			base.OnCellEnter(e);
 		}
 
 		protected override void OnCellClick(DataGridViewCellEventArgs e)
 		{
-			if (this.Focused) {
-				if (e.ColumnIndex > 0 && e.ColumnIndex < this.ColumnCount &&
-					e.RowIndex > 0 && e.RowIndex < this.RowCount) {
+			if (Focused) {
+				if (e.ColumnIndex > 0 && e.ColumnIndex < ColumnCount &&
+					e.RowIndex > 0 && e.RowIndex < RowCount) {
 					if (!this[e.ColumnIndex, e.RowIndex].IsInEditMode) {
-						this.BeginEdit(true);
+						BeginEdit(true);
 					}
 				}
 			}
@@ -83,12 +109,12 @@ namespace DataDevelop
 
 		protected override void OnSelectionChanged(EventArgs e)
 		{
-			if (this.CurrentRow == null || this.CurrentCell == null) {
+			if (CurrentRow == null || CurrentCell == null) {
 				return;
 			}
-			if (this.CurrentRow.Selected) {
-				if (this.CurrentCell.IsInEditMode) {
-					this.EndEdit();
+			if (CurrentRow.Selected) {
+				if (CurrentCell.IsInEditMode) {
+					EndEdit();
 				}
 			}
 
@@ -100,110 +126,38 @@ namespace DataDevelop
 		protected override void OnMouseClick(MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Right) {
-				HitTestInfo info = this.HitTest(e.X, e.Y);
+				var info = HitTest(e.X, e.Y);
 				if (info.Type == DataGridViewHitTestType.Cell) {
-					if (!this.Rows[info.RowIndex].Selected) {
-						this.ClearSelection();
-						this.Rows[info.RowIndex].Selected = true;
+					if (!Rows[info.RowIndex].Selected) {
+						ClearSelection();
+						Rows[info.RowIndex].Selected = true;
 					}
 				}
 			}
-		}
-
-		sealed class NullStyle : IDisposable
-		{
-			private static NullStyle _default;
-
-			public static NullStyle Default
-			{
-				get
-				{
-					if (_default == null) {
-						_default = new NullStyle();
-					}
-					return _default;
-				}
-				set { _default = value; }
-			}
-
-			private Font font;
-
-			public Font Font
-			{
-				get { return font; }
-				set { font = value; }
-			}
-
-			private StringFormat format;
-
-			public StringFormat StringFormat
-			{
-				get { return format; }
-				set { format = value; }
-			}
-
-			private SolidBrush back;
-
-			public Color BackColor
-			{
-				get { return back.Color; }
-				set { back.Color = value; }
-			}
-
-			private SolidBrush fore;
-
-			public Color ForeColor
-			{
-				get { return fore.Color; }
-				set { fore.Color = value; }
-			}
-
-			public Brush ForeBrush
-			{
-				get { return fore; }
-			}
-
-			public NullStyle()
-			{
-				this.font = new Font(SystemFonts.DefaultFont, FontStyle.Italic);
-				this.format = new StringFormat();
-				this.format.LineAlignment = StringAlignment.Center;
-				this.format.Trimming = StringTrimming.EllipsisCharacter;
-				this.format.FormatFlags |= StringFormatFlags.NoWrap | StringFormatFlags.MeasureTrailingSpaces;
-				this.back = new SolidBrush(SystemColors.Info);
-				this.fore = new SolidBrush(SystemColors.InfoText);
-			}
-
-			#region IDisposable Members
-
-			public void Dispose()
-			{
-				if (back != null) back.Dispose();
-				if (fore != null) fore.Dispose();
-				if (font != null) font.Dispose();
-				if (format != null) format.Dispose();
-			}
-
-			#endregion
 		}
 
 		protected override void OnCellPainting(DataGridViewCellPaintingEventArgs e)
 		{
 			if (e.ColumnIndex < 0 || e.RowIndex < 0) return;
-			if (this.Rows[e.RowIndex].IsNewRow) return;
+			if (Rows[e.RowIndex].IsNewRow) return;
 			//DataGridViewCell cell = this[e.ColumnIndex, e.RowIndex];
 			if (e.Value == null || e.Value == DBNull.Value) {
-				bool isSelected = (e.State & DataGridViewElementStates.Selected) == DataGridViewElementStates.Selected;
+				var style = NullCellStyle;
+				var isSelected = (e.State & DataGridViewElementStates.Selected) == DataGridViewElementStates.Selected;
 				if (isSelected) {
 					e.PaintBackground(e.CellBounds, true);
 				} else {
-					e.Graphics.FillRectangle(SystemBrushes.Info, e.CellBounds);
+					using (var brush = new SolidBrush(style.BackColor)) {
+						e.Graphics.FillRectangle(brush, e.CellBounds);
+					}
 				}
-				NullStyle style = NullStyle.Default;
 				e.Paint(e.CellBounds, DataGridViewPaintParts.All & ~DataGridViewPaintParts.Background);
-				Type cellType = this.Columns[e.ColumnIndex].CellType;
+				var cellType = Columns[e.ColumnIndex].CellType;
 				if (cellType == typeof(DataGridViewTextBoxCell) || cellType.IsSubclassOf(typeof(DataGridViewTextBoxCell))) {
-					e.Graphics.DrawString("NULL", style.Font, (isSelected) ? new SolidBrush(DefaultCellStyle.SelectionForeColor) : style.ForeBrush, e.CellBounds, style.StringFormat);
+					using (var brush = new SolidBrush(style.ForeColor)) {
+						var stringFormat = (StringFormat)style.Tag;
+						e.Graphics.DrawString("NULL", style.Font, brush, e.CellBounds, stringFormat);
+					}
 				}
 				e.Handled = true;
 			}
@@ -234,31 +188,21 @@ namespace DataDevelop
 
 		protected override void OnRowPostPaint(DataGridViewRowPostPaintEventArgs e)
 		{
-			//store a string representation of the row number in 'strRowNumber'
-			string strRowNumber = (startRowNumber + e.RowIndex).ToString();
+			var strRowNumber = (StartRowNumber + e.RowIndex).ToString();
+			var strLastRowNumber = (StartRowNumber + Rows.Count - 1).ToString();
+			if (strRowNumber.Length < strLastRowNumber.Length) {
+				strRowNumber = strRowNumber.PadLeft(strLastRowNumber.Length, '0');
+			}
 
-			//prepend leading zeros to the string if necessary to improve
-			//appearance. For example, if there are ten rows in the grid,
-			//row seven will be numbered as "07" instead of "7". Similarly, if 
-			//there are 100 rows in the grid, row seven will be numbered as "007".
-			while (strRowNumber.Length < this.RowCount.ToString().Length) strRowNumber = "0" + strRowNumber;
+			var size = e.Graphics.MeasureString(strRowNumber, Font);
 
-			//determine the display size of the row number string using
-			//the DataGridView's current font.
-			SizeF size = e.Graphics.MeasureString(strRowNumber, this.Font);
+			if (RowHeadersWidth < (int)(size.Width + 20)) {
+				RowHeadersWidth = (int)(size.Width + 20);
+			}
 
-			//adjust the width of the column that contains the row header cells 
-			//if necessary
-			if (this.RowHeadersWidth < (int)(size.Width + 20)) this.RowHeadersWidth = (int)(size.Width + 20);
-
-			//this brush will be used to draw the row number string on the
-			//row header cell using the system's current ControlText color
-			Brush b = SystemBrushes.ControlText;
-
-			//draw the row number string on the current row header cell using
-			//the brush defined above and the DataGridView's default font
-			e.Graphics.DrawString(strRowNumber, this.Font, b, e.RowBounds.Location.X + 15, e.RowBounds.Location.Y + ((e.RowBounds.Height - size.Height) / 2));
-
+			using (var b = new SolidBrush(e.InheritedRowStyle.ForeColor)) {
+				e.Graphics.DrawString(strRowNumber, e.InheritedRowStyle.Font, b, e.RowBounds.Location.X + 15, e.RowBounds.Location.Y + ((e.RowBounds.Height - size.Height) / 2));
+			}
 			base.OnRowPostPaint(e);
 		}
 
@@ -272,17 +216,17 @@ namespace DataDevelop
 			protected override void OnDoubleClick(DataGridViewCellEventArgs e)
 			{
 				base.OnDoubleClick(e);
-				var cell = this.DataGridView[e.ColumnIndex, e.RowIndex];
+				var cell = DataGridView[e.ColumnIndex, e.RowIndex];
 				if (cell.IsInEditMode) {
-					this.DataGridView.EndEdit();
+					DataGridView.EndEdit();
 				}
-				using (TextVisualizer dialog = new TextVisualizer()) {
-					dialog.TextValue = this.Value as string;
-					dialog.ReadOnly = this.DataGridView.ReadOnly || this.OwningColumn.ReadOnly;
+				using (var dialog = new TextVisualizer()) {
+					dialog.TextValue = Value as string;
+					dialog.ReadOnly = DataGridView.ReadOnly || OwningColumn.ReadOnly;
 					dialog.ShowDialog(null);
 					if (dialog.TextValueChanged) {
-						this.Value = dialog.TextValue;
-						this.DataGridView.EndEdit();
+						Value = dialog.TextValue;
+						DataGridView.EndEdit();
 					}
 				}
 			}
@@ -293,17 +237,17 @@ namespace DataDevelop
 			protected override void OnDoubleClick(DataGridViewCellEventArgs e)
 			{
 				base.OnDoubleClick(e);
-				if (!this.DataGridView.ReadOnly && !this.OwningColumn.ReadOnly) {
-					using (DateTimeVisualizer dialog = new DateTimeVisualizer()) {
-						dialog.Value = this.Value as DateTime?;
+				if (!DataGridView.ReadOnly && !OwningColumn.ReadOnly) {
+					using (var dialog = new DateTimeVisualizer()) {
+						dialog.Value = Value as DateTime?;
 						dialog.ShowDialog(null);
 						if (dialog.ValueChanged) {
 							if (dialog.Value == null) {
-								this.Value = DBNull.Value;
+								Value = DBNull.Value;
 							} else {
-								this.Value = dialog.Value.Value;
+								Value = dialog.Value.Value;
 							}
-							this.DataGridView.EndEdit();
+							DataGridView.EndEdit();
 						}
 					}
 				}

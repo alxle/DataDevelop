@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 using DataDevelop.Scripting;
 using DataDevelop.Properties;
+using System.Drawing;
 
 namespace DataDevelop
 {
@@ -31,7 +32,7 @@ namespace DataDevelop
 		}
 
 		public static MainForm Instance => instance ?? (instance = new MainForm());
-		
+
 		public static bool DarkMode => darkMode;
 
 		private void ApplyVisualStyle(string visualStyle)
@@ -61,6 +62,7 @@ namespace DataDevelop
 				ToolStripManager.VisualStylesEnabled = true;
 				ToolStripManager.Renderer = new VisualStyles.DarkToolStripRenderer();
 				darkMode = true;
+				dockPanel.BackColor = Color.FromArgb(31, 31, 31);
 			}
 		}
 
