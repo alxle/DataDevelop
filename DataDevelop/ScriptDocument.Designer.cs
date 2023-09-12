@@ -109,7 +109,7 @@ namespace DataDevelop
 			// newToolStripButton
 			// 
 			this.newToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.newToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("newToolStripButton.Image")));
+			this.newToolStripButton.Image = global::DataDevelop.Properties.Resources.Document_16x;
 			this.newToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.newToolStripButton.MergeAction = System.Windows.Forms.MergeAction.Replace;
 			this.newToolStripButton.Name = "newToolStripButton";
@@ -120,7 +120,7 @@ namespace DataDevelop
 			// openToolStripButton
 			// 
 			this.openToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.openToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("openToolStripButton.Image")));
+			this.openToolStripButton.Image = global::DataDevelop.Properties.Resources.OpenFolder_16x;
 			this.openToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.openToolStripButton.MergeAction = System.Windows.Forms.MergeAction.Replace;
 			this.openToolStripButton.Name = "openToolStripButton";
@@ -131,7 +131,7 @@ namespace DataDevelop
 			// saveToolStripButton
 			// 
 			this.saveToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.saveToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("saveToolStripButton.Image")));
+			this.saveToolStripButton.Image = global::DataDevelop.Properties.Resources.Save_16x;
 			this.saveToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.saveToolStripButton.MergeAction = System.Windows.Forms.MergeAction.Replace;
 			this.saveToolStripButton.Name = "saveToolStripButton";
@@ -146,7 +146,7 @@ namespace DataDevelop
 			// 
 			// executeButton
 			// 
-			this.executeButton.Image = ((System.Drawing.Image)(resources.GetObject("executeButton.Image")));
+			this.executeButton.Image = global::DataDevelop.Properties.Resources.Run_16x;
 			this.executeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.executeButton.Name = "executeButton";
 			this.executeButton.Size = new System.Drawing.Size(68, 22);
@@ -157,7 +157,7 @@ namespace DataDevelop
 			// 
 			this.stopButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
 			this.stopButton.Enabled = false;
-			this.stopButton.Image = global::DataDevelop.Properties.Resources.Stop;
+			this.stopButton.Image = global::DataDevelop.Properties.Resources.Stop_16x;
 			this.stopButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.stopButton.Name = "stopButton";
 			this.stopButton.Size = new System.Drawing.Size(23, 22);
@@ -245,7 +245,7 @@ namespace DataDevelop
 			// 
 			// newToolStripMenuItem
 			// 
-			this.newToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.NewDocument;
+			this.newToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Document_16x;
 			this.newToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.newToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
 			this.newToolStripMenuItem.MergeIndex = 3;
@@ -257,7 +257,7 @@ namespace DataDevelop
 			// 
 			// openToolStripMenuItem
 			// 
-			this.openToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Open;
+			this.openToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.OpenFolder_16x;
 			this.openToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.openToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
 			this.openToolStripMenuItem.MergeIndex = 4;
@@ -276,7 +276,7 @@ namespace DataDevelop
 			// 
 			// saveToolStripMenuItem
 			// 
-			this.saveToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.SaveChanges;
+			this.saveToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Save_16x;
 			this.saveToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.saveToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
 			this.saveToolStripMenuItem.MergeIndex = 6;
@@ -306,7 +306,7 @@ namespace DataDevelop
 			// 
 			// printToolStripMenuItem
 			// 
-			this.printToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Print;
+			this.printToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Print_16x;
 			this.printToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.printToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
 			this.printToolStripMenuItem.MergeIndex = 9;
@@ -317,7 +317,7 @@ namespace DataDevelop
 			// 
 			// printPreviewToolStripMenuItem
 			// 
-			this.printPreviewToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.PrintPreview;
+			this.printPreviewToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.PrintPreview_16x;
 			this.printPreviewToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.printPreviewToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
 			this.printPreviewToolStripMenuItem.MergeIndex = 10;
@@ -371,87 +371,89 @@ namespace DataDevelop
 			// 
 			// undoToolStripMenuItem
 			// 
-			this.undoToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Undo;
+			this.undoToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Undo_16x;
 			this.undoToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Replace;
 			this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
-			this.undoToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+			this.undoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.undoToolStripMenuItem.Text = "&Undo";
 			this.undoToolStripMenuItem.Click += new System.EventHandler(this.undoToolStripMenuItem_Click);
 			// 
 			// redoToolStripMenuItem
 			// 
-			this.redoToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Redo;
+			this.redoToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Redo_16x;
 			this.redoToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.MatchOnly;
 			this.redoToolStripMenuItem.Name = "redoToolStripMenuItem";
-			this.redoToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+			this.redoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.redoToolStripMenuItem.Text = "&Redo";
 			this.redoToolStripMenuItem.Click += new System.EventHandler(this.redoToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator4
 			// 
 			this.toolStripSeparator4.Name = "toolStripSeparator4";
-			this.toolStripSeparator4.Size = new System.Drawing.Size(143, 6);
+			this.toolStripSeparator4.Size = new System.Drawing.Size(177, 6);
 			// 
 			// cutToolStripMenuItem
 			// 
-			this.cutToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Cut;
+			this.cutToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Cut_16x;
 			this.cutToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.cutToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Replace;
 			this.cutToolStripMenuItem.Name = "cutToolStripMenuItem";
-			this.cutToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+			this.cutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.cutToolStripMenuItem.Text = "Cu&t";
 			this.cutToolStripMenuItem.Click += new System.EventHandler(this.cutToolStripMenuItem_Click);
 			// 
 			// copyToolStripMenuItem
 			// 
-			this.copyToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Copy;
+			this.copyToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Copy_16x;
 			this.copyToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.copyToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Replace;
 			this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
-			this.copyToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+			this.copyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.copyToolStripMenuItem.Text = "&Copy";
 			this.copyToolStripMenuItem.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
 			// 
 			// pasteToolStripMenuItem
 			// 
-			this.pasteToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Paste;
+			this.pasteToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Paste_16x;
 			this.pasteToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.pasteToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Replace;
 			this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
-			this.pasteToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+			this.pasteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.pasteToolStripMenuItem.Text = "&Paste";
 			this.pasteToolStripMenuItem.Click += new System.EventHandler(this.pasteToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator5
 			// 
 			this.toolStripSeparator5.Name = "toolStripSeparator5";
-			this.toolStripSeparator5.Size = new System.Drawing.Size(143, 6);
+			this.toolStripSeparator5.Size = new System.Drawing.Size(177, 6);
 			// 
 			// selectAllToolStripMenuItem
 			// 
 			this.selectAllToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Replace;
 			this.selectAllToolStripMenuItem.Name = "selectAllToolStripMenuItem";
-			this.selectAllToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+			this.selectAllToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.selectAllToolStripMenuItem.Text = "Select &All";
 			this.selectAllToolStripMenuItem.Click += new System.EventHandler(this.selectAllToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator9
 			// 
 			this.toolStripSeparator9.Name = "toolStripSeparator9";
-			this.toolStripSeparator9.Size = new System.Drawing.Size(143, 6);
+			this.toolStripSeparator9.Size = new System.Drawing.Size(177, 6);
 			// 
 			// findToolStripMenuItem
 			// 
+			this.findToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.QuickFind_16x;
 			this.findToolStripMenuItem.Name = "findToolStripMenuItem";
 			this.findToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-			this.findToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+			this.findToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.findToolStripMenuItem.Text = "Find...";
 			this.findToolStripMenuItem.Click += new System.EventHandler(this.findToolStripMenuItem_Click);
 			// 
 			// replaceToolStripMenuItem
 			// 
+			this.replaceToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.QuickReplace_16x;
 			this.replaceToolStripMenuItem.Name = "replaceToolStripMenuItem";
-			this.replaceToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+			this.replaceToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.replaceToolStripMenuItem.Text = "R&eplace...";
 			this.replaceToolStripMenuItem.Click += new System.EventHandler(this.replaceToolStripMenuItem_Click);
 			// 
@@ -467,10 +469,10 @@ namespace DataDevelop
 			// 
 			// executeToolStripMenuItem
 			// 
-			this.executeToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Start;
+			this.executeToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Run_16x;
 			this.executeToolStripMenuItem.Name = "executeToolStripMenuItem";
 			this.executeToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-			this.executeToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+			this.executeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.executeToolStripMenuItem.Text = "Execute";
 			this.executeToolStripMenuItem.Click += new System.EventHandler(this.executeButton_Click);
 			// 
