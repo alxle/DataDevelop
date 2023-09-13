@@ -74,7 +74,7 @@
         <Key word="&amp;" />
       </KeyWords>
 
-      <KeyWords name="OperatorKeywords" bold="false" italic="false" color="Magenta">
+      <KeyWords name="OperatorKeywords" bold="false" italic="false" color="#d8a0df">
         <Key word="ABORT"/>
         <Key word="AFTER"/>
         <Key word="ANALYZE"/>

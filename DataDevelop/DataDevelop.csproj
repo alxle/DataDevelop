@@ -477,6 +477,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UIComponents\TextEditor.resx">
       <DependentUpon>TextEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UIComponents\TextVisualizer.resx">
       <SubType>Designer</SubType>
