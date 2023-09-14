@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Data;
-using System.Data.Common;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
@@ -15,7 +14,7 @@ namespace DataDevelop
 
 	public partial class TableDocument : Document, IDbObject
 	{
-		private Table table;
+		private readonly Table table;
 		private DataTable data;
 		////private DbDataAdapter adapter;
 		private TableFilter filter;
@@ -27,26 +26,21 @@ namespace DataDevelop
 
 		private bool refreshDataNeeded = false;
 
-		public TableDocument(Table table) :
-			this(table, null)
-		{
-		}
-
-		public TableDocument(Table table, TableFilter filter)
+		public TableDocument(Table table, TableFilter filter = null)
 		{
 			InitializeComponent();
 
-			this.tableToolStripMenuItem.DropDown = this.dataGridView.MainMenu;
-			this.autoResizeColumnsDropDownButton.DropDown = this.dataGridView.AutoResizeColumnsMenu;
+			tableToolStripMenuItem.DropDown = dataGridView.MainMenu;
+			autoResizeColumnsDropDownButton.DropDown = dataGridView.AutoResizeColumnsMenu;
 
-			this.rowsPerPage = Settings.Default.RowsPerPage;
-			this.rowsPerPageButton.Text = this.rowsPerPage.ToString();
+			rowsPerPage = Settings.Default.RowsPerPage;
+			rowsPerPageButton.Text = rowsPerPage.ToString();
 
 			this.table = table;
 
 			////this.adapter = table.Database.CreateAdapter(table);
 			this.filter = filter ?? new TableFilter(table);
-			this.sort = new TableSort(table);
+			sort = new TableSort(table);
 
 			////sort.SortPanel.LoadColumns(table.GetColumnNames());
 			////this.sortToolStripButton.DropDown.Items.Add(sort);
@@ -65,6 +59,12 @@ namespace DataDevelop
 			}
 		}
 
+		private bool IsFiltered => filter.IsRowFiltered || filter.IsColumnFiltered;
+
+		private bool IsSorted => sort.IsSorted;
+
+		public Database Database => table.Database;
+
 		private void SetupLoadingPanel()
 		{
 			loadingPanel.Location = new Point(0, 0);
@@ -74,26 +74,26 @@ namespace DataDevelop
 
 		private void ShowLoadingPanel()
 		{
-			this.loadingProgressBar.Show();
-			this.Controls.Add(loadingPanel);
-			loadingPanel.Size = this.ClientSize;
+			loadingProgressBar.Show();
+			Controls.Add(loadingPanel);
+			loadingPanel.Size = ClientSize;
 			loadingPanel.BringToFront();
 			loadingPanel.Focus();
 		}
 
 		private void HideLoadingPanel()
 		{
-			this.Controls.Remove(loadingPanel);
-			this.loadingProgressBar.Hide();
+			Controls.Remove(loadingPanel);
+			loadingProgressBar.Hide();
 		}
 
 		private void TableDocument_Load(object sender, EventArgs e)
 		{
 			try {
-				this.UpdateDataSet();
+				UpdateDataSet();
 			} catch (Exception ex) {
 				MessageBox.Show(this, ex.Message, "Error opening table", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				this.Enabled = false;
+				Enabled = false;
 			}
 		}
 
@@ -112,70 +112,42 @@ namespace DataDevelop
 			}
 		}
 
-		private bool IsFiltered
-		{
-			get { return this.filter.IsRowFiltered || this.filter.IsColumnFiltered; }
-		}
-
-		private bool IsSorted
-		{
-			get { return this.sort.IsSorted; }
-		}
-
 		public void UpdateDataSet()
 		{
-			this.UpdateDataSet(false);
+			ShowLoadingPanel();
+			backgroundWorker.RunWorkerAsync();
 		}
 
-		public void UpdateDataSet(bool conserveScroll)
+		private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
 		{
-			this.ShowLoadingPanel();
-			this.backgroundWorker.RunWorkerAsync();
-		}
-
-		private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
-		{
-			if (this.filter.IsRowFiltered) {
-				this.count = table.GetRowCount(this.filter);
+			if (filter.IsRowFiltered) {
+				count = table.GetRowCount(filter);
 			} else {
-				this.count = table.GetRowCount();
+				count = table.GetRowCount();
 			}
 			if (currentPage * rowsPerPage >= count) {
 				currentPage = 0;
 			}
-			this.data = table.GetData(currentPage * rowsPerPage, rowsPerPage, filter, IsSorted ? sort : null);
+			data = table.GetData(currentPage * rowsPerPage, rowsPerPage, filter, IsSorted ? sort : null);
 		}
 
-		private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+		private void BackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
-			this.HideLoadingPanel();
+			HideLoadingPanel();
 
 			if (e.Error == null) {
-				this.refreshDataNeeded = false;
-				this.dataGridView.DataSource = data;
-				this.UpdateLocation();
+				refreshDataNeeded = false;
+				dataGridView.DataSource = data;
+				UpdateLocation();
 			} else {
 				throw e.Error;
 			}
 		}
 
-		private int FirstDisplayedRowIndex
-		{
-			get
-			{
-				foreach (DataGridViewRow row in dataGridView.Rows) {
-					if (row.Displayed) {
-						return row.Index;
-					}
-				}
-				return 0;
-			}
-		}
-
 		private void UpdateLocation()
 		{
-			int startRow = currentPage * rowsPerPage + 1;
-			int lastRow = startRow + rowsPerPage - 1;
+			var startRow = currentPage * rowsPerPage + 1;
+			var lastRow = startRow + rowsPerPage - 1;
 			if (lastRow > count) {
 				lastRow = count;
 			}
@@ -185,30 +157,13 @@ namespace DataDevelop
 			sortToolStripButton.Checked = IsSorted;
 			sortToolStripButton.ToolTipText = IsSorted ? sort.ToString() : "Sort";
 
-			if (IsFiltered) {
-				locationLabel.Text = String.Format("{0:0000} to {1:0000} of {2:0000}*", startRow, lastRow, count);
-			} else {
-				locationLabel.Text = String.Format("{0:0000} to {1:0000} of {2:0000}", startRow, lastRow, count);
-			}
+			locationLabel.Text = $"{startRow:0000} to {lastRow:0000} of {count:0000}" + (IsFiltered ? "*" : "");
 
-			if (currentPage == 0) {
-				firstButton.Enabled = false;
-				prevButton.Enabled = false;
-			} else {
-				firstButton.Enabled = true;
-				prevButton.Enabled = true;
-			}
-
-			if (lastRow == count) {
-				nextButton.Enabled = false;
-				lastButton.Enabled = false;
-				dataGridView.AllowUserToAddRows = true;
-			} else {
-				nextButton.Enabled = true;
-				lastButton.Enabled = true;
-				dataGridView.AllowUserToAddRows = false;
-			}
-
+			firstButton.Enabled = currentPage > 0;
+			prevButton.Enabled = currentPage > 0;
+			nextButton.Enabled = lastRow < count;
+			lastButton.Enabled = lastRow < count;
+			dataGridView.AllowUserToAddRows = true;
 			dataGridView.StartRowNumber = startRow;
 		}
 
@@ -220,9 +175,9 @@ namespace DataDevelop
 			dataGridView.AllowUserToAddRows = false;
 		}
 
-		private void saveChangesButton_Click(object sender, EventArgs e)
+		private void SaveChangesButton_Click(object sender, EventArgs e)
 		{
-			DataTable changes = this.GetChanges();
+			var changes = GetChanges();
 			if (changes != null) {
 				if (SaveChanges(changes)) {
 					UpdateDataSet();
@@ -232,24 +187,21 @@ namespace DataDevelop
 
 		private DataTable GetChanges()
 		{
-			this.Validate();
-			this.dataGridView.EndEdit();
+			Validate();
+			dataGridView.EndEdit();
 			// data can be null if an error occurred
-			if (this.data == null) {
+			if (data == null) {
 				return null;
 			}
-			return this.data.GetChanges();
+			return data.GetChanges();
 		}
 
 		/// <summary></summary>
 		/// <returns>Returns True if the program can procced, otherwise False.</returns>
 		private bool AskAndSave(DataTable changes)
 		{
-			this.Activate();
-			DialogResult result = MessageBox.Show(this
-				, Properties.Resources.UnsavedChanges
-				, this.Text
-				, MessageBoxButtons.YesNoCancel);
+			Activate();
+			var result = MessageBox.Show(this, Resources.UnsavedChanges, Text, MessageBoxButtons.YesNoCancel);
 			if (result == DialogResult.Yes) {
 				return SaveChanges(changes);
 			} else if (result == DialogResult.No) {
@@ -263,11 +215,11 @@ namespace DataDevelop
 		private bool SaveChanges(DataTable changes)
 		{
 			try {
-				using (DbDataAdapter adapter = table.Database.CreateAdapter(table, filter)) {
+				using (var adapter = table.Database.CreateAdapter(table, filter)) {
 					adapter.ContinueUpdateOnError = false;
 					adapter.Update(changes);
-					this.data.AcceptChanges();
-					this.refreshDataNeeded = true;
+					data.AcceptChanges();
+					refreshDataNeeded = true;
 					////UpdateDataSet(true);
 				}
 			} catch (Exception ex) {
@@ -277,102 +229,87 @@ namespace DataDevelop
 			return true;
 		}
 
-		private void discardChangesButton_Click(object sender, EventArgs e)
+		private void DiscardChangesButton_Click(object sender, EventArgs e)
 		{
-			this.Validate();
-			this.data.RejectChanges();
+			Validate();
+			data.RejectChanges();
 		}
 
 		private bool CanContinue()
 		{
-			DataTable changes = this.GetChanges();
+			var changes = GetChanges();
 			if (changes != null) {
-				if (!this.AskAndSave(changes)) {
+				if (!AskAndSave(changes)) {
 					return false;
 				}
 			}
 			return true;
 		}
 
-		private void firstButton_Click(object sender, EventArgs e)
+		private void FirstButton_Click(object sender, EventArgs e)
 		{
-			if (this.CanContinue()) {
-				this.currentPage = 0;
-				this.UpdateDataSet();
+			if (CanContinue()) {
+				currentPage = 0;
+				UpdateDataSet();
 			}
 		}
 
-		private void prevButton_Click(object sender, EventArgs e)
+		private void PrevButton_Click(object sender, EventArgs e)
 		{
-			if (this.CanContinue()) {
-				this.currentPage--;
-				this.UpdateDataSet();
+			if (CanContinue()) {
+				currentPage--;
+				UpdateDataSet();
 			}
 		}
 
-		private void nextButton_Click(object sender, EventArgs e)
+		private void NextButton_Click(object sender, EventArgs e)
 		{
-			if (this.CanContinue()) {
-				this.currentPage++;
-				this.UpdateDataSet();
+			if (CanContinue()) {
+				currentPage++;
+				UpdateDataSet();
 			}
 		}
 
-		private void lastButton_Click(object sender, EventArgs e)
+		private void LastButton_Click(object sender, EventArgs e)
 		{
-			if (this.CanContinue()) {
-				this.currentPage = (count - 1) / rowsPerPage;
-				this.UpdateDataSet();
+			if (CanContinue()) {
+				currentPage = (count - 1) / rowsPerPage;
+				UpdateDataSet();
 			}
 		}
 
-		private void refreshButton_Click(object sender, EventArgs e)
+		private void RefreshButton_Click(object sender, EventArgs e)
 		{
-			if (this.CanContinue()) {
-				this.UpdateDataSet(true);
+			if (CanContinue()) {
+				UpdateDataSet();
 			}
 		}
 
 		private void SelectNewRow()
 		{
-			this.dataGridView.ClearSelection();
-			this.dataGridView.Rows[dataGridView.NewRowIndex].Selected = true;
-			this.dataGridView.FirstDisplayedScrollingRowIndex = dataGridView.NewRowIndex;
+			dataGridView.ClearSelection();
+			dataGridView.Rows[dataGridView.NewRowIndex].Selected = true;
+			dataGridView.FirstDisplayedScrollingRowIndex = dataGridView.NewRowIndex;
 		}
 
-		private void SelectNewRow(object sender, RunWorkerCompletedEventArgs e)
+		private void NewRowButton_Click(object sender, EventArgs e)
 		{
 			SelectNewRow();
-			this.backgroundWorker.RunWorkerCompleted -= SelectNewRow;
-		}
-
-		private void newRowButton_Click(object sender, EventArgs e)
-		{
-			int lastPage = count / rowsPerPage;
-			if (currentPage == lastPage) {
-				SelectNewRow();
-			} else {
-				if (this.CanContinue()) {
-					this.currentPage = lastPage;
-					this.backgroundWorker.RunWorkerCompleted += SelectNewRow;
-					this.UpdateDataSet();
-				}
-			}
 		}
 
 		#region Printing
 
-		private void printPreviewButton_Click(object sender, EventArgs e)
+		private void PrintPreviewButton_Click(object sender, EventArgs e)
 		{
 			dataTablePrintDocument.DataTable = data;
 
-			Form parent = printPreviewDialog.PrintPreviewControl.Parent as Form;
+			var parent = printPreviewDialog.PrintPreviewControl.Parent as Form;
 			parent.WindowState = FormWindowState.Maximized;
 
 			printPreviewDialog.ShowDialog();
 		}
 
-		private void fontButton_Click(object sender, EventArgs e)
+		private void FontButton_Click(object sender, EventArgs e)
 		{
 			fontDialog.Font = dataTablePrintDocument.Font;
 			if (fontDialog.ShowDialog(this) == DialogResult.OK) {
@@ -380,7 +317,7 @@ namespace DataDevelop
 			}
 		}
 
-		private void pageSetupButton_Click(object sender, EventArgs e)
+		private void PageSetupButton_Click(object sender, EventArgs e)
 		{
 			pageSetupDialog.Document = dataTablePrintDocument;
 			pageSetupDialog.ShowDialog();
@@ -388,63 +325,61 @@ namespace DataDevelop
 
 		#endregion
 
-		private void filterToolStripButton_Click(object sender, EventArgs e)
+		private void FilterToolStripButton_Click(object sender, EventArgs e)
 		{
 			if (!CanContinue()) {
 				return;
 			}
-			using (FilterDialog filterDialog = new FilterDialog(this.filter.Clone())) {
-				FormExtensions.PositionDown(filterDialog, filterToolStripButton, this);
+			using (var filterDialog = new FilterDialog(filter.Clone())) {
+				filterDialog.PositionDown(filterToolStripButton, this);
 				if (filterDialog.ShowDialog(this) == DialogResult.OK) {
-					TableFilter lastGood = this.filter;
-					this.filter = filterDialog.Filter;
+					var lastGood = filter;
+					filter = filterDialog.Filter;
 
 					if (IsFiltered) {
-						this.currentPage = 0;
-						this.filterToolStripButton.Checked = true;
-					} else {
-						this.filterToolStripButton.Checked = false;
+						currentPage = 0;
 					}
-					this.filterToolStripButton.ToolTipText = IsFiltered ? filter.ToString() : "Filter";
+					filterToolStripButton.Checked = IsFiltered;
+					filterToolStripButton.ToolTipText = IsFiltered ? filter.ToString() : "Filter";
 
 					try {
-						this.UpdateDataSet();
+						UpdateDataSet();
 					} catch (Exception ex) {
-						this.filter = lastGood;
-						MessageBox.Show(this, ex.Message, this.Text, MessageBoxButtons.OK);
-						this.UpdateDataSet();
+						filter = lastGood;
+						MessageBox.Show(this, ex.Message, Text, MessageBoxButtons.OK);
+						UpdateDataSet();
 					}
 				} else {
-					if (this.refreshDataNeeded) {
-						this.UpdateDataSet();
+					if (refreshDataNeeded) {
+						UpdateDataSet();
 					}
 				}
 			}
 		}
 
-		private void sortToolStripButton_Click(object sender, EventArgs e)
+		private void SortToolStripButton_Click(object sender, EventArgs e)
 		{
 			if (!CanContinue()) {
 				return;
 			}
-			using (SortDialog sortDialog = new SortDialog(this.sort)) {
-				FormExtensions.PositionDown(sortDialog, sortToolStripButton, this);
+			using (var sortDialog = new SortDialog(sort)) {
+				sortDialog.PositionDown(sortToolStripButton, this);
 				if (sortDialog.ShowDialog(this) == DialogResult.OK) {
-					TableSort lastGood = this.sort;
-					this.sort = sortDialog.Sort;
-					this.sortToolStripButton.Checked = IsSorted;
-					this.sortToolStripButton.ToolTipText = IsSorted ? sort.ToString() : "Sort";
+					var lastGood = sort;
+					sort = sortDialog.Sort;
+					sortToolStripButton.Checked = IsSorted;
+					sortToolStripButton.ToolTipText = IsSorted ? sort.ToString() : "Sort";
 
 					try {
 						UpdateDataSet();
 					} catch (Exception ex) {
-						MessageBox.Show(this, ex.Message, this.Text, MessageBoxButtons.OK);
-						this.sort = lastGood;
+						MessageBox.Show(this, ex.Message, Text, MessageBoxButtons.OK);
+						sort = lastGood;
 						UpdateDataSet();
 					}
 				} else {
-					if (this.refreshDataNeeded) {
-						this.UpdateDataSet();
+					if (refreshDataNeeded) {
+						UpdateDataSet();
 					}
 				}
 			}
@@ -453,23 +388,23 @@ namespace DataDevelop
 		private void TableDocument_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			if (e.CloseReason == CloseReason.UserClosing) {
-				if (this.backgroundWorker.IsBusy) {
-					MessageBox.Show(this, "Reading table data, please wait...", this.ProductName);
+				if (backgroundWorker.IsBusy) {
+					MessageBox.Show(this, "Reading table data, please wait...", ProductName);
 					e.Cancel = true;
 					return;
 				}
-				DataTable changes = this.GetChanges();
+				var changes = GetChanges();
 				if (changes != null) {
-					if (!this.AskAndSave(changes)) {
+					if (!AskAndSave(changes)) {
 						e.Cancel = true;
 					}
 				}
 			}
 		}
 
-		private void viewSqlToolStripButton_Click(object sender, EventArgs e)
+		private void ViewSqlToolStripButton_Click(object sender, EventArgs e)
 		{
-			StringBuilder sql = new StringBuilder();
+			var sql = new StringBuilder();
 			sql.Append("SELECT ");
 			filter.WriteColumnsProjection(sql);
 			sql.AppendLine();
@@ -486,79 +421,69 @@ namespace DataDevelop
 				sort.WriteOrderBy(sql);
 			}
 
-			CommandDocument doc = new CommandDocument(table.Database);
-			doc.Text = String.Format(Resources.QueryDocumentTitle, table.Database.Name);
-			doc.CommandText = sql.ToString();
-			doc.Show(this.DockPanel);
+			var doc = new CommandDocument(table.Database) {
+				Text = string.Format(Resources.QueryDocumentTitle, table.Database.Name),
+				CommandText = sql.ToString()
+			};
+			doc.Show(DockPanel);
 		}
 
-		public Database Database
+		private void AllCellsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			get { return table.Database; }
+			dataGridView.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
 		}
 
-		private void allCellsToolStripMenuItem_Click(object sender, EventArgs e)
+		private void AllCellsButHeadersToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			this.dataGridView.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
+			dataGridView.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCellsExceptHeader);
 		}
 
-		private void allCellsButHeadersToolStripMenuItem_Click(object sender, EventArgs e)
+		private void ColumnsHeaderToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			this.dataGridView.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCellsExceptHeader);
+			dataGridView.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.ColumnHeader);
 		}
 
-		private void columnsHeaderToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			this.dataGridView.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.ColumnHeader);
-		}
-
-		private void dataGridView_ColumnAdded(object sender, DataGridViewColumnEventArgs e)
+		private void DataGridView_ColumnAdded(object sender, DataGridViewColumnEventArgs e)
 		{
 			e.Column.SortMode = DataGridViewColumnSortMode.NotSortable;
 		}
 
-		private void rowsPerPageButton_Click(object sender, EventArgs e)
+		private void RowsPerPageButton_Click(object sender, EventArgs e)
 		{
 			if (!CanContinue()) {
 				return;
 			}
-			using (RowsPerPageDialog dialog = new RowsPerPageDialog()) {
+			using (var dialog = new RowsPerPageDialog()) {
 				dialog.RowsPerPage = rowsPerPage;
-				FormExtensions.PositionDown(dialog, rowsPerPageButton, this);
+				dialog.PositionDown(rowsPerPageButton, this);
 				if (dialog.ShowDialog(this) == DialogResult.OK) {
 					if (rowsPerPage != dialog.RowsPerPage) {
 						rowsPerPage = dialog.RowsPerPage;
 						rowsPerPageButton.Text = rowsPerPage.ToString();
-						this.UpdateDataSet();
+						UpdateDataSet();
 					}
 				} else {
-					if (this.refreshDataNeeded) {
-						this.UpdateDataSet();
+					if (refreshDataNeeded) {
+						UpdateDataSet();
 					}
 				}
 			}
 		}
 
-		private void exportAllToExcelToolStripMenuItem_Click(object sender, EventArgs e)
+		private void ExportAllToExcelToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			ProgressDialog.Run(this, "Export to Excel", excelWorker, true, true);
 		}
 
-		private void exportCurrentPageToExcelToolStripMenuItem_Click(object sender, EventArgs e)
+		private void ExportCurrentPageToExcelToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			ProgressDialog.Run(this, "Export to Excel", excelWorker, true, false);
 		}
 
-		private void excelWorker_DoWork(object sender, DoWorkEventArgs e)
+		private void ExcelWorker_DoWork(object sender, DoWorkEventArgs e)
 		{
 			var allData = (bool)e.Argument;
-			DataTable dataToExport;
-
-			if (allData) {
-				dataToExport = table.GetData(this.filter);
-			} else {
-				dataToExport = this.data;
-			}
+			var dataToExport = allData ? table.GetData(filter) : data;
 
 			if (dataToExport != null) {
 				var sheet = ExcelInterop.CreateWorksheet("", dataToExport, excelWorker);

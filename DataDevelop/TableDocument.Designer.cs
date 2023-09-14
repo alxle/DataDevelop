@@ -122,7 +122,7 @@
 			this.firstButton.Name = "firstButton";
 			this.firstButton.Size = new System.Drawing.Size(23, 22);
 			this.firstButton.Text = "First";
-			this.firstButton.Click += new System.EventHandler(this.firstButton_Click);
+			this.firstButton.Click += new System.EventHandler(this.FirstButton_Click);
 			// 
 			// prevButton
 			// 
@@ -132,7 +132,7 @@
 			this.prevButton.Name = "prevButton";
 			this.prevButton.Size = new System.Drawing.Size(23, 22);
 			this.prevButton.Text = "Previous";
-			this.prevButton.Click += new System.EventHandler(this.prevButton_Click);
+			this.prevButton.Click += new System.EventHandler(this.PrevButton_Click);
 			// 
 			// locationLabel
 			// 
@@ -148,7 +148,7 @@
 			this.nextButton.Name = "nextButton";
 			this.nextButton.Size = new System.Drawing.Size(23, 22);
 			this.nextButton.Text = "Next";
-			this.nextButton.Click += new System.EventHandler(this.nextButton_Click);
+			this.nextButton.Click += new System.EventHandler(this.NextButton_Click);
 			// 
 			// lastButton
 			// 
@@ -158,7 +158,7 @@
 			this.lastButton.Name = "lastButton";
 			this.lastButton.Size = new System.Drawing.Size(23, 22);
 			this.lastButton.Text = "Last";
-			this.lastButton.Click += new System.EventHandler(this.lastButton_Click);
+			this.lastButton.Click += new System.EventHandler(this.LastButton_Click);
 			// 
 			// newRowButton
 			// 
@@ -168,7 +168,7 @@
 			this.newRowButton.Name = "newRowButton";
 			this.newRowButton.Size = new System.Drawing.Size(23, 22);
 			this.newRowButton.Text = "New Row";
-			this.newRowButton.Click += new System.EventHandler(this.newRowButton_Click);
+			this.newRowButton.Click += new System.EventHandler(this.NewRowButton_Click);
 			// 
 			// toolStripSeparator1
 			// 
@@ -183,7 +183,7 @@
 			this.refreshButton.Name = "refreshButton";
 			this.refreshButton.Size = new System.Drawing.Size(23, 22);
 			this.refreshButton.Text = "Refresh";
-			this.refreshButton.Click += new System.EventHandler(this.refreshButton_Click);
+			this.refreshButton.Click += new System.EventHandler(this.RefreshButton_Click);
 			// 
 			// saveChangesButton
 			// 
@@ -193,7 +193,7 @@
 			this.saveChangesButton.Name = "saveChangesButton";
 			this.saveChangesButton.Size = new System.Drawing.Size(23, 22);
 			this.saveChangesButton.Text = "Save Changes";
-			this.saveChangesButton.Click += new System.EventHandler(this.saveChangesButton_Click);
+			this.saveChangesButton.Click += new System.EventHandler(this.SaveChangesButton_Click);
 			// 
 			// discardChangesButton
 			// 
@@ -203,7 +203,7 @@
 			this.discardChangesButton.Name = "discardChangesButton";
 			this.discardChangesButton.Size = new System.Drawing.Size(23, 22);
 			this.discardChangesButton.Text = "Discard Changes";
-			this.discardChangesButton.Click += new System.EventHandler(this.discardChangesButton_Click);
+			this.discardChangesButton.Click += new System.EventHandler(this.DiscardChangesButton_Click);
 			// 
 			// toolStripSeparator2
 			// 
@@ -218,7 +218,7 @@
 			this.filterToolStripButton.Name = "filterToolStripButton";
 			this.filterToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.filterToolStripButton.Text = "Filter";
-			this.filterToolStripButton.Click += new System.EventHandler(this.filterToolStripButton_Click);
+			this.filterToolStripButton.Click += new System.EventHandler(this.FilterToolStripButton_Click);
 			// 
 			// sortToolStripButton
 			// 
@@ -228,7 +228,7 @@
 			this.sortToolStripButton.Name = "sortToolStripButton";
 			this.sortToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.sortToolStripButton.Text = "Sort";
-			this.sortToolStripButton.Click += new System.EventHandler(this.sortToolStripButton_Click);
+			this.sortToolStripButton.Click += new System.EventHandler(this.SortToolStripButton_Click);
 			// 
 			// toolStripSeparator4
 			// 
@@ -243,7 +243,7 @@
 			this.autoResizeColumnsDropDownButton.Name = "autoResizeColumnsDropDownButton";
 			this.autoResizeColumnsDropDownButton.Size = new System.Drawing.Size(32, 22);
 			this.autoResizeColumnsDropDownButton.Text = "Auto Size Columns";
-			this.autoResizeColumnsDropDownButton.ButtonClick += new System.EventHandler(this.allCellsToolStripMenuItem_Click);
+			this.autoResizeColumnsDropDownButton.ButtonClick += new System.EventHandler(this.AllCellsToolStripMenuItem_Click);
 			// 
 			// rowsPerPageButton
 			// 
@@ -253,7 +253,7 @@
 			this.rowsPerPageButton.Size = new System.Drawing.Size(29, 22);
 			this.rowsPerPageButton.Text = "100";
 			this.rowsPerPageButton.ToolTipText = "Rows Per Page";
-			this.rowsPerPageButton.Click += new System.EventHandler(this.rowsPerPageButton_Click);
+			this.rowsPerPageButton.Click += new System.EventHandler(this.RowsPerPageButton_Click);
 			// 
 			// toolStripSeparator3
 			// 
@@ -277,14 +277,14 @@
 			this.exportAllToExcelToolStripMenuItem.Name = "exportAllToExcelToolStripMenuItem";
 			this.exportAllToExcelToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
 			this.exportAllToExcelToolStripMenuItem.Text = "Export All to Excel";
-			this.exportAllToExcelToolStripMenuItem.Click += new System.EventHandler(this.exportAllToExcelToolStripMenuItem_Click);
+			this.exportAllToExcelToolStripMenuItem.Click += new System.EventHandler(this.ExportAllToExcelToolStripMenuItem_Click);
 			// 
 			// exportCurrentPageToExcelToolStripMenuItem
 			// 
 			this.exportCurrentPageToExcelToolStripMenuItem.Name = "exportCurrentPageToExcelToolStripMenuItem";
 			this.exportCurrentPageToExcelToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
 			this.exportCurrentPageToExcelToolStripMenuItem.Text = "Export Page to Excel";
-			this.exportCurrentPageToExcelToolStripMenuItem.Click += new System.EventHandler(this.exportCurrentPageToExcelToolStripMenuItem_Click);
+			this.exportCurrentPageToExcelToolStripMenuItem.Click += new System.EventHandler(this.ExportCurrentPageToExcelToolStripMenuItem_Click);
 			// 
 			// toolStripDropDownButton1
 			// 
@@ -305,7 +305,7 @@
 			this.printPreviewToolStripMenuItem.Name = "printPreviewToolStripMenuItem";
 			this.printPreviewToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
 			this.printPreviewToolStripMenuItem.Text = "Print Preview";
-			this.printPreviewToolStripMenuItem.Click += new System.EventHandler(this.printPreviewButton_Click);
+			this.printPreviewToolStripMenuItem.Click += new System.EventHandler(this.PrintPreviewButton_Click);
 			// 
 			// changeFontToolStripMenuItem
 			// 
@@ -313,7 +313,7 @@
 			this.changeFontToolStripMenuItem.Name = "changeFontToolStripMenuItem";
 			this.changeFontToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
 			this.changeFontToolStripMenuItem.Text = "Change Font";
-			this.changeFontToolStripMenuItem.Click += new System.EventHandler(this.fontButton_Click);
+			this.changeFontToolStripMenuItem.Click += new System.EventHandler(this.FontButton_Click);
 			// 
 			// pageSetupToolStripMenuItem
 			// 
@@ -321,7 +321,7 @@
 			this.pageSetupToolStripMenuItem.Name = "pageSetupToolStripMenuItem";
 			this.pageSetupToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
 			this.pageSetupToolStripMenuItem.Text = "Page Setup";
-			this.pageSetupToolStripMenuItem.Click += new System.EventHandler(this.pageSetupButton_Click);
+			this.pageSetupToolStripMenuItem.Click += new System.EventHandler(this.PageSetupButton_Click);
 			// 
 			// toolStripSeparator5
 			// 
@@ -336,7 +336,7 @@
 			this.viewSqlToolStripButton.Name = "viewSqlToolStripButton";
 			this.viewSqlToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.viewSqlToolStripButton.Text = "View SQL";
-			this.viewSqlToolStripButton.Click += new System.EventHandler(this.viewSqlToolStripButton_Click);
+			this.viewSqlToolStripButton.Click += new System.EventHandler(this.ViewSqlToolStripButton_Click);
 			// 
 			// toolStripSeparator6
 			// 
@@ -382,7 +382,7 @@
 			this.dataGridView.Size = new System.Drawing.Size(612, 331);
 			this.dataGridView.StartRowNumber = 1;
 			this.dataGridView.TabIndex = 3;
-			this.dataGridView.ColumnAdded += new System.Windows.Forms.DataGridViewColumnEventHandler(this.dataGridView_ColumnAdded);
+			this.dataGridView.ColumnAdded += new System.Windows.Forms.DataGridViewColumnEventHandler(this.DataGridView_ColumnAdded);
 			// 
 			// dataTablePrintDocument
 			// 
@@ -465,14 +465,14 @@
 			// 
 			// backgroundWorker
 			// 
-			this.backgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_DoWork);
-			this.backgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker_RunWorkerCompleted);
+			this.backgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BackgroundWorker_DoWork);
+			this.backgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BackgroundWorker_RunWorkerCompleted);
 			// 
 			// excelWorker
 			// 
 			this.excelWorker.WorkerReportsProgress = true;
 			this.excelWorker.WorkerSupportsCancellation = true;
-			this.excelWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.excelWorker_DoWork);
+			this.excelWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.ExcelWorker_DoWork);
 			// 
 			// TableDocument
 			// 
