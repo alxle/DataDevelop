@@ -351,6 +351,6 @@ namespace DataDevelop.Data
 
 		protected abstract void PopulateForeignKeys(IList<ForeignKey> foreignKeysCollection);
 
-		protected virtual void PopulateIndexes(IList<Index> indexesCollection) { }
+		protected abstract void PopulateIndexes(IList<Index> indexesCollection);
 	}
 }
