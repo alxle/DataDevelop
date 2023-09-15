@@ -37,26 +37,27 @@ namespace DataDevelop.Data.Firebird
 			dataType = dataType.ToLowerInvariant();
 			if (dataType == "char" || dataType == "character" || 
 				dataType == "varchar" || dataType == "char varying" || 
-				dataType == "character varying") {
+				dataType == "character varying")
 				return typeof(string);
-			} else if (dataType == "numeric" || dataType == "decimal") {
+			if (dataType == "numeric" || dataType == "decimal")
 				return typeof(decimal);
-			} else if (dataType == "integer" || dataType == "int") {
+			if (dataType == "integer" || dataType == "int")
 				return typeof(int);
-			} else if (dataType == "smallint") {
+			if (dataType == "smallint")
 				return typeof(short);
-			} else if (dataType == "float") {
+			if (dataType == "boolean")
+				return typeof(bool);
+			if (dataType == "float")
 				return typeof(float);
-			} else if (dataType == "double" || dataType == "double precision") {
+			if (dataType == "double" || dataType == "double precision")
 				return typeof(double);
-			} else if (dataType == "date" || dataType == "timestamp") {
+			if (dataType == "date" || dataType == "timestamp")
 				return typeof(DateTime);
-			} else if (dataType == "blob" || dataType == "blob sub_type 0") {
+			if (dataType == "blob" || dataType == "blob sub_type 0")
 				return typeof(byte[]);
-			} else if (dataType == "blob sub_type 1") {
+			if (dataType == "blob sub_type 1")
 				return typeof(string);
-			}
-			return null;
+			return typeof(object);
 		}
 	}
 }

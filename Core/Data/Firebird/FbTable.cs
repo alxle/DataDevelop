@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Text;
 using FirebirdSql.Data.FirebirdClient;
 
@@ -8,8 +9,8 @@ namespace DataDevelop.Data.Firebird
 {
 	internal class FbTable : Table
 	{
-		private FbDatabase database;
-		private bool isView;
+		private readonly FbDatabase database;
+		private readonly bool isView;
 		private string tableName;
 
 		public FbTable(FbDatabase database)
@@ -41,9 +42,9 @@ namespace DataDevelop.Data.Firebird
 			set { tableName = value; }
 		}
 
-        public string TableSchema { get; set; }
+		public string TableSchema { get; set; }
 
-        public override string QuotedName
+		public override string QuotedName
 		{
 			get
 			{
@@ -120,20 +121,22 @@ namespace DataDevelop.Data.Firebird
 
 		public override string GenerateCreateStatement()
 		{
-			if (IsView) {
-				try {
-					Database.Connect();
-					using (var command = Connection.CreateCommand()) {
-						command.CommandText = "select rdb$view_source from rdb$relations where rdb$relation_name = @Name";
-						command.Parameters.Add("Name", DbType.String).Value = Name;
-						var select = command.ExecuteScalar().ToString();
-						return "CREATE VIEW " + Name + " AS " + Environment.NewLine + select;
-					}
-				} finally {
-					Database.Disconnect();
-				}
-			} else {
+			if (!IsView) {
 				return "-- Retrieve CREATE Statement is only available to Views.";
+			}
+			try {
+				Database.Connect();
+				using (var command = Connection.CreateCommand()) {
+					command.CommandText = 
+						"select rdb$view_source " +
+						"from rdb$relations " +
+						"where rdb$relation_name = @Name";
+					command.Parameters.Add("Name", DbType.String).Value = Name;
+					var select = command.ExecuteScalar().ToString();
+					return "CREATE VIEW " + Name + " AS " + Environment.NewLine + select;
+				}
+			} finally {
+				Database.Disconnect();
 			}
 		}
 
@@ -145,14 +148,13 @@ namespace DataDevelop.Data.Firebird
 					using (var command = Connection.CreateCommand()) {
 						command.CommandText =
 							"select " +
-							"	TRIM(sg.rdb$field_name) as field_name " +
-							"from " +
-							"	rdb$indices ix " +
-							"	left join rdb$index_segments sg on ix.rdb$index_name = sg.rdb$index_name " +
-							"	left join rdb$relation_constraints rc on rc.rdb$index_name = ix.rdb$index_name " +
+							"  TRIM(sg.rdb$field_name) as field_name " +
+							"from rdb$indices ix " +
+							"left join rdb$index_segments sg on ix.rdb$index_name = sg.rdb$index_name " +
+							"left join rdb$relation_constraints rc on rc.rdb$index_name = ix.rdb$index_name " +
 							"where " +
-							"	rc.rdb$constraint_type = 'PRIMARY KEY' " +
-							"	and rc.rdb$relation_name = @TableName";
+							"  rc.rdb$constraint_type = 'PRIMARY KEY' and " +
+							"  rc.rdb$relation_name = @TableName";
 						command.Parameters.AddWithValue("@TableName", Name.ToUpper());
 						using (var reader = command.ExecuteReader()) {
 							while (reader.Read()) {
@@ -202,6 +204,45 @@ namespace DataDevelop.Data.Firebird
 						fk.Columns.Add(new ColumnsPair((string)fkColumn["REFERENCED_COLUMN_NAME"], (string)fkColumn["COLUMN_NAME"]));
 					}
 					foreignKeysCollection.Add(fk);
+				}
+			}
+		}
+
+		protected override void PopulateIndexes(IList<Index> indexesCollection)
+		{
+			using (var command = Connection.CreateCommand()) {
+				command.CommandText =
+					"select " +
+					"  trim(i.rdb$index_name), " +
+					"  i.rdb$unique_flag, " +
+					"  trim(s.rdb$field_name) " +
+					"from rdb$index_segments s " +
+					"inner join rdb$indices i on s.rdb$index_name = i.rdb$index_name " +
+					"where " +
+					"  i.rdb$relation_name = @TableName and " +
+					"  i.rdb$index_type = 0 and " +
+					"  i.rdb$system_flag = 0 " +
+					"order by s.rdb$field_position";
+				command.Parameters.AddWithValue("@TableName", Name);
+				var indexes = new Dictionary<string, Index>();
+				using (var reader = command.ExecuteReader()) {
+					while (reader.Read()) {
+						var indexName = reader.GetString(0);
+						Index index;
+						if (!indexes.ContainsKey(indexName)) {
+							index = new Index(this, indexName) { IsUniqueKey = reader.GetBoolean(1) };
+							indexes.Add(indexName, index);
+						} else {
+							index = indexes[indexName];
+						}
+						var fieldName = reader.GetString(2);
+						var column = Columns.Single(c => c.Name.Equals(fieldName, StringComparison.OrdinalIgnoreCase));
+						var columnOrder = new ColumnOrder(column);
+						index.Columns.Add(columnOrder);
+					}
+				}
+				foreach (var item in indexes) {
+					indexesCollection.Add(item.Value);
 				}
 			}
 		}
