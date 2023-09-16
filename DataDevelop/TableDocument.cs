@@ -54,6 +54,7 @@ namespace DataDevelop
 			dataGridView.AutoGenerateColumns = true;
 
 			if (MainForm.DarkMode) {
+				this.UseImmersiveDarkMode();
 				dataGridView.SetDarkMode();
 				loadingPanel.BackColor = Color.FromArgb(61, 61, 61);
 			}

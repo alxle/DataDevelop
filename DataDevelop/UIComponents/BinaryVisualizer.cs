@@ -14,6 +14,7 @@ namespace DataDevelop.UIComponents
 		{
 			InitializeComponent();
 			if (MainForm.DarkMode) {
+				this.UseImmersiveDarkMode();
 				statusStrip.BackColor = Color.FromArgb(31, 31, 31);
 				strTextBox.BackColor = Color.FromArgb(61, 61, 61);
 				strTextBox.ForeColor = Color.FromArgb(251, 251, 251);

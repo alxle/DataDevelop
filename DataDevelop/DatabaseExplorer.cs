@@ -17,6 +17,7 @@ namespace DataDevelop
 		{
 			InitializeComponent();
 			if (MainForm.DarkMode) {
+				this.UseImmersiveDarkMode();
 				treeView.ForeColor = Color.FromArgb(250, 250, 250);
 				treeView.BackColor = Color.FromArgb(31, 31, 31);
 			}
@@ -778,6 +779,7 @@ namespace DataDevelop
 					if (box.ShowDialog(this) == DialogResult.OK) {
 						db.ChangeConnectionString(box.ConnectionString);
 						DatabasesManager.IsCollectionDirty = true;
+						SettingsManager.SaveDatabases();
 						ShowNodeProperties(treeView.SelectedNode);
 					}
 				}

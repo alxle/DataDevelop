@@ -56,6 +56,7 @@ namespace DataDevelop
 				ToolStripManager.VisualStylesEnabled = true;
 				ToolStripManager.Renderer = new VisualStyles.VS2015ToolStripRenderer();
 			} else if (visualStyle == "Dark") {
+				this.UseImmersiveDarkMode();
 				var theme = new VS2015BlueTheme();
 				dockPanel.Theme = theme;
 				theme.ApplyTo(dockPanel);

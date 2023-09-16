@@ -6,6 +6,11 @@ namespace DataDevelop
 {
 	static class FormExtensions
 	{
+		public static bool UseImmersiveDarkMode(this Form form)
+		{
+			return NativeMethods.UseImmersiveDarkMode(form.Handle, true);
+		}
+
 		public static void PositionLeft(this Form form, Control relativeTo)
 		{
 			form.StartPosition = FormStartPosition.Manual;

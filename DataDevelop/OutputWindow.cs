@@ -10,9 +10,9 @@ namespace DataDevelop
 		{
 			InitializeComponent();
 			if (MainForm.DarkMode) {
+				this.UseImmersiveDarkMode();
 				outputTextBox.ForeColor = Color.FromArgb(250, 250, 250);
 				outputTextBox.BackColor = Color.FromArgb(31, 31, 31);
-
 				outputTextBox.MessageTextColor = Color.FromArgb(250, 250, 250);
 				outputTextBox.InfoTextColor = Color.FromArgb(131, 190, 235);
 				outputTextBox.ErrorTextColor = Color.FromArgb(227, 93, 106);

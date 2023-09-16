@@ -66,6 +66,7 @@ namespace DataDevelop
 			messageTextBox.Font = new Font(FontFamily.GenericMonospace, 10F);
 
 			if (MainForm.DarkMode) {
+				this.UseImmersiveDarkMode();
 				dataGridView.SetDarkMode();
 				statusStrip.ForeColor = Color.FromArgb(250, 250, 250);
 				statusStrip.BackColor = Color.FromArgb(46, 46, 46);

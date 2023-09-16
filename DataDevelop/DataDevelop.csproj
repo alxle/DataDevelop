@@ -185,6 +185,7 @@
     <Compile Include="Dialogs\RowsPerPageDialog.Designer.cs">
       <DependentUpon>RowsPerPageDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="NativeMethods.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

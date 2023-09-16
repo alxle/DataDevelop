@@ -14,6 +14,7 @@ namespace DataDevelop
 		{
 			InitializeComponent();
 			if (MainForm.DarkMode) {
+				this.UseImmersiveDarkMode();
 				propertyGrid.ViewBackColor = Color.FromArgb(31, 31, 31);
 				propertyGrid.ViewForeColor = Color.FromArgb(250, 250, 250);
 				propertyGrid.ViewBorderColor = Color.FromArgb(46, 46, 46);

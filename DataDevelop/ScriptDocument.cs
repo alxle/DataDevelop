@@ -20,6 +20,9 @@ namespace DataDevelop
 		public ScriptDocument(OutputWindow output, ScriptEngine engine)
 		{
 			InitializeComponent();
+			if (MainForm.DarkMode) {
+				this.UseImmersiveDarkMode();
+			}
 			this.output = output;
 
 			var isPython = (engine is PythonScriptEngine);
