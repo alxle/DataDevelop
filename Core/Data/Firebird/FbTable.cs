@@ -11,7 +11,6 @@ namespace DataDevelop.Data.Firebird
 	{
 		private readonly FbDatabase database;
 		private readonly bool isView;
-		private string tableName;
 
 		public FbTable(FbDatabase database)
 			: base(database)
@@ -30,31 +29,6 @@ namespace DataDevelop.Data.Firebird
 
 		public override bool IsView => isView;
 
-		public string TableName
-		{
-			get
-			{
-				if (string.IsNullOrEmpty(tableName)) {
-					return Name;
-				}
-				return tableName;
-			}
-			set { tableName = value; }
-		}
-
-		public string TableSchema { get; set; }
-
-		public override string QuotedName
-		{
-			get
-			{
-				if (string.IsNullOrEmpty(TableSchema)) {
-					return string.Concat('"', Name, '"');
-				}
-				return string.Concat('"', TableSchema, "\".\"", TableName, '"');
-			}
-		}
-
 		public override string GetBaseSelectCommandText(TableFilter filter, bool excludeWhere)
 		{
 			var select = new StringBuilder();
@@ -71,7 +45,8 @@ namespace DataDevelop.Data.Firebird
 
 		public override bool Rename(string newName)
 		{
-			throw new InvalidOperationException("Table rename is not supported in Firebird.");
+			// http://www.firebirdfaq.org/faq363/
+			throw new NotSupportedException("Table rename is not supported in Firebird.");
 		}
 
 		public override bool Delete()
@@ -163,7 +138,7 @@ namespace DataDevelop.Data.Firebird
 						}
 					}
 				}
-				using (var columns = database.Connection.GetSchema("Columns", new[] { null, TableSchema, TableName, null })) {
+				using (var columns = database.Connection.GetSchema("Columns", new[] { null, null, Name, null })) {
 					foreach (DataRow row in columns.Rows) {
 						var column = new Column(this) {
 							Name = row["COLUMN_NAME"].ToString(),
@@ -182,7 +157,7 @@ namespace DataDevelop.Data.Firebird
 
 		protected override void PopulateTriggers(IList<Trigger> triggersCollection)
 		{
-			using (var triggers = database.Connection.GetSchema("Triggers", new[] { null, TableSchema, TableName, null })) {
+			using (var triggers = database.Connection.GetSchema("Triggers", new[] { null, null, Name, null })) {
 				foreach (DataRow row in triggers.Rows) {
 					if ((short)row["IS_SYSTEM_TRIGGER"] == 0) {
 						triggersCollection.Add(new FbTrigger(this, (string)row["TRIGGER_NAME"]));
@@ -193,8 +168,8 @@ namespace DataDevelop.Data.Firebird
 
 		protected override void PopulateForeignKeys(IList<ForeignKey> foreignKeysCollection)
 		{
-			using (var foreignKeys = database.Connection.GetSchema("ForeignKeys", new[] { null, TableSchema, TableName, null }))
-			using (var foreignKeyColumns = database.Connection.GetSchema("ForeignKeyColumns", new[] { null, TableSchema, TableName, null })) {
+			using (var foreignKeys = database.Connection.GetSchema("ForeignKeys", new[] { null, null, Name, null }))
+			using (var foreignKeyColumns = database.Connection.GetSchema("ForeignKeyColumns", new[] { null, null, Name, null })) {
 				foreach (DataRow row in foreignKeys.Rows) {
 					var fk = new ForeignKey((string)row["CONSTRAINT_NAME"], this) {
 						PrimaryTable = (string)row["REFERENCED_TABLE_NAME"],
@@ -213,31 +188,39 @@ namespace DataDevelop.Data.Firebird
 			using (var command = Connection.CreateCommand()) {
 				command.CommandText =
 					"select " +
-					"  trim(i.rdb$index_name), " +
-					"  i.rdb$unique_flag, " +
+					"  trim(i.rdb$index_name) IndexName, " +
+					"  (i.rdb$index_type = 1) IsDescending, " +
+					"  (i.rdb$unique_flag = 1) IsUniqueKey, " +
+					"  (c.rdb$constraint_type is not null) IsPrimaryKey, " +
 					"  trim(s.rdb$field_name) " +
 					"from rdb$index_segments s " +
-					"inner join rdb$indices i on s.rdb$index_name = i.rdb$index_name " +
+					"inner join rdb$indices i " +
+					"  on s.rdb$index_name = i.rdb$index_name " +
+					"left join rdb$relation_constraints c " +
+					"  on i.rdb$index_name = c.rdb$index_name and c.rdb$constraint_type = 'PRIMARY KEY' " +
 					"where " +
 					"  i.rdb$relation_name = @TableName and " +
-					"  i.rdb$index_type = 0 and " +
-					"  i.rdb$system_flag = 0 " +
-					"order by s.rdb$field_position";
+					"  i.rdb$system_flag = 0 and " +
+					"  i.rdb$foreign_key is null " +
+					"order by i.rdb$index_id, s.rdb$field_position";
 				command.Parameters.AddWithValue("@TableName", Name);
 				var indexes = new Dictionary<string, Index>();
 				using (var reader = command.ExecuteReader()) {
 					while (reader.Read()) {
 						var indexName = reader.GetString(0);
-						Index index;
-						if (!indexes.ContainsKey(indexName)) {
-							index = new Index(this, indexName) { IsUniqueKey = reader.GetBoolean(1) };
+						var isDescending = !reader.IsDBNull(1) && reader.GetBoolean(1);
+						if (!indexes.TryGetValue(indexName, out var index)) {
+							index = new Index(this, indexName) { 
+								IsUniqueKey = reader.GetBoolean(2),
+								IsPrimaryKey = reader.GetBoolean(3),
+							};
 							indexes.Add(indexName, index);
-						} else {
-							index = indexes[indexName];
 						}
-						var fieldName = reader.GetString(2);
+						var fieldName = reader.GetString(4);
 						var column = Columns.Single(c => c.Name.Equals(fieldName, StringComparison.OrdinalIgnoreCase));
-						var columnOrder = new ColumnOrder(column);
+						var columnOrder = new ColumnOrder(column) {
+							OrderType = isDescending ? OrderType.Descending : OrderType.Ascending
+						};
 						index.Columns.Add(columnOrder);
 					}
 				}

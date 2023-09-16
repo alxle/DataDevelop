@@ -7,8 +7,8 @@ namespace DataDevelop.Data.Firebird
 {
 	internal sealed class FbDatabase : Database, IDisposable
 	{
-		private string name;
-		private FbConnection connection;
+		private readonly string name;
+		private readonly FbConnection connection;
 
 		public FbDatabase(string name, string connectionString)
 		{
@@ -36,9 +36,7 @@ namespace DataDevelop.Data.Firebird
 
 		public void Dispose()
 		{
-			if (connection != null) {
-				connection.Dispose();
-			}
+			connection?.Dispose();
 			GC.SuppressFinalize(this);
 		}
 
@@ -46,9 +44,8 @@ namespace DataDevelop.Data.Firebird
 		{
 			if (IsConnected) {
 				throw new InvalidOperationException("Database must be disconnected in order to change the ConnectionString");
-			} else {
-				connection.ConnectionString = newConnectionString;
 			}
+			connection.ConnectionString = newConnectionString;
 		}
 
 		public override int ExecuteNonQuery(string commandText)
@@ -62,8 +59,7 @@ namespace DataDevelop.Data.Firebird
 
 		public override int ExecuteNonQuery(string commandText, DbTransaction transaction)
 		{
-			using (CreateConnectionScope()) {
-				var command = connection.CreateCommand();
+			using (var command = connection.CreateCommand()) {
 				command.Transaction = (FbTransaction)transaction;
 				command.CommandTimeout = 0;
 				command.CommandText = commandText;
@@ -128,13 +124,8 @@ namespace DataDevelop.Data.Firebird
 					if ((short)row["IS_SYSTEM_TABLE"] == 0) {
 						var tableType = ((string)row["TABLE_TYPE"]).ToUpper();
 						var table = new FbTable(this, tableType == "VIEW") {
-							TableName = (string)row["TABLE_NAME"]
+							Name = (string)row["TABLE_NAME"]
 						};
-						var schema = row["TABLE_SCHEMA"] as string;
-						if (!string.IsNullOrEmpty(schema)) {
-							table.TableSchema = schema;
-						}
-						table.Name = table.TableName;
 						tablesCollection.Add(table);
 					}
 				}
