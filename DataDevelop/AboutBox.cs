@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Deployment.Application;
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Forms;
@@ -16,29 +17,27 @@ namespace DataDevelop
 			//  Change assembly information settings for your application through either:
 			//  - Project->Properties->Application->Assembly Information
 			//  - AssemblyInfo.cs
-			this.Text = String.Format("About {0}", AssemblyTitle);
-			this.labelProductName.Text = AssemblyProduct;
-			this.labelVersion.Text = String.Format("Version {0}", AssemblyVersion);
-			this.labelCopyright.Text = AssemblyCopyright;
-			this.homepageLinkLabel.Text = Program.Homepage;
+			Text = $"About {AssemblyTitle}";
+			labelProductName.Text = AssemblyProduct;
+			labelVersion.Text = $"Version {AssemblyVersion}";
+			labelCopyright.Text = AssemblyCopyright;
+			homepageLinkLabel.Text = Program.Homepage;
 
-			this.componentsListView.Items.Add(new ListViewItem(new string[] { "Operating System: " + Environment.OSVersion.Platform.ToString(), Environment.OSVersion.Version.ToString() }));
-			this.componentsListView.Items.Add(new ListViewItem(new string[] { ".NET Framework", Environment.Version.ToString() }));
+			componentsListView.Items.Add(new ListViewItem(new[] { WindowsVersion.Name, WindowsVersion.Version.ToString() }));
+			componentsListView.Items.Add(new ListViewItem(new[] { ".NET Framework", Environment.Version.ToString() }));
 
-			var list = new List<AssemblyName>();
-			foreach (var assembly in new Assembly[] { Assembly.GetExecutingAssembly(), typeof(Data.DbProvider).Assembly }) {
+			var list = new SortedDictionary<string, string>();
+			foreach (var assembly in new[] { Assembly.GetExecutingAssembly(), typeof(Data.DbProvider).Assembly }) {
 				foreach (var assemblyName in assembly.GetReferencedAssemblies()) {
-					if (!list.Exists(i => i.Name == assemblyName.Name)) {
-						list.Add(assemblyName);
+					if (!list.ContainsKey(assemblyName.Name)) {
+						list.Add(assemblyName.Name, assemblyName.Version.ToString());
 					}
 				}
 			}
 
-			list.Sort(new Comparison<AssemblyName>((x, y) => String.Compare(x.Name, y.Name)));
-
-			foreach (var assemblyName in list) {
-				var item = new ListViewItem(new string[] { assemblyName.Name, assemblyName.Version.ToString() });
-				this.componentsListView.Items.Add(item);
+			foreach (var entry in list) {
+				var item = new ListViewItem(new[] { entry.Key, entry.Value });
+				componentsListView.Items.Add(item);
 			}
 		}
 
@@ -49,11 +48,11 @@ namespace DataDevelop
 			get
 			{
 				// Get all Title attributes on this assembly
-				object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
+				var attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
 				// If there is at least one Title attribute
 				if (attributes.Length > 0) {
 					// Select the first one
-					AssemblyTitleAttribute titleAttribute = (AssemblyTitleAttribute)attributes[0];
+					var titleAttribute = (AssemblyTitleAttribute)attributes[0];
 					// If it is not an empty string, return it
 					if (titleAttribute.Title.Length > 0) {
 						return titleAttribute.Title;
@@ -68,8 +67,8 @@ namespace DataDevelop
 		{
 			get
 			{
-				if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed) {
-					return System.Deployment.Application.ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
+				if (ApplicationDeployment.IsNetworkDeployed) {
+					return ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
 				}
 				return Assembly.GetExecutingAssembly().GetName().Version.ToString();
 			}
@@ -80,7 +79,7 @@ namespace DataDevelop
 			get
 			{
 				// Get all Description attributes on this assembly
-				object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyDescriptionAttribute), false);
+				var attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyDescriptionAttribute), false);
 				// If there aren't any Description attributes, return an empty string
 				if (attributes.Length == 0)
 					return "";
@@ -94,7 +93,7 @@ namespace DataDevelop
 			get
 			{
 				// Get all Product attributes on this assembly
-				object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyProductAttribute), false);
+				var attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyProductAttribute), false);
 				// If there aren't any Product attributes, return an empty string
 				if (attributes.Length == 0)
 					return "";
@@ -108,7 +107,7 @@ namespace DataDevelop
 			get
 			{
 				// Get all Copyright attributes on this assembly
-				object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
+				var attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
 				// If there aren't any Copyright attributes, return an empty string
 				if (attributes.Length == 0)
 					return "";
@@ -122,7 +121,7 @@ namespace DataDevelop
 			get
 			{
 				// Get all Company attributes on this assembly
-				object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCompanyAttribute), false);
+				var attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCompanyAttribute), false);
 				// If there aren't any Company attributes, return an empty string
 				if (attributes.Length == 0)
 					return "";
@@ -132,7 +131,7 @@ namespace DataDevelop
 		}
 		#endregion
 
-		private void homepageLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		private void HomepageLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
 			Process.Start(Program.Homepage);
 		}

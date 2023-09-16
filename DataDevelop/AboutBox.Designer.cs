@@ -157,7 +157,7 @@ namespace DataDevelop
 			this.homepageLinkLabel.TabIndex = 1;
 			this.homepageLinkLabel.TabStop = true;
 			this.homepageLinkLabel.Text = "HomePage";
-			this.homepageLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.homepageLinkLabel_LinkClicked);
+			this.homepageLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.HomepageLinkLabel_LinkClicked);
 			// 
 			// AboutBox
 			// 
