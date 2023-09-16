@@ -513,6 +513,7 @@
     <Compile Include="VisualStyles\SystemToolStripRenderers.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Zoom_16x.png" />
     <None Include="Resources\AutosizeFixedHeight_16x.png" />
     <None Include="Resources\DeleteTableRow_16x.png" />
     <None Include="Resources\Restart_16x.png" />

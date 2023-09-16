@@ -13,6 +13,13 @@ namespace DataDevelop.UIComponents
 		private BinaryVisualizer()
 		{
 			InitializeComponent();
+			if (MainForm.DarkMode) {
+				statusStrip.BackColor = Color.FromArgb(31, 31, 31);
+				strTextBox.BackColor = Color.FromArgb(61, 61, 61);
+				strTextBox.ForeColor = Color.FromArgb(251, 251, 251);
+				hexTextBox.ForeColor = strTextBox.ForeColor;
+				hexTextBox.BackColor = strTextBox.BackColor;
+			}
 		}
 
 		public DataGridViewBinaryCell BinaryCell { get; set; }

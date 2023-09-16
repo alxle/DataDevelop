@@ -86,7 +86,7 @@
 			// newToolStripButton
 			// 
 			this.newToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.newToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("newToolStripButton.Image")));
+			this.newToolStripButton.Image = global::DataDevelop.Properties.Resources.Document_16x;
 			this.newToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.newToolStripButton.Name = "newToolStripButton";
 			this.newToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -96,7 +96,7 @@
 			// openToolStripButton
 			// 
 			this.openToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.openToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("openToolStripButton.Image")));
+			this.openToolStripButton.Image = global::DataDevelop.Properties.Resources.OpenFolder_16x;
 			this.openToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.openToolStripButton.Name = "openToolStripButton";
 			this.openToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -106,7 +106,7 @@
 			// saveToolStripButton
 			// 
 			this.saveToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.saveToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("saveToolStripButton.Image")));
+			this.saveToolStripButton.Image = global::DataDevelop.Properties.Resources.Save_16x;
 			this.saveToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.saveToolStripButton.Name = "saveToolStripButton";
 			this.saveToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -121,7 +121,7 @@
 			// cutToolStripButton
 			// 
 			this.cutToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.cutToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("cutToolStripButton.Image")));
+			this.cutToolStripButton.Image = global::DataDevelop.Properties.Resources.Cut_16x;
 			this.cutToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.cutToolStripButton.Name = "cutToolStripButton";
 			this.cutToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -131,7 +131,7 @@
 			// copyToolStripButton
 			// 
 			this.copyToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.copyToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("copyToolStripButton.Image")));
+			this.copyToolStripButton.Image = global::DataDevelop.Properties.Resources.Copy_16x;
 			this.copyToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.copyToolStripButton.Name = "copyToolStripButton";
 			this.copyToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -141,7 +141,7 @@
 			// pasteToolStripButton
 			// 
 			this.pasteToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.pasteToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("pasteToolStripButton.Image")));
+			this.pasteToolStripButton.Image = global::DataDevelop.Properties.Resources.Paste_16x;
 			this.pasteToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.pasteToolStripButton.Name = "pasteToolStripButton";
 			this.pasteToolStripButton.Size = new System.Drawing.Size(23, 22);
@@ -157,7 +157,7 @@
 			// 
 			this.toggleWordWrapButton.CheckOnClick = true;
 			this.toggleWordWrapButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toggleWordWrapButton.Image = ((System.Drawing.Image)(resources.GetObject("toggleWordWrapButton.Image")));
+			this.toggleWordWrapButton.Image = global::DataDevelop.Properties.Resources.WordWrap_16x;
 			this.toggleWordWrapButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toggleWordWrapButton.MergeAction = System.Windows.Forms.MergeAction.Replace;
 			this.toggleWordWrapButton.Name = "toggleWordWrapButton";
@@ -183,15 +183,16 @@
 			// 
 			// changeFontToolStripMenuItem
 			// 
+			this.changeFontToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Font_16x;
 			this.changeFontToolStripMenuItem.Name = "changeFontToolStripMenuItem";
-			this.changeFontToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+			this.changeFontToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.changeFontToolStripMenuItem.Text = "Change Font...";
 			this.changeFontToolStripMenuItem.Click += new System.EventHandler(this.changeFontToolStripMenuItem_Click);
 			// 
 			// formatXmlToolStripMenuItem
 			// 
 			this.formatXmlToolStripMenuItem.Name = "formatXmlToolStripMenuItem";
-			this.formatXmlToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+			this.formatXmlToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.formatXmlToolStripMenuItem.Text = "Format XML";
 			this.formatXmlToolStripMenuItem.Click += new System.EventHandler(this.formatXmlToolStripMenuItem_Click);
 			// 
@@ -220,40 +221,40 @@
 			this.plainTextToolStripMenuItem.Checked = true;
 			this.plainTextToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.plainTextToolStripMenuItem.Name = "plainTextToolStripMenuItem";
-			this.plainTextToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+			this.plainTextToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.plainTextToolStripMenuItem.Text = "Plain Text";
 			this.plainTextToolStripMenuItem.Click += new System.EventHandler(this.plainTextToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator4
 			// 
 			this.toolStripSeparator4.Name = "toolStripSeparator4";
-			this.toolStripSeparator4.Size = new System.Drawing.Size(123, 6);
+			this.toolStripSeparator4.Size = new System.Drawing.Size(177, 6);
 			// 
 			// htmlToolStripMenuItem
 			// 
 			this.htmlToolStripMenuItem.Name = "htmlToolStripMenuItem";
-			this.htmlToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+			this.htmlToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.htmlToolStripMenuItem.Text = "HTML";
 			this.htmlToolStripMenuItem.Click += new System.EventHandler(this.htmlToolStripMenuItem_Click);
 			// 
 			// javaScriptToolStripMenuItem
 			// 
 			this.javaScriptToolStripMenuItem.Name = "javaScriptToolStripMenuItem";
-			this.javaScriptToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+			this.javaScriptToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.javaScriptToolStripMenuItem.Text = "JavaScript";
 			this.javaScriptToolStripMenuItem.Click += new System.EventHandler(this.javaScriptToolStripMenuItem_Click);
 			// 
 			// sqlToolStripMenuItem
 			// 
 			this.sqlToolStripMenuItem.Name = "sqlToolStripMenuItem";
-			this.sqlToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+			this.sqlToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.sqlToolStripMenuItem.Text = "SQL";
 			this.sqlToolStripMenuItem.Click += new System.EventHandler(this.sqlToolStripMenuItem_Click);
 			// 
 			// xmlToolStripMenuItem
 			// 
 			this.xmlToolStripMenuItem.Name = "xmlToolStripMenuItem";
-			this.xmlToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+			this.xmlToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.xmlToolStripMenuItem.Text = "XML";
 			this.xmlToolStripMenuItem.Click += new System.EventHandler(this.xmlToolStripMenuItem_Click);
 			// 
@@ -303,6 +304,7 @@
 			this.textEditor.Cursor = System.Windows.Forms.Cursors.IBeam;
 			this.textEditor.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
 			this.textEditor.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.textEditor.Font = new System.Drawing.Font("Courier New", 9.75F);
 			this.textEditor.IsReplaceMode = false;
 			this.textEditor.Location = new System.Drawing.Point(0, 25);
 			this.textEditor.Name = "textEditor";

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -16,6 +17,9 @@ namespace DataDevelop.UIComponents
 		{
 			InitializeComponent();
 			textEditor.Font = Properties.Settings.Default.TextVisualizerFont;
+			if (MainForm.DarkMode) {
+				statusStrip.BackColor = Color.FromArgb(61, 61, 61);
+			}
 		}
 
 		public bool TextValueChanged
