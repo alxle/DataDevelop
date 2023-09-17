@@ -26,6 +26,14 @@ namespace DataDevelop
 		private void DatabaseExplorer_Load(object sender, EventArgs e)
 		{
 			LoadDatabases();
+			DatabasesManager.DatabaseAdded +=DatabasesManager_DatabaseAdded;
+		}
+
+		private void DatabasesManager_DatabaseAdded(object sender, DatabaseEventArgs e)
+		{
+			if (DatabasesManager.IsCollectionDirty) {
+				SettingsManager.SaveDatabases();
+			}
 		}
 
 		private TreeNode CreateFolderNode(string folderName)
