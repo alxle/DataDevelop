@@ -6,100 +6,71 @@ namespace DataDevelop.Data.PostgreSql
 {
 	internal class PgSqlStoredProcedure : StoredProcedure
 	{
-		public PgSqlStoredProcedure(PgSqlDatabase database, string name)
+		readonly PgSqlDatabase db;
+		readonly int oid;
+		readonly string routineName;
+
+		public PgSqlStoredProcedure(PgSqlDatabase database, string specificName, string name)
 			: base(database)
 		{
-			Name = name;
+			Name = specificName;
+			db = database;
+			routineName = name;
+			oid = Convert.ToInt32(specificName.Substring(name.Length + 1, specificName.Length - name.Length - 1));
 		}
-
-		public new PgSqlDatabase Database => (PgSqlDatabase)base.Database;
 
 		public override string GenerateAlterStatement()
 		{
-			var definition = GetRoutineDefinition();
-			if (definition != null) {
-				return "CREATE OR REPLACE " + definition;
-			}
-			return "-- Not supported for this routine.";
+			return GenerateCreateStatement();
 		}
 
 		public override string GenerateCreateStatement()
 		{
-			var definition = GetRoutineDefinition();
-			if (definition != null) {
-				return "CREATE " + definition;
+			using (var command = db.Connection.CreateCommand()) {
+				command.CommandText =
+					"SELECT pg_get_functiondef(p.oid) " +
+					"FROM pg_catalog.pg_proc p " +
+					"WHERE p.oid = :oid";
+				command.Parameters.AddWithValue(":oid", oid);
+				return command.ExecuteScalar() as string;
 			}
-			return "-- Not supported for this routine.";
 		}
 
 		public override string GenerateDropStatement()
 		{
-			return $"DROP PROCEDURE \"{Name}\";";
+			var parameterTypes = string.Join(", ", Parameters.Select(p => p.ProviderType));
+			return $"DROP PROCEDURE \"{routineName}\"({parameterTypes});";
 		}
 
 		public override string GenerateExecuteStatement()
 		{
 			var parameters = string.Join(", ", Parameters.Select(p => $"?{p.Name.Replace(' ', '_')}"));
-			return $"CALL \"{Name}\" ({parameters})";
+			return $"CALL \"{routineName}\" ({parameters})";
 		}
 
 		protected override void PopulateParameters(IList<Parameter> parametersCollection)
 		{
-			using (Database.CreateConnectionScope())
-			using (var select = Database.Connection.CreateCommand()) {
+			using (var select = db.Connection.CreateCommand()) {
 				select.CommandText =
 					"SELECT " +
 					"  p.parameter_mode, p.parameter_name, p.data_type " +
-					"FROM information_schema.routines r " +
-					"LEFT JOIN information_schema.parameters p ON r.specific_name = p.specific_name " +
+					"FROM information_schema.parameters p " +
 					"WHERE" +
-					"  r.routine_name = :Name AND r.routine_schema = 'public' " +
-					"ORDER BY ordinal_position";
+					"  p.specific_name = :Name AND p.specific_schema = 'public' " +
+					"ORDER BY p.ordinal_position";
 				select.Parameters.AddWithValue(":Name", Name);
 				using (var reader = select.ExecuteReader()) {
 					while (reader.Read()) {
 						var parameter = new Parameter {
-							IsOutput = reader.GetString(0) == "OUT",
+							IsOutput = !reader.IsDBNull(0) && reader.GetString(0) == "OUT",
 							Name = reader.GetString(1),
 							ProviderType = reader.GetString(2),
+							ParameterType = PgSqlProvider.MapType(reader.GetString(2))
 						};
 						parametersCollection.Add(parameter);
 					}
 				}
-
 			}
-		}
-
-		private string GetRoutineDefinition()
-		{
-			using (Database.CreateConnectionScope()) {
-				RefreshParameters();
-				var parameters = 
-					string.Join(",\n  ", Parameters.Select(p => $"\"{p.Name}\" {p.ProviderType}"));
-
-				using (var select = Database.Connection.CreateCommand()) {
-					select.CommandText =
-						"SELECT routine_definition, external_language " +
-						"FROM information_schema.routines " +
-						"WHERE routine_name = :Name AND routine_schema = 'public'";
-					select.Parameters.AddWithValue(":Name", Name);
-					using (var reader = select.ExecuteReader()) {
-						if (reader.Read()) {
-							var definition = reader.IsDBNull(0) ? null : reader.GetString(0);
-							var language = reader.IsDBNull(1) ? null : reader.GetString(1);
-							if (definition != null) { }
-							return
-$@"PROCEDURE ""{Name}"" (
-  {parameters}
-)
-LANGUAGE {language}
-AS $${definition}$$
-";
-						}
-					}
-				}
-			}
-			return null;
 		}
 	}
 }

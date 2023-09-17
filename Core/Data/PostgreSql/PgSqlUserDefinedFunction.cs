@@ -1,18 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace DataDevelop.Data.PostgreSql
 {
 	sealed class PgSqlUserDefinedFunction : UserDefinedFunction
 	{
-		private PgSqlDatabase database;
+		private readonly PgSqlDatabase db;
+		private readonly int oid;
+		private readonly string routineName;
 
-		public PgSqlUserDefinedFunction(PgSqlDatabase database, string name)
+		public PgSqlUserDefinedFunction(PgSqlDatabase database, string specificName, string name)
 			: base(database)
 		{
-			this.database = database;
-			Name = name;
+			this.db = database;
+			var lastIndex = specificName.LastIndexOf('_') + 1;
+			oid = Convert.ToInt32(specificName.Substring(lastIndex, specificName.Length - lastIndex));
+			routineName = name;
+			Name = specificName;
 		}
 
 		public override string GenerateAlterStatement()
@@ -22,58 +27,51 @@ namespace DataDevelop.Data.PostgreSql
 
 		public override string GenerateCreateStatement()
 		{
-			using (var command = database.Connection.CreateCommand()) {
+			using (var command = db.Connection.CreateCommand()) {
 				command.CommandText =
 					"SELECT pg_get_functiondef(p.oid) " +
 					"FROM pg_catalog.pg_proc p " +
-					" LEFT JOIN pg_catalog.pg_namespace n ON n.oid = p.pronamespace " +
-					"WHERE pg_catalog.pg_function_is_visible(p.oid) " +
-					"  AND n.nspname = :schema " +
-					"  AND p.proname = :name ";
-				command.Parameters.AddWithValue(":schema", "public");
-				command.Parameters.AddWithValue(":name", Name);
+					"WHERE p.oid = :oid";
+				command.Parameters.AddWithValue(":oid", oid);
 				return command.ExecuteScalar() as string;
 			}
 		}
 
 		public override string GenerateDropStatement()
 		{
-			return null;
+			var parameterTypes = string.Join(", ", Parameters.Select(i => i.ProviderType));
+			if (parameterTypes.Length > 0) {
+				parameterTypes = $"DROP FUNCTION \"{routineName}\"({parameterTypes})";
+			}
+			return $"DROP FUNCTION \"{routineName}\"";
 		}
 
 		public override string GenerateExecuteStatement()
 		{
-			return null;
+			var parameterTypes = string.Join(", ", Parameters.Select(i => $"?{i.Name}:{i.ParameterType?.Name ?? "String"}"));
+			return $"SELECT \"{routineName}\"({parameterTypes})";
 		}
 
 		protected override void PopulateParameters(IList<Parameter> parametersCollection)
 		{
-			using (var command = database.Connection.CreateCommand()) {
-				command.CommandText =
-					"SELECT pg_catalog.pg_get_function_arguments(p.oid) as \"Arguments\" " +
-					"FROM pg_catalog.pg_proc p " +
-					" LEFT JOIN pg_catalog.pg_namespace n ON n.oid = p.pronamespace " +
-					"WHERE pg_catalog.pg_function_is_visible(p.oid) " +
-					"  AND n.nspname = :schema " +
-					"  AND p.proname = :name ";
-				command.Parameters.AddWithValue(":schema", "public");
-				command.Parameters.AddWithValue(":name", Name);
-				if (command.ExecuteScalar() is string arguments) {
-					var fields = arguments.Split(',');
-					foreach (var field in fields) {
-						var parts = field.Trim().Split(' ');
-						if (parts.Length > 1) {
-							var parameter = new Parameter();
-							if (parts[0] == "OUT") {
-								parameter.IsOutput = true;
-								parameter.Name = parts[1];
-								parameter.ProviderType = string.Join(" ", parts.Skip(2).ToArray());
-							} else {
-								parameter.Name = parts[0];
-								parameter.ProviderType = string.Join(" ", parts.Skip(1).ToArray());
-							}
-							parametersCollection.Add(parameter);
-						}
+			using (var select = db.Connection.CreateCommand()) {
+				select.CommandText =
+					"SELECT " +
+					"  p.parameter_mode, p.parameter_name, p.data_type " +
+					"FROM information_schema.parameters p " +
+					"WHERE" +
+					"  p.specific_name = :Name AND p.specific_schema = 'public' " +
+					"ORDER BY p.ordinal_position";
+				select.Parameters.AddWithValue(":Name", Name);
+				using (var reader = select.ExecuteReader()) {
+					while (reader.Read()) {
+						var parameter = new Parameter {
+							IsOutput = !reader.IsDBNull(0) && reader.GetString(0) == "OUT",
+							Name = reader.GetString(1),
+							ProviderType = reader.GetString(2),
+							ParameterType = PgSqlProvider.MapType(reader.GetString(2))
+						};
+						parametersCollection.Add(parameter);
 					}
 				}
 			}

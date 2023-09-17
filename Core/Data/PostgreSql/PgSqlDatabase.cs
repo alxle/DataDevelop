@@ -7,7 +7,7 @@ namespace DataDevelop.Data.PostgreSql
 {
 	internal sealed class PgSqlDatabase : Database, IDisposable
 	{
-		private string name;
+		private readonly string name;
 
 		public PgSqlDatabase(string name, string connectionString)
 		{
@@ -43,12 +43,10 @@ namespace DataDevelop.Data.PostgreSql
 
 		public override int ExecuteNonQuery(string commandText, DbTransaction transaction)
 		{
-			using (CreateConnectionScope()) {
-				using (var command = Connection.CreateCommand()) {
-					command.Transaction = (NpgsqlTransaction)transaction;
-					command.CommandText = commandText;
-					return command.ExecuteNonQuery();
-				}
+			using (var command = Connection.CreateCommand()) {
+				command.Transaction = (NpgsqlTransaction)transaction;
+				command.CommandText = commandText;
+				return command.ExecuteNonQuery();
 			}
 		}
 
@@ -96,9 +94,8 @@ namespace DataDevelop.Data.PostgreSql
 		{
 			if (IsConnected) {
 				throw new InvalidOperationException("Database must be disconnected in order to change the ConnectionString");
-			} else {
-				Connection.ConnectionString = newConnectionString;
 			}
+			Connection.ConnectionString = newConnectionString;
 		}
 
 		protected override void DoConnect()
@@ -133,14 +130,15 @@ namespace DataDevelop.Data.PostgreSql
 		{
 			using (var command = Connection.CreateCommand()) {
 				command.CommandText =
-					"SELECT routine_name " +
+					"SELECT specific_name, routine_name " +
 					"FROM information_schema.routines " +
 					"WHERE routine_type = 'PROCEDURE' AND routine_schema = 'public' " +
 					"ORDER BY routine_name";
 				using (var reader = command.ExecuteReader()) {
 					while (reader.Read()) {
-						var name = reader.GetString(0);
-						var sp = new PgSqlStoredProcedure(this, name);
+						var specificName = reader.GetString(0);
+						var name = reader.GetString(1);
+						var sp = new PgSqlStoredProcedure(this, specificName, name);
 						storedProceduresCollection.Add(sp);
 					}
 				}
@@ -151,15 +149,16 @@ namespace DataDevelop.Data.PostgreSql
 		{
 			using (var command = Connection.CreateCommand()) {
 				command.CommandText =
-					"SELECT routine_name, data_type " +
+					"SELECT specific_name, routine_name, data_type " +
 					"FROM information_schema.routines " +
 					"WHERE routine_type = 'FUNCTION' AND routine_schema = 'public' " +
 					"ORDER BY routine_name";
 				using (var reader = command.ExecuteReader()) {
 					while (reader.Read()) {
-						var name = reader.GetString(0);
-						var returnType = reader.GetString(1);
-						var fn = new PgSqlUserDefinedFunction(this, name) {
+						var specificName = reader.GetString(0);
+						var routineName = reader.GetString(1);
+						var returnType = reader.GetString(2);
+						var fn = new PgSqlUserDefinedFunction(this, specificName, routineName) {
 							ReturnType = returnType
 						};
 						userDefinedFunctionsCollection.Add(fn);
