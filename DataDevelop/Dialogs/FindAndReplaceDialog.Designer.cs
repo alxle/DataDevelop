@@ -62,8 +62,8 @@
 			// 
 			// txtLookFor
 			// 
-			this.txtLookFor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-						| System.Windows.Forms.AnchorStyles.Right)));
+			this.txtLookFor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.txtLookFor.Location = new System.Drawing.Point(90, 6);
 			this.txtLookFor.Name = "txtLookFor";
 			this.txtLookFor.Size = new System.Drawing.Size(232, 20);
@@ -71,8 +71,8 @@
 			// 
 			// txtReplaceWith
 			// 
-			this.txtReplaceWith.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-						| System.Windows.Forms.AnchorStyles.Right)));
+			this.txtReplaceWith.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.txtReplaceWith.Location = new System.Drawing.Point(90, 32);
 			this.txtReplaceWith.Name = "txtReplaceWith";
 			this.txtReplaceWith.Size = new System.Drawing.Size(232, 20);
@@ -81,6 +81,7 @@
 			// btnFindNext
 			// 
 			this.btnFindNext.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnFindNext.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.btnFindNext.Location = new System.Drawing.Point(247, 81);
 			this.btnFindNext.Name = "btnFindNext";
 			this.btnFindNext.Size = new System.Drawing.Size(75, 23);
@@ -92,6 +93,7 @@
 			// btnReplace
 			// 
 			this.btnReplace.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnReplace.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.btnReplace.Location = new System.Drawing.Point(85, 110);
 			this.btnReplace.Name = "btnReplace";
 			this.btnReplace.Size = new System.Drawing.Size(75, 23);
@@ -103,6 +105,7 @@
 			// btnReplaceAll
 			// 
 			this.btnReplaceAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnReplaceAll.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.btnReplaceAll.Location = new System.Drawing.Point(166, 110);
 			this.btnReplaceAll.Name = "btnReplaceAll";
 			this.btnReplaceAll.Size = new System.Drawing.Size(75, 23);
@@ -134,6 +137,7 @@
 			// btnHighlightAll
 			// 
 			this.btnHighlightAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnHighlightAll.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.btnHighlightAll.Location = new System.Drawing.Point(105, 110);
 			this.btnHighlightAll.Name = "btnHighlightAll";
 			this.btnHighlightAll.Size = new System.Drawing.Size(136, 23);
@@ -147,6 +151,7 @@
 			// 
 			this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.btnCancel.Location = new System.Drawing.Point(247, 110);
 			this.btnCancel.Name = "btnCancel";
 			this.btnCancel.Size = new System.Drawing.Size(75, 23);
@@ -158,6 +163,7 @@
 			// btnFindPrevious
 			// 
 			this.btnFindPrevious.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnFindPrevious.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.btnFindPrevious.Location = new System.Drawing.Point(157, 81);
 			this.btnFindPrevious.Name = "btnFindPrevious";
 			this.btnFindPrevious.Size = new System.Drawing.Size(84, 23);

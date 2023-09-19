@@ -12,38 +12,25 @@ using System.IO;
 
 namespace DataDevelop.Dialogs
 {
-	static class Globals
-	{
-		public static int InRange(int x, int lo, int hi)
-		{
-			Debug.Assert(lo <= hi);
-			return x < lo ? lo : (x > hi ? hi : x);
-		}
-		public static bool IsInRange(int x, int lo, int hi)
-		{
-			return x >= lo && x <= hi;
-		}
-		public static Color HalfMix(Color one, Color two)
-		{
-			return Color.FromArgb(
-				(one.A + two.A) >> 1,
-				(one.R + two.R) >> 1,
-				(one.G + two.G) >> 1,
-				(one.B + two.B) >> 1);
-		}
-	}
-
-	delegate TResult Func<TResult>();
-	delegate TResult Func<TArg1, TResult>(TArg1 a1);
-	delegate TResult Func<TArg1, TArg2, TResult>(TArg1 a1, TArg2 a2);
-	delegate TResult Func<TArg1, TArg2, TArg3, TResult>(TArg1 a1, TArg2 a2, TArg3 a3);
-
 	public partial class FindAndReplaceDialog : Form
 	{
 		public FindAndReplaceDialog()
 		{
 			InitializeComponent();
 			_search = new TextEditorSearcher();
+			if (MainForm.DarkMode) {
+				this.UseImmersiveDarkMode();
+				BackColor = VisualStyles.DarkThemeColors.Background;
+				ForeColor = VisualStyles.DarkThemeColors.TextColor;
+
+				txtLookFor.BorderStyle = BorderStyle.FixedSingle;
+				txtLookFor.ForeColor = VisualStyles.DarkThemeColors.TextColor;
+				txtLookFor.BackColor = VisualStyles.DarkThemeColors.Control;
+
+				txtReplaceWith.BorderStyle = BorderStyle.FixedSingle;
+				txtReplaceWith.ForeColor = VisualStyles.DarkThemeColors.TextColor;
+				txtReplaceWith.BackColor = VisualStyles.DarkThemeColors.Control;
+			}
 		}
 
 		TextEditorSearcher _search;
@@ -498,4 +485,30 @@ namespace DataDevelop.Dialogs
 
 		public IList<TextMarker> Markers { get { return _markers.AsReadOnly(); } }
 	}
+
+	static class Globals
+	{
+		public static int InRange(int x, int lo, int hi)
+		{
+			Debug.Assert(lo <= hi);
+			return x < lo ? lo : (x > hi ? hi : x);
+		}
+		public static bool IsInRange(int x, int lo, int hi)
+		{
+			return x >= lo && x <= hi;
+		}
+		public static Color HalfMix(Color one, Color two)
+		{
+			return Color.FromArgb(
+				(one.A + two.A) >> 1,
+				(one.R + two.R) >> 1,
+				(one.G + two.G) >> 1,
+				(one.B + two.B) >> 1);
+		}
+	}
+
+	delegate TResult Func<TResult>();
+	delegate TResult Func<TArg1, TResult>(TArg1 a1);
+	delegate TResult Func<TArg1, TArg2, TResult>(TArg1 a1, TArg2 a2);
+	delegate TResult Func<TArg1, TArg2, TArg3, TResult>(TArg1 a1, TArg2 a2, TArg3 a3);
 }

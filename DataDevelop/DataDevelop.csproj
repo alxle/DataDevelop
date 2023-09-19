@@ -169,7 +169,9 @@
     <Compile Include="Dialogs\BaseDialog.Designer.cs">
       <DependentUpon>BaseDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\FindAndReplaceDialog.cs" />
+    <Compile Include="Dialogs\FindAndReplaceDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Dialogs\FindAndReplaceDialog.designer.cs">
       <DependentUpon>FindAndReplaceDialog.cs</DependentUpon>
     </Compile>
