@@ -365,6 +365,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VisualStyles\DarkThemeColors.cs" />
     <Compile Include="VisualStyles\VS2012ColorTable.cs" />
     <Compile Include="VisualStyles\VS2012ToolStripRenderer.cs" />
     <Compile Include="VisualStyles\VS2015ColorTable.cs" />

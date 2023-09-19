@@ -42,26 +42,26 @@ namespace DataDevelop
 
 		public void SetDarkMode()
 		{
-			BackgroundColor = Color.FromArgb(64, 64, 64);
-			GridColor = Color.FromArgb(102, 102, 102);
+			BackgroundColor = VisualStyles.DarkThemeColors.Background;
+			GridColor = VisualStyles.DarkThemeColors.BorderLight;
 			BorderStyle = BorderStyle.FixedSingle;
 			ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
 			RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
 
 			DefaultCellStyle = new DataGridViewCellStyle {
-				BackColor = Color.FromArgb(31, 31, 31),
-				ForeColor = Color.FromArgb(251, 251, 251),
+				BackColor = VisualStyles.DarkThemeColors.Background,
+				ForeColor = VisualStyles.DarkThemeColors.TextColor,
 			};
 
 			EnableHeadersVisualStyles = false;
 			ColumnHeadersDefaultCellStyle = new DataGridViewCellStyle {
-				BackColor = Color.FromArgb(56, 56, 56),
-				ForeColor = Color.FromArgb(251, 251, 251),
+				BackColor = VisualStyles.DarkThemeColors.CellBackColor,
+				ForeColor = VisualStyles.DarkThemeColors.TextColor,
 			};
 			RowHeadersDefaultCellStyle = ColumnHeadersDefaultCellStyle;
 
-			NullCellStyle.ForeColor = Color.FromArgb(251, 251, 251);
-			NullCellStyle.BackColor = Color.FromArgb(11, 45, 92);
+			NullCellStyle.ForeColor = VisualStyles.DarkThemeColors.TextColor;
+			NullCellStyle.BackColor = VisualStyles.DarkThemeColors.NullBackColor;
 		}
 
 		private DataGridViewCellStyle GetDefaultNullStyle()

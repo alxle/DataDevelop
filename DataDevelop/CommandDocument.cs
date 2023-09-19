@@ -68,11 +68,11 @@ namespace DataDevelop
 			if (MainForm.DarkMode) {
 				this.UseImmersiveDarkMode();
 				dataGridView.SetDarkMode();
-				statusStrip.ForeColor = Color.FromArgb(250, 250, 250);
-				statusStrip.BackColor = Color.FromArgb(46, 46, 46);
+				statusStrip.ForeColor = VisualStyles.DarkThemeColors.TextColor;
+				statusStrip.BackColor = VisualStyles.DarkThemeColors.StatusBackColor;
 
-				messageTextBox.ForeColor  = Color.FromArgb(250, 250, 250);
-				messageTextBox.BackColor = Color.FromArgb(31, 31, 31);
+				messageTextBox.ForeColor = VisualStyles.DarkThemeColors.TextColor;
+				messageTextBox.BackColor = VisualStyles.DarkThemeColors.Background;
 				messageTextBox.BorderStyle = BorderStyle.FixedSingle;
 			}
 		}

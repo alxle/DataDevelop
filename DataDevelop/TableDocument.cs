@@ -56,7 +56,7 @@ namespace DataDevelop
 			if (MainForm.DarkMode) {
 				this.UseImmersiveDarkMode();
 				dataGridView.SetDarkMode();
-				loadingPanel.BackColor = Color.FromArgb(61, 61, 61);
+				loadingPanel.BackColor = VisualStyles.DarkThemeColors.Control;
 			}
 		}
 

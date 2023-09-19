@@ -19,7 +19,7 @@ namespace DataDevelop.UIComponents
 			textEditor.Font = Properties.Settings.Default.TextVisualizerFont;
 			if (MainForm.DarkMode) {
 				this.UseImmersiveDarkMode();
-				statusStrip.BackColor = Color.FromArgb(61, 61, 61);
+				statusStrip.BackColor = VisualStyles.DarkThemeColors.StatusBackColor;
 			}
 		}
 

@@ -63,7 +63,7 @@ namespace DataDevelop
 				ToolStripManager.VisualStylesEnabled = true;
 				ToolStripManager.Renderer = new VisualStyles.DarkToolStripRenderer();
 				darkMode = true;
-				dockPanel.BackColor = Color.FromArgb(31, 31, 31);
+				dockPanel.BackColor = VisualStyles.DarkThemeColors.Background;
 			}
 		}
 

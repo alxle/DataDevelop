@@ -15,10 +15,10 @@ namespace DataDevelop
 			InitializeComponent();
 			if (MainForm.DarkMode) {
 				this.UseImmersiveDarkMode();
-				propertyGrid.ViewBackColor = Color.FromArgb(31, 31, 31);
-				propertyGrid.ViewForeColor = Color.FromArgb(250, 250, 250);
-				propertyGrid.ViewBorderColor = Color.FromArgb(46, 46, 46);
-				propertyGrid.LineColor = Color.FromArgb(46, 46, 46);
+				propertyGrid.ViewBackColor = VisualStyles.DarkThemeColors.Background;
+				propertyGrid.ViewForeColor = VisualStyles.DarkThemeColors.TextColor;
+				propertyGrid.ViewBorderColor = VisualStyles.DarkThemeColors.BorderDark;
+				propertyGrid.LineColor = VisualStyles.DarkThemeColors.BorderDark;
 			}
 		}
 

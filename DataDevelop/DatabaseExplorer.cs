@@ -18,8 +18,8 @@ namespace DataDevelop
 			InitializeComponent();
 			if (MainForm.DarkMode) {
 				this.UseImmersiveDarkMode();
-				treeView.ForeColor = Color.FromArgb(250, 250, 250);
-				treeView.BackColor = Color.FromArgb(31, 31, 31);
+				treeView.ForeColor = VisualStyles.DarkThemeColors.TextColor;
+				treeView.BackColor = VisualStyles.DarkThemeColors.Background;
 			}
 		}
 
