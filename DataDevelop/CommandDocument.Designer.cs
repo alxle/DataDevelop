@@ -30,6 +30,7 @@
 			this.components = new System.ComponentModel.Container();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CommandDocument));
 			this.textEditorControl = new DataDevelop.UIComponents.TextEditor();
 			this.splitContainer = new System.Windows.Forms.SplitContainer();
@@ -199,6 +200,10 @@
 			this.dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
 			this.dataGridView.Location = new System.Drawing.Point(3, 3);
 			this.dataGridView.Name = "dataGridView";
+			dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Info;
+			dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic);
+			dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.InfoText;
+			this.dataGridView.NullCellStyle = dataGridViewCellStyle3;
 			this.dataGridView.ReadOnly = true;
 			this.dataGridView.Size = new System.Drawing.Size(459, 137);
 			this.dataGridView.StartRowNumber = 1;
@@ -424,7 +429,7 @@
 			this.findToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.QuickFind_16x;
 			this.findToolStripMenuItem.Name = "findToolStripMenuItem";
 			this.findToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-			this.findToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.findToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
 			this.findToolStripMenuItem.Text = "Find...";
 			this.findToolStripMenuItem.Click += new System.EventHandler(this.Find);
 			// 
@@ -433,14 +438,14 @@
 			this.replaceToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.QuickReplace_16x;
 			this.replaceToolStripMenuItem.Name = "replaceToolStripMenuItem";
 			this.replaceToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
-			this.replaceToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.replaceToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
 			this.replaceToolStripMenuItem.Text = "Replace...";
 			this.replaceToolStripMenuItem.Click += new System.EventHandler(this.Replace);
 			// 
 			// removeAllTabsToolStripMenuItem
 			// 
 			this.removeAllTabsToolStripMenuItem.Name = "removeAllTabsToolStripMenuItem";
-			this.removeAllTabsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.removeAllTabsToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
 			this.removeAllTabsToolStripMenuItem.Text = "Remove all tabs";
 			this.removeAllTabsToolStripMenuItem.Click += new System.EventHandler(this.RemoveAllTabs);
 			// 

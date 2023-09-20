@@ -5,14 +5,15 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace DataDevelop
 {
-	using System.Linq;
 	using Data;
+	using DataDevelop.Properties;
 	using Dialogs;
 	using IO;
 	using Printing;
@@ -43,6 +44,8 @@ namespace DataDevelop
 		private Stopwatch stopwatch = new Stopwatch();
 		private IList<IDataParameter> parameters = new List<IDataParameter>();
 		FindAndReplaceDialog findDialog = new FindAndReplaceDialog();
+		private QueryHistoryManager queryHistory;
+		private long? lastQueryId = null;
 
 		public CommandDocument(Database database)
 		{
@@ -74,6 +77,9 @@ namespace DataDevelop
 				messageTextBox.ForeColor = VisualStyles.DarkThemeColors.TextColor;
 				messageTextBox.BackColor = VisualStyles.DarkThemeColors.Background;
 				messageTextBox.BorderStyle = BorderStyle.FixedSingle;
+			}
+			if (Settings.Default.QueryHistoryEnabled) {
+				queryHistory = new QueryHistoryManager(Path.Combine(SettingsManager.DataDirectory, "DataDevelop.db"));
 			}
 		}
 
@@ -170,6 +176,9 @@ namespace DataDevelop
 					dataGridView.DataSource = null;
 					ClearMessages();
 					statusLabel.Text = "Executing...";
+
+					lastQueryId = queryHistory?.Insert(database.Name, args.RawCommandText);
+
 					EnableUI(false);
 					stopwatch.Reset();
 					executingTimer.Start();
@@ -237,7 +246,6 @@ namespace DataDevelop
 						commandType = CommandType.NonQuery;
 					}
 				}
-
 				if (args.ExecuteEach) {
 					var reader = new StringReader(args.RawCommandText);
 					var lines = new StringBuilder();
@@ -288,13 +296,15 @@ namespace DataDevelop
 		{
 			executingTimer.Stop();
 			ShowFullElapsedTime(stopwatch.Elapsed);
-
 			if (e.Error != null) {
 				var errorMessage = new StringBuilder();
 				var error = e.Error;
 				do {
 					errorMessage.AppendLine(error.Message);
 				} while ((error = error.InnerException) != null);
+				if (lastQueryId != null) {
+					queryHistory.Update(lastQueryId.Value, stopwatch.Elapsed, "Error", errorMessage.ToString());
+				}
 				ShowMessage(errorMessage.ToString());
 				statusLabel.Text = "Error.";
 			} else if (e.Cancelled) { // Aborted
@@ -302,6 +312,9 @@ namespace DataDevelop
 				statusLabel.Text = "Aborted.";
 				this.database.Reconnect();
 				messagesTabPage.Select();
+				if (lastQueryId != null) {
+					queryHistory.Update(lastQueryId.Value, stopwatch.Elapsed, "Cancelled");
+				}
 			} else {
 				CommandResult result = e.Result as CommandResult;
 				if (result != null) {
@@ -317,7 +330,9 @@ namespace DataDevelop
 						messagesTabPage.Select();
 					}
 				}
-
+				if (lastQueryId != null) {
+					queryHistory.Update(lastQueryId.Value, stopwatch.Elapsed, "Success");
+				}
 			}
 			outputTabControl.SelectTab((dataGridView.DataSource == null) ? messagesTabPage : resultsTabPage);
 			AppendMessage(String.Format("Elapsed time: {0}", stopwatch.Elapsed));

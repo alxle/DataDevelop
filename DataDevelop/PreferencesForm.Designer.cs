@@ -52,6 +52,7 @@ namespace DataDevelop
 			this.editorFontTextBox = new System.Windows.Forms.TextBox();
 			this.label4 = new System.Windows.Forms.Label();
 			this.resetButton = new System.Windows.Forms.Button();
+			this.queryHistoryCheckBox = new System.Windows.Forms.CheckBox();
 			this.tabControl1.SuspendLayout();
 			this.generalTab.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.rowsPerPageNumericUpDown)).BeginInit();
@@ -157,6 +158,7 @@ namespace DataDevelop
 			// 
 			// generalTab
 			// 
+			this.generalTab.Controls.Add(this.queryHistoryCheckBox);
 			this.generalTab.Controls.Add(this.rowsPerPageNumericUpDown);
 			this.generalTab.Controls.Add(this.label2);
 			this.generalTab.Controls.Add(this.label3);
@@ -327,6 +329,18 @@ namespace DataDevelop
 			this.resetButton.UseVisualStyleBackColor = true;
 			this.resetButton.Click += new System.EventHandler(this.resetButton_Click);
 			// 
+			// queryHistoryCheckBox
+			// 
+			this.queryHistoryCheckBox.AutoSize = true;
+			this.queryHistoryCheckBox.Checked = global::DataDevelop.Properties.Settings.Default.QueryHistoryEnabled;
+			this.queryHistoryCheckBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::DataDevelop.Properties.Settings.Default, "QueryHistoryEnabled", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+			this.queryHistoryCheckBox.Location = new System.Drawing.Point(247, 22);
+			this.queryHistoryCheckBox.Name = "queryHistoryCheckBox";
+			this.queryHistoryCheckBox.Size = new System.Drawing.Size(125, 17);
+			this.queryHistoryCheckBox.TabIndex = 11;
+			this.queryHistoryCheckBox.Text = "Enable Query History";
+			this.queryHistoryCheckBox.UseVisualStyleBackColor = true;
+			// 
 			// PreferencesForm
 			// 
 			this.AcceptButton = this.okButton;
@@ -383,5 +397,6 @@ namespace DataDevelop
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.Label requiresRestartLabel;
+		private System.Windows.Forms.CheckBox queryHistoryCheckBox;
 	}
 }
