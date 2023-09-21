@@ -1,45 +1,43 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DataDevelop.Data;
+using DataDevelop.Data.SQLite;
 
 namespace DataDevelop
 {
 	internal sealed class QueryHistoryManager : IDisposable
 	{
-		readonly Database db;
-		readonly Table table;
+		readonly SQLiteDatabase db;
+		readonly SQLiteTable table;
 		readonly DbDataAdapter adapter;
 		readonly DataTable data;
 
 		public QueryHistoryManager(string databaseFile)
 		{
-			var provider = DbProvider.GetProvider("SQLite");
+			var provider = SQLiteProvider.Instance;
 			if (!File.Exists(databaseFile)) {
 				provider.CreateDatabaseFile(databaseFile);
 			}
-			db = provider.CreateDatabase("QueryHistory", $"Data Source=\"{databaseFile}\"");
+			db = (SQLiteDatabase)provider.CreateDatabase("QueryHistory", $"Data Source=\"{databaseFile}\"");
 			db.Connect();
-			table = db.GetTable("QueryHistory");
+			const string tableName = "QueryHistory";
+			table = db.GetTable(tableName);
 			if (table == null) {
-				db.ExecuteNonQuery("""
-					CREATE TABLE QueryHistory (
-					  Id integer primary key,
-					  DbName text,
-					  QueryText text,
-					  QueryDate datetime,
-					  Status text,
-					  ElapsedSeconds real,
-					  ErrorMessage text
-					);
-					""");
+				db.CreateTable(tableName,
+					new Column("Id") { InPrimaryKey = true, IsIdentity = true },
+					new Column("DbName", typeof(string)),
+					new Column("DbProvider", typeof(string)),
+					new Column("QueryText", typeof(string)),
+					new Column("QueryDate", typeof(DateTime)),
+					new Column("Status", typeof(string)),
+					new Column("ElapsedSeconds", typeof(double)),
+					new Column("ErrorMessage", typeof(string))
+				);
 				db.RefreshTables();
-				table = db.GetTable("QueryHistory");
+				table = db.GetTable(tableName);
 			}
 			adapter = db.CreateAdapter(table);
 			data = table.GetData(0, 20);
@@ -55,17 +53,17 @@ namespace DataDevelop
 			}
 		}
 
-		public long Insert(string dbName, string queryText)
+		public long Insert(string dbName, string dbProvider, string queryText)
 		{
 			var row = data.NewRow();
 			row["DbName"] = dbName;
+			row["DbProvider"] = dbProvider;
 			row["QueryText"] = queryText;
 			row["QueryDate"] = DateTime.Now;
 			row["Status"] = "Executing";
 			data.Rows.Add(row);
 			adapter.Update(data);
-			var conn = (System.Data.SQLite.SQLiteConnection)adapter.InsertCommand.Connection;
-			var id = conn.LastInsertRowId;
+			var id = table.GetLastInsertRowId();
 			row["Id"] = id;
 			row.AcceptChanges();
 			return id;

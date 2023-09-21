@@ -9,10 +9,14 @@ namespace DataDevelop.Data
 		private string providerType = string.Empty;
 		private Type type = typeof(object);
 
-		public Column(Table table)
+		public Column(Table table, string name = null, Type type = null)
 		{
 			Table = table;
+			Name = name;
+			Type = type;
 		}
+
+		public Column(string name = null, Type type = null) : this(null, name, type) { }
 
 		[Browsable(false)]
 		public Table Table { get; set; }
@@ -34,7 +38,7 @@ namespace DataDevelop.Data
 		public Type Type
 		{
 			get => type;
-			set => type = value ?? throw new ArgumentNullException(nameof(value));
+			set => type = value;
 		}
 	}
 }

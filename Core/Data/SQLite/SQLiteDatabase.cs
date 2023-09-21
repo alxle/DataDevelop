@@ -47,16 +47,16 @@ namespace DataDevelop.Data.SQLite
 					filter.WriteColumnsProjection(selectSql);
 					selectSql.Append(" FROM ");
 					selectSql.Append(table.QuotedName);
-					
+
 					adapter = new SQLiteDataAdapter(selectSql.ToString(), Connection);
 					builder = new SQLiteCommandBuilder(adapter);
 					updateCommand = builder.GetUpdateCommand();
 				}
 				var insertCommand = builder.GetInsertCommand();
-				
+
 				foreach (var column in table.Columns) {
 					if (column.IsIdentity) {
-						insertCommand.CommandText = insertCommand.CommandText + "; SELECT @RowId = last_insert_rowid()";
+						insertCommand.CommandText += "; SELECT @RowId = last_insert_rowid()";
 						insertCommand.UpdatedRowSource = UpdateRowSource.OutputParameters;
 						var parameter = new SQLiteParameter {
 							ParameterName = "@RowId",
@@ -72,7 +72,7 @@ namespace DataDevelop.Data.SQLite
 				adapter.UpdateCommand = updateCommand;
 				adapter.InsertCommand = insertCommand;
 				adapter.DeleteCommand = builder.GetDeleteCommand();
-				
+
 			}
 			return adapter;
 		}
@@ -157,7 +157,7 @@ namespace DataDevelop.Data.SQLite
 		protected override void PopulateTables(DbObjectCollection<Table> tablesCollection)
 		{
 			var tables = Connection.GetSchema("Tables");
-				foreach (DataRow row in tables.Rows) {
+			foreach (DataRow row in tables.Rows) {
 				var table = new SQLiteTable(this) {
 					Name = row["TABLE_NAME"].ToString()
 				};
@@ -177,6 +177,17 @@ namespace DataDevelop.Data.SQLite
 		protected override void PopulateStoredProcedures(DbObjectCollection<StoredProcedure> storedProceduresCollection)
 		{
 			throw new NotSupportedException("Stored Procedures are not supported.");
+		}
+
+		public new SQLiteTable GetTable(string name)
+		{
+			return (SQLiteTable)base.GetTable(name);
+		}
+
+		public void CreateTable(string tableName, params Column[] columns)
+		{
+			var create = SQLiteProvider.GenerateCreateTableScript(tableName, columns);
+			ExecuteNonQuery(create);
 		}
 	}
 }

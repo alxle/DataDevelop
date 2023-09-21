@@ -10,9 +10,9 @@ namespace DataDevelop.Data.SQLite
 	public sealed class SQLiteTable : Table
 	{
 		private bool isReadOnly;
-		
+
 		private bool isView;
-		
+
 		public SQLiteTable(SQLiteDatabase database)
 			: base(database)
 		{
@@ -146,11 +146,11 @@ namespace DataDevelop.Data.SQLite
 		{
 			var select = new StringBuilder();
 			select.Append("SELECT ");
-			
+
 			if (!IsView && !HasPrimaryKey) {
 				select.Append("RowId, ");
 			}
-			
+
 			filter.WriteColumnsProjection(select);
 			select.Append(" FROM ");
 			select.Append(QuotedName);
@@ -162,7 +162,7 @@ namespace DataDevelop.Data.SQLite
 		}
 
 		public override DataTable GetData(int startIndex, int count, TableFilter filter, TableSort sort)
-		{		
+		{
 			var sql = new StringBuilder();
 			sql.Append("SELECT ");
 
@@ -261,6 +261,11 @@ namespace DataDevelop.Data.SQLite
 				return "DROP VIEW " + QuotedName;
 			}
 			return "DROP TABLE " + QuotedName;
+		}
+
+		public long GetLastInsertRowId()
+		{
+			return Connection.LastInsertRowId;
 		}
 	}
 }
