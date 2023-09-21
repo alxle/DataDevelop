@@ -125,17 +125,7 @@ namespace DataDevelop
 			progressBar.Style = progressBar.Visible ? ProgressBarStyle.Marquee : ProgressBarStyle.Blocks;
 		}
 
-		public string SelectedText
-		{
-			get
-			{
-				if (textEditorControl.ActiveTextAreaControl.SelectionManager.HasSomethingSelected) {
-					return textEditorControl.ActiveTextAreaControl.SelectionManager.SelectedText;
-				} else {
-					return textEditorControl.Text;
-				}
-			}
-		}
+		public string SelectedText => textEditorControl.SelectedText;
 
 		private void Execute(CommandType commandType)
 		{
