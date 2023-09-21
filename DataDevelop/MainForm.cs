@@ -18,6 +18,7 @@ namespace DataDevelop
 		private readonly DatabaseExplorer databaseExplorer;
 		private readonly PropertiesToolbox propertiesToolbox;
 		private readonly OutputWindow outputWindow;
+		private readonly QueryHistoryWindow queryHistory;
 
 		private MainForm()
 		{
@@ -27,6 +28,7 @@ namespace DataDevelop
 			assemblyExplorer = new AssemblyExplorer();
 			propertiesToolbox = new PropertiesToolbox();
 			outputWindow = new OutputWindow();
+			queryHistory = new QueryHistoryWindow();
 			databaseExplorer.ShowProperties += ShowProperties;
 			assemblyExplorer.ShowProperties += ShowProperties;
 		}
@@ -86,6 +88,8 @@ namespace DataDevelop
 								return propertiesToolbox;
 							if (persistString == typeof(OutputWindow).ToString())
 								return outputWindow;
+							if (persistString == typeof(QueryHistoryWindow).ToString())
+								return queryHistory;
 							return null;
 						});
 				} catch (Exception ex) {
@@ -130,6 +134,7 @@ namespace DataDevelop
 			databaseExplorer.Show();
 			propertiesToolbox.Show(databaseExplorer.Pane, DockAlignment.Bottom, 0.25);
 			ShowToolbox(outputWindow, DockState.DockBottomAutoHide);
+			ShowToolbox(queryHistory, DockState.DockBottomAutoHide);
 		}
 
 		private void ShowToolbox(Toolbox toolbox, DockState dockState)
@@ -196,7 +201,12 @@ namespace DataDevelop
 
 		private void OutputWindowToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ShowToolbox(outputWindow, DockState.DockBottomAutoHide);
+			ShowToolbox(outputWindow, DockState.DockBottom);
+		}
+
+		private void QueryHistoryWindowToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ShowToolbox(queryHistory, DockState.DockBottom);
 		}
 
 		private void ExitToolStripMenuItem_Click(object sender, EventArgs e)

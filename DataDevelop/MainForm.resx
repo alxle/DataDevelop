@@ -166,10 +166,10 @@
   </data>
   <data name="closeAllDocumentToolStripMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVDhPtZLbDcAgCACdjT1ZguH8paEJTUGIQtOPE0Q9
-        H3Ew8yeWwpyTK4QCADjCCN7WE0KB3yHDCKSpEArUvON/geSI+PQl9+M+LieQPhHdRGM+hleQWlb3sX0C
-        pf0G+n/CK2TIXKUt0IVGUMEKeFwY8tJTnVH21gAAAABJRU5ErkJggg==
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wgAADsIBFShKgAAAAHFJREFUOE+1ktsNwCAIAJ2NPVmC4fyloQlNQYhC048TRD0fcTDzJ5bCnJMrhAIA
+        OMII3tYTQoHfIcMIpKkQCtS843+B5Ij49CX34z4uJ5A+Ed1EYz6GV5BaVvexfQKl/Qb6f8IrZMhcpS3Q
+        hUZQwQp4XBjy0lOdUfbWAAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

@@ -176,6 +176,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="QueryHistoryWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="QueryHistoryWindow.Designer.cs">
+      <DependentUpon>QueryHistoryWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Services\QueryHistoryManager.cs" />
     <Compile Include="Services\DatabasesManager.cs" />
     <Compile Include="OutputWindow.cs">
@@ -395,6 +401,9 @@
     <EmbeddedResource Include="PreferencesForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>PreferencesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryHistoryWindow.resx">
+      <DependentUpon>QueryHistoryWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ScriptDocument.resx">
       <DependentUpon>ScriptDocument.cs</DependentUpon>

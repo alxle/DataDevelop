@@ -13,10 +13,10 @@ using System.Windows.Forms;
 namespace DataDevelop
 {
 	using Data;
-	using DataDevelop.Properties;
 	using Dialogs;
 	using IO;
 	using Printing;
+	using Properties;
 	using UIComponents;
 
 	public partial class CommandDocument : Document, IDbObject
@@ -78,9 +78,7 @@ namespace DataDevelop
 				messageTextBox.BackColor = VisualStyles.DarkThemeColors.Background;
 				messageTextBox.BorderStyle = BorderStyle.FixedSingle;
 			}
-			if (Settings.Default.QueryHistoryEnabled) {
-				queryHistory = new QueryHistoryManager(Path.Combine(SettingsManager.DataDirectory, "DataDevelop.db"));
-			}
+			queryHistory = QueryHistoryManager.Instance;
 		}
 
 		public string CommandText
@@ -167,7 +165,9 @@ namespace DataDevelop
 					ClearMessages();
 					statusLabel.Text = "Executing...";
 
-					lastQueryId = queryHistory?.Insert(database.Name, args.RawCommandText);
+					if (Settings.Default.QueryHistoryEnabled) {
+						lastQueryId = queryHistory?.Insert(database.Name, database.Provider.Name, args.RawCommandText);
+					}
 
 					EnableUI(false);
 					stopwatch.Reset();

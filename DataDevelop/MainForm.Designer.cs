@@ -55,6 +55,7 @@
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
+			this.queryHistoryWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -116,6 +117,7 @@
             this.propertiesWindowToolStripMenuItem,
             this.assemblyExplorerToolStripMenuItem,
             this.outputWindowToolStripMenuItem,
+            this.queryHistoryWindowToolStripMenuItem,
             this.toolStripSeparator1,
             this.pythonConsoleToolStripMenuItem,
             this.javascriptConsoleToolStripMenuItem,
@@ -242,7 +244,7 @@
 			// 
 			this.documentationToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Web;
 			this.documentationToolStripMenuItem.Name = "documentationToolStripMenuItem";
-			this.documentationToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.documentationToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
 			this.documentationToolStripMenuItem.Text = "&Documentation";
 			this.documentationToolStripMenuItem.Click += new System.EventHandler(this.DocumentationToolStripMenuItem_Click);
 			// 
@@ -250,19 +252,19 @@
 			// 
 			this.checkForUpdatesToolStripMenuItem.Enabled = false;
 			this.checkForUpdatesToolStripMenuItem.Name = "checkForUpdatesToolStripMenuItem";
-			this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
 			this.checkForUpdatesToolStripMenuItem.Text = "Check for updates...";
 			this.checkForUpdatesToolStripMenuItem.Visible = false;
 			// 
 			// toolStripSeparator3
 			// 
 			this.toolStripSeparator3.Name = "toolStripSeparator3";
-			this.toolStripSeparator3.Size = new System.Drawing.Size(177, 6);
+			this.toolStripSeparator3.Size = new System.Drawing.Size(176, 6);
 			// 
 			// aboutToolStripMenuItem
 			// 
 			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
 			this.aboutToolStripMenuItem.Text = "&About DataDevelop";
 			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItem_Click);
 			// 
@@ -276,6 +278,13 @@
 			this.dockPanel.Name = "dockPanel";
 			this.dockPanel.Size = new System.Drawing.Size(604, 377);
 			this.dockPanel.TabIndex = 2;
+			// 
+			// queryHistoryWindowToolStripMenuItem
+			// 
+			this.queryHistoryWindowToolStripMenuItem.Name = "queryHistoryWindowToolStripMenuItem";
+			this.queryHistoryWindowToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+			this.queryHistoryWindowToolStripMenuItem.Text = "Query History";
+			this.queryHistoryWindowToolStripMenuItem.Click += new System.EventHandler(this.QueryHistoryWindowToolStripMenuItem_Click);
 			// 
 			// MainForm
 			// 
@@ -328,6 +337,7 @@
 		private System.Windows.Forms.ToolStripMenuItem javascriptConsoleToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem closeAllButCurrentToolStripMenuItem;
 		private WeifenLuo.WinFormsUI.Docking.DockPanel dockPanel;
+		private System.Windows.Forms.ToolStripMenuItem queryHistoryWindowToolStripMenuItem;
 	}
 }
 

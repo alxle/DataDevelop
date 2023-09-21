@@ -10,12 +10,13 @@ namespace DataDevelop
 {
 	internal sealed class QueryHistoryManager : IDisposable
 	{
+		static QueryHistoryManager instance;
 		readonly SQLiteDatabase db;
 		readonly SQLiteTable table;
 		readonly DbDataAdapter adapter;
 		readonly DataTable data;
 
-		public QueryHistoryManager(string databaseFile)
+		private QueryHistoryManager(string databaseFile)
 		{
 			var provider = SQLiteProvider.Instance;
 			if (!File.Exists(databaseFile)) {
@@ -40,8 +41,13 @@ namespace DataDevelop
 				table = db.GetTable(tableName);
 			}
 			adapter = db.CreateAdapter(table);
-			data = table.GetData(0, 20);
+			adapter.SelectCommand.CommandText += " ORDER BY [Id] DESC LIMIT 50";
+			data = new DataTable();
+			adapter.Fill(data);
 		}
+
+		public static QueryHistoryManager Instance 
+			=> instance ?? (instance = new QueryHistoryManager(Path.Combine(SettingsManager.DataDirectory, "DataDevelop.db")));
 
 		public DataTable Data => data;
 
@@ -83,6 +89,18 @@ namespace DataDevelop
 			}
 			row.EndEdit();
 			return adapter.Update(data);
+		}
+
+		public void Refresh()
+		{
+			data.Rows.Clear();
+			adapter.Fill(data);
+		}
+
+		internal void SaveChanges()
+		{
+			adapter.Update(data);
+			data.AcceptChanges();
 		}
 	}
 }
