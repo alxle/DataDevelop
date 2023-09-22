@@ -26,29 +26,12 @@ namespace DataDevelop.Data.MySql
 			isView = value;
 		}
 
-		public override bool Rename(string newName)
+		public override void Rename(string newName)
 		{
 			using (var alter = Connection.CreateCommand()) {
 				alter.CommandText = "RENAME TABLE `" + Name + "` TO `" + newName + "`";
-				try {
-					alter.ExecuteNonQuery();
-					return true;
-				} catch (MySqlException) {
-					return false;
-				}
-			}
-		}
-
-		public override bool Delete()
-		{
-			using (var drop = Connection.CreateCommand()) {
-				drop.CommandText = "DROP TABLE " + QuotedName;
-				try {
-					drop.ExecuteNonQuery();
-					return true;
-				} catch (MySqlException) {
-					return false;
-				}
+				alter.ExecuteNonQuery();
+				Name = newName;
 			}
 		}
 

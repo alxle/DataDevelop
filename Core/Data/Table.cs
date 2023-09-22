@@ -96,20 +96,7 @@ namespace DataDevelop.Data
 			indexesCollection = null;
 		}
 
-		public abstract bool Rename(string newName);
-
-		public virtual bool Delete()
-		{
-			using (var create = Database.CreateCommand()) {
-				create.CommandText = "DROP " + (IsView ? "VIEW " : "TABLE ") + QuotedName;
-				try {
-					create.ExecuteNonQuery();
-					return true;
-				} catch {
-					return false;
-				}
-			}
-		}
+		public abstract void Rename(string newName);
 
 		public int GetRowCount()
 		{

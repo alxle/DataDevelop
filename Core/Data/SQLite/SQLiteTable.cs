@@ -124,21 +124,16 @@ namespace DataDevelop.Data.SQLite
 			}
 		}
 
-		public override bool Rename(string newName)
+		public override void Rename(string newName)
 		{
 			if (isView) {
-				return false;
+				throw new NotSupportedException("Renaming Views is not supported in SQLite.");
 			}
-			newName = newName.Replace("]", "]]");
+			var quotedNewName = "[" + newName.Replace("]", "]]") + "]";
 			using (var rename = Database.CreateCommand()) {
-				rename.CommandText = "ALTER TABLE " + QuotedName + " RENAME TO [" + newName + "]";
-				try {
-					rename.ExecuteNonQuery();
-					Name = newName;
-					return true;
-				} catch (SQLiteException) {
-					return false;
-				}
+				rename.CommandText = "ALTER TABLE " + QuotedName + " RENAME TO " + quotedNewName;
+				rename.ExecuteNonQuery();
+				Name = newName;
 			}
 		}
 
@@ -224,6 +219,8 @@ namespace DataDevelop.Data.SQLite
 				statement.Append(GenerateCreateStatement());
 				statement.AppendLine(";");
 			} else {
+				// https://www.sqlite.org/lang_altertable.html#altertabrename
+				statement.AppendLine("PRAGMA legacy_alter_table=ON;");
 				statement.Append("ALTER TABLE ");
 				statement.Append(QuotedName);
 				statement.Append(" RENAME TO ");
@@ -251,6 +248,7 @@ namespace DataDevelop.Data.SQLite
 					statement.AppendLine(";");
 				}
 			}
+			statement.AppendLine("PRAGMA legacy_alter_table=OFF;");
 			statement.AppendLine("END;");
 			return statement.ToString();
 		}

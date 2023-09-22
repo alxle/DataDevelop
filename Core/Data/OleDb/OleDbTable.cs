@@ -52,12 +52,7 @@ namespace DataDevelop.Data.OleDb
 			isReadOnly = value;
 		}
 
-		public override bool Rename(string newName)
-		{
-			throw new NotImplementedException("The method or operation is not implemented.");
-		}
-
-		public override bool Delete()
+		public override void Rename(string newName)
 		{
 			throw new NotImplementedException("The method or operation is not implemented.");
 		}

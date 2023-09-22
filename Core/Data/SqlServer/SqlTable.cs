@@ -61,44 +61,19 @@ namespace DataDevelop.Data.SqlServer
 			isReadOnly = value;
 		}
 
-		public override bool Rename(string newName)
+		public override void Rename(string newName)
 		{
-			var success = true;
-			using (Database.CreateConnectionScope()) {
-				using (var command = Database.Connection.CreateCommand()) {
-					command.CommandText = "sp_rename";
-					command.CommandType = CommandType.StoredProcedure;
-					command.Parameters.AddWithValue("@objname", QuotedName);
-					command.Parameters.AddWithValue("@newname", newName);
-					command.Parameters.AddWithValue("@objtype", "OBJECT");
-					try {
-						command.ExecuteNonQuery();
-					} catch (SqlException) {
-						success = false;
-					}
-				}
-			}
-			if (success) {
+			using (Database.CreateConnectionScope())
+			using (var command = Database.Connection.CreateCommand()) {
+				command.CommandText = "sp_rename";
+				command.CommandType = CommandType.StoredProcedure;
+				command.Parameters.AddWithValue("@objname", QuotedName);
+				command.Parameters.AddWithValue("@newname", newName);
+				command.Parameters.AddWithValue("@objtype", "OBJECT");
+				command.ExecuteNonQuery();
 				TableName = newName;
 				Name = $"{SchemaName}.{newName}";
 			}
-			return success;
-		}
-
-		public override bool Delete()
-		{
-			var success = true;
-			using (Database.CreateConnectionScope()) {
-				using (var command = Database.Connection.CreateCommand()) {
-					command.CommandText = $"DROP TABLE {QuotedName}";
-					try {
-						command.ExecuteNonQuery();
-					} catch (SqlException) {
-						success = false;
-					}
-				}
-			}
-			return success;
 		}
 
 		public override DataTable GetData(int startIndex, int count, TableFilter filter, TableSort sort)

@@ -38,30 +38,13 @@ namespace DataDevelop.Data.PostgreSql
 			isView = value;
 		}
 
-		public override bool Rename(string newName)
+		public override void Rename(string newName)
 		{
 			using (var alter = Connection.CreateCommand()) {
-				alter.CommandText = $@"ALTER TABLE ""{Name}"" RENAME TO ""{newName}""";
-				try {
-					alter.ExecuteNonQuery();
-					Name = newName;
-					return true;
-				} catch (NpgsqlException) {
-					return false;
-				}
-			}
-		}
-
-		public override bool Delete()
-		{
-			using (var drop = Connection.CreateCommand()) {
-				drop.CommandText = "DROP TABLE " + QuotedName;
-				try {
-					drop.ExecuteNonQuery();
-					return true;
-				} catch (NpgsqlException) {
-					return false;
-				}
+				var tableOrView = IsView ? "VIEW" : "TABLE";
+				alter.CommandText = $@"ALTER {tableOrView} ""{Name}"" RENAME TO ""{newName}""";
+				alter.ExecuteNonQuery();
+				Name = newName;
 			}
 		}
 

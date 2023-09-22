@@ -566,13 +566,11 @@ namespace DataDevelop
 			}
 
 			try {
-				if (table.Rename(e.Label)) {
-					e.Node.Text = table.DisplayName;
-				} else {
-					MessageBox.Show(this, "Couldn't rename table", "Error");
-				}
+				table.Rename(e.Label);
 			} catch (Exception ex) {
-				MessageBox.Show(this, ex.Message, "Exception throwed!");
+				MessageBox.Show(this, ex.Message, "Error");
+			} finally {
+				e.Node.Text = table.DisplayName;
 			}
 		}
 

@@ -43,23 +43,10 @@ namespace DataDevelop.Data.Firebird
 			return select.ToString();
 		}
 
-		public override bool Rename(string newName)
+		public override void Rename(string newName)
 		{
 			// http://www.firebirdfaq.org/faq363/
 			throw new NotSupportedException("Table rename is not supported in Firebird.");
-		}
-
-		public override bool Delete()
-		{
-			using (var drop = Connection.CreateCommand()) {
-				drop.CommandText = "DROP TABLE " + QuotedName;
-				try {
-					drop.ExecuteNonQuery();
-					return true;
-				} catch (FbException) {
-					return false;
-				}
-			}
 		}
 
 		public override DataTable GetData(int startIndex, int count, TableFilter filter, TableSort sort)

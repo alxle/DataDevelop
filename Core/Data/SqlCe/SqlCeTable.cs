@@ -34,41 +34,15 @@ namespace DataDevelop.Data.SqlCe
 			isReadOnly = value;
 		}
 
-		public override bool Rename(string newName)
+		public override void Rename(string newName)
 		{
-			var success = true;
-			using (database.CreateConnectionScope()) {
-				using (var command = database.Connection.CreateCommand()) {
-					var nameUnquoted = Name.Replace("'", "''");
-					var newNameUnquoted = newName.Replace("'", "''");
-					command.CommandText = $"sp_rename '{nameUnquoted}', '{newNameUnquoted}'";
-					try {
-						command.ExecuteNonQuery();
-					} catch (SqlCeException) {
-						success = false;
-					}
-				}
-			}
-			if (success) {
+			using (var command = database.Connection.CreateCommand()) {
+				var nameUnquoted = Name.Replace("'", "''");
+				var newNameUnquoted = newName.Replace("'", "''");
+				command.CommandText = $"sp_rename '{nameUnquoted}', '{newNameUnquoted}'";
+				command.ExecuteNonQuery();
 				Name = newName;
 			}
-			return success;
-		}
-
-		public override bool Delete()
-		{
-			var success = true;
-			using (database.CreateConnectionScope()) {
-				using (var command = database.Connection.CreateCommand()) {
-					command.CommandText = $"DROP TABLE {QuotedName}";
-					try {
-						command.ExecuteNonQuery();
-					} catch (SqlCeException) {
-						success = false;
-					}
-				}
-			}
-			return success;
 		}
 
 		public override DataTable GetData(int startIndex, int count, TableFilter filter, TableSort sort)
