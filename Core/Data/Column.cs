@@ -6,9 +6,6 @@ namespace DataDevelop.Data
 	[ReadOnly(true)]
 	public class Column : ITableObject
 	{
-		private string providerType = string.Empty;
-		private Type type = typeof(object);
-
 		public Column(Table table, string name = null, Type type = null)
 		{
 			Table = table;
@@ -29,16 +26,16 @@ namespace DataDevelop.Data
 
 		public bool IsIdentity { get; set; }
 
-		public string ProviderType
-		{
-			get => providerType;
-			set => providerType = value ?? throw new ArgumentNullException(nameof(value));
-		}
+		public string ProviderType { get; set; } = string.Empty;
 
-		public Type Type
-		{
-			get => type;
-			set => type = value;
-		}
+		public Type Type { get; set; } = typeof(object);
+
+		public bool? IsNullable { get; set; }
+
+		public int? Size { get; set; }
+
+		public int? Precision { get; set; }
+
+		public int? Scale { get; set; }
 	}
 }

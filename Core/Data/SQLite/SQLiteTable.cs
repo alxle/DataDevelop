@@ -42,11 +42,14 @@ namespace DataDevelop.Data.SQLite
 					var column = new Column(this) {
 						Name = row["COLUMN_NAME"].ToString()
 					};
-					if (!IsReadOnly) {
+					//if (!IsReadOnly) {
 						column.InPrimaryKey = (bool)row["PRIMARY_KEY"];
 						var type = row["DATA_TYPE"];
 						column.ProviderType = (type == DBNull.Value) ? "OBJECT" : (string)type;
-					}
+						column.IsNullable = (bool)row["IS_NULLABLE"];
+					var maxLength = row["CHARACTER_MAXIMUM_LENGTH"];
+					column.Size = (int)maxLength;
+					//}
 
 					columnsCollection.Add(column);
 				}

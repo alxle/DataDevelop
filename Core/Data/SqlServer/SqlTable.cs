@@ -114,11 +114,14 @@ namespace DataDevelop.Data.SqlServer
 						InPrimaryKey = keys.Contains(name),
 						ProviderType = (string)row["DATA_TYPE"]
 					};
-					var maxLength = row["CHARACTER_MAXIMUM_LENGTH"].ToString();
-					if (!string.IsNullOrEmpty(maxLength)) {
+					var maxLength = row["CHARACTER_MAXIMUM_LENGTH"];
+					if (maxLength != null && maxLength != DBNull.Value) {
+						column.Size = (int)maxLength;
 						column.ProviderType = $"{column.ProviderType}({maxLength})";
 					} else if (column.ProviderType.ToLower() == "numeric") {
-						column.ProviderType = $"numeric({row["NUMERIC_PRECISION"]}, {row["NUMERIC_SCALE"]})";
+						column.Precision = (int)row["NUMERIC_PRECISION"];
+						column.Scale = (int)row["NUMERIC_SCALE"];
+						column.ProviderType = $"numeric({column.Precision}, {column.Scale})";
 					}
 					columnsCollection.Add(column);
 				}

@@ -105,8 +105,12 @@ namespace DataDevelop.Data.PostgreSql
 					while (reader.Read()) {
 						var column = new Column(this) {
 							Name = reader.GetString(0),
+							IsNullable = reader.GetString(1) == "YES",
 							ProviderType = reader.GetString(2),
 							Type = PgSqlProvider.MapType(reader.GetString(2)),
+							Size = reader.IsDBNull(3) ? null : reader.GetInt32(3),
+							Precision = reader.IsDBNull(4) ? null : reader.GetInt32(4),
+							Scale = reader.IsDBNull(5) ? null : reader.GetInt32(5),
 							IsIdentity = reader.GetString(6) == "YES",
 							InPrimaryKey = reader.GetString(7) == "YES",
 						};

@@ -132,9 +132,14 @@ namespace DataDevelop.Data.Firebird
 							ProviderType = row["COLUMN_DATA_TYPE"].ToString().ToLower(),
 						};
 						column.Type = FbProvider.MapType(column.ProviderType);
+						column.Size = (int)row["COLUMN_SIZE"];
 						if (column.Type == typeof(string)) {
-							column.ProviderType += "(" + row["COLUMN_SIZE"] + ")";
+							column.ProviderType += $"({column.Size})";
 						}
+						column.Precision = (int)row["NUMERIC_PRECISION"];
+						column.Scale = (int)row["NUMERIC_SCALE"];
+						column.IsNullable = (bool)row["IS_NULLABLE"];
+						column.IsIdentity = (bool)row["IS_IDENTITY"];
 						column.InPrimaryKey = primaryKeys.Contains(column.Name);
 						columnsCollection.Add(column);
 					}
