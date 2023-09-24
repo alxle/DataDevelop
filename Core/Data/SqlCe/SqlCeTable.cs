@@ -80,10 +80,14 @@ namespace DataDevelop.Data.SqlCe
 					column.ProviderType = (string)row["DATA_TYPE"];
 					var maxLength = row["CHARACTER_MAXIMUM_LENGTH"].ToString();
 					if (!string.IsNullOrEmpty(maxLength)) {
+						column.Size = Convert.ToInt32(maxLength);
 						column.ProviderType = string.Format("{0}({1})", column.ProviderType, maxLength);
 					} else if (column.ProviderType.ToLower() == "numeric") {
-						column.ProviderType = string.Format("numeric({0}, {1})", row["NUMERIC_PRECISION"], row["NUMERIC_SCALE"]);
+						column.Precision = (short)row["NUMERIC_PRECISION"];
+						column.Scale = (short)row["NUMERIC_SCALE"];
+						column.ProviderType = $"numeric({column.Precision}, {column.Scale})";
 					}
+					column.IsNullable = (string)row["IS_NULLABLE"] == "YES";
 					columnsCollection.Add(column);
 				}
 				SetColumnTypes(columnsCollection);

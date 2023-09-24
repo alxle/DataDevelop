@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -72,12 +73,25 @@ namespace DataDevelop.Data.MySql
 				var columns = Connection.GetSchema("Columns", new[] { null, Connection.Database, Name });
 				foreach (DataRow row in columns.Rows) {
 					var column = new Column(this) {
-						Name = row["COLUMN_NAME"].ToString()
+						Name = (string)row["COLUMN_NAME"]
 					};
 					if (!IsReadOnly) {
-						column.InPrimaryKey = row["COLUMN_KEY"].ToString() == "PRI";
+						column.InPrimaryKey = (string)row["COLUMN_KEY"] == "PRI";
 					}
-					column.ProviderType = row["COLUMN_TYPE"].ToString();
+					column.ProviderType = (string)row["COLUMN_TYPE"];
+					column.IsNullable = (string)row["Is_NULLABLE"] == "YES";
+					var maxLength = row["CHARACTER_MAXIMUM_LENGTH"];
+					if (maxLength != null && maxLength != DBNull.Value) {
+						column.Size = Convert.ToInt32(maxLength);
+					}
+					var numericPrecision = row["NUMERIC_PRECISION"];
+					if (numericPrecision != null && numericPrecision != DBNull.Value) {
+						column.Precision = Convert.ToInt32(numericPrecision);
+					}
+					var numericScale = row["NUMERIC_SCALE"];
+					if (numericScale != null &&  numericScale != DBNull.Value) {
+						column.Scale = Convert.ToInt32(numericScale);
+					}
 					columnsCollection.Add(column);
 				}
 				SetColumnTypes(columnsCollection);
