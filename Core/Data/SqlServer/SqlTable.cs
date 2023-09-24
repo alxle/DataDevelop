@@ -117,7 +117,7 @@ namespace DataDevelop.Data.SqlServer
 					var maxLength = row["CHARACTER_MAXIMUM_LENGTH"];
 					if (maxLength != null && maxLength != DBNull.Value) {
 						column.Size = (int)maxLength;
-						column.ProviderType = $"{column.ProviderType}({maxLength})";
+						column.ProviderType += (column.Size.Value < 0) ? "(MAX)" : $"({column.Size})";
 					} else if (column.ProviderType.ToLower() == "numeric") {
 						column.Precision = (int)row["NUMERIC_PRECISION"];
 						column.Scale = (int)row["NUMERIC_SCALE"];
