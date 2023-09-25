@@ -12,52 +12,37 @@ namespace DataDevelop.Data
 	{
 		public static DbType GetDbType(object value)
 		{
-			if (value is string) {
+			if (value is string)
 				return DbType.String;
-			}
-			if (value is int) {
+			if (value is int)
 				return DbType.Int32;
-			}
-			if (value is short) {
+			if (value is short)
 				return DbType.Int16;
-			}
-			if (value is long) {
+			if (value is long)
 				return DbType.Int64;
-			}
-			if (value is byte[]) {
+			if (value is byte[])
 				return DbType.Binary;
-			}
-			if (value is bool) {
+			if (value is bool)
 				return DbType.Boolean;
-			}
-			if (value is byte) {
+			if (value is byte)
 				return DbType.Byte;
-			}
-			if (value is DateTime) {
+			if (value is DateTime)
 				return DbType.DateTime;
-			}
-			if (value is decimal) {
+			if (value is decimal)
 				return DbType.Currency;
-			}
-			if (value is float) {
+			if (value is float)
 				return DbType.Single;
-			}
-			if (value is double) {
+			if (value is double)
 				return DbType.Double;
-			}
-			if (value is Guid) {
+			if (value is Guid)
 				return DbType.Guid;
-			}
-			if (value is ushort) {
+			if (value is ushort)
 				return DbType.UInt16;
-			}
-			if (value is uint) {
+			if (value is uint)
 				return DbType.UInt32;
-			}
-			if (value is ulong) {
+			if (value is ulong)
 				return DbType.UInt64;
-			}
-			return DbType.Object;
+			return DbType.String;
 		}
 
 		public static void BindParameters(IDbCommand command, params object[] values)
@@ -116,16 +101,28 @@ namespace DataDevelop.Data
 			using (var reader = new StringReader(commandText)) {
 				var state = State.OnCommandText;
 				do {
-					var @char = reader.Read();
+					var ch = reader.Read();
 					switch (state) {
 						case State.OnCommandText:
-							switch (@char) {
+							switch (ch) {
 								case -1:
 									state = State.End;
 									break;
 								case '\'':
-									result.Append((char)@char);
+									result.Append((char)ch);
 									state = State.InsideString;
+									break;
+								case '-':
+									if (reader.Peek() == '-') {
+										reader.Read();
+										state = State.InSingleLineComment;
+									}
+									break;
+								case '/':
+									if (reader.Peek() == '*') {
+										reader.Read();
+										state = State.InMultiLineComment;
+									}
 									break;
 								case ParamChar:
 									if (reader.Peek() == ParamChar) {
@@ -167,22 +164,36 @@ namespace DataDevelop.Data
 									}
 									break;
 								default:
-									result.Append((char)@char);
+									result.Append((char)ch);
 									break;
 							}
 							break;
 						case State.InsideString:
-							switch (@char) {
+							switch (ch) {
 								case -1:
 									throw new FormatException("String Literal not closed.");
 								case '\'':
-									result.Append((char)@char);
+									result.Append((char)ch);
 									state = State.OnCommandText;
 									break;
 								default:
-									result.Append((char)@char);
+									result.Append((char)ch);
 									state = State.InsideString;
 									break;
+							}
+							break;
+						case State.InSingleLineComment:
+							if (ch == -1)
+								state = State.End;
+							if (ch == '\n')
+								state = State.OnCommandText;
+							break;
+						case State.InMultiLineComment:
+							if (ch == -1)
+								state = State.End;
+							if (ch == '*' && reader.Peek() == '/') {
+								ch = reader.Read();
+								state = State.OnCommandText;
 							}
 							break;
 						default:
@@ -216,19 +227,13 @@ namespace DataDevelop.Data
 			return (c == '_') || (first ? IsLetter(c) : IsLetterOrDigit(c));
 		}
 
-		private static string ReadWhites(StringReader reader)
-		{
-			while (IsWhiteSpace((char)reader.Peek())) {
-				reader.Read();
-			}
-			return " ";
-		}
-
 		private enum State
 		{
 			OnCommandText,
 			InsideString,
-			End
+			InSingleLineComment,
+			InMultiLineComment,
+			End,
 		}
 	}
 }
