@@ -42,7 +42,7 @@ namespace DataDevelop.Data
 				return DbType.UInt32;
 			if (value is ulong)
 				return DbType.UInt64;
-			return DbType.String;
+			return DbType.Object;
 		}
 
 		public static void BindParameters(IDbCommand command, params object[] values)
@@ -97,11 +97,18 @@ namespace DataDevelop.Data
 			var result = new StringBuilder(commandText.Length * 2);
 			const char ParamChar = '?';
 			var parameters = new Dictionary<string, DbParameter>(StringComparer.OrdinalIgnoreCase);
-
+			var lineNumber = 1;
+			var columnNumber = 1;
 			using (var reader = new StringReader(commandText)) {
 				var state = State.OnCommandText;
 				do {
 					var ch = reader.Read();
+					if (ch == '\n') {
+						lineNumber++;
+						columnNumber = 1;
+					} else {
+						columnNumber++;
+					}
 					switch (state) {
 						case State.OnCommandText:
 							switch (ch) {
@@ -114,54 +121,58 @@ namespace DataDevelop.Data
 									break;
 								case '-':
 									if (reader.Peek() == '-') {
-										reader.Read();
+										result.Append((char)ch);
+										result.Append((char)reader.Read());
+										columnNumber++;
 										state = State.InSingleLineComment;
 									}
 									break;
 								case '/':
 									if (reader.Peek() == '*') {
-										reader.Read();
+										result.Append((char)ch);
+										result.Append((char)reader.Read());
 										state = State.InMultiLineComment;
 									}
 									break;
 								case ParamChar:
-									if (reader.Peek() == ParamChar) {
-										reader.Read();
-										result.Append(ParamChar);
-									} else {
-										var dbType = DbType.Object;
-										var paramName = ReadIdentifier(reader);
-										if (paramName.Length == 0) {
-											throw new FormatException("Parameter Name or Index missing.");
-										}
-										if ((char)reader.Peek() == ':') {
-											reader.Read();
-											var dbTypeName = ReadIdentifier(reader);
-											if (dbTypeName.Length == 0) {
-												throw new FormatException("DbType not specified.");
-											} else {
-												dbType = (DbType)Enum.Parse(typeof(DbType), dbTypeName, true);
-											}
-										}
-
-										var parameterName = database.ParameterPrefix + paramName;
-										if (!parameters.ContainsKey(paramName)) {
-											var p = command.CreateParameter();
-											p.ParameterName = parameterName;
-											p.SourceColumn = paramName;
-											p.DbType = dbType;
-											parameters.Add(paramName, p);
-										} else {
-											var p = parameters[paramName];
-											if (dbType != DbType.Object) {
-												if (p.DbType != dbType) {
-													throw new FormatException($"Parameter {paramName} already declared with different DbType");
-												}
-											}
-										}
-										// Do not use p.ParameterName since some providers remove the prefix
-										result.Append(parameterName);
+									var dbType = DbType.Object;
+									var paramName = ReadIdentifier(reader, allowDigitFirst: true);
+									if (paramName.Length == 0) {
+										throw new FormatException($"Parameter Name or Index missing, line {lineNumber}, column {columnNumber}.");
 									}
+									columnNumber += paramName.Length;
+									if (IsDigit(paramName[0])) {
+										paramName = "p" + paramName;
+									}
+									if ((char)reader.Peek() == ':') {
+										reader.Read();
+										columnNumber++;
+										var dbTypeName = ReadIdentifier(reader, allowDigitFirst: false);
+										if (dbTypeName.Length == 0) {
+											throw new FormatException($"DbType not specified, line {lineNumber}, column {columnNumber}.");
+										}
+										if (!Enum.TryParse(dbTypeName, ignoreCase: true, out dbType)) {
+											throw new FormatException($"Invalid DbType: \"{dbTypeName}\", line {lineNumber}, column {columnNumber}.");
+										}
+										columnNumber += dbTypeName.Length;
+									}
+									var parameterName = database.ParameterPrefix + paramName;
+									if (!parameters.ContainsKey(paramName)) {
+										var p = command.CreateParameter();
+										p.ParameterName = parameterName;
+										p.SourceColumn = paramName;
+										p.DbType = dbType;
+										parameters.Add(paramName, p);
+									} else {
+										var p = parameters[paramName];
+										if (dbType != DbType.Object) {
+											if (p.DbType != dbType) {
+												throw new FormatException($"Parameter {paramName} already declared with different DbType, line {lineNumber}, column {columnNumber}.");
+											}
+										}
+									}
+									// Do not use p.ParameterName since some providers remove the prefix
+									result.Append(parameterName);
 									break;
 								default:
 									result.Append((char)ch);
@@ -185,14 +196,17 @@ namespace DataDevelop.Data
 						case State.InSingleLineComment:
 							if (ch == -1)
 								state = State.End;
+							result.Append((char)ch);
 							if (ch == '\n')
 								state = State.OnCommandText;
 							break;
 						case State.InMultiLineComment:
 							if (ch == -1)
 								state = State.End;
+							result.Append((char)ch);
 							if (ch == '*' && reader.Peek() == '/') {
-								ch = reader.Read();
+								result.Append((char)reader.Read());
+								columnNumber++;
 								state = State.OnCommandText;
 							}
 							break;
@@ -201,25 +215,26 @@ namespace DataDevelop.Data
 					}
 				} while (state != State.End);
 			}
-			foreach (var p in parameters) {
-				command.Parameters.Add(p.Value);
+			foreach (var p in parameters.Values) {
+				if (p.DbType == DbType.Object) {
+					p.DbType = DbType.String;
+				}
+				command.Parameters.Add(p);
 			}
 			command.CommandText = result.ToString();
 			return command;
 		}
 
-		private static string ReadIdentifier(StringReader reader)
+		private static string ReadIdentifier(TextReader reader, bool allowDigitFirst = false)
 		{
-			var paramName = new StringBuilder();
-			if (IsIdentifierChar((char)reader.Peek(), false)) {
-				if (IsDigit((char)reader.Peek())) {
-					paramName.Append('p');
-				}
+			var identifier = new StringBuilder();
+			var first = (char)reader.Peek();
+			if (IsIdentifierChar(first, !allowDigitFirst)) {
 				do {
-					paramName.Append((char)reader.Read());
+					identifier.Append((char)reader.Read());
 				} while (IsIdentifierChar((char)reader.Peek(), false));
 			}
-			return paramName.ToString();
+			return identifier.ToString();
 		}
 
 		private static bool IsIdentifierChar(char c, bool first)
