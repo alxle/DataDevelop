@@ -1,24 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Data.Common;
 
 namespace DataDevelop.Data
 {
 	public abstract class DbProvider
 	{
-		private static Dictionary<string, DbProvider> providers = new Dictionary<string, DbProvider>(StringComparer.OrdinalIgnoreCase);
-		private static ReadOnlyDictionary<string, DbProvider> readOnlyCollection;
+		private static Dictionary<string, DbProvider> providers;
 
-		public static IDictionary<string, DbProvider> Providers
+		private static IDictionary<string, DbProvider> Providers
 		{
 			get
 			{
-				if (readOnlyCollection == null) {
-					readOnlyCollection = new ReadOnlyDictionary<string, DbProvider>(providers);
+				if (providers == null) {
+					providers = new Dictionary<string, DbProvider>(StringComparer.OrdinalIgnoreCase);
 					LoadProviders();
 				}
-				return readOnlyCollection;
+				return providers;
 			}
 		}
 
@@ -26,12 +24,22 @@ namespace DataDevelop.Data
 
 		public virtual bool IsFileBased => false;
 
+		public static IEnumerable<DbProvider> GetProviders()
+		{
+			return Providers.Values;
+		}
+
 		public static DbProvider GetProvider(string name)
 		{
-			if (Providers.ContainsKey(name)) {
-				return Providers[name];
+			if (Providers.TryGetValue(name, out var value)) {
+				return value;
 			}
 			return null;
+		}
+
+		public static void RegisterProvider(DbProvider provider)
+		{
+			Providers.Add(provider.Name, provider);
 		}
 
 		public abstract Database CreateDatabase(string name, string connectionString);
@@ -48,14 +56,14 @@ namespace DataDevelop.Data
 
 		private static void LoadProviders()
 		{
-			providers.Add("SQLite", SQLite.SQLiteProvider.Instance);
-			providers.Add("SqlServer", SqlServer.SqlProvider.Instance);
-			providers.Add("SqlCe", SqlCe.SqlCeProvider.Instance);
-			providers.Add("OleDb", OleDb.OleDbProvider.Instance);
-			providers.Add("Access", Access.AccessProvider.Instance);
-			providers.Add("MySql", MySql.MySqlProvider.Instance);
-			providers.Add("PgSql", PostgreSql.PgSqlProvider.Instance);
-			providers.Add("Firebird", Firebird.FbProvider.Instance);
+			RegisterProvider(SQLite.SQLiteProvider.Instance);
+			RegisterProvider(SqlServer.SqlProvider.Instance);
+			RegisterProvider(SqlCe.SqlCeProvider.Instance);
+			RegisterProvider(OleDb.OleDbProvider.Instance);
+			RegisterProvider(Access.AccessProvider.Instance);
+			RegisterProvider(MySql.MySqlProvider.Instance);
+			RegisterProvider(PostgreSql.PgSqlProvider.Instance);
+			RegisterProvider(Firebird.FbProvider.Instance);
 		}
 	}
 }

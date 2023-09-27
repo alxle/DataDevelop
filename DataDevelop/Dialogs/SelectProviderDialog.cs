@@ -16,15 +16,12 @@ namespace DataDevelop.Dialogs
 			InitializeComponent();
 		}
 
-		public DbProvider Provider
-		{
-			get { return providersListBox.SelectedItem as DbProvider; }
-		}
+		public DbProvider Provider => providersListBox.SelectedItem as DbProvider;
 
 		private void SelectProviderDialog_Load(object sender, EventArgs e)
 		{
 			okButton.Enabled = false;
-			foreach (DbProvider provider in DbProvider.Providers.Values) {
+			foreach (var provider in DbProvider.GetProviders()) {
 				providersListBox.Items.Add(provider);
 			}
 		}
