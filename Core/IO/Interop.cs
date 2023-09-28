@@ -1,11 +1,11 @@
-﻿using Microsoft.Office.Interop.Excel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using Microsoft.Office.Interop.Excel;
 using DataTable = System.Data.DataTable;
 using ExcelApplication = Microsoft.Office.Interop.Excel.Application;
 using ExcelWorkbook = Microsoft.Office.Interop.Excel.Workbook;
@@ -29,42 +29,33 @@ namespace DataDevelop.IO
 		public string Format { get; set; }
 		
 		public Aggregate Summary { get; set; }
-		
-		public bool IsFormula
-		{
-			get { return this.Column == null && this.Format != null; }
-		}
+
+		public bool IsFormula => Column == null && Format != null;
 
 		public ColumnDef(string title, DataColumn column, string format, Aggregate aggregate)
 		{
-			if (column == null) {
-				throw new ArgumentNullException("column");
-			}
-			this.Title = title;
-			this.Column = column;
-			this.Format = format;
-			this.Summary = aggregate;
+			Title = title;
+			Column = column ?? throw new ArgumentNullException("column");
+			Format = format;
+			Summary = aggregate;
 		}
 
 		public ColumnDef(string title, string formula, string format, Aggregate aggregate)
 		{
-			if (formula == null) {
-				throw new ArgumentNullException("formula");
-			}
-			this.Title = title;
-			this.Formula = formula;
-			this.Format = format;
-			this.Summary = aggregate;
+			Title = title;
+			Formula = formula ?? throw new ArgumentNullException("formula");
+			Format = format;
+			Summary = aggregate;
 		}
 	}
 
 	public class InteropWorksheet : IDisposable
 	{
-		private ExcelApplication app;
-		private ExcelWorkbook book;
-		private ExcelWorksheet sheet;
+		private readonly ExcelApplication app;
+		private readonly ExcelWorkbook book;
+		private readonly ExcelWorksheet sheet;
 
-		private List<object[]> rowsBuffer;
+		private readonly List<object[]> rowsBuffer;
 		private int lastRowIndex;
 		private int columnsCount;
 
@@ -73,8 +64,8 @@ namespace DataDevelop.IO
 			this.app = app;
 			this.book = book;
 			this.sheet = sheet;
-			this.RowsBufferSize = 100;
-			this.rowsBuffer = new List<object[]>(this.RowsBufferSize);
+			RowsBufferSize = 100;
+			rowsBuffer = new List<object[]>(RowsBufferSize);
 		}
 
 		public int RowsBufferSize { get; set; }
@@ -83,8 +74,14 @@ namespace DataDevelop.IO
 
 		public string Name
 		{
-			get { return this.sheet.Name; }
-			set { this.sheet.Name = value; }
+			get { return sheet.Name; }
+			set { sheet.Name = value; }
+		}
+
+		internal Range this[int rowIndex, int columnIndex]
+		{
+			get { return GetCell(rowIndex, columnIndex); }
+			set { SetCell(rowIndex, columnIndex, value); }
 		}
 
 		internal Range GetCell(int rowIndex, int columnIndex)
@@ -119,64 +116,58 @@ namespace DataDevelop.IO
 
 		public void AddRow(object[] values)
 		{
-			this.rowsBuffer.Add(values);
+			rowsBuffer.Add(values);
 
-			if (values.Length > this.columnsCount) {
-				this.columnsCount = values.Length;
+			if (values.Length > columnsCount) {
+				columnsCount = values.Length;
 			}
 
-			if (this.rowsBuffer.Count >= this.RowsBufferSize) {
-				this.Flush();
+			if (rowsBuffer.Count >= RowsBufferSize) {
+				Flush();
 			}
 		}
 
 		public void Flush()
 		{
-			if (this.rowsBuffer.Count > 0 && this.columnsCount > 0) {
+			if (rowsBuffer.Count > 0 && columnsCount > 0) {
 
-				var table = new object[this.rowsBuffer.Count, this.columnsCount];
-				this.columnsCount = 0;
+				var table = new object[rowsBuffer.Count, columnsCount];
+				columnsCount = 0;
 
-				for (var i = 0; i < this.rowsBuffer.Count; i++) {
-					var row = this.rowsBuffer[i];
+				for (var i = 0; i < rowsBuffer.Count; i++) {
+					var row = rowsBuffer[i];
 					for (var j = 0; j < row.Length; j++) {
 						table[i, j] = row[j];
 					}
 				}
 
-				if (this.lastRowIndex == 0) {
-					this.lastRowIndex = this.RowOffset;
+				if (lastRowIndex == 0) {
+					lastRowIndex = RowOffset;
 				}
 
-				SetTable(this.lastRowIndex, this.ColumnOffset, table);
-				this.lastRowIndex += this.rowsBuffer.Count;
-				this.rowsBuffer.Clear();
+				SetTable(lastRowIndex, ColumnOffset, table);
+				lastRowIndex += rowsBuffer.Count;
+				rowsBuffer.Clear();
 			}
-		}
-
-		internal Range this[int rowIndex, int columnIndex]
-		{
-			get { return this.GetCell(rowIndex, columnIndex); }
-			set { this.SetCell(rowIndex, columnIndex, value); }
 		}
 
 		public void OpenInExcel()
 		{
-			this.Flush();
-			this.sheet.Application.UserControl = true;
-			this.sheet.Application.Visible = true;
+			Flush();
+			sheet.Application.UserControl = true;
+			sheet.Application.Visible = true;
 		}
 
 		public void SaveAs(string fileName)
 		{
-			this.Flush();
-			this.book.SaveAs(fileName, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value,
+			Flush();
+			book.SaveAs(fileName, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value,
 				XlSaveAsAccessMode.xlExclusive, Missing.Value, Missing.Value, Missing.Value, Missing.Value, Missing.Value);
 		}
 
 		public void Close()
 		{
-			this.app.Quit();
+			app.Quit();
 		}
 
 		#region IDisposable Support
@@ -191,7 +182,7 @@ namespace DataDevelop.IO
 
 				// Free unmanaged resources (unmanaged objects).
 				// Set large fields to null.
-				Marshal.FinalReleaseComObject(this.app);
+				Marshal.FinalReleaseComObject(app);
 				disposedValue = true;
 			}
 		}
@@ -223,10 +214,8 @@ namespace DataDevelop.IO
 
 		internal static InteropWorksheet CreateWorksheet(string caption, DataTable data, IList<ColumnDef> columns, BackgroundWorker worker)
 		{
-			if (worker != null) {
-				worker.ReportProgress(0, "Initializing...");
-			}
-			var watch = new System.Diagnostics.Stopwatch();
+			worker?.ReportProgress(0, "Initializing...");
+			var watch = new Stopwatch();
 			watch.Start();
 
 			var excel = new ExcelApplication();
@@ -235,13 +224,13 @@ namespace DataDevelop.IO
 			
 			excel.Visible = (worker == null);
 			excel.Caption = caption;
-			if (!String.IsNullOrEmpty(data.TableName)) {
+			if (!string.IsNullOrEmpty(data.TableName)) {
 				worksheet.Name = data.TableName;
 			}
 			excel.Cursor = XlMousePointer.xlWait;
 			
 			var titles = new List<object>();
-			for (int i = 0; i < columns.Count; i++) {
+			for (var i = 0; i < columns.Count; i++) {
 				titles.Add(columns[i].Title);
 			}
 
@@ -259,7 +248,7 @@ namespace DataDevelop.IO
 				chrono.Start();
 			}
 			var milliseconds = chrono.ElapsedMilliseconds;
-			for (int rowIndex = 0; rowIndex < data.Rows.Count + 1; rowIndex++) {
+			for (var rowIndex = 0; rowIndex < data.Rows.Count + 1; rowIndex++) {
 				
 				var rowValues = new object[data.Columns.Count];
 
@@ -267,7 +256,7 @@ namespace DataDevelop.IO
 					
 					if (chrono.ElapsedMilliseconds - milliseconds > 200) {
 						milliseconds = chrono.ElapsedMilliseconds;
-						worker.ReportProgress(100 * rowIndex / data.Rows.Count, String.Format("Exporting Row ({0} of {1})", rowIndex, data.Rows.Count));
+						worker.ReportProgress(100 * rowIndex / data.Rows.Count, string.Format("Exporting Row ({0} of {1})", rowIndex, data.Rows.Count));
 					}
 					if (worker.CancellationPending) {
 						excel.DisplayAlerts = false;
@@ -278,7 +267,7 @@ namespace DataDevelop.IO
 					}
 				}
 				
-				for (int columnIndex = 0; columnIndex < columns.Count; columnIndex++) {
+				for (var columnIndex = 0; columnIndex < columns.Count; columnIndex++) {
 					var column = columns[columnIndex];
 					object value = null;
 					
@@ -286,20 +275,19 @@ namespace DataDevelop.IO
 						var cell = worksheet.GetCell(rowIndex + 1, columnIndex);
 						cell.Font.Bold = true;
 						if (column.Summary != Aggregate.None) {
-							value = String.Format("={0}({1}2:{1}{2})", column.Summary, (char)(columnIndex + 0x41), data.Rows.Count + 1);
+							value = $"={column.Summary}({(char)(columnIndex + 0x41)}2:{(char)(columnIndex + 0x41)}{data.Rows.Count + 1})";
 						}
 					} else {
 						if (column.IsFormula) {
-							value = "=" + String.Format(column.Formula, rowIndex + 2);
+							value = $"={string.Format(column.Formula, rowIndex + 2)}";
 						} else {
 
 							value = data.Rows[rowIndex][column.Column];
 							if (value == null || value == DBNull.Value) {
-								value = String.Empty;
+								value = string.Empty;
 							}
-							
-							if (value is string) {
-								var strValue = (string)value;
+
+							if (value is string strValue) {
 								if (strValue.Length > 255) {
 									value = "'" + strValue.Substring(0, 251) + "...";
 									// TODO: Show a warning that the string was cut
@@ -314,13 +302,13 @@ namespace DataDevelop.IO
 							}
 
 							var error = data.Rows[rowIndex].GetColumnError(column.Column.Ordinal);
-							if (!String.IsNullOrEmpty(error)) {
+							if (!string.IsNullOrEmpty(error)) {
 								var cell = worksheet.GetCell(rowIndex + 1, columnIndex);
 								cell.NoteText(error, Missing.Value, Missing.Value);
 							}
 						}
 					}
-					if (!String.IsNullOrEmpty(column.Format)) {
+					if (!string.IsNullOrEmpty(column.Format)) {
 						var cell = worksheet.GetCell(rowIndex + 1, columnIndex);
 						cell.NumberFormat = column.Format;
 					}
@@ -328,9 +316,7 @@ namespace DataDevelop.IO
 				}
 				worksheet.AddRow(rowValues);
 			}
-			if (worker != null) {
-				worker.ReportProgress(0, "Sending data to Excel...");
-			}
+			worker?.ReportProgress(0, "Sending data to Excel...");
 
 			worksheet.Flush();
 			excel.Cursor = XlMousePointer.xlDefault;
@@ -372,7 +358,7 @@ namespace DataDevelop.IO
 		internal static Range FooterFormula(ExcelWorksheet worksheet, DataTable data, int columnIndex, string formula, string format)
 		{
 			var cell = GetCell(worksheet, data.Rows.Count + 2, columnIndex + 1);
-			cell.Formula = "=" + String.Format(formula, data.Rows.Count + 2);
+			cell.Formula = "=" + string.Format(formula, data.Rows.Count + 2);
 			cell.NumberFormat = format;
 			cell.Font.Bold = true;
 			return cell;

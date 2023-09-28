@@ -1,13 +1,13 @@
-﻿using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Spreadsheet;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Text;
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace DataDevelop.IO
 {
@@ -78,32 +78,32 @@ namespace DataDevelop.IO
 			return new Stylesheet(
 				new Fonts(
 					new Font(                                                               // Index 0 - The default font.
-						new FontSize() { Val = 11 },
-						new Color() { Rgb = new HexBinaryValue() { Value = "000000" } },
-						new FontName() { Val = "Calibri" }),
+						new FontSize { Val = 11 },
+						new Color { Rgb = new HexBinaryValue { Value = "000000" } },
+						new FontName { Val = "Calibri" }),
 					new Font(                                                               // Index 1 - The bold font.
 						new Bold(),
-						new FontSize() { Val = 11 },
-						new Color() { Rgb = new HexBinaryValue() { Value = "000000" } },
-						new FontName() { Val = "Calibri" }),
+						new FontSize { Val = 11 },
+						new Color { Rgb = new HexBinaryValue() { Value = "000000" } },
+						new FontName { Val = "Calibri" }),
 					new Font(                                                               // Index 2 - The Italic font.
 						new Italic(),
-						new FontSize() { Val = 11 },
-						new Color() { Rgb = new HexBinaryValue() { Value = "000000" } },
-						new FontName() { Val = "Calibri" }),
+						new FontSize { Val = 11 },
+						new Color { Rgb = new HexBinaryValue { Value = "000000" } },
+						new FontName { Val = "Calibri" }),
 					new Font(                                                               // Index 2 - The Times Roman font. with 16 size
-						new FontSize() { Val = 16 },
-						new Color() { Rgb = new HexBinaryValue() { Value = "000000" } },
-						new FontName() { Val = "Times New Roman" })
+						new FontSize { Val = 16 },
+						new Color { Rgb = new HexBinaryValue { Value = "000000" } },
+						new FontName { Val = "Times New Roman" })
 				),
 				new Fills(
 					new Fill(                                                           // Index 0 - The default fill.
-						new PatternFill() { PatternType = PatternValues.None }),
+						new PatternFill { PatternType = PatternValues.None }),
 					new Fill(                                                           // Index 1 - The default fill of gray 125 (required)
-						new PatternFill() { PatternType = PatternValues.Gray125 }),
+						new PatternFill { PatternType = PatternValues.Gray125 }),
 					new Fill(                                                           // Index 2 - The yellow fill.
 						new PatternFill(
-							new ForegroundColor() { Rgb = new HexBinaryValue() { Value = "FFFFFF00" } }
+							new ForegroundColor { Rgb = new HexBinaryValue { Value = "FFFFFF00" } }
 						) { PatternType = PatternValues.Solid })
 				),
 				new Borders(
@@ -114,23 +114,23 @@ namespace DataDevelop.IO
 						new BottomBorder(),
 						new DiagonalBorder()),
 					new Border(                                                         // Index 1 - Applies a Left, Right, Top, Bottom border to a cell
-						new LeftBorder(new Color() { Auto = true }) { Style = BorderStyleValues.Thin },
-						new RightBorder(new Color() { Auto = true }) { Style = BorderStyleValues.Thin },
-						new TopBorder(new Color() { Auto = true }) { Style = BorderStyleValues.Thin },
-						new BottomBorder(new Color() { Auto = true }) { Style = BorderStyleValues.Thin },
+						new LeftBorder(new Color { Auto = true }) { Style = BorderStyleValues.Thin },
+						new RightBorder(new Color { Auto = true }) { Style = BorderStyleValues.Thin },
+						new TopBorder(new Color { Auto = true }) { Style = BorderStyleValues.Thin },
+						new BottomBorder(new Color { Auto = true }) { Style = BorderStyleValues.Thin },
 						new DiagonalBorder())
 				),
 				new CellFormats(
-					new CellFormat() { FontId = 0, FillId = 0, BorderId = 0 },                          // Index 0 - The default cell style.  If a cell does not have a style index applied it will use this style combination instead
-					new CellFormat() { FontId = 1, FillId = 0, BorderId = 0, ApplyFont = true },       // Index 1 - Bold 
-					new CellFormat() { FontId = 2, FillId = 0, BorderId = 0, ApplyFont = true },       // Index 2 - Italic
-					new CellFormat() { FontId = 3, FillId = 0, BorderId = 0, ApplyFont = true },       // Index 3 - Times Roman
-					new CellFormat() { FontId = 0, FillId = 2, BorderId = 0, ApplyFill = true },       // Index 4 - Yellow Fill
+					new CellFormat { FontId = 0, FillId = 0, BorderId = 0 },                          // Index 0 - The default cell style.  If a cell does not have a style index applied it will use this style combination instead
+					new CellFormat { FontId = 1, FillId = 0, BorderId = 0, ApplyFont = true },       // Index 1 - Bold 
+					new CellFormat { FontId = 2, FillId = 0, BorderId = 0, ApplyFont = true },       // Index 2 - Italic
+					new CellFormat { FontId = 3, FillId = 0, BorderId = 0, ApplyFont = true },       // Index 3 - Times Roman
+					new CellFormat { FontId = 0, FillId = 2, BorderId = 0, ApplyFill = true },       // Index 4 - Yellow Fill
 					new CellFormat(                                                                   // Index 5 - Alignment
-						new Alignment() { Horizontal = HorizontalAlignmentValues.Center, Vertical = VerticalAlignmentValues.Center }
+						new Alignment { Horizontal = HorizontalAlignmentValues.Center, Vertical = VerticalAlignmentValues.Center }
 					) { FontId = 0, FillId = 0, BorderId = 0, ApplyAlignment = true },
-					new CellFormat() { FontId = 0, FillId = 0, BorderId = 1, ApplyBorder = true },      // Index 6 - Border
-					new CellFormat() { ApplyNumberFormat = true, NumberFormatId = 14 } // Index 7 - Date
+					new CellFormat { FontId = 0, FillId = 0, BorderId = 1, ApplyBorder = true },      // Index 6 - Border
+					new CellFormat { ApplyNumberFormat = true, NumberFormatId = 14 } // Index 7 - Date
 
 				// NumberFormatId
 				//0   General
@@ -204,7 +204,7 @@ namespace DataDevelop.IO
 				do {
 					writer.WriteStartElement(new Row());
 					foreach (var col in columns) {
-						var cell = new Cell() { DataType = col.CellValues };
+						var cell = new Cell { DataType = col.CellValues };
 						if (col.CellValues == CellValues.Date) {
 							cell.DataType = CellValues.Number;
 							cell.StyleIndex = 7; // Date (Stylesheet)
@@ -235,7 +235,7 @@ namespace DataDevelop.IO
 						sheetCount++;
 
 						wsp = wbp.AddNewPart<WorksheetPart>();
-						sheet = new Sheet() { Id = spreadsheet.WorkbookPart.GetIdOfPart(wsp), SheetId = (uint)sheetCount, Name = sheetName + sheetCount.ToString() };
+						sheet = new Sheet { Id = spreadsheet.WorkbookPart.GetIdOfPart(wsp), SheetId = (uint)sheetCount, Name = sheetName + sheetCount.ToString() };
 						sheets.Append(sheet);
 
 						writer = OpenXmlWriter.Create(wsp);
@@ -261,12 +261,12 @@ namespace DataDevelop.IO
 		internal static string GetColumnName(int columnIndex)
 		{
 			var column = new StringBuilder();
-			var numBase = (int)'Z' - (int)'A' + 1;
+			var numBase = 1 + 'Z' - 'A';
 			var num = columnIndex;
 
 			do {
 				var digit = num % numBase;
-				var symbol = (char)((int)'A' + digit);
+				var symbol = (char)('A' + digit);
 				column.Insert(0, symbol);
 				num = num / numBase - 1;
 
@@ -278,16 +278,16 @@ namespace DataDevelop.IO
 		private static void WriteAutoFilter(OpenXmlWriter writer, int columnCount)
 		{
 			var autoFilterRange = "A1:" + GetColumnName(columnCount - 1) + "1";
-			writer.WriteElement(new AutoFilter() { Reference = autoFilterRange });
+			writer.WriteElement(new AutoFilter { Reference = autoFilterRange });
 		}
 
 		private static void WriteFreezeTopRow(OpenXmlWriter writer)
 		{
 			var frozeCell = "A2";
 			writer.WriteStartElement(new SheetViews());
-			writer.WriteStartElement(new SheetView() { TabSelected = true, WorkbookViewId = 0 });
-			writer.WriteElement(new Pane() { VerticalSplit = 1D, TopLeftCell = frozeCell, ActivePane = PaneValues.BottomLeft, State = PaneStateValues.Frozen });
-			writer.WriteElement(new Selection() { Pane = PaneValues.BottomLeft, ActiveCell = frozeCell, SequenceOfReferences = new ListValue<StringValue>(new[] { new StringValue(frozeCell) }) });
+			writer.WriteStartElement(new SheetView { TabSelected = true, WorkbookViewId = 0 });
+			writer.WriteElement(new Pane { VerticalSplit = 1D, TopLeftCell = frozeCell, ActivePane = PaneValues.BottomLeft, State = PaneStateValues.Frozen });
+			writer.WriteElement(new Selection { Pane = PaneValues.BottomLeft, ActiveCell = frozeCell, SequenceOfReferences = new ListValue<StringValue>(new[] { new StringValue(frozeCell) }) });
 			writer.WriteEndElement();
 			writer.WriteEndElement();
 		}
@@ -296,8 +296,11 @@ namespace DataDevelop.IO
 		{
 			writer.WriteStartElement(new Row());
 			foreach (var column in columns) {
-				var cell = new Cell() { DataType = CellValues.String, CellValue = new CellValue(column.Name) };
-				cell.StyleIndex = 1;
+				var cell = new Cell {
+					DataType = CellValues.String,
+					CellValue = new CellValue(column.Name),
+					StyleIndex = 1
+				};
 				writer.WriteElement(cell);
 			}
 			writer.WriteEndElement(); // end of Row
