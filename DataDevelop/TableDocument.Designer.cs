@@ -223,7 +223,7 @@
 			// sortToolStripButton
 			// 
 			this.sortToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.sortToolStripButton.Image = global::DataDevelop.Properties.Resources.Sort_16x;
+			this.sortToolStripButton.Image = global::DataDevelop.Properties.Resources.SortAscending_16x;
 			this.sortToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.sortToolStripButton.Name = "sortToolStripButton";
 			this.sortToolStripButton.Size = new System.Drawing.Size(23, 22);
