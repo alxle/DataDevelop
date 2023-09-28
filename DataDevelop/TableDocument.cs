@@ -141,7 +141,8 @@ namespace DataDevelop
 				dataGridView.DataSource = data;
 				UpdateLocation();
 			} else {
-				throw e.Error;
+				LogManager.LogError($"TableDocument BackgroundWorker (Db: {table.Database.Name} Table: {table.Name})", e.Error);
+				MessageBox.Show(this, e.Error.Message, $"Error: {e.Error.GetType().Name}", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
 
