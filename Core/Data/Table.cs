@@ -295,7 +295,8 @@ namespace DataDevelop.Data
 
 		public virtual string GenerateDropStatement()
 		{
-			return null;
+			var type = IsView ? "VIEW" : "TABLE";
+			return "DROP " + type + " " + QuotedName;
 		}
 
 		protected virtual void InsertWhere(StringBuilder builder)
