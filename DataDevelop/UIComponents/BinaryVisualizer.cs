@@ -40,9 +40,11 @@ namespace DataDevelop.UIComponents
 
 		public static void Show(IWin32Window owner, DataGridViewBinaryCell cell)
 		{
+			var mouse = MousePosition;
 			using (var bv = new BinaryVisualizer()) {
 				bv.BinaryCell = cell;
 				bv.ReadOnly = cell.ReadOnly || cell.DataGridView.ReadOnly;
+				bv.PositionByMouse(mouse);
 				bv.ShowDialog(owner);
 			}
 		}

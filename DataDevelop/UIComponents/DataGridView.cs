@@ -216,6 +216,7 @@ namespace DataDevelop
 			protected override void OnDoubleClick(DataGridViewCellEventArgs e)
 			{
 				base.OnDoubleClick(e);
+				var mouse = MousePosition;
 				var cell = DataGridView[e.ColumnIndex, e.RowIndex];
 				if (cell.IsInEditMode) {
 					DataGridView.EndEdit();
@@ -223,6 +224,7 @@ namespace DataDevelop
 				using (var dialog = new TextVisualizer()) {
 					dialog.TextValue = Value as string;
 					dialog.ReadOnly = DataGridView.ReadOnly || OwningColumn.ReadOnly;
+					dialog.PositionByMouse(mouse);
 					dialog.ShowDialog(null);
 					if (dialog.TextValueChanged) {
 						Value = dialog.TextValue;
@@ -237,9 +239,11 @@ namespace DataDevelop
 			protected override void OnDoubleClick(DataGridViewCellEventArgs e)
 			{
 				base.OnDoubleClick(e);
+				var mouse = MousePosition;
 				if (!DataGridView.ReadOnly && !OwningColumn.ReadOnly) {
 					using (var dialog = new DateTimeVisualizer()) {
 						dialog.Value = Value as DateTime?;
+						dialog.PositionByMouse(mouse);
 						dialog.ShowDialog(null);
 						if (dialog.ValueChanged) {
 							if (dialog.Value == null) {

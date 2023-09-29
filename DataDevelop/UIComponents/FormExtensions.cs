@@ -39,6 +39,13 @@ namespace DataDevelop
 			EnsureVisibility(form);
 		}
 
+		public static void PositionByMouse(this Form form, Point mouse)
+		{
+			form.StartPosition = FormStartPosition.Manual;
+			form.Location = new Point(mouse.X - form.Width / 3, mouse.Y - form.Height / 3);
+			EnsureVisibility(form);
+		}
+
 		private static void EnsureVisibility(Form form)
 		{
 			var rect = Screen.FromControl(form).WorkingArea;
