@@ -120,16 +120,16 @@ namespace DataDevelop.Data
 									state = State.InsideString;
 									break;
 								case '-':
+									result.Append((char)ch);
 									if (reader.Peek() == '-') {
-										result.Append((char)ch);
 										result.Append((char)reader.Read());
 										columnNumber++;
 										state = State.InSingleLineComment;
 									}
 									break;
 								case '/':
+									result.Append((char)ch);
 									if (reader.Peek() == '*') {
-										result.Append((char)ch);
 										result.Append((char)reader.Read());
 										state = State.InMultiLineComment;
 									}
