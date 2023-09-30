@@ -61,7 +61,7 @@
 			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
 			this.PasteButton = new System.Windows.Forms.ToolStripButton();
 			this.dataGridView = new DataDevelop.DataGridView();
-			this.dataTablePrintDocument = new DataDevelop.Printing.DataTablePrintDocument();
+			this.dataTablePrintDocument = new DataDevelop.Components.DataTablePrintDocument();
 			this.fontDialog = new System.Windows.Forms.FontDialog();
 			this.pageSetupDialog = new System.Windows.Forms.PageSetupDialog();
 			this.printPreviewDialog = new System.Windows.Forms.PrintPreviewDialog();
@@ -523,7 +523,7 @@
 		private System.Windows.Forms.ToolStripButton filterToolStripButton;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
 		private DataGridView dataGridView;
-		private DataDevelop.Printing.DataTablePrintDocument dataTablePrintDocument;
+		private DataDevelop.Components.DataTablePrintDocument dataTablePrintDocument;
 		private System.Windows.Forms.FontDialog fontDialog;
 		private System.Windows.Forms.PageSetupDialog pageSetupDialog;
 		private System.Windows.Forms.PrintPreviewDialog printPreviewDialog;

@@ -78,7 +78,7 @@
 			this.databaseStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.elapsedTimeStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.totalRowsStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-			this.executeWorker = new DataDevelop.Utils.BackgroundWorkerEx();
+			this.executeWorker = new DataDevelop.Components.BackgroundWorkerEx();
 			this.resultSaveFileDialog = new System.Windows.Forms.SaveFileDialog();
 			this.menuStrip = new System.Windows.Forms.MenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -785,7 +785,7 @@
 		private System.Windows.Forms.StatusStrip statusStrip;
 		private System.Windows.Forms.ToolStripStatusLabel statusLabel;
 		private System.Windows.Forms.ToolStripProgressBar progressBar;
-		private DataDevelop.Utils.BackgroundWorkerEx executeWorker;
+		private DataDevelop.Components.BackgroundWorkerEx executeWorker;
 		private System.Windows.Forms.ContextMenuStrip resultsContextMenuStrip;
 		private System.Windows.Forms.ToolStripMenuItem saveToFileToolStripMenuItem;
 		private System.Windows.Forms.SaveFileDialog resultSaveFileDialog;

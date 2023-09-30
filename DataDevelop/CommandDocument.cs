@@ -12,10 +12,10 @@ using System.Windows.Forms;
 
 namespace DataDevelop
 {
+	using Components;
 	using Data;
 	using Dialogs;
 	using IO;
-	using Printing;
 	using Properties;
 	using UIComponents;
 

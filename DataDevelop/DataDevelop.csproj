@@ -212,7 +212,7 @@
     <Compile Include="DatabaseExplorer.Designer.cs">
       <DependentUpon>DatabaseExplorer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Printing\DataTablePrintDocument.cs">
+    <Compile Include="Components\DataTablePrintDocument.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Dialogs\SelectProviderDialog.cs">
@@ -293,7 +293,7 @@
     <Compile Include="UIComponents\TreeView.Designer.cs">
       <DependentUpon>TreeView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utils\BackgroundWorkerEx.cs">
+    <Compile Include="Components\BackgroundWorkerEx.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="UIComponents\BinaryVisualizer.cs">
@@ -339,7 +339,6 @@
     <Compile Include="UIComponents\ToolStrip.Designer.cs">
       <DependentUpon>ToolStrip.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utils\StringUtils.cs" />
     <Compile Include="PropertiesToolbox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -511,6 +510,7 @@
     <Compile Include="VisualStyles\SystemToolStripRenderers.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\SortAscending_16x.png" />
     <None Include="Resources\Zoom_16x.png" />
     <None Include="Resources\AutosizeFixedHeight_16x.png" />
     <None Include="Resources\DeleteTableRow_16x.png" />

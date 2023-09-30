@@ -1,4 +1,4 @@
-namespace DataDevelop
+﻿namespace DataDevelop
 {
 	partial class ScriptDocument
 	{
@@ -72,7 +72,7 @@ namespace DataDevelop
 			this.scriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.executeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.textEditorControl = new DataDevelop.UIComponents.TextEditor();
-			this.backgroundWorker = new DataDevelop.Utils.BackgroundWorkerEx();
+			this.backgroundWorker = new DataDevelop.Components.BackgroundWorkerEx();
 			((System.ComponentModel.ISupportInitialize)(this.dataSet)).BeginInit();
 			this.toolStrip.SuspendLayout();
 			this.menuStrip.SuspendLayout();
@@ -554,7 +554,7 @@ namespace DataDevelop
 		private System.Windows.Forms.ToolStripMenuItem scriptToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem executeToolStripMenuItem;
 		private DataDevelop.UIComponents.TextEditor textEditorControl;
-		private DataDevelop.Utils.BackgroundWorkerEx backgroundWorker;
+		private DataDevelop.Components.BackgroundWorkerEx backgroundWorker;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
 		private System.Windows.Forms.ToolStripLabel statusLabel;
 		private System.Windows.Forms.ToolStripButton stopButton;

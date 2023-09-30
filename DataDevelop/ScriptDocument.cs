@@ -1,12 +1,12 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 using DataDevelop.Data;
 using DataDevelop.Dialogs;
 using DataDevelop.Scripting;
 using DataDevelop.UIComponents;
-using DataDevelop.Utils;
 
 namespace DataDevelop
 {
@@ -63,8 +63,11 @@ namespace DataDevelop
 				EnableUI(false, "Executing...");
 
 				var lineNumber = 1;
-				foreach (var line in StringUtils.GetLines(code)) {
-					output.AppendInfo($"{lineNumber++,-3}|" + line);
+				string line = null;
+				using (var reader = new StringReader(code)) {
+					while ((line = reader.ReadLine()) != null) {
+						output.AppendInfo($"{lineNumber++,-3}|" + line);
+					}
 				}
 				output.FocusOutput();
 
