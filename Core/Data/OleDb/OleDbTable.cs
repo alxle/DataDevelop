@@ -152,6 +152,22 @@ namespace DataDevelop.Data.OleDb
 					if (primaryKey.Contains(column.Name, StringComparer.OrdinalIgnoreCase)) {
 						column.InPrimaryKey = true;
 					}
+					var maxLength = row["CHARACTER_MAXIMUM_LENGTH"];
+					if (maxLength != null && maxLength != DBNull.Value) {
+						column.Size = Convert.ToInt32(maxLength);
+					}
+					var isNullable = row["IS_NULLABLE"];
+					if (isNullable != null && isNullable != DBNull.Value) {
+						column.IsNullable = Convert.ToBoolean(isNullable);
+					}
+					var precision = row["NUMERIC_PRECISION"];
+					if (precision != null && precision != DBNull.Value) {
+						column.Precision = Convert.ToInt32(precision);
+					}
+					var scale = row["NUMERIC_SCALE"];
+					if (scale != null && scale != DBNull.Value) {
+						column.Scale = Convert.ToInt32(scale);
+					}
 					column.ProviderType = ((OleDbType)row["DATA_TYPE"]).ToString();
 					columnsCollection.Add(column);
 				}
@@ -162,7 +178,7 @@ namespace DataDevelop.Data.OleDb
 		protected override void PopulateIndexes(IList<Index> indexesCollection)
 		{
 			using (Database.CreateConnectionScope()) {
-				var schema = Connection.GetOleDbSchemaTable(OleDbSchemaGuid.Indexes, null);
+				var schema = Connection.GetOleDbSchemaTable(OleDbSchemaGuid.Indexes, new[] { null, Schema });
 				schema.DefaultView.Sort = "INDEX_NAME, ORDINAL_POSITION";
 				var indexes = new Dictionary<string, Index>();
 				foreach (DataRowView row in schema.DefaultView) {
@@ -188,6 +204,18 @@ namespace DataDevelop.Data.OleDb
 
 		protected override void PopulateForeignKeys(IList<ForeignKey> foreignKeysCollection)
 		{
+			using (Database.CreateConnectionScope()) {
+				var schema = Connection.GetOleDbSchemaTable(OleDbSchemaGuid.Foreign_Keys, new[] { null, null, null, null, Schema, Name });
+				foreach (DataRow row in schema.Rows) {
+					var name = (string)row["FK_NAME"];
+					var key = new ForeignKey(name, this) {
+						PrimaryTable = (string)row["PK_TABLE_NAME"],
+						ChildTable =(string)row["FK_TABLE_NAME"],
+					};
+					key.Columns.Add(new ColumnsPair((string)row["PK_COLUMN_NAME"], (string)row["FK_COLUMN_NAME"]));
+					foreignKeysCollection.Add(key);
+				}
+			}
 		}
 
 		protected override void PopulateTriggers(IList<Trigger> triggersCollection)
