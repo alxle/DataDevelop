@@ -104,32 +104,31 @@ namespace DataDevelop.Data.OleDb
 			using (var select = Connection.CreateCommand()) {
 				select.CommandText = sql.ToString();
 
-				using (Database.CreateConnectionScope()) {
-					using (var reader = select.ExecuteReader(CommandBehavior.SequentialAccess)) {
-						var data = new DataTable(Name);
-						data.BeginLoadData();
-						for (var i = 0; i < reader.FieldCount; i++) {
-							data.Columns.Add(new DataColumn(reader.GetName(i), reader.GetFieldType(i)));
-						}
-
-						while (startIndex > 0 && reader.Read()) {
-							startIndex--;
-						}
-
-						if (reader.Read()) {
-							do {
-								var row = data.NewRow();
-								for (var i = 0; i < reader.FieldCount; i++) {
-									row[i] = reader[i];
-								}
-								data.Rows.Add(row);
-								count--;
-							} while (reader.Read() && count > 0);
-						}
-						data.EndLoadData();
-						data.AcceptChanges();
-						return data;
+				using (Database.CreateConnectionScope())
+				using (var reader = select.ExecuteReader(CommandBehavior.SequentialAccess)) {
+					var data = new DataTable(Name);
+					data.BeginLoadData();
+					for (var i = 0; i < reader.FieldCount; i++) {
+						data.Columns.Add(new DataColumn(reader.GetName(i), reader.GetFieldType(i)));
 					}
+
+					while (startIndex > 0 && reader.Read()) {
+						startIndex--;
+					}
+
+					if (reader.Read()) {
+						do {
+							var row = data.NewRow();
+							for (var i = 0; i < reader.FieldCount; i++) {
+								row[i] = reader[i];
+							}
+							data.Rows.Add(row);
+							count--;
+						} while (reader.Read() && count > 0);
+					}
+					data.EndLoadData();
+					data.AcceptChanges();
+					return data;
 				}
 			}
 		}
@@ -206,14 +205,18 @@ namespace DataDevelop.Data.OleDb
 		{
 			using (Database.CreateConnectionScope()) {
 				var schema = Connection.GetOleDbSchemaTable(OleDbSchemaGuid.Foreign_Keys, new[] { null, null, null, null, Schema, Name });
-				foreach (DataRow row in schema.Rows) {
+				schema.DefaultView.Sort = "FK_NAME, ORDINAL";
+				ForeignKey key = null;
+				foreach (DataRowView row in schema.DefaultView) {
 					var name = (string)row["FK_NAME"];
-					var key = new ForeignKey(name, this) {
-						PrimaryTable = (string)row["PK_TABLE_NAME"],
-						ChildTable =(string)row["FK_TABLE_NAME"],
-					};
+					if (key == null || key.Name != name) {
+						key = new ForeignKey(name, this) {
+							PrimaryTable = (string)row["PK_TABLE_NAME"],
+							ChildTable = (string)row["FK_TABLE_NAME"],
+						};
+						foreignKeysCollection.Add(key);
+					}
 					key.Columns.Add(new ColumnsPair((string)row["PK_COLUMN_NAME"], (string)row["FK_COLUMN_NAME"]));
-					foreignKeysCollection.Add(key);
 				}
 			}
 		}
