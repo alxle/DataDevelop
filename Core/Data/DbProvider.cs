@@ -64,6 +64,7 @@ namespace DataDevelop.Data
 			RegisterProvider(MySql.MySqlProvider.Instance);
 			RegisterProvider(PostgreSql.PgSqlProvider.Instance);
 			RegisterProvider(Firebird.FbProvider.Instance);
+			RegisterProvider(Odbc.OdbcProvider.Instance);
 		}
 	}
 }
