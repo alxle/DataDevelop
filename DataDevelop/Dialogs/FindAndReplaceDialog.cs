@@ -11,6 +11,12 @@ namespace DataDevelop.Dialogs
 {
 	public partial class FindAndReplaceDialog : Form
 	{
+		TextEditorSearcher _search;
+		TextEditorControl _editor;
+		bool _lastSearchWasBackward = false;
+		bool _lastSearchLoopedAround;
+		Dictionary<TextEditorControl, HighlightGroup> _highlightGroups = new Dictionary<TextEditorControl, HighlightGroup>();
+
 		public FindAndReplaceDialog()
 		{
 			InitializeComponent();
@@ -30,9 +36,7 @@ namespace DataDevelop.Dialogs
 			}
 		}
 
-		TextEditorSearcher _search;
-		TextEditorControl _editor;
-		TextEditorControl Editor
+		public TextEditorControl Editor
 		{
 			get { return _editor; }
 			set
@@ -43,14 +47,16 @@ namespace DataDevelop.Dialogs
 			}
 		}
 
-		private void UpdateTitleBar()
+		public string LookFor => findTextBox.Text;
+
+		public bool ReplaceMode
 		{
-			string text = ReplaceMode ? "Find & replace" : "Find";
-			if (_editor != null && _editor.FileName != null)
-				text += " - " + Path.GetFileName(_editor.FileName);
-			if (_search.HasScanRegion)
-				text += " (selection only)";
-			Text = text;
+			get { return replaceToolStrip.Visible; }
+			set
+			{
+				replaceToolStrip.Visible = value;
+				SetSize();
+			}
 		}
 
 		public void ShowFor(TextEditorControl editor, bool replaceMode)
@@ -82,35 +88,33 @@ namespace DataDevelop.Dialogs
 			findTextBox.Focus();
 		}
 
-		public bool ReplaceMode
+		private void UpdateTitleBar()
 		{
-			get { return replaceToolStrip.Visible; }
-			set
-			{
-				replaceToolStrip.Visible = value;
-				SetSize();
-			}
+			string text = ReplaceMode ? "Find & replace" : "Find";
+			if (_editor != null && _editor.FileName != null)
+				text += " - " + Path.GetFileName(_editor.FileName);
+			if (_search.HasScanRegion)
+				text += " (selection only)";
+			Text = text;
 		}
 
-		private void btnFindPrevious_Click(object sender, EventArgs e)
+		private void FindPrevious_Click(object sender, EventArgs e)
 		{
 			FindNext(false, true, "Text not found");
 		}
-		private void btnFindNext_Click(object sender, EventArgs e)
+		
+		private void FindNext_Click(object sender, EventArgs e)
 		{
 			FindNext(false, false, "Text not found");
 		}
 
-		public bool lastSearchWasBackward = false;
-		public bool lastSearchLoopedAround;
-
-		public TextRange FindNext(bool viaF3, bool searchBackward, string messageIfNotFound)
+		private TextRange FindNext(bool viaF3, bool searchBackward, string messageIfNotFound)
 		{
 			if (string.IsNullOrEmpty(findTextBox.Text)) {
 				MessageBox.Show("No string specified to look for!");
 				return null;
 			}
-			lastSearchWasBackward = searchBackward;
+			_lastSearchWasBackward = searchBackward;
 			_search.LookFor = findTextBox.Text;
 			_search.MatchCase = matchCaseCheckButton.Checked;
 			_search.MatchWholeWordOnly = matchWholeWordCheckButton.Checked;
@@ -124,7 +128,7 @@ namespace DataDevelop.Dialogs
 			}
 
 			int startFrom = caret.Offset - (searchBackward ? 1 : 0);
-			TextRange range = _search.FindNext(startFrom, searchBackward, out lastSearchLoopedAround);
+			TextRange range = _search.FindNext(startFrom, searchBackward, out _lastSearchLoopedAround);
 			if (range != null)
 				SelectResult(range);
 			else if (messageIfNotFound != null)
@@ -144,9 +148,7 @@ namespace DataDevelop.Dialogs
 				_editor.Document.OffsetToPosition(range.Offset + range.Length);
 		}
 
-		Dictionary<TextEditorControl, HighlightGroup> _highlightGroups = new Dictionary<TextEditorControl, HighlightGroup>();
-
-		private void btnHighlightAll_Click(object sender, EventArgs e)
+		private void HighlightAll_Click(object sender, EventArgs e)
 		{
 			if (!_highlightGroups.ContainsKey(_editor))
 				_highlightGroups[_editor] = new HighlightGroup(_editor);
@@ -195,20 +197,20 @@ namespace DataDevelop.Dialogs
 			}
 		}
 
-		private void btnCancel_Click(object sender, EventArgs e)
+		private void Cancel_Click(object sender, EventArgs e)
 		{
 			Close();
 		}
 
-		private void btnReplace_Click(object sender, EventArgs e)
+		private void Replace_Click(object sender, EventArgs e)
 		{
 			var sm = _editor.ActiveTextAreaControl.SelectionManager;
 			if (string.Equals(sm.SelectedText, findTextBox.Text, StringComparison.OrdinalIgnoreCase))
 				InsertText(replaceTextBox.Text);
-			FindNext(false, lastSearchWasBackward, "Text not found.");
+			FindNext(false, _lastSearchWasBackward, "Text not found.");
 		}
 
-		private void btnReplaceAll_Click(object sender, EventArgs e)
+		private void ReplaceAll_Click(object sender, EventArgs e)
 		{
 			int count = 0;
 			// BUG FIX: if the replacement string contains the original search string
@@ -221,7 +223,7 @@ namespace DataDevelop.Dialogs
 			_editor.Document.UndoStack.StartUndoGroup();
 			try {
 				while (FindNext(false, false, null) != null) {
-					if (lastSearchLoopedAround)
+					if (_lastSearchLoopedAround)
 						break;
 
 					// Replace
@@ -254,8 +256,6 @@ namespace DataDevelop.Dialogs
 			}
 		}
 
-		public string LookFor { get { return findTextBox.Text; } }
-
 		private void FindAndReplaceDialog_Load(object sender, EventArgs e)
 		{
 			SetSize();
@@ -267,7 +267,7 @@ namespace DataDevelop.Dialogs
 			//MaximumSize = new Size(Screen.PrimaryScreen.WorkingArea.Width, Size.Height);
 		}
 
-		private void findTextBox_KeyDown(object sender, KeyEventArgs e)
+		private void FindTextBox_KeyDown(object sender, KeyEventArgs e)
 		{
 			if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.F3) {
 				FindNext(viaF3: e.KeyCode == Keys.F3, false, "Text not found.");
@@ -280,6 +280,7 @@ namespace DataDevelop.Dialogs
 	public class TextRange : AbstractSegment
 	{
 		IDocument _document;
+
 		public TextRange(IDocument document, int offset, int length)
 		{
 			_document = document;
@@ -293,6 +294,7 @@ namespace DataDevelop.Dialogs
 	public class TextEditorSearcher : IDisposable
 	{
 		IDocument _document;
+
 		public IDocument Document
 		{
 			get { return _document; }
@@ -315,12 +317,14 @@ namespace DataDevelop.Dialogs
 		// to the TextEditorControl. After adding the marker to the document, we
 		// must remember to remove it when it is no longer needed.
 		TextMarker _region = null;
+
 		/// <summary>Sets the region to search. The region is updated 
 		/// automatically as the document changes.</summary>
 		public void SetScanRegion(ISelection sel)
 		{
 			SetScanRegion(sel.Offset, sel.Length);
 		}
+
 		/// <summary>Sets the region to search. The region is updated 
 		/// automatically as the document changes.</summary>
 		public void SetScanRegion(int offset, int length)
@@ -330,10 +334,12 @@ namespace DataDevelop.Dialogs
 				Globals.HalfMix(bkgColor, Color.FromArgb(160, 160, 160)));
 			_document.MarkerStrategy.AddMarker(_region);
 		}
+
 		public bool HasScanRegion
 		{
 			get { return _region != null; }
 		}
+
 		public void ClearScanRegion()
 		{
 			if (_region != null) {
@@ -341,8 +347,17 @@ namespace DataDevelop.Dialogs
 				_region = null;
 			}
 		}
-		public void Dispose() { ClearScanRegion(); GC.SuppressFinalize(this); }
-		~TextEditorSearcher() { Dispose(); }
+
+		public void Dispose()
+		{
+			ClearScanRegion();
+			GC.SuppressFinalize(this);
+		}
+
+		~TextEditorSearcher()
+		{
+			Dispose();
+		}
 
 		/// <summary>Begins the start offset for searching</summary>
 		public int BeginOffset
@@ -355,6 +370,7 @@ namespace DataDevelop.Dialogs
 					return 0;
 			}
 		}
+
 		/// <summary>Begins the end offset for searching</summary>
 		public int EndOffset
 		{
@@ -373,6 +389,7 @@ namespace DataDevelop.Dialogs
 
 		string _lookFor;
 		string _lookFor2; // uppercase in case-insensitive mode
+
 		public string LookFor
 		{
 			get { return _lookFor; }
@@ -422,7 +439,7 @@ namespace DataDevelop.Dialogs
 			if (MatchCase)
 				matchFirstCh = (lookFor, c) => (lookFor == c);
 			else
-				matchFirstCh = (lookFor, c) => (lookFor == Char.ToUpperInvariant(c));
+				matchFirstCh = (lookFor, c) => (lookFor == char.ToUpperInvariant(c));
 			if (MatchWholeWordOnly)
 				matchWord = IsWholeWordMatch;
 			else
@@ -445,6 +462,7 @@ namespace DataDevelop.Dialogs
 			}
 			return null;
 		}
+
 		private bool IsWholeWordMatch(int offset)
 		{
 			if (IsWordBoundary(offset) && IsWordBoundary(offset + _lookFor.Length))
@@ -452,16 +470,19 @@ namespace DataDevelop.Dialogs
 			else
 				return false;
 		}
+
 		private bool IsWordBoundary(int offset)
 		{
 			return offset <= 0 || offset >= _document.TextLength ||
 				!IsAlphaNumeric(offset - 1) || !IsAlphaNumeric(offset);
 		}
+
 		private bool IsAlphaNumeric(int offset)
 		{
 			char c = _document.GetCharAt(offset);
-			return Char.IsLetterOrDigit(c) || c == '_';
+			return char.IsLetterOrDigit(c) || c == '_';
 		}
+
 		private bool IsPartWordMatch(int offset)
 		{
 			string substr = _document.GetText(offset, _lookFor.Length);
@@ -478,16 +499,19 @@ namespace DataDevelop.Dialogs
 		List<TextMarker> _markers = new List<TextMarker>();
 		TextEditorControl _editor;
 		IDocument _document;
+
 		public HighlightGroup(TextEditorControl editor)
 		{
 			_editor = editor;
 			_document = editor.Document;
 		}
+
 		public void AddMarker(TextMarker marker)
 		{
 			_markers.Add(marker);
 			_document.MarkerStrategy.AddMarker(marker);
 		}
+
 		public void ClearMarkers()
 		{
 			foreach (TextMarker m in _markers)
@@ -495,7 +519,9 @@ namespace DataDevelop.Dialogs
 			_markers.Clear();
 			_editor.Refresh();
 		}
+
 		public void Dispose() { ClearMarkers(); GC.SuppressFinalize(this); }
+
 		~HighlightGroup() { Dispose(); }
 
 		public IList<TextMarker> Markers { get { return _markers.AsReadOnly(); } }
@@ -508,10 +534,12 @@ namespace DataDevelop.Dialogs
 			Debug.Assert(lo <= hi);
 			return x < lo ? lo : (x > hi ? hi : x);
 		}
+		
 		public static bool IsInRange(int x, int lo, int hi)
 		{
 			return x >= lo && x <= hi;
 		}
+		
 		public static Color HalfMix(Color one, Color two)
 		{
 			return Color.FromArgb(

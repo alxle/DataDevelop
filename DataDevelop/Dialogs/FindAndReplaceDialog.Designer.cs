@@ -32,7 +32,7 @@ namespace DataDevelop.Dialogs
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FindAndReplaceDialog));
 			this.matchToolStrip = new System.Windows.Forms.ToolStrip();
-			this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+			this.matchLabel = new System.Windows.Forms.ToolStripLabel();
 			this.matchCaseCheckButton = new System.Windows.Forms.ToolStripButton();
 			this.matchWholeWordCheckButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -44,10 +44,10 @@ namespace DataDevelop.Dialogs
 			this.findPreviousToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.closeButton = new System.Windows.Forms.ToolStripButton();
 			this.replaceToolStrip = new System.Windows.Forms.ToolStrip();
-			this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
+			this.replaceLabel = new System.Windows.Forms.ToolStripLabel();
 			this.replaceTextBox = new DataDevelop.UIComponents.ToolStripSpringTextBox();
-			this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
-			this.toolStripButton6 = new System.Windows.Forms.ToolStripButton();
+			this.replaceButton = new System.Windows.Forms.ToolStripButton();
+			this.replaceAllButton = new System.Windows.Forms.ToolStripButton();
 			this.matchToolStrip.SuspendLayout();
 			this.findToolStrip.SuspendLayout();
 			this.replaceToolStrip.SuspendLayout();
@@ -57,7 +57,7 @@ namespace DataDevelop.Dialogs
 			// 
 			this.matchToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
 			this.matchToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripLabel1,
+            this.matchLabel,
             this.matchCaseCheckButton,
             this.matchWholeWordCheckButton,
             this.toolStripSeparator1,
@@ -65,15 +65,15 @@ namespace DataDevelop.Dialogs
 			this.matchToolStrip.Location = new System.Drawing.Point(0, 50);
 			this.matchToolStrip.Name = "matchToolStrip";
 			this.matchToolStrip.Size = new System.Drawing.Size(333, 25);
-			this.matchToolStrip.TabIndex = 10;
+			this.matchToolStrip.TabIndex = 2;
 			this.matchToolStrip.Text = "toolStrip1";
 			// 
-			// toolStripLabel1
+			// matchLabel
 			// 
-			this.toolStripLabel1.Margin = new System.Windows.Forms.Padding(8, 1, 0, 2);
-			this.toolStripLabel1.Name = "toolStripLabel1";
-			this.toolStripLabel1.Size = new System.Drawing.Size(44, 22);
-			this.toolStripLabel1.Text = "Match:";
+			this.matchLabel.Margin = new System.Windows.Forms.Padding(8, 1, 0, 2);
+			this.matchLabel.Name = "matchLabel";
+			this.matchLabel.Size = new System.Drawing.Size(44, 22);
+			this.matchLabel.Text = "Match:";
 			// 
 			// matchCaseCheckButton
 			// 
@@ -119,7 +119,7 @@ namespace DataDevelop.Dialogs
 			this.findToolStrip.Location = new System.Drawing.Point(0, 0);
 			this.findToolStrip.Name = "findToolStrip";
 			this.findToolStrip.Size = new System.Drawing.Size(333, 25);
-			this.findToolStrip.TabIndex = 11;
+			this.findToolStrip.TabIndex = 0;
 			this.findToolStrip.Text = "toolStrip2";
 			// 
 			// findLabel
@@ -134,7 +134,7 @@ namespace DataDevelop.Dialogs
 			this.findTextBox.Font = new System.Drawing.Font("Segoe UI", 9F);
 			this.findTextBox.Name = "findTextBox";
 			this.findTextBox.Size = new System.Drawing.Size(180, 25);
-			this.findTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.findTextBox_KeyDown);
+			this.findTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FindTextBox_KeyDown);
 			// 
 			// findNextButton
 			// 
@@ -146,7 +146,7 @@ namespace DataDevelop.Dialogs
 			this.findNextButton.Name = "findNextButton";
 			this.findNextButton.Size = new System.Drawing.Size(32, 22);
 			this.findNextButton.Text = "Find next";
-			this.findNextButton.ButtonClick += new System.EventHandler(this.btnFindNext_Click);
+			this.findNextButton.ButtonClick += new System.EventHandler(this.FindNext_Click);
 			// 
 			// findPreviousToolStripMenuItem
 			// 
@@ -154,7 +154,7 @@ namespace DataDevelop.Dialogs
 			this.findPreviousToolStripMenuItem.Name = "findPreviousToolStripMenuItem";
 			this.findPreviousToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
 			this.findPreviousToolStripMenuItem.Text = "Find previous";
-			this.findPreviousToolStripMenuItem.Click += new System.EventHandler(this.btnFindPrevious_Click);
+			this.findPreviousToolStripMenuItem.Click += new System.EventHandler(this.FindPrevious_Click);
 			// 
 			// closeButton
 			// 
@@ -166,28 +166,28 @@ namespace DataDevelop.Dialogs
 			this.closeButton.Text = "Close";
 			this.closeButton.ToolTipText = "Close";
 			this.closeButton.Visible = false;
-			this.closeButton.Click += new System.EventHandler(this.btnCancel_Click);
+			this.closeButton.Click += new System.EventHandler(this.Cancel_Click);
 			// 
 			// replaceToolStrip
 			// 
 			this.replaceToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
 			this.replaceToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripLabel2,
+            this.replaceLabel,
             this.replaceTextBox,
-            this.toolStripButton5,
-            this.toolStripButton6});
+            this.replaceButton,
+            this.replaceAllButton});
 			this.replaceToolStrip.Location = new System.Drawing.Point(0, 25);
 			this.replaceToolStrip.Name = "replaceToolStrip";
 			this.replaceToolStrip.Size = new System.Drawing.Size(333, 25);
-			this.replaceToolStrip.TabIndex = 12;
+			this.replaceToolStrip.TabIndex = 1;
 			this.replaceToolStrip.Text = "toolStrip3";
 			// 
-			// toolStripLabel2
+			// replaceLabel
 			// 
-			this.toolStripLabel2.Margin = new System.Windows.Forms.Padding(8, 1, 0, 2);
-			this.toolStripLabel2.Name = "toolStripLabel2";
-			this.toolStripLabel2.Size = new System.Drawing.Size(77, 22);
-			this.toolStripLabel2.Text = "Replace with:";
+			this.replaceLabel.Margin = new System.Windows.Forms.Padding(8, 1, 0, 2);
+			this.replaceLabel.Name = "replaceLabel";
+			this.replaceLabel.Size = new System.Drawing.Size(77, 22);
+			this.replaceLabel.Text = "Replace with:";
 			// 
 			// replaceTextBox
 			// 
@@ -195,25 +195,25 @@ namespace DataDevelop.Dialogs
 			this.replaceTextBox.Name = "replaceTextBox";
 			this.replaceTextBox.Size = new System.Drawing.Size(168, 25);
 			// 
-			// toolStripButton5
+			// replaceButton
 			// 
-			this.toolStripButton5.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toolStripButton5.Image = global::DataDevelop.Properties.Resources.QuickReplace_16x;
-			this.toolStripButton5.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripButton5.Name = "toolStripButton5";
-			this.toolStripButton5.Size = new System.Drawing.Size(23, 22);
-			this.toolStripButton5.Text = "replaceButton";
-			this.toolStripButton5.Click += new System.EventHandler(this.btnReplace_Click);
+			this.replaceButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.replaceButton.Image = global::DataDevelop.Properties.Resources.QuickReplace_16x;
+			this.replaceButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.replaceButton.Name = "replaceButton";
+			this.replaceButton.Size = new System.Drawing.Size(23, 22);
+			this.replaceButton.Text = "Replace";
+			this.replaceButton.Click += new System.EventHandler(this.Replace_Click);
 			// 
-			// toolStripButton6
+			// replaceAllButton
 			// 
-			this.toolStripButton6.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toolStripButton6.Image = global::DataDevelop.Properties.Resources.ReplaceAll_16x;
-			this.toolStripButton6.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripButton6.Name = "toolStripButton6";
-			this.toolStripButton6.Size = new System.Drawing.Size(23, 22);
-			this.toolStripButton6.Text = "replaceAllButton";
-			this.toolStripButton6.Click += new System.EventHandler(this.btnReplaceAll_Click);
+			this.replaceAllButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.replaceAllButton.Image = global::DataDevelop.Properties.Resources.ReplaceAll_16x;
+			this.replaceAllButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.replaceAllButton.Name = "replaceAllButton";
+			this.replaceAllButton.Size = new System.Drawing.Size(23, 22);
+			this.replaceAllButton.Text = "Replace All";
+			this.replaceAllButton.Click += new System.EventHandler(this.ReplaceAll_Click);
 			// 
 			// FindAndReplaceDialog
 			// 
@@ -250,14 +250,14 @@ namespace DataDevelop.Dialogs
 		private System.Windows.Forms.ToolStripSplitButton findNextButton;
 		private System.Windows.Forms.ToolStripButton closeButton;
 		private System.Windows.Forms.ToolStrip replaceToolStrip;
-		private System.Windows.Forms.ToolStripButton toolStripButton5;
-		private System.Windows.Forms.ToolStripButton toolStripButton6;
+		private System.Windows.Forms.ToolStripButton replaceButton;
+		private System.Windows.Forms.ToolStripButton replaceAllButton;
 		private System.Windows.Forms.ToolStripMenuItem findPreviousToolStripMenuItem;
-		private System.Windows.Forms.ToolStripLabel toolStripLabel1;
+		private System.Windows.Forms.ToolStripLabel matchLabel;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripLabel findLabel;
 		private ToolStripSpringTextBox findTextBox;
-		private System.Windows.Forms.ToolStripLabel toolStripLabel2;
+		private System.Windows.Forms.ToolStripLabel replaceLabel;
 		private ToolStripSpringTextBox replaceTextBox;
 	}
 }
