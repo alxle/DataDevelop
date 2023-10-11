@@ -286,6 +286,9 @@
     <Compile Include="UIComponents\TextVisualizer.Designer.cs">
       <DependentUpon>TextVisualizer.cs</DependentUpon>
     </Compile>
+    <Compile Include="UIComponents\ToolStripSpringTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="UIComponents\TreeNodeController.cs" />
     <Compile Include="UIComponents\TreeView.cs">
       <SubType>Component</SubType>
@@ -510,6 +513,12 @@
     <Compile Include="VisualStyles\SystemToolStripRenderers.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\HighlightText_16x.png" />
+    <None Include="Resources\Close_16x.png" />
+    <None Include="Resources\FindPrevious_16x.png" />
+    <None Include="Resources\ReplaceAll_16x.png" />
+    <None Include="Resources\FindNext_16x.png" />
+    <None Include="Resources\CaseSensitive_16x.png" />
     <None Include="Resources\SortAscending_16x.png" />
     <None Include="Resources\Zoom_16x.png" />
     <None Include="Resources\AutosizeFixedHeight_16x.png" />

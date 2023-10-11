@@ -117,4 +117,24 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <metadata name="matchToolStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="matchWholeWordCheckButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADwSURBVDhPYxhc4Nu3bxeA+D8UX4AKg8H3798TQOJfv35d
+        ABVCBUAFCq9fv/7v5OQExiA2SAwkB9QU8PzNh/+21Zv+n7j+FLshQMGCTZs2wQ0AsUFiILkvX74YAG3/
+        EDNh33++2IXYDQE5uaqqCm4AiA0SAzkbGWM1BNn5ycnJYAxig8RAmhiC52BgkCFgORBAdv7y5cvBGMQG
+        iSHbDsIgF4AMmLnzCsIFQAm48+/fvw/GIDbUG/g1o4c+OoZ5AxQLuoVrUTWDALrzYbbh8wYyxnA+yEUg
+        jO4NEBsbDTIAzIBieOoDsdHksGKo8qELGBgAxYfGfrR/zGkAAAAASUVORK5CYII=
+</value>
+  </data>
+  <metadata name="findToolStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>122, 17</value>
+  </metadata>
+  <metadata name="replaceToolStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>227, 17</value>
+  </metadata>
 </root>

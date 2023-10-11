@@ -1,4 +1,6 @@
-﻿namespace DataDevelop.Dialogs
+﻿using DataDevelop.UIComponents;
+
+namespace DataDevelop.Dialogs
 {
 	partial class FindAndReplaceDialog
 	{
@@ -28,194 +30,234 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.label1 = new System.Windows.Forms.Label();
-			this.lblReplaceWith = new System.Windows.Forms.Label();
-			this.txtLookFor = new System.Windows.Forms.TextBox();
-			this.txtReplaceWith = new System.Windows.Forms.TextBox();
-			this.btnFindNext = new System.Windows.Forms.Button();
-			this.btnReplace = new System.Windows.Forms.Button();
-			this.btnReplaceAll = new System.Windows.Forms.Button();
-			this.chkMatchWholeWord = new System.Windows.Forms.CheckBox();
-			this.chkMatchCase = new System.Windows.Forms.CheckBox();
-			this.btnHighlightAll = new System.Windows.Forms.Button();
-			this.btnCancel = new System.Windows.Forms.Button();
-			this.btnFindPrevious = new System.Windows.Forms.Button();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FindAndReplaceDialog));
+			this.matchToolStrip = new System.Windows.Forms.ToolStrip();
+			this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+			this.matchCaseCheckButton = new System.Windows.Forms.ToolStripButton();
+			this.matchWholeWordCheckButton = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+			this.highlightAllButton = new System.Windows.Forms.ToolStripButton();
+			this.findToolStrip = new System.Windows.Forms.ToolStrip();
+			this.findLabel = new System.Windows.Forms.ToolStripLabel();
+			this.findTextBox = new DataDevelop.UIComponents.ToolStripSpringTextBox();
+			this.findNextButton = new System.Windows.Forms.ToolStripSplitButton();
+			this.findPreviousToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.closeButton = new System.Windows.Forms.ToolStripButton();
+			this.replaceToolStrip = new System.Windows.Forms.ToolStrip();
+			this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
+			this.replaceTextBox = new DataDevelop.UIComponents.ToolStripSpringTextBox();
+			this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
+			this.toolStripButton6 = new System.Windows.Forms.ToolStripButton();
+			this.matchToolStrip.SuspendLayout();
+			this.findToolStrip.SuspendLayout();
+			this.replaceToolStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
-			// label1
+			// matchToolStrip
 			// 
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(12, 9);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(56, 13);
-			this.label1.TabIndex = 0;
-			this.label1.Text = "Fi&nd what:";
+			this.matchToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+			this.matchToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripLabel1,
+            this.matchCaseCheckButton,
+            this.matchWholeWordCheckButton,
+            this.toolStripSeparator1,
+            this.highlightAllButton});
+			this.matchToolStrip.Location = new System.Drawing.Point(0, 50);
+			this.matchToolStrip.Name = "matchToolStrip";
+			this.matchToolStrip.Size = new System.Drawing.Size(333, 25);
+			this.matchToolStrip.TabIndex = 10;
+			this.matchToolStrip.Text = "toolStrip1";
 			// 
-			// lblReplaceWith
+			// toolStripLabel1
 			// 
-			this.lblReplaceWith.AutoSize = true;
-			this.lblReplaceWith.Location = new System.Drawing.Point(12, 35);
-			this.lblReplaceWith.Name = "lblReplaceWith";
-			this.lblReplaceWith.Size = new System.Drawing.Size(72, 13);
-			this.lblReplaceWith.TabIndex = 2;
-			this.lblReplaceWith.Text = "Re&place with:";
+			this.toolStripLabel1.Margin = new System.Windows.Forms.Padding(8, 1, 0, 2);
+			this.toolStripLabel1.Name = "toolStripLabel1";
+			this.toolStripLabel1.Size = new System.Drawing.Size(44, 22);
+			this.toolStripLabel1.Text = "Match:";
 			// 
-			// txtLookFor
+			// matchCaseCheckButton
 			// 
-			this.txtLookFor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtLookFor.Location = new System.Drawing.Point(90, 6);
-			this.txtLookFor.Name = "txtLookFor";
-			this.txtLookFor.Size = new System.Drawing.Size(232, 20);
-			this.txtLookFor.TabIndex = 1;
+			this.matchCaseCheckButton.CheckOnClick = true;
+			this.matchCaseCheckButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.matchCaseCheckButton.Image = global::DataDevelop.Properties.Resources.CaseSensitive_16x;
+			this.matchCaseCheckButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.matchCaseCheckButton.Name = "matchCaseCheckButton";
+			this.matchCaseCheckButton.Size = new System.Drawing.Size(23, 22);
+			this.matchCaseCheckButton.Text = "Match case";
 			// 
-			// txtReplaceWith
+			// matchWholeWordCheckButton
 			// 
-			this.txtReplaceWith.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtReplaceWith.Location = new System.Drawing.Point(90, 32);
-			this.txtReplaceWith.Name = "txtReplaceWith";
-			this.txtReplaceWith.Size = new System.Drawing.Size(232, 20);
-			this.txtReplaceWith.TabIndex = 3;
+			this.matchWholeWordCheckButton.CheckOnClick = true;
+			this.matchWholeWordCheckButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.matchWholeWordCheckButton.Image = ((System.Drawing.Image)(resources.GetObject("matchWholeWordCheckButton.Image")));
+			this.matchWholeWordCheckButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.matchWholeWordCheckButton.Name = "matchWholeWordCheckButton";
+			this.matchWholeWordCheckButton.Size = new System.Drawing.Size(23, 22);
+			this.matchWholeWordCheckButton.Text = "Match whole word";
 			// 
-			// btnFindNext
+			// toolStripSeparator1
 			// 
-			this.btnFindNext.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnFindNext.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.btnFindNext.Location = new System.Drawing.Point(247, 81);
-			this.btnFindNext.Name = "btnFindNext";
-			this.btnFindNext.Size = new System.Drawing.Size(75, 23);
-			this.btnFindNext.TabIndex = 6;
-			this.btnFindNext.Text = "&Find next";
-			this.btnFindNext.UseVisualStyleBackColor = true;
-			this.btnFindNext.Click += new System.EventHandler(this.btnFindNext_Click);
+			this.toolStripSeparator1.Name = "toolStripSeparator1";
+			this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
 			// 
-			// btnReplace
+			// highlightAllButton
 			// 
-			this.btnReplace.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnReplace.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.btnReplace.Location = new System.Drawing.Point(85, 110);
-			this.btnReplace.Name = "btnReplace";
-			this.btnReplace.Size = new System.Drawing.Size(75, 23);
-			this.btnReplace.TabIndex = 7;
-			this.btnReplace.Text = "&Replace";
-			this.btnReplace.UseVisualStyleBackColor = true;
-			this.btnReplace.Click += new System.EventHandler(this.btnReplace_Click);
+			this.highlightAllButton.Image = global::DataDevelop.Properties.Resources.HighlightText_16x;
+			this.highlightAllButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.highlightAllButton.Name = "highlightAllButton";
+			this.highlightAllButton.Size = new System.Drawing.Size(94, 22);
+			this.highlightAllButton.Text = "Highlight All";
 			// 
-			// btnReplaceAll
+			// findToolStrip
 			// 
-			this.btnReplaceAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnReplaceAll.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.btnReplaceAll.Location = new System.Drawing.Point(166, 110);
-			this.btnReplaceAll.Name = "btnReplaceAll";
-			this.btnReplaceAll.Size = new System.Drawing.Size(75, 23);
-			this.btnReplaceAll.TabIndex = 9;
-			this.btnReplaceAll.Text = "Replace &All";
-			this.btnReplaceAll.UseVisualStyleBackColor = true;
-			this.btnReplaceAll.Click += new System.EventHandler(this.btnReplaceAll_Click);
+			this.findToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+			this.findToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.findLabel,
+            this.findTextBox,
+            this.findNextButton,
+            this.closeButton});
+			this.findToolStrip.Location = new System.Drawing.Point(0, 0);
+			this.findToolStrip.Name = "findToolStrip";
+			this.findToolStrip.Size = new System.Drawing.Size(333, 25);
+			this.findToolStrip.TabIndex = 11;
+			this.findToolStrip.Text = "toolStrip2";
 			// 
-			// chkMatchWholeWord
+			// findLabel
 			// 
-			this.chkMatchWholeWord.AutoSize = true;
-			this.chkMatchWholeWord.Location = new System.Drawing.Point(178, 58);
-			this.chkMatchWholeWord.Name = "chkMatchWholeWord";
-			this.chkMatchWholeWord.Size = new System.Drawing.Size(113, 17);
-			this.chkMatchWholeWord.TabIndex = 5;
-			this.chkMatchWholeWord.Text = "Match &whole word";
-			this.chkMatchWholeWord.UseVisualStyleBackColor = true;
+			this.findLabel.Margin = new System.Windows.Forms.Padding(8, 1, 0, 2);
+			this.findLabel.Name = "findLabel";
+			this.findLabel.Size = new System.Drawing.Size(56, 22);
+			this.findLabel.Text = "Find text:";
 			// 
-			// chkMatchCase
+			// findTextBox
 			// 
-			this.chkMatchCase.AutoSize = true;
-			this.chkMatchCase.Location = new System.Drawing.Point(90, 58);
-			this.chkMatchCase.Name = "chkMatchCase";
-			this.chkMatchCase.Size = new System.Drawing.Size(82, 17);
-			this.chkMatchCase.TabIndex = 4;
-			this.chkMatchCase.Text = "Match &case";
-			this.chkMatchCase.UseVisualStyleBackColor = true;
+			this.findTextBox.Font = new System.Drawing.Font("Segoe UI", 9F);
+			this.findTextBox.Name = "findTextBox";
+			this.findTextBox.Size = new System.Drawing.Size(180, 25);
+			this.findTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.findTextBox_KeyDown);
 			// 
-			// btnHighlightAll
+			// findNextButton
 			// 
-			this.btnHighlightAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnHighlightAll.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.btnHighlightAll.Location = new System.Drawing.Point(105, 110);
-			this.btnHighlightAll.Name = "btnHighlightAll";
-			this.btnHighlightAll.Size = new System.Drawing.Size(136, 23);
-			this.btnHighlightAll.TabIndex = 8;
-			this.btnHighlightAll.Text = "Find && highlight &all";
-			this.btnHighlightAll.UseVisualStyleBackColor = true;
-			this.btnHighlightAll.Visible = false;
-			this.btnHighlightAll.Click += new System.EventHandler(this.btnHighlightAll_Click);
+			this.findNextButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.findNextButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.findPreviousToolStripMenuItem});
+			this.findNextButton.Image = global::DataDevelop.Properties.Resources.FindNext_16x;
+			this.findNextButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.findNextButton.Name = "findNextButton";
+			this.findNextButton.Size = new System.Drawing.Size(32, 22);
+			this.findNextButton.Text = "Find next";
+			this.findNextButton.ButtonClick += new System.EventHandler(this.btnFindNext_Click);
 			// 
-			// btnCancel
+			// findPreviousToolStripMenuItem
 			// 
-			this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.btnCancel.Location = new System.Drawing.Point(247, 110);
-			this.btnCancel.Name = "btnCancel";
-			this.btnCancel.Size = new System.Drawing.Size(75, 23);
-			this.btnCancel.TabIndex = 6;
-			this.btnCancel.Text = "Cancel";
-			this.btnCancel.UseVisualStyleBackColor = true;
-			this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+			this.findPreviousToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.FindPrevious_16x;
+			this.findPreviousToolStripMenuItem.Name = "findPreviousToolStripMenuItem";
+			this.findPreviousToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+			this.findPreviousToolStripMenuItem.Text = "Find previous";
+			this.findPreviousToolStripMenuItem.Click += new System.EventHandler(this.btnFindPrevious_Click);
 			// 
-			// btnFindPrevious
+			// closeButton
 			// 
-			this.btnFindPrevious.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnFindPrevious.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.btnFindPrevious.Location = new System.Drawing.Point(157, 81);
-			this.btnFindPrevious.Name = "btnFindPrevious";
-			this.btnFindPrevious.Size = new System.Drawing.Size(84, 23);
-			this.btnFindPrevious.TabIndex = 6;
-			this.btnFindPrevious.Text = "Find pre&vious";
-			this.btnFindPrevious.UseVisualStyleBackColor = true;
-			this.btnFindPrevious.Click += new System.EventHandler(this.btnFindPrevious_Click);
+			this.closeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.closeButton.Image = global::DataDevelop.Properties.Resources.Close_16x;
+			this.closeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.closeButton.Name = "closeButton";
+			this.closeButton.Size = new System.Drawing.Size(23, 22);
+			this.closeButton.Text = "Close";
+			this.closeButton.ToolTipText = "Close";
+			this.closeButton.Visible = false;
+			this.closeButton.Click += new System.EventHandler(this.btnCancel_Click);
+			// 
+			// replaceToolStrip
+			// 
+			this.replaceToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+			this.replaceToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripLabel2,
+            this.replaceTextBox,
+            this.toolStripButton5,
+            this.toolStripButton6});
+			this.replaceToolStrip.Location = new System.Drawing.Point(0, 25);
+			this.replaceToolStrip.Name = "replaceToolStrip";
+			this.replaceToolStrip.Size = new System.Drawing.Size(333, 25);
+			this.replaceToolStrip.TabIndex = 12;
+			this.replaceToolStrip.Text = "toolStrip3";
+			// 
+			// toolStripLabel2
+			// 
+			this.toolStripLabel2.Margin = new System.Windows.Forms.Padding(8, 1, 0, 2);
+			this.toolStripLabel2.Name = "toolStripLabel2";
+			this.toolStripLabel2.Size = new System.Drawing.Size(77, 22);
+			this.toolStripLabel2.Text = "Replace with:";
+			// 
+			// replaceTextBox
+			// 
+			this.replaceTextBox.Font = new System.Drawing.Font("Segoe UI", 9F);
+			this.replaceTextBox.Name = "replaceTextBox";
+			this.replaceTextBox.Size = new System.Drawing.Size(168, 25);
+			// 
+			// toolStripButton5
+			// 
+			this.toolStripButton5.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripButton5.Image = global::DataDevelop.Properties.Resources.QuickReplace_16x;
+			this.toolStripButton5.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toolStripButton5.Name = "toolStripButton5";
+			this.toolStripButton5.Size = new System.Drawing.Size(23, 22);
+			this.toolStripButton5.Text = "replaceButton";
+			this.toolStripButton5.Click += new System.EventHandler(this.btnReplace_Click);
+			// 
+			// toolStripButton6
+			// 
+			this.toolStripButton6.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripButton6.Image = global::DataDevelop.Properties.Resources.ReplaceAll_16x;
+			this.toolStripButton6.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toolStripButton6.Name = "toolStripButton6";
+			this.toolStripButton6.Size = new System.Drawing.Size(23, 22);
+			this.toolStripButton6.Text = "replaceAllButton";
+			this.toolStripButton6.Click += new System.EventHandler(this.btnReplaceAll_Click);
 			// 
 			// FindAndReplaceDialog
 			// 
-			this.AcceptButton = this.btnReplace;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.CancelButton = this.btnCancel;
-			this.ClientSize = new System.Drawing.Size(334, 145);
-			this.Controls.Add(this.chkMatchCase);
-			this.Controls.Add(this.chkMatchWholeWord);
-			this.Controls.Add(this.btnReplaceAll);
-			this.Controls.Add(this.btnReplace);
-			this.Controls.Add(this.btnHighlightAll);
-			this.Controls.Add(this.btnCancel);
-			this.Controls.Add(this.btnFindPrevious);
-			this.Controls.Add(this.btnFindNext);
-			this.Controls.Add(this.txtReplaceWith);
-			this.Controls.Add(this.txtLookFor);
-			this.Controls.Add(this.lblReplaceWith);
-			this.Controls.Add(this.label1);
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+			this.ClientSize = new System.Drawing.Size(333, 74);
+			this.Controls.Add(this.matchToolStrip);
+			this.Controls.Add(this.replaceToolStrip);
+			this.Controls.Add(this.findToolStrip);
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "FindAndReplaceDialog";
 			this.ShowIcon = false;
 			this.Text = "Find and replace";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FindAndReplaceForm_FormClosing);
+			this.Load += new System.EventHandler(this.FindAndReplaceDialog_Load);
+			this.matchToolStrip.ResumeLayout(false);
+			this.matchToolStrip.PerformLayout();
+			this.findToolStrip.ResumeLayout(false);
+			this.findToolStrip.PerformLayout();
+			this.replaceToolStrip.ResumeLayout(false);
+			this.replaceToolStrip.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
 		}
 
 		#endregion
-
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.Label lblReplaceWith;
-		private System.Windows.Forms.TextBox txtLookFor;
-		private System.Windows.Forms.TextBox txtReplaceWith;
-		private System.Windows.Forms.Button btnFindNext;
-		private System.Windows.Forms.Button btnReplace;
-		private System.Windows.Forms.Button btnReplaceAll;
-		private System.Windows.Forms.CheckBox chkMatchWholeWord;
-		private System.Windows.Forms.CheckBox chkMatchCase;
-		private System.Windows.Forms.Button btnHighlightAll;
-		private System.Windows.Forms.Button btnCancel;
-		private System.Windows.Forms.Button btnFindPrevious;
+		private System.Windows.Forms.ToolStrip matchToolStrip;
+		private System.Windows.Forms.ToolStripButton matchCaseCheckButton;
+		private System.Windows.Forms.ToolStripButton matchWholeWordCheckButton;
+		private System.Windows.Forms.ToolStripButton highlightAllButton;
+		private System.Windows.Forms.ToolStrip findToolStrip;
+		private System.Windows.Forms.ToolStripSplitButton findNextButton;
+		private System.Windows.Forms.ToolStripButton closeButton;
+		private System.Windows.Forms.ToolStrip replaceToolStrip;
+		private System.Windows.Forms.ToolStripButton toolStripButton5;
+		private System.Windows.Forms.ToolStripButton toolStripButton6;
+		private System.Windows.Forms.ToolStripMenuItem findPreviousToolStripMenuItem;
+		private System.Windows.Forms.ToolStripLabel toolStripLabel1;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+		private System.Windows.Forms.ToolStripLabel findLabel;
+		private ToolStripSpringTextBox findTextBox;
+		private System.Windows.Forms.ToolStripLabel toolStripLabel2;
+		private ToolStripSpringTextBox replaceTextBox;
 	}
 }

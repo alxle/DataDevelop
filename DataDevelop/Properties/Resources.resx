@@ -136,6 +136,9 @@
   <data name="Copy_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Copy_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Close_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Close_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="GoToLast_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\GoToLast_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -150,6 +153,9 @@
   </data>
   <data name="WordWrap_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\WordWrap_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SortAscending_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SortAscending_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="RefreshPage" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\RefreshPage.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -176,6 +182,9 @@ This will close all open tables from this database.</value>
   <data name="PrintPreview" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PrintPreview.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="FindNext_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\FindNext_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Font" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Font.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -190,6 +199,9 @@ This will close all open tables from this database.</value>
   </data>
   <data name="QuickReplace_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\QuickReplace_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ReplaceAll_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ReplaceAll_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Information" xml:space="preserve">
     <value>Information</value>
@@ -228,14 +240,17 @@ Will you like to update?</value>
   <data name="Cut_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Cut_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Document_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Document_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="CaseSensitive_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CaseSensitive_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Font_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Font_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Print_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Print_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Document_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Document_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ConnectFailed" xml:space="preserve">
     <value>Connection to database failed</value>
@@ -325,14 +340,17 @@ Do you want to continue?</value>
   <data name="NavForward" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\NavForward.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Previous_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Previous_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="SQL_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Run_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Run_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="PythonMode" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\pythonsyntaxdefinition.xml;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  <data name="Zoom_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Zoom_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="WordWrap" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\WordWrap.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -345,6 +363,9 @@ Do you want to continue?</value>
   </data>
   <data name="Find" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Find.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FindPrevious_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\FindPrevious_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="QuickFind_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\QuickFind_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -364,13 +385,10 @@ Do you want to continue?</value>
   <data name="QueryDocumentTitle" xml:space="preserve">
     <value>Query on {0}</value>
   </data>
-  <data name="Previous_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Previous_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="PythonMode" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\pythonsyntaxdefinition.xml;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="Zoom_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Zoom_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="SortAscending_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\SortAscending_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="HighlightText_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HighlightText_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

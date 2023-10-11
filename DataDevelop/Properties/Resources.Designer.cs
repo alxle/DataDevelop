@@ -113,6 +113,16 @@ namespace DataDevelop.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap CaseSensitive_16x {
+            get {
+                object obj = ResourceManager.GetObject("CaseSensitive_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap CleanData_16x {
             get {
                 object obj = ResourceManager.GetObject("CleanData_16x", resourceCulture);
@@ -126,6 +136,16 @@ namespace DataDevelop.Properties {
         internal static System.Drawing.Bitmap ClearAll {
             get {
                 object obj = ResourceManager.GetObject("ClearAll", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Close_16x {
+            get {
+                object obj = ResourceManager.GetObject("Close_16x", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -262,6 +282,26 @@ namespace DataDevelop.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap FindNext_16x {
+            get {
+                object obj = ResourceManager.GetObject("FindNext_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap FindPrevious_16x {
+            get {
+                object obj = ResourceManager.GetObject("FindPrevious_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap First {
             get {
                 object obj = ResourceManager.GetObject("First", resourceCulture);
@@ -305,6 +345,16 @@ namespace DataDevelop.Properties {
         internal static System.Drawing.Bitmap GoToLast_16x {
             get {
                 object obj = ResourceManager.GetObject("GoToLast_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap HighlightText_16x {
+            get {
+                object obj = ResourceManager.GetObject("HighlightText_16x", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -714,6 +764,16 @@ namespace DataDevelop.Properties {
         internal static System.Drawing.Bitmap RefreshPage {
             get {
                 object obj = ResourceManager.GetObject("RefreshPage", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ReplaceAll_16x {
+            get {
+                object obj = ResourceManager.GetObject("ReplaceAll_16x", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
