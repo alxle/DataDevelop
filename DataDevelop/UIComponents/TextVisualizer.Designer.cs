@@ -185,14 +185,14 @@
 			// 
 			this.changeFontToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Font_16x;
 			this.changeFontToolStripMenuItem.Name = "changeFontToolStripMenuItem";
-			this.changeFontToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.changeFontToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
 			this.changeFontToolStripMenuItem.Text = "Change Font...";
 			this.changeFontToolStripMenuItem.Click += new System.EventHandler(this.changeFontToolStripMenuItem_Click);
 			// 
 			// formatXmlToolStripMenuItem
 			// 
 			this.formatXmlToolStripMenuItem.Name = "formatXmlToolStripMenuItem";
-			this.formatXmlToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.formatXmlToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
 			this.formatXmlToolStripMenuItem.Text = "Format XML";
 			this.formatXmlToolStripMenuItem.Click += new System.EventHandler(this.formatXmlToolStripMenuItem_Click);
 			// 
@@ -221,40 +221,40 @@
 			this.plainTextToolStripMenuItem.Checked = true;
 			this.plainTextToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.plainTextToolStripMenuItem.Name = "plainTextToolStripMenuItem";
-			this.plainTextToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.plainTextToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
 			this.plainTextToolStripMenuItem.Text = "Plain Text";
 			this.plainTextToolStripMenuItem.Click += new System.EventHandler(this.plainTextToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator4
 			// 
 			this.toolStripSeparator4.Name = "toolStripSeparator4";
-			this.toolStripSeparator4.Size = new System.Drawing.Size(177, 6);
+			this.toolStripSeparator4.Size = new System.Drawing.Size(123, 6);
 			// 
 			// htmlToolStripMenuItem
 			// 
 			this.htmlToolStripMenuItem.Name = "htmlToolStripMenuItem";
-			this.htmlToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.htmlToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
 			this.htmlToolStripMenuItem.Text = "HTML";
 			this.htmlToolStripMenuItem.Click += new System.EventHandler(this.htmlToolStripMenuItem_Click);
 			// 
 			// javaScriptToolStripMenuItem
 			// 
 			this.javaScriptToolStripMenuItem.Name = "javaScriptToolStripMenuItem";
-			this.javaScriptToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.javaScriptToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
 			this.javaScriptToolStripMenuItem.Text = "JavaScript";
 			this.javaScriptToolStripMenuItem.Click += new System.EventHandler(this.javaScriptToolStripMenuItem_Click);
 			// 
 			// sqlToolStripMenuItem
 			// 
 			this.sqlToolStripMenuItem.Name = "sqlToolStripMenuItem";
-			this.sqlToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.sqlToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
 			this.sqlToolStripMenuItem.Text = "SQL";
 			this.sqlToolStripMenuItem.Click += new System.EventHandler(this.sqlToolStripMenuItem_Click);
 			// 
 			// xmlToolStripMenuItem
 			// 
 			this.xmlToolStripMenuItem.Name = "xmlToolStripMenuItem";
-			this.xmlToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.xmlToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
 			this.xmlToolStripMenuItem.Text = "XML";
 			this.xmlToolStripMenuItem.Click += new System.EventHandler(this.xmlToolStripMenuItem_Click);
 			// 
@@ -304,7 +304,6 @@
 			this.textEditor.Cursor = System.Windows.Forms.Cursors.IBeam;
 			this.textEditor.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
 			this.textEditor.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.textEditor.Font = new System.Drawing.Font("Courier New", 9.75F);
 			this.textEditor.IsReplaceMode = false;
 			this.textEditor.Location = new System.Drawing.Point(0, 25);
 			this.textEditor.Name = "textEditor";
@@ -314,6 +313,7 @@
 			this.textEditor.Size = new System.Drawing.Size(684, 374);
 			this.textEditor.TabIndex = 6;
 			this.textEditor.Zoom = 100;
+			this.textEditor.TextChanged += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.textEditor_TextChanged);
 			// 
 			// TextVisualizer
 			// 

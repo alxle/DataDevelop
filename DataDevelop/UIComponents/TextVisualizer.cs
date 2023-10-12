@@ -16,7 +16,11 @@ namespace DataDevelop.UIComponents
 		public TextVisualizer()
 		{
 			InitializeComponent();
-			textEditor.Font = Properties.Settings.Default.TextVisualizerFont;
+
+			// Create a new Font instance as it may be disposed by the TextEditor
+			var font = Properties.Settings.Default.TextVisualizerFont;
+			textEditor.Font = new Font(font, font.Style);
+
 			if (MainForm.DarkMode) {
 				this.UseImmersiveDarkMode();
 				statusStrip.BackColor = VisualStyles.DarkThemeColors.StatusBackColor;
