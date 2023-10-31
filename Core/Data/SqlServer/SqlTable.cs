@@ -118,10 +118,13 @@ namespace DataDevelop.Data.SqlServer
 					if (maxLength != null && maxLength != DBNull.Value) {
 						column.Size = (int)maxLength;
 						column.ProviderType += (column.Size.Value < 0) ? "(MAX)" : $"({column.Size})";
-					} else if (column.ProviderType.ToLower() == "numeric") {
-						column.Precision = (int)row["NUMERIC_PRECISION"];
-						column.Scale = (int)row["NUMERIC_SCALE"];
-						column.ProviderType = $"numeric({column.Precision}, {column.Scale})";
+					} else if (row["NUMERIC_PRECISION"] != DBNull.Value) {
+						column.Precision = Convert.ToInt32(row["NUMERIC_PRECISION"]);
+						column.Scale = Convert.ToInt32(row["NUMERIC_SCALE"]);
+						var providerType = column.ProviderType.ToLowerInvariant();
+						if (providerType == "decimal" || providerType == "numeric") {
+							column.ProviderType += $"({column.Precision}, {column.Scale})";
+						}
 					}
 					columnsCollection.Add(column);
 				}
