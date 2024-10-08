@@ -118,7 +118,7 @@ namespace DataDevelop.Data.SqlServer
 					if (maxLength != null && maxLength != DBNull.Value) {
 						column.Size = (int)maxLength;
 						column.ProviderType += (column.Size.Value < 0) ? "(MAX)" : $"({column.Size})";
-					} else if (row["NUMERIC_PRECISION"] != DBNull.Value) {
+					} else if (row["NUMERIC_PRECISION"] != DBNull.Value && row["NUMERIC_SCALE"] != DBNull.Value) {
 						column.Precision = Convert.ToInt32(row["NUMERIC_PRECISION"]);
 						column.Scale = Convert.ToInt32(row["NUMERIC_SCALE"]);
 						var providerType = column.ProviderType.ToLowerInvariant();
@@ -126,6 +126,7 @@ namespace DataDevelop.Data.SqlServer
 							column.ProviderType += $"({column.Precision}, {column.Scale})";
 						}
 					}
+					column.IsNullable = (string)row["IS_NULLABLE"] == "YES";
 					columnsCollection.Add(column);
 				}
 				SetColumnTypes(columnsCollection);
