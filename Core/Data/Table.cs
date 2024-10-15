@@ -131,11 +131,8 @@ namespace DataDevelop.Data
 
 		public DataTable GetData(TableFilter filter)
 		{
-			using (var adapter = Database.CreateAdapter(this, filter)) {
-				var data = new DataTable(Name);
-				adapter.Fill(data);
-				return data;
-			}
+			var select = GetBaseSelectCommandText(filter);
+			return Database.ExecuteTable(select);
 		}
 
 		public DataTable GetData(int startIndex, int count)
