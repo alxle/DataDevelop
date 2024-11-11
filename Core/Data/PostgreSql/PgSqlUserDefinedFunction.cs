@@ -10,7 +10,7 @@ namespace DataDevelop.Data.PostgreSql
 		private readonly int oid;
 		private readonly string routineName;
 
-		public PgSqlUserDefinedFunction(PgSqlDatabase database, string specificName, string name)
+		public PgSqlUserDefinedFunction(PgSqlDatabase database, string schema, string specificName, string name)
 			: base(database)
 		{
 			this.db = database;
@@ -18,7 +18,10 @@ namespace DataDevelop.Data.PostgreSql
 			oid = Convert.ToInt32(specificName.Substring(lastIndex, specificName.Length - lastIndex));
 			routineName = name;
 			Name = specificName;
+			SchemaName = schema;
 		}
+
+		public string SchemaName { get; set; }
 
 		public override string GenerateAlterStatement()
 		{
@@ -41,15 +44,15 @@ namespace DataDevelop.Data.PostgreSql
 		{
 			var parameterTypes = string.Join(", ", Parameters.Select(i => i.ProviderType));
 			if (parameterTypes.Length > 0) {
-				parameterTypes = $"DROP FUNCTION \"{routineName}\"({parameterTypes})";
+				parameterTypes = $"DROP FUNCTION \"{SchemaName}\".\"{routineName}\"({parameterTypes})";
 			}
-			return $"DROP FUNCTION \"{routineName}\"";
+			return $"DROP FUNCTION \"{SchemaName}\".\"{routineName}\"";
 		}
 
 		public override string GenerateExecuteStatement()
 		{
 			var parameterTypes = string.Join(", ", Parameters.Select(i => $"?{i.Name}:{i.ParameterType?.Name ?? "String"}"));
-			return $"SELECT \"{routineName}\"({parameterTypes})";
+			return $"SELECT \"{SchemaName}\".\"{routineName}\"({parameterTypes})";
 		}
 
 		protected override void PopulateParameters(IList<Parameter> parametersCollection)
@@ -60,9 +63,10 @@ namespace DataDevelop.Data.PostgreSql
 					"  p.parameter_mode, p.parameter_name, p.data_type " +
 					"FROM information_schema.parameters p " +
 					"WHERE" +
-					"  p.specific_name = :Name AND p.specific_schema = 'public' " +
+					"  p.specific_name = :Name AND p.specific_schema = :schema " +
 					"ORDER BY p.ordinal_position";
 				select.Parameters.AddWithValue(":Name", Name);
+				select.Parameters.AddWithValue(":schema", SchemaName);
 				using (var reader = select.ExecuteReader()) {
 					while (reader.Read()) {
 						var parameter = new Parameter {

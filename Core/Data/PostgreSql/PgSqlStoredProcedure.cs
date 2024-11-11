@@ -10,14 +10,19 @@ namespace DataDevelop.Data.PostgreSql
 		readonly int oid;
 		readonly string routineName;
 
-		public PgSqlStoredProcedure(PgSqlDatabase database, string specificName, string name)
+		public PgSqlStoredProcedure(PgSqlDatabase database, string schemaName, string specificName, string name)
 			: base(database)
 		{
+			SchemaName = schemaName;
 			Name = specificName;
 			db = database;
 			routineName = name;
 			oid = Convert.ToInt32(specificName.Substring(name.Length + 1, specificName.Length - name.Length - 1));
 		}
+
+		public string SchemaName { get; set; }
+
+		public string ProcedureName => routineName;
 
 		public override string GenerateAlterStatement()
 		{
@@ -39,13 +44,13 @@ namespace DataDevelop.Data.PostgreSql
 		public override string GenerateDropStatement()
 		{
 			var parameterTypes = string.Join(", ", Parameters.Select(p => p.ProviderType));
-			return $"DROP PROCEDURE \"{routineName}\"({parameterTypes});";
+			return $"DROP PROCEDURE \"{SchemaName}\".\"{routineName}\"({parameterTypes});";
 		}
 
 		public override string GenerateExecuteStatement()
 		{
 			var parameters = string.Join(", ", Parameters.Select(p => $"?{p.Name.Replace(' ', '_')}"));
-			return $"CALL \"{routineName}\" ({parameters})";
+			return $"CALL \"{SchemaName}\".\"{routineName}\" ({parameters})";
 		}
 
 		protected override void PopulateParameters(IList<Parameter> parametersCollection)
@@ -56,9 +61,10 @@ namespace DataDevelop.Data.PostgreSql
 					"  p.parameter_mode, p.parameter_name, p.data_type " +
 					"FROM information_schema.parameters p " +
 					"WHERE" +
-					"  p.specific_name = :Name AND p.specific_schema = 'public' " +
+					"  p.specific_name = :Name AND p.specific_schema = :Schema " +
 					"ORDER BY p.ordinal_position";
 				select.Parameters.AddWithValue(":Name", Name);
+				select.Parameters.AddWithValue(":Schema", SchemaName);
 				using (var reader = select.ExecuteReader()) {
 					while (reader.Read()) {
 						var parameter = new Parameter {

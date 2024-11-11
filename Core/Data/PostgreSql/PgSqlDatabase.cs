@@ -110,16 +110,16 @@ namespace DataDevelop.Data.PostgreSql
 
 		protected override void PopulateTables(DbObjectCollection<Table> tablesCollection)
 		{
-			using (var tables = Connection.GetSchema("Tables", new[] { Connection.Database, "public" })) {
+			using (var tables = Connection.GetSchema("Tables", new[] { Connection.Database, null })) {
 				foreach (DataRow row in tables.Rows) {
-					var table = new PgSqlTable(this, (string)row["table_name"]);
+					var table = new PgSqlTable(this, (string)row["table_schema"], (string)row["table_name"]);
 					tablesCollection.Add(table);
 				}
 			}
 
-			using (var views = Connection.GetSchema("Views", new[] { Connection.Database, "public" })) {
+			using (var views = Connection.GetSchema("Views", new[] { Connection.Database, null })) {
 				foreach (DataRow row in views.Rows) {
-					var table = new PgSqlTable(this, (string)row["table_name"],
+					var table = new PgSqlTable(this, (string)row["table_schema"], (string)row["table_name"],
 						isView: true, isReadOnly: (string)row["is_updatable"] == "NO");
 					tablesCollection.Add(table);
 				}
@@ -130,15 +130,17 @@ namespace DataDevelop.Data.PostgreSql
 		{
 			using (var command = Connection.CreateCommand()) {
 				command.CommandText =
-					"SELECT specific_name, routine_name " +
+					"SELECT specific_name, routine_schema, routine_name " +
 					"FROM information_schema.routines " +
-					"WHERE routine_type = 'PROCEDURE' AND routine_schema = 'public' " +
+					"WHERE specific_catalog = :db AND routine_type = 'PROCEDURE' " +
 					"ORDER BY routine_name";
+				command.Parameters.AddWithValue("db", Connection.Database);
 				using (var reader = command.ExecuteReader()) {
 					while (reader.Read()) {
 						var specificName = reader.GetString(0);
-						var name = reader.GetString(1);
-						var sp = new PgSqlStoredProcedure(this, specificName, name);
+						var schema = reader.GetString(1);
+						var name = reader.GetString(2);
+						var sp = new PgSqlStoredProcedure(this, schema, specificName, name);
 						storedProceduresCollection.Add(sp);
 					}
 				}
@@ -149,16 +151,19 @@ namespace DataDevelop.Data.PostgreSql
 		{
 			using (var command = Connection.CreateCommand()) {
 				command.CommandText =
-					"SELECT specific_name, routine_name, data_type " +
+					"SELECT specific_name, routine_schema, routine_name, data_type " +
 					"FROM information_schema.routines " +
-					"WHERE routine_type = 'FUNCTION' AND routine_schema = 'public' " +
+					"WHERE specific_catalog = :db AND routine_type = 'FUNCTION' " +
+					"AND routine_schema NOT IN ('pg_catalog', 'information_schema')" +
 					"ORDER BY routine_name";
+				command.Parameters.AddWithValue("db", Connection.Database);
 				using (var reader = command.ExecuteReader()) {
 					while (reader.Read()) {
 						var specificName = reader.GetString(0);
-						var routineName = reader.GetString(1);
-						var returnType = reader.GetString(2);
-						var fn = new PgSqlUserDefinedFunction(this, specificName, routineName) {
+						var routineSchema = reader.GetString(1);
+						var routineName = reader.GetString(2);
+						var returnType = reader.GetString(3);
+						var fn = new PgSqlUserDefinedFunction(this, routineSchema, specificName, routineName) {
 							ReturnType = returnType
 						};
 						userDefinedFunctionsCollection.Add(fn);

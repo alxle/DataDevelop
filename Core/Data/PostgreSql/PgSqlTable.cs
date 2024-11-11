@@ -13,21 +13,31 @@ namespace DataDevelop.Data.PostgreSql
 		private bool isView;
 		private bool isReadOnly;
 
-		public PgSqlTable(PgSqlDatabase database, string name)
+		public PgSqlTable(PgSqlDatabase database, string schemaName, string tableName)
 			: base(database)
 		{
 			this.database = database;
-			Name = name;
+			SchemaName = schemaName;
+			TableName = tableName;
+			Name = $"{schemaName}.{tableName}";
 		}
 
-		public PgSqlTable(PgSqlDatabase database, string name, bool isView, bool isReadOnly)
-			: this(database, name)
+		public PgSqlTable(PgSqlDatabase database, string schemaName, string tableName, bool isView, bool isReadOnly)
+			: this(database, schemaName, tableName)
 		{
 			this.isView = isView;
 			this.isReadOnly = isReadOnly;
 		}
 
 		public NpgsqlConnection Connection => database.Connection;
+
+		public string SchemaName { get; internal set; }
+
+		public string TableName { get; private set; }
+
+		public override string ObjectName => TableName;
+
+		public override string QuotedName => $@"""{SchemaName}"".""{TableName}""";
 
 		public override bool IsReadOnly => isReadOnly;
 
@@ -42,7 +52,7 @@ namespace DataDevelop.Data.PostgreSql
 		{
 			using (var alter = Connection.CreateCommand()) {
 				var tableOrView = IsView ? "VIEW" : "TABLE";
-				alter.CommandText = $@"ALTER {tableOrView} ""{Name}"" RENAME TO ""{newName}""";
+				alter.CommandText = $@"ALTER {tableOrView} {QuotedName} RENAME TO ""{SchemaName}"".""{newName}""";
 				alter.ExecuteNonQuery();
 				Name = newName;
 			}
@@ -99,8 +109,8 @@ namespace DataDevelop.Data.PostgreSql
 					where c.table_schema = :schema and c.table_name = :table
 					order by c.ordinal_position
 					";
-				command.Parameters.AddWithValue(":schema", "public");
-				command.Parameters.AddWithValue(":table", Name);
+				command.Parameters.AddWithValue(":schema", SchemaName);
+				command.Parameters.AddWithValue(":table", TableName);
 				using (var reader = command.ExecuteReader()) {
 					while (reader.Read()) {
 						var column = new Column(this) {
@@ -142,8 +152,8 @@ namespace DataDevelop.Data.PostgreSql
 					where n.nspname = :schema and t.relname = :table
 					order by t.relname, i.relname
 					";
-				select.Parameters.AddWithValue(":schema", "public");
-				select.Parameters.AddWithValue(":table", Name);
+				select.Parameters.AddWithValue(":schema", SchemaName);
+				select.Parameters.AddWithValue(":table", TableName);
 				var data = new DataTable();
 				using (var reader = select.ExecuteReader()) {
 					data.Load(reader);
@@ -177,8 +187,8 @@ namespace DataDevelop.Data.PostgreSql
 						  t.event_object_schema = :table_schema and
 						  t.event_object_table = :table_name
 						";
-				command.Parameters.AddWithValue(":table_schema", "public");
-				command.Parameters.AddWithValue(":table_name", Name);
+				command.Parameters.AddWithValue(":table_schema", SchemaName);
+				command.Parameters.AddWithValue(":table_name", TableName);
 				using (var reader = command.ExecuteReader()) {
 					var triggers = new HashSet<string>();
 					while (reader.Read()) {
@@ -219,8 +229,8 @@ namespace DataDevelop.Data.PostgreSql
 					inner join pg_attribute att on att.attrelid = con.confrelid and att.attnum = con.child
 					inner join pg_class cl on cl.oid = con.confrelid
 					inner join pg_attribute att2 on att2.attrelid = con.conrelid and att2.attnum = con.parent";
-				command.Parameters.AddWithValue(":schema_name", "public");
-				command.Parameters.AddWithValue(":table_name", Name);
+				command.Parameters.AddWithValue(":schema_name", SchemaName);
+				command.Parameters.AddWithValue(":table_name", TableName);
 				using (var reader = command.ExecuteReader()) {
 					ForeignKey key = null;
 					while (reader.Read()) {

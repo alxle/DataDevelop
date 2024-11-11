@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Text;
 
 namespace DataDevelop.Data.PostgreSql
@@ -21,15 +20,17 @@ namespace DataDevelop.Data.PostgreSql
 			using (Database.CreateConnectionScope()) {
 				using (var command = table.Connection.CreateCommand()) {
 					command.CommandText =
-						"select event_manipulation, action_statement, " +
-						"       action_orientation, action_timing " +
-						"from information_schema.triggers t " +
-						"where t.trigger_name = :trigger_name " +
-						"      and t.event_object_schema = :table_schema " +
-						"      and t.event_object_table = :table_name ";
+						"SELECT " +
+						"  event_manipulation, action_statement, " +
+						"  action_orientation, action_timing " +
+						"FROM information_schema.triggers t " +
+						"WHERE " +
+						"  t.trigger_name = :trigger_name " +
+						"  and t.event_object_schema = :table_schema " +
+						"  and t.event_object_table = :table_name ";
 					command.Parameters.AddWithValue(":trigger_name", Name);
-					command.Parameters.AddWithValue(":table_schema", "public");
-					command.Parameters.AddWithValue(":table_name", table.Name);
+					command.Parameters.AddWithValue(":table_schema", table.SchemaName);
+					command.Parameters.AddWithValue(":table_name", table.TableName);
 					using (var reader = command.ExecuteReader()) {
 						if (reader.Read()) {
 							var events = new List<string>() { reader.GetString(0) };
@@ -40,7 +41,7 @@ namespace DataDevelop.Data.PostgreSql
 								events.Add(reader.GetString(0));
 							}
 							var create = new StringBuilder();
-							create.Append($"CREATE TRIGGER {Name} ");
+							create.Append($"CREATE TRIGGER \"{Name}\" ");
 							create.AppendLine($"{actionTiming} {string.Join(" OR ", events.ToArray())} ");
 							create.Append($"  ON {table.QuotedName} ");
 							if (actionOrientation == "ROW") {
@@ -67,7 +68,7 @@ namespace DataDevelop.Data.PostgreSql
 
 		public override string GenerateDropStatement()
 		{
-			return "DROP TRIGGER " + Name + " ON " + table.QuotedName;
+			return $"DROP TRIGGER \"{Name}\" ON {table.QuotedName}";
 		}
 	}
 }
