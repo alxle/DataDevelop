@@ -7,16 +7,24 @@ class Row:
 	
 	def __setattr__(self, name, value):
 		self._dataRow[name] = value
+	
+	def __repr__(self):
+		return f"<Row({str(self)})>"
+	
+	def __str__(self):
+		return ', '.join(f"{c.ColumnName}: {self._dataRow[c]}" for c in self._dataRow.Table.Columns)
 
 class Table:
+	DetachedState = 1
+	UnchangedState = 2
+
 	def __init__(self, table):
 		self.base = table
 		self._autoSave = True
 		db = self.base.Database
-		db.Connect()
-		self._adapter = db.CreateAdapter(self.base)
-		self._dataTable = table.GetData(0, 0)
-		db.Disconnect()
+		with DbConnection(db):
+			self._adapter = db.CreateAdapter(self.base)
+			self._dataTable = table.GetData(0, 0)
 	
 	def _GetAutoSaveChanges(self):
 		return self._autoSave
@@ -33,50 +41,50 @@ class Table:
 		isLambda = callable(where)
 		isString = isinstance(where, str)
 		db = self.base.Database
-		db.Connect()
-		select = self._adapter.SelectCommand.Clone()
-		if isString:
-			select.CommandText += " WHERE " + where
-		reader = select.ExecuteReader()
-		while reader.Read():
-			dataRow = self._dataTable.NewRow()
-			#reader.GetValues(dataRow.ItemArray)
-			for i in range(reader.FieldCount):
-				dataRow[reader.GetName(i)] = reader[i]
-			self._dataTable.Rows.Add(dataRow)
-			dataRow.AcceptChanges()
-			row = Row(dataRow)
-			if isLambda:
-				if where(row):
-					yield row
-			else:
-				yield row
-			if dataRow.RowState.ToString() == "Unchanged":
-				self._dataTable.Rows.Remove(dataRow)
-			elif self.AutoSaveChanges:
-				self.SaveChanges()
-		reader.Close()
-		reader.Dispose()
-		select.Dispose()
-		db.Disconnect()
+		with DbConnection(db):
+			select = self._adapter.SelectCommand.Clone()
+			if isString:
+				select.CommandText += " WHERE " + where
+			with select.ExecuteReader() as reader:
+				while reader.Read():
+					dataRow = self._dataTable.NewRow()
+					#reader.GetValues(dataRow.ItemArray)
+					for i in range(reader.FieldCount):
+						dataRow[reader.GetName(i)] = reader[i]
+					self._dataTable.Rows.Add(dataRow)
+					dataRow.AcceptChanges()
+					row = Row(dataRow)
+					if isLambda:
+						if where(row):
+							yield row
+					else:
+						yield row
+					if dataRow.RowState == self.UnchangedState:
+						self._dataTable.Rows.Remove(dataRow)
+					elif self.AutoSaveChanges:
+						self.SaveChanges()
+			select.Dispose()
+	
+	def Where(self, where = None):
+		return self.Select(where)
 	
 	def NewRow(self):
 		return Row(self._dataTable.NewRow())
 	
 	def Insert(self, row):
-		dataRow = row._dataRow;
-		if dataRow.RowState.ToString() == "Detached":
+		dataRow = row._dataRow
+		if dataRow.RowState == self.DetachedState:
 			self._dataTable.Rows.Add(dataRow)
 		else:
 			newRow = self._dataTable.NewRow()
-			newRow.ItemArray = dataRow.ItemArray;
+			newRow.ItemArray = dataRow.ItemArray
 			self._dataTable.Rows.Add(newRow)
 		if self.AutoSaveChanges:
 			self.SaveChanges()
 	
 	def Update(self, row):
 		dataRow = row._dataRow
-		if dataRow.RowState.ToString() == "Unchanged":
+		if dataRow.RowState == self.UnchangedState:
 			dataRow.SetModified()
 		if self.AutoSaveChanges:
 			self.SaveChanges()
@@ -102,13 +110,18 @@ class Table:
 	def ClearChanges(self):
 		self._dataTable.Rows.Clear()
 
+	def __repr__(self):
+		return str(self)
+
+	def __str__(self):
+		return f"<Table(Name: {self.base.Name}, AutoSaveChanges: {AutoSaveChanges})>"
+
 class Database:
 	def __init__(self, database):
 		if isinstance(database, str):
-			if _dbs.ContainsKey(database):
-				db = _dbs[database]
-			else:
-				raise Exception("Database '" + database + "' not found.")
+			if not _dbs.ContainsKey(database):
+				raise Exception(f"Database '{database}' not found.")
+			db = _dbs[database]
 			self.base = db
 		else:
 			self.base = database
@@ -120,45 +133,58 @@ class Database:
 		table = self.base.GetTable(name)
 		if table == None:
 			table = self.base.GetTable(name.Replace('_', ' '))
-		if table != None:
-			t = Table(table)
-			self.__dict__[name] = t
-			return t
+		if table == None:
+			raise AttributeError(f"'{self.__class__.__name__}' object has no attribute '{name}'")
+		t = Table(table)
+		self.__dict__[name] = t
+		return t
 	
 	def Query(self, command, *values):
-		from System.Collections import ArrayList
-		list = ArrayList()
-		for value in values:
-			list.Add(value)
-		if list.Count == 0:
-			for dataRow in self.base.Query(command).Rows:
-				yield Row(dataRow)
-		elif list.Count == 1:
-			for dataRow in self.base.Query(command, list[0]).Rows:
-				yield Row(dataRow)
-		else:
-			for dataRow in self.base.Query(command, list.ToArray()).Rows:
-				yield Row(dataRow)
+		result = self.base.Query(command, *values) if values else self.base.Query(command)
+		for dataRow in result.Rows:
+			yield Row(dataRow)
 	
 	def Execute(self, command, *values):
-		from System.Collections import ArrayList
-		list = ArrayList()
-		for value in values:
-			list.Add(value)
-		if list.Count == 0:
-			return self.base.NonQuery(command)
-		elif list.Count == 1:
-			return self.base.NonQuery(command, list[0])
-		else:
-			return self.base.NonQuery(command, list.ToArray())
+		if values:
+			return self.base.NonQuery(command, *values)
+		return self.base.NonQuery(command)
 
 	def NonQuery(self, command, *values):
-		self.Execute(command, values)
+		self.Execute(command, *values)
 	
 	def Scalar(self, command, *values):
-		from System.Collections import ArrayList
-		list = ArrayList()
-		for value in values:
-			list.Add(value)
-		table = self.base.Query(command, list.ToArray())
-		return table.Rows[0][0]
+		result = self.base.Query(command, *values)
+		return result.Rows[0][0]
+
+	def QueryFirst(self, command, *values):
+		result = self.base.Query(command, *values)
+		return Row(result.Rows[0])
+
+	def GetData(self, command, *values):
+		return self.base.Query(command, *values)
+
+	def __repr__(self):
+		return str(self)
+
+	def __str__(self):
+		return f"<Database(Name: {self.base.Name}, Provider: {self.base.Provider.Name})>"
+
+	def __enter__(self):
+		self.base.Connect()
+		return self
+	
+	def __exit__(self, exc_type, exc_value, traceback):
+		self.base.Disconnect()
+		return False
+
+class DbConnection:
+	def __init__(self, db):
+		self.db = db.base if isinstance(db, Database) else db
+	
+	def __enter__(self):
+		self.db.Connect()
+		return self.db
+	
+	def __exit__(self, exc_type, exc_value, traceback):
+		self.db.Disconnect()
+		return False
