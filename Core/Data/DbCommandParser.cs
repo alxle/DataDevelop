@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.IO;
 using System.Text;
 using static System.Char;
 
@@ -45,19 +44,23 @@ namespace DataDevelop.Data
 			return DbType.Object;
 		}
 
+		private static void BindParameter(IDataParameter parameter, object value)
+		{
+			if (value == null) {
+				parameter.DbType = DbType.Object;
+				parameter.Value = DBNull.Value;
+			} else {
+				parameter.DbType = GetDbType(value);
+				parameter.Value = value;
+			}
+		}
+
 		public static void BindParameters(IDbCommand command, params object[] values)
 		{
 			foreach (IDataParameter parameter in command.Parameters) {
 				var index = Convert.ToInt32(parameter.SourceColumn.Substring(1));
 				var value = values[index];
-
-				if (value == null) {
-					parameter.DbType = DbType.Object;
-					parameter.Value = DBNull.Value;
-				} else {
-					parameter.DbType = GetDbType(value);
-					parameter.Value = value;
-				}
+				BindParameter(parameter, value);
 			}
 		}
 
@@ -65,14 +68,7 @@ namespace DataDevelop.Data
 		{
 			foreach (IDataParameter parameter in command.Parameters) {
 				var value = row[parameter.SourceColumn];
-
-				if (value == null) {
-					parameter.DbType = DbType.Object;
-					parameter.Value = DBNull.Value;
-				} else {
-					parameter.DbType = GetDbType(value);
-					parameter.Value = value;
-				}
+				BindParameter(parameter, value);
 			}
 		}
 
@@ -80,141 +76,129 @@ namespace DataDevelop.Data
 		{
 			foreach (IDataParameter parameter in command.Parameters) {
 				var value = parameters[parameter.SourceColumn];
-
-				if (value == null) {
-					parameter.DbType = DbType.Object;
-					parameter.Value = DBNull.Value;
-				} else {
-					parameter.DbType = GetDbType(value);
-					parameter.Value = value;
-				}
+				BindParameter(parameter, value);
 			}
 		}
 
 		public static IDbCommand Parse(Database database, string commandText)
 		{
+			if (database == null)
+				throw new ArgumentNullException(nameof(database));
+			if (commandText == null)
+				throw new ArgumentNullException(nameof(commandText));
 			var command = database.CreateCommand();
 			var result = new StringBuilder(commandText.Length * 2);
 			const char ParamChar = '?';
 			var parameters = new Dictionary<string, DbParameter>(StringComparer.OrdinalIgnoreCase);
-			var lineNumber = 1;
-			var columnNumber = 1;
-			using (var reader = new StringReader(commandText)) {
-				var state = State.OnCommandText;
-				do {
-					var ch = reader.Read();
-					if (ch == '\n') {
-						lineNumber++;
-						columnNumber = 1;
-					} else {
-						columnNumber++;
-					}
-					switch (state) {
-						case State.OnCommandText:
-							switch (ch) {
-								case -1:
-									state = State.End;
-									break;
-								case '\'':
-									result.Append((char)ch);
-									state = State.InsideString;
-									break;
-								case '-':
-									result.Append((char)ch);
-									if (reader.Peek() == '-') {
-										result.Append((char)reader.Read());
-										columnNumber++;
-										state = State.InSingleLineComment;
+			var state = State.OnCommandText;
+			var scanner = new Scanner(commandText);
+			while (scanner.Read()) {
+				var ch = scanner.Current;
+				switch (state) {
+					case State.OnCommandText:
+						switch (ch) {
+							case '\'':
+								result.Append(ch);
+								state = State.InSingleQuoteString;
+								break;
+							case '"':
+								result.Append(ch);
+								state = State.InDoubleQuoteString;
+								break;
+							case '-':
+								result.Append(ch);
+								if (scanner.Peek() == '-') {
+									result.Append(scanner.ReadNext());
+									state = State.InSingleLineComment;
+								}
+								break;
+							case '/':
+								result.Append(ch);
+								if (scanner.Peek() == '*') {
+									result.Append(scanner.ReadNext());
+									state = State.InMultiLineComment;
+								}
+								if (scanner.Peek() == '/') {
+									result.Append(scanner.ReadNext());
+									state = State.InSingleLineComment;
+								}
+								break;
+							case ParamChar:
+								var dbType = DbType.Object;
+								var paramName = ReadIdentifier(scanner, allowDigitFirst: true);
+								if (paramName.Length == 0) {
+									throw new FormatException($"Parameter Name or Index missing, line {scanner.Line}, column {scanner.Column}.");
+								}
+								if (IsDigit(paramName[0])) {
+									paramName = "p" + paramName;
+								}
+								if (scanner.Peek() == ':') {
+									scanner.Read();
+									var dbTypeName = ReadIdentifier(scanner, allowDigitFirst: false);
+									if (dbTypeName.Length == 0) {
+										throw new FormatException($"DbType not specified, line {scanner.Line}, column {scanner.Column}.");
 									}
-									break;
-								case '/':
-									result.Append((char)ch);
-									if (reader.Peek() == '*') {
-										result.Append((char)reader.Read());
-										state = State.InMultiLineComment;
+									if (!Enum.TryParse(dbTypeName, ignoreCase: true, out dbType)) {
+										throw new FormatException($"Invalid DbType: \"{dbTypeName}\", line {scanner.Line}, column {scanner.Column}.");
 									}
-									break;
-								case ParamChar:
-									var dbType = DbType.Object;
-									var paramName = ReadIdentifier(reader, allowDigitFirst: true);
-									if (paramName.Length == 0) {
-										throw new FormatException($"Parameter Name or Index missing, line {lineNumber}, column {columnNumber}.");
-									}
-									columnNumber += paramName.Length;
-									if (IsDigit(paramName[0])) {
-										paramName = "p" + paramName;
-									}
-									if ((char)reader.Peek() == ':') {
-										reader.Read();
-										columnNumber++;
-										var dbTypeName = ReadIdentifier(reader, allowDigitFirst: false);
-										if (dbTypeName.Length == 0) {
-											throw new FormatException($"DbType not specified, line {lineNumber}, column {columnNumber}.");
-										}
-										if (!Enum.TryParse(dbTypeName, ignoreCase: true, out dbType)) {
-											throw new FormatException($"Invalid DbType: \"{dbTypeName}\", line {lineNumber}, column {columnNumber}.");
-										}
-										columnNumber += dbTypeName.Length;
-									}
-									var parameterName = database.ParameterPrefix + paramName;
-									if (!parameters.ContainsKey(paramName)) {
-										var p = command.CreateParameter();
-										p.ParameterName = parameterName;
-										p.SourceColumn = paramName;
-										p.DbType = dbType;
-										parameters.Add(paramName, p);
-									} else {
-										var p = parameters[paramName];
-										if (dbType != DbType.Object) {
-											if (p.DbType != dbType) {
-												throw new FormatException($"Parameter {paramName} already declared with different DbType, line {lineNumber}, column {columnNumber}.");
-											}
+								}
+								if (!parameters.ContainsKey(paramName)) {
+									var p = command.CreateParameter();
+									p.ParameterName = paramName;
+									p.SourceColumn = paramName;
+									p.DbType = dbType;
+									parameters.Add(paramName, p);
+								} else {
+									var p = parameters[paramName];
+									if (dbType != DbType.Object) {
+										if (p.DbType != dbType) {
+											throw new FormatException($"Parameter {paramName} already declared with different DbType, line {scanner.Line}, column {scanner.Column}.");
 										}
 									}
-									// Do not use p.ParameterName since some providers remove the prefix
-									result.Append(parameterName);
-									break;
-								default:
-									result.Append((char)ch);
-									break;
-							}
-							break;
-						case State.InsideString:
-							switch (ch) {
-								case -1:
-									throw new FormatException("String Literal not closed.");
-								case '\'':
-									result.Append((char)ch);
-									state = State.OnCommandText;
-									break;
-								default:
-									result.Append((char)ch);
-									state = State.InsideString;
-									break;
-							}
-							break;
-						case State.InSingleLineComment:
-							if (ch == -1)
-								state = State.End;
-							result.Append((char)ch);
-							if (ch == '\n')
-								state = State.OnCommandText;
-							break;
-						case State.InMultiLineComment:
-							if (ch == -1)
-								state = State.End;
-							result.Append((char)ch);
-							if (ch == '*' && reader.Peek() == '/') {
-								result.Append((char)reader.Read());
-								columnNumber++;
-								state = State.OnCommandText;
-							}
-							break;
-						default:
-							throw new InvalidOperationException("Invalid state.");
-					}
-				} while (state != State.End);
+								}
+								result.Append(database.ParameterPrefix);
+								result.Append(paramName);
+								break;
+							default:
+								result.Append(ch);
+								if (ch.ToString() == database.QuotePrefix)
+									state = State.InQuotedIdentifier;
+								break;
+						}
+						break;
+					case State.InSingleQuoteString:
+						result.Append(ch);
+						if (ch == '\'')
+							state = State.OnCommandText;
+						break;
+					case State.InDoubleQuoteString:
+						result.Append(ch);
+						if (ch == '"')
+							state = State.OnCommandText;
+						break;
+					case State.InSingleLineComment:
+						result.Append(ch);
+						if (ch == '\n')
+							state = State.OnCommandText;
+						break;
+					case State.InMultiLineComment:
+						result.Append(ch);
+						if (ch == '*' && scanner.Peek() == '/') {
+							result.Append(scanner.ReadNext());
+							state = State.OnCommandText;
+						}
+						break;
+					case State.InQuotedIdentifier:
+						result.Append(ch);
+						if (ch.ToString() == database.QuoteSuffix)
+							state = State.OnCommandText;
+						break;
+				}
 			}
+
+			if (state == State.InSingleQuoteString || state == State.InDoubleQuoteString)
+				throw new FormatException("String Literal not closed.");
+
 			foreach (var p in parameters.Values) {
 				if (p.DbType == DbType.Object) {
 					p.DbType = DbType.String;
@@ -225,13 +209,63 @@ namespace DataDevelop.Data
 			return command;
 		}
 
-		private static string ReadIdentifier(TextReader reader, bool allowDigitFirst = false)
+		class Scanner
+		{
+			private readonly string str;
+			private int index = -1;
+			private int line = 1;
+			private int column = 1;
+			private char current = default;
+
+			public Scanner(string str, int startIndex = 0)
+			{
+				this.str = str ?? throw new ArgumentNullException(nameof(str));
+				index = startIndex - 1;
+			}
+
+			public int Index => index;
+			public int Line => line;
+			public int Column => column;
+			public char Current => current;
+
+			public bool Read()
+			{
+				if (index + 1 < str.Length) {
+					var ch = str[++index];
+					current = ch;
+					if (ch == '\n') {
+						line++;
+						column = 1;
+					} else {
+						column++;
+					}
+					return true;
+				}
+				current = default;
+				return false;
+			}
+
+			public int Peek()
+			{
+				if (index + 1 < str.Length)
+					return str[index + 1];
+				return -1;
+			}
+
+			public char ReadNext()
+			{
+				Read();
+				return Current;
+			}
+		}
+
+		private static string ReadIdentifier(Scanner reader, bool allowDigitFirst = false)
 		{
 			var identifier = new StringBuilder();
 			var first = (char)reader.Peek();
 			if (IsIdentifierChar(first, !allowDigitFirst)) {
 				do {
-					identifier.Append((char)reader.Read());
+					identifier.Append(reader.ReadNext());
 				} while (IsIdentifierChar((char)reader.Peek(), false));
 			}
 			return identifier.ToString();
@@ -245,10 +279,11 @@ namespace DataDevelop.Data
 		private enum State
 		{
 			OnCommandText,
-			InsideString,
 			InSingleLineComment,
 			InMultiLineComment,
-			End,
+			InSingleQuoteString,
+			InDoubleQuoteString,
+			InQuotedIdentifier,
 		}
 	}
 }
