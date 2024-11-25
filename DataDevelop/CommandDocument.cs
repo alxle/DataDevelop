@@ -7,7 +7,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace DataDevelop
@@ -87,29 +86,14 @@ namespace DataDevelop
 			set { textEditorControl.Text = value; }
 		}
 
-		//static Regex regex = new Regex(@"^\s*(--.*\$|/\*.\*/)*\s*(?<query>)\s+.*", RegexOptions.Multiline | RegexOptions.Compiled);
-		private static Regex matchSelectCommand = null;
-
-		private static bool IsSelect(string commandText)
+		private static bool IsSelect(Database database, string commandText)
 		{
 			if (commandText == null) {
 				return false;
 			}
 
-			if (matchSelectCommand == null) {
-				matchSelectCommand = new Regex(@"^\s*SELECT\s+", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-			}
-
-			var commands = commandText.Split(';');
-			var lastCommand = commands[commands.Length - 1].Trim();
-
-			if (lastCommand.Length == 0) {
-				if (commands.Length >= 2) {
-					lastCommand = commands[commands.Length - 2];
-				}
-			}
-
-			return matchSelectCommand.IsMatch(lastCommand);
+			var keyword = DbCommandParser.LastCommandKeyword(database, commandText);
+			return string.Equals(keyword, "SELECT", StringComparison.OrdinalIgnoreCase);
 		}
 
 		private void EnableUI(bool value)
@@ -230,7 +214,7 @@ namespace DataDevelop
 
 				var commandType = args.CommandType;
 				if (commandType == CommandType.Unknown) {
-					if (IsSelect(args.RawCommandText)) {
+					if (IsSelect(database, args.RawCommandText)) {
 						commandType = CommandType.Query;
 					} else {
 						commandType = CommandType.NonQuery;

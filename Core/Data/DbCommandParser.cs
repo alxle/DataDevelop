@@ -209,6 +209,90 @@ namespace DataDevelop.Data
 			return command;
 		}
 
+		public static int IndexOfLastCommand(Database database, string command)
+		{
+			var state = State.OnCommandText;
+			var lastCommandStart = -1;
+			var currentCommandStart = -1;
+
+			var scanner = new Scanner(command);
+			while (scanner.Read()) {
+				var ch = scanner.Current;
+
+				switch (state) {
+					case State.OnCommandText:
+						if (ch == '-' && scanner.Peek() == '-') {
+							state = State.InSingleLineComment;
+							scanner.Read(); // Consume '-'
+							continue;
+						}
+						if (ch == '/' && scanner.Peek() == '*') {
+							state = State.InMultiLineComment;
+							scanner.Read(); // Consume '*'
+							continue;
+						}
+						if (ch == '\'') {
+							state = State.InSingleQuoteString;
+							continue;
+						}
+						if (ch == '"') {
+							state = State.InDoubleQuoteString;
+							continue;
+						}
+						if (ch.ToString() == database.QuotePrefix) {
+							state = State.InQuotedIdentifier;
+							continue;
+						}
+						if (ch == ';') {
+							lastCommandStart = currentCommandStart;
+							currentCommandStart = -1;
+						} else if (!IsWhiteSpace(ch)) {
+							if (currentCommandStart == -1) {
+								currentCommandStart = scanner.Index;
+							}
+						}
+						break;
+					case State.InSingleLineComment:
+						if (ch == '\n') {
+							state = State.OnCommandText;
+						}
+						break;
+					case State.InMultiLineComment:
+						if (ch == '*' && scanner.Peek() == '/') {
+							scanner.Read(); // Consume '/'
+							state = State.OnCommandText;
+						}
+						break;
+					case State.InSingleQuoteString:
+						if (ch == '\'') {
+							state = State.OnCommandText;
+						}
+						break;
+					case State.InDoubleQuoteString:
+						if (ch == '"') {
+							state = State.OnCommandText;
+						}
+						break;
+					case State.InQuotedIdentifier:
+						if (ch.ToString() == database.QuoteSuffix) {
+							state = State.OnCommandText;
+						}
+						break;
+				}
+			}
+			return Math.Max(currentCommandStart, lastCommandStart);
+		}
+
+		public static string LastCommandKeyword(Database database, string command)
+		{
+			var index = IndexOfLastCommand(database, command);
+			if (index >= 0) {
+				var scanner = new Scanner(command, index);
+				return ReadIdentifier(scanner);
+			}
+			return null;
+		}
+
 		class Scanner
 		{
 			private readonly string str;
