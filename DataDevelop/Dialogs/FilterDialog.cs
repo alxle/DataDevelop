@@ -13,13 +13,17 @@ namespace DataDevelop
 
 	internal partial class FilterDialog : Form
 	{
-		private TableFilter filter;
+		private readonly TableFilter filter;
 
-		public FilterDialog(TableFilter filter)
+		public FilterDialog(TableFilter filter, bool showControlBox = false)
 		{
 			InitializeComponent();
 			this.filter = filter;
-			columnFilterBindingSource.DataSource = this.filter.ColumnFilters;
+			columnFilterBindingSource.DataSource = filter.ColumnFilters;
+			if (showControlBox) {
+				ControlBox = true;
+				ShowIcon = false;
+			}
 
 			FormExtensions.TrySetSize(this, Settings.Default.FilterDialogSize);
 		}
@@ -57,10 +61,8 @@ namespace DataDevelop
 					row.Cells[Output.Index].ReadOnly = ((ColumnFilter)row.DataBoundItem).InPrimaryKey;
 				}
 			}
-		}
 
-		private void dataGridView_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
-		{
+			dataGridView.AutoResizeColumn(columnName.Index);
 		}
 
 		private void selectAllCheckBox_Click(object sender, EventArgs e)
@@ -87,7 +89,7 @@ namespace DataDevelop
 
 		private void FilterDialog_FormClosed(object sender, FormClosedEventArgs e)
 		{
-			Properties.Settings.Default.FilterDialogSize = this.Size;
+			Settings.Default.FilterDialogSize = Size;
 		}
 	}
 }

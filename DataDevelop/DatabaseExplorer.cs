@@ -465,21 +465,18 @@ namespace DataDevelop
 
 		private void openDataWithFilterToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			var tableNode = (TableNode)treeView.SelectedNode;
-			if (tableNode != null) {
+			if (treeView.SelectedNode is TableNode tableNode) {
 				var table = tableNode.Table;
 				var key = table.Database.Name + '.' + table.Name;
 
-				using (FilterDialog filterDialog = new FilterDialog(new TableFilter(table))) {
+				using (var filterDialog = new FilterDialog(new TableFilter(table), showControlBox: true)) {
 					filterDialog.Text = "Open with filter: " + key;
-					filterDialog.ControlBox = true;
-					filterDialog.ShowIcon = false;
 					filterDialog.StartPosition = FormStartPosition.CenterParent;
 					if (filterDialog.ShowDialog(this) == DialogResult.OK) {
 						var filter = filterDialog.Filter;
 						var document = new TableDocument(table, filter);
 						document.Text = key;
-						document.Show(this.DockPanel);
+						document.Show(DockPanel);
 					}
 				}
 			}

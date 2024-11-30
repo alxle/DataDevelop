@@ -34,7 +34,7 @@ namespace DataDevelop.UIComponents
 		{
 			get { return sort; }
 		}
-		
+
 		private void UpdateButtonsState()
 		{
 			if (dataGridView.SelectedRows.Count == 1) {
@@ -46,6 +46,7 @@ namespace DataDevelop.UIComponents
 		private void SortPanel_Load(object sender, EventArgs e)
 		{
 			UpdateButtonsState();
+			dataGridView.AutoResizeColumn(ColumnName.Index);
 		}
 
 		private void dataGridView_SelectionChanged(object sender, EventArgs e)
