@@ -1,11 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Text;
+﻿using System;
 using System.Windows.Forms;
-using System.Windows.Forms.Design;
 using DataDevelop.Data;
 
 namespace DataDevelop.UIComponents
@@ -22,6 +16,8 @@ namespace DataDevelop.UIComponents
 			orderTypeComboBoxColumn.Items.Add(OrderType.Descending);
 		}
 
+		public TableSort Sort => sort;
+
 		public void LoadSort(TableSort sort)
 		{
 			this.sort = sort;
@@ -30,9 +26,35 @@ namespace DataDevelop.UIComponents
 			UpdateButtonsState();
 		}
 
-		public TableSort Sort
+		public void SetDarkMode()
 		{
-			get { return sort; }
+			dataGridView.BackgroundColor = VisualStyles.DarkThemeColors.Background;
+			dataGridView.GridColor = VisualStyles.DarkThemeColors.BorderLight;
+			dataGridView.BorderStyle = BorderStyle.FixedSingle;
+			dataGridView.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+			dataGridView.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+
+			dataGridView.DefaultCellStyle = new DataGridViewCellStyle(dataGridView.DefaultCellStyle) {
+				BackColor = VisualStyles.DarkThemeColors.Background,
+				ForeColor = VisualStyles.DarkThemeColors.TextColor,
+			};
+
+			dataGridView.EnableHeadersVisualStyles = false;
+			dataGridView.ColumnHeadersDefaultCellStyle = new DataGridViewCellStyle(dataGridView.ColumnHeadersDefaultCellStyle) {
+				BackColor = VisualStyles.DarkThemeColors.CellBackColor,
+				ForeColor = VisualStyles.DarkThemeColors.TextColor,
+			};
+			dataGridView.RowHeadersDefaultCellStyle = dataGridView.ColumnHeadersDefaultCellStyle;
+
+			BackColor = VisualStyles.DarkThemeColors.Background;
+			ForeColor = VisualStyles.DarkThemeColors.TextColor;
+
+			upButton.FlatStyle = FlatStyle.Flat;
+			upButton.BackColor = VisualStyles.DarkThemeColors.Control;
+			downButton.FlatStyle = FlatStyle.Flat;
+			downButton.BackColor = VisualStyles.DarkThemeColors.Control;
+			resetButton.FlatStyle = FlatStyle.Flat;
+			resetButton.BackColor = VisualStyles.DarkThemeColors.Control;
 		}
 
 		private void UpdateButtonsState()

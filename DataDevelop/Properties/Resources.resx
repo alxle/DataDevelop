@@ -121,6 +121,9 @@
   <data name="Paste" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Paste.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="ExportToExcel_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ExportToExcel_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="ClearAll" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ClearAll.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -160,12 +163,11 @@
   <data name="RefreshPage" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\RefreshPage.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="DisconnectDatabase" xml:space="preserve">
-    <value>Are you sure you want to disconnect the selected database?
-This will close all open tables from this database.</value>
-  </data>
   <data name="Redo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Redo.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="QuickFind_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\QuickFind_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="JavascriptMode" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\JavascriptSyntaxDefinition.xml;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
@@ -301,6 +303,9 @@ Do you want to continue?</value>
   <data name="AutoResizeRows" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\AutoResizeRows.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="ClearWindowContent_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ClearWindowContent_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="PageSetup" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PageSetup.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -340,17 +345,14 @@ Do you want to continue?</value>
   <data name="NavForward" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\NavForward.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Previous_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Previous_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="SQL_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Run_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Run_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Zoom_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Zoom_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="PythonMode" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\pythonsyntaxdefinition.xml;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="WordWrap" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\WordWrap.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -367,8 +369,8 @@ Do you want to continue?</value>
   <data name="FindPrevious_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\FindPrevious_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="QuickFind_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\QuickFind_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Zoom_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Zoom_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Redo_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Redo_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -379,16 +381,23 @@ Do you want to continue?</value>
   <data name="AutosizeFixedHeight_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\AutosizeFixedHeight_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ExportToExcel_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ExportToExcel_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="DisconnectDatabase" xml:space="preserve">
+    <value>Are you sure you want to disconnect the selected database?
+This will close all open tables from this database.</value>
   </data>
   <data name="QueryDocumentTitle" xml:space="preserve">
     <value>Query on {0}</value>
   </data>
-  <data name="PythonMode" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\pythonsyntaxdefinition.xml;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
   <data name="HighlightText_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\HighlightText_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Previous_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Previous_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GlyphDown_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GlyphDown_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GlyphUp_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GlyphUp_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

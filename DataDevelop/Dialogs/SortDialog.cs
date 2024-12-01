@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -17,18 +17,26 @@ namespace DataDevelop
 		{
 			InitializeComponent();
 			sortPanel.LoadSort(sort);
-
 			FormExtensions.TrySetSize(this, Settings.Default.SortDialogSize);
+			
+			if (MainForm.DarkMode) {
+				this.UseImmersiveDarkMode();
+				sortPanel.SetDarkMode();
+				BackColor = VisualStyles.DarkThemeColors.Background;
+				ForeColor = VisualStyles.DarkThemeColors.TextColor;
+
+				okButton.FlatStyle = FlatStyle.Flat;
+				okButton.BackColor = VisualStyles.DarkThemeColors.Control;
+				cancelButton.FlatStyle = FlatStyle.Flat;
+				cancelButton.BackColor = VisualStyles.DarkThemeColors.Control;
+			}
 		}
 
-		public TableSort Sort
-		{
-			get { return sortPanel.Sort; }
-		}
+		public TableSort Sort => sortPanel.Sort;
 
 		private void SortDialog_FormClosed(object sender, FormClosedEventArgs e)
 		{
-			Properties.Settings.Default.SortDialogSize = this.Size;
+			Settings.Default.SortDialogSize = Size;
 		}
 	}
 }
