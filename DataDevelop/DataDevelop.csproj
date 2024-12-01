@@ -513,6 +513,9 @@
     <Compile Include="VisualStyles\SystemToolStripRenderers.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\GlyphUp_16x.png" />
+    <None Include="Resources\GlyphDown_16x.png" />
+    <None Include="Resources\ClearWindowContent_16x.png" />
     <None Include="Resources\HighlightText_16x.png" />
     <None Include="Resources\Close_16x.png" />
     <None Include="Resources\FindPrevious_16x.png" />
