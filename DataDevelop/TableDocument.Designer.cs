@@ -29,7 +29,6 @@
 		{
 			this.components = new System.ComponentModel.Container();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TableDocument));
 			this.tableToolStrip = new System.Windows.Forms.ToolStrip();
 			this.firstButton = new System.Windows.Forms.ToolStripButton();
@@ -59,7 +58,10 @@
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.viewSqlToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
-			this.PasteButton = new System.Windows.Forms.ToolStripButton();
+			this.pasteButton = new System.Windows.Forms.ToolStripButton();
+			this.copyButton = new System.Windows.Forms.ToolStripDropDownButton();
+			this.copyWithHeadersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.copyDataOnlyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.dataGridView = new DataDevelop.DataGridView();
 			this.dataTablePrintDocument = new DataDevelop.Components.DataTablePrintDocument();
 			this.fontDialog = new System.Windows.Forms.FontDialog();
@@ -103,12 +105,13 @@
             this.rowsPerPageButton,
             this.toolStripSeparator3,
             this.exportToExcelToolStripDropDownButton,
+            this.copyButton,
+            this.pasteButton,
             this.toolStripDropDownButton1,
             this.toolStripSeparator5,
             this.viewSqlToolStripButton,
-            this.toolStripSeparator6,
-            this.PasteButton});
-			this.tableToolStrip.Location = new System.Drawing.Point(0, 24);
+            this.toolStripSeparator6});
+			this.tableToolStrip.Location = new System.Drawing.Point(0, 0);
 			this.tableToolStrip.Name = "tableToolStrip";
 			this.tableToolStrip.Padding = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.tableToolStrip.Size = new System.Drawing.Size(612, 25);
@@ -303,7 +306,7 @@
 			// 
 			this.printPreviewToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.PrintPreview_16x;
 			this.printPreviewToolStripMenuItem.Name = "printPreviewToolStripMenuItem";
-			this.printPreviewToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+			this.printPreviewToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.printPreviewToolStripMenuItem.Text = "Print Preview";
 			this.printPreviewToolStripMenuItem.Click += new System.EventHandler(this.PrintPreviewButton_Click);
 			// 
@@ -311,7 +314,7 @@
 			// 
 			this.changeFontToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Font_16x;
 			this.changeFontToolStripMenuItem.Name = "changeFontToolStripMenuItem";
-			this.changeFontToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+			this.changeFontToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.changeFontToolStripMenuItem.Text = "Change Font";
 			this.changeFontToolStripMenuItem.Click += new System.EventHandler(this.FontButton_Click);
 			// 
@@ -319,7 +322,7 @@
 			// 
 			this.pageSetupToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.PrintSetup_16x;
 			this.pageSetupToolStripMenuItem.Name = "pageSetupToolStripMenuItem";
-			this.pageSetupToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+			this.pageSetupToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.pageSetupToolStripMenuItem.Text = "Page Setup";
 			this.pageSetupToolStripMenuItem.Click += new System.EventHandler(this.PageSetupButton_Click);
 			// 
@@ -343,43 +346,57 @@
 			this.toolStripSeparator6.Name = "toolStripSeparator6";
 			this.toolStripSeparator6.Size = new System.Drawing.Size(6, 25);
 			// 
-			// PasteButton
+			// pasteButton
 			// 
-			this.PasteButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.PasteButton.Image = global::DataDevelop.Properties.Resources.Paste_16x;
-			this.PasteButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.PasteButton.Name = "PasteButton";
-			this.PasteButton.Size = new System.Drawing.Size(23, 22);
-			this.PasteButton.Text = "Paste";
-			this.PasteButton.Click += new System.EventHandler(this.PasteButton_Click);
+			this.pasteButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.pasteButton.Image = global::DataDevelop.Properties.Resources.Paste_16x;
+			this.pasteButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.pasteButton.Name = "pasteButton";
+			this.pasteButton.Size = new System.Drawing.Size(23, 22);
+			this.pasteButton.Text = "Paste";
+			this.pasteButton.Click += new System.EventHandler(this.PasteButton_Click);
+			// 
+			// copyButton
+			// 
+			this.copyButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.copyButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.copyWithHeadersToolStripMenuItem,
+            this.copyDataOnlyToolStripMenuItem});
+			this.copyButton.Image = global::DataDevelop.Properties.Resources.Copy_16x;
+			this.copyButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.copyButton.Name = "copyButton";
+			this.copyButton.Size = new System.Drawing.Size(29, 22);
+			this.copyButton.Text = "Copy";
+			// 
+			// copyWithHeadersToolStripMenuItem
+			// 
+			this.copyWithHeadersToolStripMenuItem.Name = "copyWithHeadersToolStripMenuItem";
+			this.copyWithHeadersToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.copyWithHeadersToolStripMenuItem.Text = "Copy with Headers";
+			this.copyWithHeadersToolStripMenuItem.Click += new System.EventHandler(this.CopyWithHeaders_Click);
+			// 
+			// copyDataOnlyToolStripMenuItem
+			// 
+			this.copyDataOnlyToolStripMenuItem.Name = "copyDataOnlyToolStripMenuItem";
+			this.copyDataOnlyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.copyDataOnlyToolStripMenuItem.Text = "Copy Data Only";
+			this.copyDataOnlyToolStripMenuItem.Click += new System.EventHandler(this.CopyDataOnly_Click);
 			// 
 			// dataGridView
 			// 
 			this.dataGridView.AllowUserToOrderColumns = true;
 			this.dataGridView.BackgroundColor = System.Drawing.SystemColors.Window;
 			this.dataGridView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
 			this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-			dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-			dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.dataGridView.DefaultCellStyle = dataGridViewCellStyle2;
 			this.dataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-			this.dataGridView.Location = new System.Drawing.Point(0, 49);
+			this.dataGridView.Location = new System.Drawing.Point(0, 25);
 			this.dataGridView.Name = "dataGridView";
-			this.dataGridView.Size = new System.Drawing.Size(612, 331);
+			dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Info;
+			dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic);
+			dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.InfoText;
+			this.dataGridView.NullCellStyle = dataGridViewCellStyle1;
+			this.dataGridView.Size = new System.Drawing.Size(612, 355);
 			this.dataGridView.StartRowNumber = 1;
 			this.dataGridView.TabIndex = 3;
 			this.dataGridView.ColumnAdded += new System.Windows.Forms.DataGridViewColumnEventHandler(this.DataGridView_ColumnAdded);
@@ -482,7 +499,6 @@
 			this.Controls.Add(this.dataGridView);
 			this.Controls.Add(this.tableToolStrip);
 			this.Controls.Add(this.menuStrip);
-			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "TableDocument";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TableDocument_FormClosing);
@@ -544,6 +560,9 @@
 		private System.Windows.Forms.ToolStripMenuItem exportCurrentPageToExcelToolStripMenuItem;
 		private System.ComponentModel.BackgroundWorker excelWorker;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
-		private System.Windows.Forms.ToolStripButton PasteButton;
+		private System.Windows.Forms.ToolStripButton pasteButton;
+		private System.Windows.Forms.ToolStripDropDownButton copyButton;
+		private System.Windows.Forms.ToolStripMenuItem copyWithHeadersToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem copyDataOnlyToolStripMenuItem;
 	}
 }

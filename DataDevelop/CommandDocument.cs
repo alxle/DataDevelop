@@ -717,5 +717,15 @@ namespace DataDevelop
 		{
 
 		}
+
+		private void CopyWithHeaders_Click(object sender, EventArgs e)
+		{
+			dataGridView.CopyDataFromGrid(includeHeaders: true);
+		}
+
+		private void CopyDataOnly_Click(object sender, EventArgs e)
+		{
+			dataGridView.CopyDataFromGrid(includeHeaders: false);
+		}
 	}
 }

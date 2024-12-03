@@ -29,8 +29,6 @@
 		{
 			this.components = new System.ComponentModel.Container();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CommandDocument));
 			this.textEditorControl = new DataDevelop.UIComponents.TextEditor();
 			this.splitContainer = new System.Windows.Forms.SplitContainer();
@@ -41,6 +39,8 @@
 			this.saveToFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.exportToToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.printPreviewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.copyWithHeadersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.copyDataOnlyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.messagesTabPage = new System.Windows.Forms.TabPage();
 			this.messageTextBox = new System.Windows.Forms.TextBox();
 			this.tabImageList = new System.Windows.Forms.ImageList(this.components);
@@ -178,32 +178,16 @@
 			this.dataGridView.AllowUserToDeleteRows = false;
 			this.dataGridView.BackgroundColor = System.Drawing.SystemColors.Window;
 			this.dataGridView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-			this.dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
 			this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.dataGridView.ContextMenuStrip = this.resultsContextMenuStrip;
-			dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-			dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-			dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.dataGridView.DefaultCellStyle = dataGridViewCellStyle2;
 			this.dataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
 			this.dataGridView.Location = new System.Drawing.Point(3, 3);
 			this.dataGridView.Name = "dataGridView";
-			dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Info;
-			dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic);
-			dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.InfoText;
-			this.dataGridView.NullCellStyle = dataGridViewCellStyle3;
+			dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Info;
+			dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic);
+			dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.InfoText;
+			this.dataGridView.NullCellStyle = dataGridViewCellStyle1;
 			this.dataGridView.ReadOnly = true;
 			this.dataGridView.Size = new System.Drawing.Size(459, 137);
 			this.dataGridView.StartRowNumber = 1;
@@ -214,15 +198,17 @@
 			this.resultsContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.saveToFileToolStripMenuItem,
             this.exportToToolStripMenuItem,
-            this.printPreviewToolStripMenuItem});
+            this.printPreviewToolStripMenuItem,
+            this.copyWithHeadersToolStripMenuItem,
+            this.copyDataOnlyToolStripMenuItem});
 			this.resultsContextMenuStrip.Name = "resultsContextMenuStrip";
-			this.resultsContextMenuStrip.Size = new System.Drawing.Size(153, 70);
+			this.resultsContextMenuStrip.Size = new System.Drawing.Size(175, 114);
 			// 
 			// saveToFileToolStripMenuItem
 			// 
 			this.saveToFileToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Save_16x;
 			this.saveToFileToolStripMenuItem.Name = "saveToFileToolStripMenuItem";
-			this.saveToFileToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.saveToFileToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
 			this.saveToFileToolStripMenuItem.Text = "Save to file...";
 			this.saveToFileToolStripMenuItem.Click += new System.EventHandler(this.saveToFileToolStripMenuItem_Click);
 			// 
@@ -230,7 +216,7 @@
 			// 
 			this.exportToToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.ExportToExcel_16x;
 			this.exportToToolStripMenuItem.Name = "exportToToolStripMenuItem";
-			this.exportToToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.exportToToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
 			this.exportToToolStripMenuItem.Text = "Export to Excel";
 			this.exportToToolStripMenuItem.Click += new System.EventHandler(this.exportToToolStripMenuItem_Click);
 			// 
@@ -238,9 +224,25 @@
 			// 
 			this.printPreviewToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.PrintPreview_16x;
 			this.printPreviewToolStripMenuItem.Name = "printPreviewToolStripMenuItem";
-			this.printPreviewToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.printPreviewToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
 			this.printPreviewToolStripMenuItem.Text = "Print Preview";
 			this.printPreviewToolStripMenuItem.Click += new System.EventHandler(this.printPreviewToolStripMenuItem_Click);
+			// 
+			// copyWithHeadersToolStripMenuItem
+			// 
+			this.copyWithHeadersToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Copy_16x;
+			this.copyWithHeadersToolStripMenuItem.Name = "copyWithHeadersToolStripMenuItem";
+			this.copyWithHeadersToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+			this.copyWithHeadersToolStripMenuItem.Text = "Copy with Headers";
+			this.copyWithHeadersToolStripMenuItem.Click += new System.EventHandler(this.CopyWithHeaders_Click);
+			// 
+			// copyDataOnlyToolStripMenuItem
+			// 
+			this.copyDataOnlyToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Copy_16x;
+			this.copyDataOnlyToolStripMenuItem.Name = "copyDataOnlyToolStripMenuItem";
+			this.copyDataOnlyToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+			this.copyDataOnlyToolStripMenuItem.Text = "Copy Data Only";
+			this.copyDataOnlyToolStripMenuItem.Click += new System.EventHandler(this.CopyDataOnly_Click);
 			// 
 			// messagesTabPage
 			// 
@@ -835,5 +837,7 @@
 		private System.Windows.Forms.ToolStripStatusLabel fileNameStatusLabel;
 		private System.Windows.Forms.ToolStripMenuItem executeAndSaveToXlsxToolStripMenuItem;
 		private System.ComponentModel.BackgroundWorker executeToXlsxWorker;
+		private System.Windows.Forms.ToolStripMenuItem copyWithHeadersToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem copyDataOnlyToolStripMenuItem;
 	}
 }

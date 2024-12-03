@@ -257,5 +257,28 @@ namespace DataDevelop
 				}
 			}
 		}
+
+		public void CopyDataFromGrid(bool includeHeaders = false)
+		{
+			var mode = ClipboardCopyMode;
+			var allowAdd = AllowUserToAddRows;
+			var isRowHeaderVisible = RowHeadersVisible;
+
+			ClipboardCopyMode = includeHeaders
+				? DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText
+				: DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
+			RowHeadersVisible = false;
+			AllowUserToAddRows = false;
+			SelectAll();
+			var dataObj = GetClipboardContent();
+			if (dataObj != null) {
+				Clipboard.SetDataObject(dataObj);
+			}
+			ClearSelection();
+			
+			AllowUserToAddRows = allowAdd;
+			RowHeadersVisible = isRowHeaderVisible;
+			ClipboardCopyMode = mode;
+		}
 	}
 }
