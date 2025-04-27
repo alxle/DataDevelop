@@ -46,7 +46,8 @@
 			this.tabImageList = new System.Windows.Forms.ImageList(this.components);
 			this.toolStrip = new System.Windows.Forms.ToolStrip();
 			this.newToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.openToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.openToolStripButton = new System.Windows.Forms.ToolStripSplitButton();
+			this.emptyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.printToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
@@ -83,6 +84,8 @@
 			this.menuStrip = new System.Windows.Forms.MenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.openRecentFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.emptyToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -123,7 +126,7 @@
 			this.textEditorControl.ShowSpaces = true;
 			this.textEditorControl.ShowTabs = true;
 			this.textEditorControl.ShowVRuler = false;
-			this.textEditorControl.Size = new System.Drawing.Size(473, 174);
+			this.textEditorControl.Size = new System.Drawing.Size(473, 162);
 			this.textEditorControl.TabIndex = 0;
 			this.textEditorControl.FileNameChanged += new System.EventHandler(this.textEditorControl_FileNameChanged);
 			this.textEditorControl.DragDrop += new System.Windows.Forms.DragEventHandler(this.textEditorControl_DragDrop);
@@ -132,7 +135,7 @@
 			// splitContainer
 			// 
 			this.splitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.splitContainer.Location = new System.Drawing.Point(0, 25);
+			this.splitContainer.Location = new System.Drawing.Point(0, 49);
 			this.splitContainer.Name = "splitContainer";
 			this.splitContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
 			// 
@@ -143,8 +146,8 @@
 			// splitContainer.Panel2
 			// 
 			this.splitContainer.Panel2.Controls.Add(this.outputTabControl);
-			this.splitContainer.Size = new System.Drawing.Size(473, 348);
-			this.splitContainer.SplitterDistance = 174;
+			this.splitContainer.Size = new System.Drawing.Size(473, 324);
+			this.splitContainer.SplitterDistance = 162;
 			this.splitContainer.TabIndex = 1;
 			// 
 			// outputTabControl
@@ -156,7 +159,7 @@
 			this.outputTabControl.Location = new System.Drawing.Point(0, 0);
 			this.outputTabControl.Name = "outputTabControl";
 			this.outputTabControl.SelectedIndex = 0;
-			this.outputTabControl.Size = new System.Drawing.Size(473, 170);
+			this.outputTabControl.Size = new System.Drawing.Size(473, 158);
 			this.outputTabControl.TabIndex = 4;
 			// 
 			// resultsTabPage
@@ -167,7 +170,7 @@
 			this.resultsTabPage.Location = new System.Drawing.Point(4, 23);
 			this.resultsTabPage.Name = "resultsTabPage";
 			this.resultsTabPage.Padding = new System.Windows.Forms.Padding(3);
-			this.resultsTabPage.Size = new System.Drawing.Size(465, 143);
+			this.resultsTabPage.Size = new System.Drawing.Size(465, 131);
 			this.resultsTabPage.TabIndex = 0;
 			this.resultsTabPage.Text = "Results";
 			this.resultsTabPage.UseVisualStyleBackColor = true;
@@ -189,7 +192,7 @@
 			dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.InfoText;
 			this.dataGridView.NullCellStyle = dataGridViewCellStyle1;
 			this.dataGridView.ReadOnly = true;
-			this.dataGridView.Size = new System.Drawing.Size(459, 137);
+			this.dataGridView.Size = new System.Drawing.Size(459, 125);
 			this.dataGridView.StartRowNumber = 1;
 			this.dataGridView.TabIndex = 4;
 			// 
@@ -252,7 +255,7 @@
 			this.messagesTabPage.Location = new System.Drawing.Point(4, 23);
 			this.messagesTabPage.Name = "messagesTabPage";
 			this.messagesTabPage.Padding = new System.Windows.Forms.Padding(3);
-			this.messagesTabPage.Size = new System.Drawing.Size(465, 143);
+			this.messagesTabPage.Size = new System.Drawing.Size(465, 131);
 			this.messagesTabPage.TabIndex = 1;
 			this.messagesTabPage.Text = "Messages";
 			this.messagesTabPage.UseVisualStyleBackColor = true;
@@ -266,7 +269,7 @@
 			this.messageTextBox.Name = "messageTextBox";
 			this.messageTextBox.ReadOnly = true;
 			this.messageTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-			this.messageTextBox.Size = new System.Drawing.Size(459, 137);
+			this.messageTextBox.Size = new System.Drawing.Size(459, 125);
 			this.messageTextBox.TabIndex = 0;
 			// 
 			// tabImageList
@@ -299,7 +302,7 @@
             this.abortButton,
             this.toolStripSeparator1,
             this.showResultPanelToolStripButton});
-			this.toolStrip.Location = new System.Drawing.Point(0, 0);
+			this.toolStrip.Location = new System.Drawing.Point(0, 24);
 			this.toolStrip.Name = "toolStrip";
 			this.toolStrip.Padding = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.toolStrip.Size = new System.Drawing.Size(473, 25);
@@ -319,12 +322,21 @@
 			// openToolStripButton
 			// 
 			this.openToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.openToolStripButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.emptyToolStripMenuItem});
 			this.openToolStripButton.Image = global::DataDevelop.Properties.Resources.OpenFolder_16x;
 			this.openToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.openToolStripButton.Name = "openToolStripButton";
-			this.openToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.openToolStripButton.Size = new System.Drawing.Size(32, 22);
 			this.openToolStripButton.Text = "&Open";
-			this.openToolStripButton.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+			this.openToolStripButton.ButtonClick += new System.EventHandler(this.openToolStripMenuItem_Click);
+			this.openToolStripButton.DropDownOpening += new System.EventHandler(this.openToolStripButton_DropDownOpening);
+			// 
+			// emptyToolStripMenuItem
+			// 
+			this.emptyToolStripMenuItem.Name = "emptyToolStripMenuItem";
+			this.emptyToolStripMenuItem.Size = new System.Drawing.Size(108, 22);
+			this.emptyToolStripMenuItem.Text = "Empty";
 			// 
 			// saveToolStripButton
 			// 
@@ -466,35 +478,35 @@
 			this.executeButton.Image = global::DataDevelop.Properties.Resources.Run_16x;
 			this.executeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.executeButton.Name = "executeButton";
-			this.executeButton.Size = new System.Drawing.Size(80, 22);
+			this.executeButton.Size = new System.Drawing.Size(79, 22);
 			this.executeButton.Text = "Execute";
 			this.executeButton.ButtonClick += new System.EventHandler(this.executeButton_Click);
 			// 
 			// executeQueryToolStripMenuItem
 			// 
 			this.executeQueryToolStripMenuItem.Name = "executeQueryToolStripMenuItem";
-			this.executeQueryToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
+			this.executeQueryToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
 			this.executeQueryToolStripMenuItem.Text = "Execute &Query";
 			this.executeQueryToolStripMenuItem.Click += new System.EventHandler(this.executeQueryToolStripMenuItem_Click);
 			// 
 			// executeNonQueryToolStripMenuItem
 			// 
 			this.executeNonQueryToolStripMenuItem.Name = "executeNonQueryToolStripMenuItem";
-			this.executeNonQueryToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
+			this.executeNonQueryToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
 			this.executeNonQueryToolStripMenuItem.Text = "Execute &Non Query";
 			this.executeNonQueryToolStripMenuItem.Click += new System.EventHandler(this.executeNonQueryToolStripMenuItem_Click);
 			// 
 			// executeEachStatementToolStripMenuItem
 			// 
 			this.executeEachStatementToolStripMenuItem.Name = "executeEachStatementToolStripMenuItem";
-			this.executeEachStatementToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
+			this.executeEachStatementToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
 			this.executeEachStatementToolStripMenuItem.Text = "Execute &Each Statement";
 			this.executeEachStatementToolStripMenuItem.Click += new System.EventHandler(this.ExecuteEachStatement);
 			// 
 			// executeAndSaveToXlsxToolStripMenuItem
 			// 
 			this.executeAndSaveToXlsxToolStripMenuItem.Name = "executeAndSaveToXlsxToolStripMenuItem";
-			this.executeAndSaveToXlsxToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
+			this.executeAndSaveToXlsxToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
 			this.executeAndSaveToXlsxToolStripMenuItem.Text = "Execute and Save to Xlsx";
 			this.executeAndSaveToXlsxToolStripMenuItem.Click += new System.EventHandler(this.ExecuteAndSaveToXlsxToolStripMenuItem_Click);
 			// 
@@ -622,6 +634,7 @@
 			// 
 			this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openToolStripMenuItem,
+            this.openRecentFileToolStripMenuItem,
             this.saveToolStripMenuItem,
             this.saveAsToolStripMenuItem,
             this.toolStripSeparator2,
@@ -637,42 +650,59 @@
 			this.openToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
 			this.openToolStripMenuItem.MergeIndex = 3;
 			this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-			this.openToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+			this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.openToolStripMenuItem.Text = "&Open Query File...";
 			this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+			// 
+			// openRecentFileToolStripMenuItem
+			// 
+			this.openRecentFileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.emptyToolStripMenuItem1});
+			this.openRecentFileToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
+			this.openRecentFileToolStripMenuItem.MergeIndex = 4;
+			this.openRecentFileToolStripMenuItem.Name = "openRecentFileToolStripMenuItem";
+			this.openRecentFileToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.openRecentFileToolStripMenuItem.Text = "Open Recent File";
+			this.openRecentFileToolStripMenuItem.DropDownOpening += new System.EventHandler(this.openRecentFileToolStripMenuItem_DropDownOpening);
+			// 
+			// emptyToolStripMenuItem1
+			// 
+			this.emptyToolStripMenuItem1.Name = "emptyToolStripMenuItem1";
+			this.emptyToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+			this.emptyToolStripMenuItem1.Text = "Empty";
 			// 
 			// saveToolStripMenuItem
 			// 
 			this.saveToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Save_16x;
 			this.saveToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
-			this.saveToolStripMenuItem.MergeIndex = 4;
+			this.saveToolStripMenuItem.MergeIndex = 5;
 			this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-			this.saveToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+			this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.saveToolStripMenuItem.Text = "&Save Query";
 			this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
 			// 
 			// saveAsToolStripMenuItem
 			// 
 			this.saveAsToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
-			this.saveAsToolStripMenuItem.MergeIndex = 5;
+			this.saveAsToolStripMenuItem.MergeIndex = 6;
 			this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-			this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+			this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.saveAsToolStripMenuItem.Text = "Save Query &As...";
 			this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator2
 			// 
 			this.toolStripSeparator2.MergeAction = System.Windows.Forms.MergeAction.Insert;
-			this.toolStripSeparator2.MergeIndex = 6;
+			this.toolStripSeparator2.MergeIndex = 7;
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(165, 6);
+			this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
 			// 
 			// closeToolStripMenuItem
 			// 
 			this.closeToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
 			this.closeToolStripMenuItem.MergeIndex = 7;
 			this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-			this.closeToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+			this.closeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.closeToolStripMenuItem.Text = "Close Query";
 			this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
 			// 
@@ -691,7 +721,7 @@
 			this.executeToolStripMenuItem.Image = global::DataDevelop.Properties.Resources.Run_16x;
 			this.executeToolStripMenuItem.Name = "executeToolStripMenuItem";
 			this.executeToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-			this.executeToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+			this.executeToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
 			this.executeToolStripMenuItem.Text = "Execute";
 			this.executeToolStripMenuItem.Click += new System.EventHandler(this.executeButton_Click);
 			// 
@@ -812,7 +842,6 @@
 		private System.Windows.Forms.ToolStripMenuItem executeQueryToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem executeNonQueryToolStripMenuItem;
 		private System.Windows.Forms.ToolStripButton newToolStripButton;
-		private System.Windows.Forms.ToolStripButton openToolStripButton;
 		private System.Windows.Forms.ToolStripButton saveToolStripButton;
 		private System.Windows.Forms.ToolStripButton printToolStripButton;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator;
@@ -839,5 +868,9 @@
 		private System.ComponentModel.BackgroundWorker executeToXlsxWorker;
 		private System.Windows.Forms.ToolStripMenuItem copyWithHeadersToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem copyDataOnlyToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSplitButton openToolStripButton;
+		private System.Windows.Forms.ToolStripMenuItem openRecentFileToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem emptyToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem emptyToolStripMenuItem1;
 	}
 }

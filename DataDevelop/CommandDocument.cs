@@ -16,6 +16,7 @@ namespace DataDevelop
 	using Dialogs;
 	using IO;
 	using Properties;
+	using Services;
 	using UIComponents;
 
 	public partial class CommandDocument : Document, IDbObject
@@ -427,6 +428,7 @@ namespace DataDevelop
 					string fileName = obj[0];
 					this.Activate();
 					textEditorControl.LoadFile(fileName);
+					RecentFilesManager.AddRecentFile(RecentFilesListName, fileName);
 				}
 			} catch (Exception ex) {
 				MessageBox.Show("Error in DragDrop function: " + ex.Message);
@@ -447,6 +449,7 @@ namespace DataDevelop
 			if (AskToSaveChanges()) {
 				if (openFileDialog.ShowDialog(this) == DialogResult.OK) {
 					textEditorControl.LoadFile(openFileDialog.FileName);
+					RecentFilesManager.AddRecentFile(RecentFilesListName, openFileDialog.FileName);
 				}
 			}
 		}
@@ -455,6 +458,7 @@ namespace DataDevelop
 		{
 			if (saveFileDialog.ShowDialog(this) == DialogResult.OK) {
 				textEditorControl.SaveFile(saveFileDialog.FileName);
+				RecentFilesManager.AddRecentFile(RecentFilesListName, saveFileDialog.FileName);
 			}
 		}
 
@@ -726,6 +730,43 @@ namespace DataDevelop
 		private void CopyDataOnly_Click(object sender, EventArgs e)
 		{
 			dataGridView.CopyDataFromGrid(includeHeaders: false);
+		}
+
+		const string RecentFilesListName = "Queries";
+
+		private void OpenFile(string filePath)
+		{
+			if (!File.Exists(filePath)) {
+				RecentFilesManager.RemoveRecentFile(RecentFilesListName, filePath);
+				MessageBox.Show("File does not exists.");
+				return;
+			}
+			if (AskToSaveChanges()) {
+				textEditorControl.LoadFile(filePath);
+				RecentFilesManager.AddRecentFile(RecentFilesListName, filePath);
+			}
+		}
+
+		private void LoadRecentFiles(ToolStripDropDownItem toolStripItem)
+		{
+			toolStripItem.DropDownItems.Clear();
+			var list = RecentFilesManager.GetRecentFiles(RecentFilesListName);
+			foreach (var file in list) {
+				toolStripItem.DropDownItems.Add(file, null, delegate { OpenFile(file); });
+			}
+			if (toolStripItem.DropDownItems.Count == 0) {
+				toolStripItem.DropDownItems.Add("Empty");
+			}
+		}
+
+		private void openToolStripButton_DropDownOpening(object sender, EventArgs e)
+		{
+			LoadRecentFiles(openToolStripButton);
+		}
+
+		private void openRecentFileToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
+		{
+			LoadRecentFiles(openRecentFileToolStripMenuItem);
 		}
 	}
 }

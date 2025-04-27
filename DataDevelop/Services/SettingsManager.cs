@@ -22,6 +22,8 @@ namespace DataDevelop
 		public static string DockPropertiesFileName
 			=> dockPropertiesFileName ?? (dockPropertiesFileName = DataFilePath("DockingProperties.xml"));
 
+		public static string RecentFilesXmlPath => DataFilePath("RecentFiles.xml");
+
 		public static string DataFilePath(string fileName) => Path.Combine(DataDirectory, fileName);
 
 		public static void LoadDatabases()

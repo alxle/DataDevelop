@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using DataDevelop.Data;
 using DataDevelop.Dialogs;
 using DataDevelop.Scripting;
+using DataDevelop.Services;
 using DataDevelop.UIComponents;
 
 namespace DataDevelop
@@ -179,7 +180,7 @@ namespace DataDevelop
 					dialog.Multiselect = false;
 					if (dialog.ShowDialog(this) == DialogResult.OK) {
 						textEditorControl.LoadFile(dialog.FileName);
-						textEditorControl.FileName = dialog.FileName;
+						RecentFilesManager.AddRecentFile(engine.Name, dialog.FileName);
 					}
 				}
 			}
@@ -201,7 +202,7 @@ namespace DataDevelop
 				dialog.FilterIndex = 0;
 				if (DialogResult.OK == dialog.ShowDialog()) {
 					textEditorControl.SaveFile(dialog.FileName);
-					textEditorControl.FileName = dialog.FileName;
+					RecentFilesManager.AddRecentFile(engine.Name, dialog.FileName);
 				}
 			}
 		}
@@ -283,6 +284,35 @@ namespace DataDevelop
 				textEditorControl.Visible = true;
 			}
 		}
+
+		private void OpenFile(string file)
+		{
+			if (!File.Exists(file)) {
+				RecentFilesManager.RemoveRecentFile(engine.Name, file);
+				MessageBox.Show("File does not exists.");
+				return;
+			}
+			if (AskToSaveChanges()) {
+				textEditorControl.LoadFile(file);
+				RecentFilesManager.AddRecentFile(engine.Name, file);
+			}
+		}
+
+		private void LoadRecentFiles(ToolStripDropDownItem toolStripItem)
+		{
+			toolStripItem.DropDownItems.Clear();
+			var list = RecentFilesManager.GetRecentFiles(engine.Name);
+			foreach (var file in list) {
+				toolStripItem.DropDownItems.Add(file, null, delegate { OpenFile(file); });
+			}
+			if (toolStripItem.DropDownItems.Count == 0) {
+				toolStripItem.DropDownItems.Add("Empty");
+			}
+		}
+
+		private void openRecentFileToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
+		{
+			LoadRecentFiles(openRecentFileToolStripMenuItem);
+		}
 	}
 }
-
