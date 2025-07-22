@@ -179,14 +179,14 @@ namespace DataDevelop.Data
 			}
 		}
 
-		public int NonQuery(string commandText)
+		public int Execute(string commandText)
 		{
 			using (var command = DbCommandParser.Parse(this, commandText)) {
 				return command.ExecuteNonQuery();
 			}
 		}
 
-		public int NonQuery(string commandText, params object[] values)
+		public int Execute(string commandText, params object[] values)
 		{
 			using (var command = DbCommandParser.Parse(this, commandText)) {
 				DbCommandParser.BindParameters(command, values);
@@ -194,7 +194,7 @@ namespace DataDevelop.Data
 			}
 		}
 
-		public int NonQuery(string commandText, DataRow row)
+		public int Execute(string commandText, DataRow row)
 		{
 			using (var command = DbCommandParser.Parse(this, commandText)) {
 				DbCommandParser.BindParameters(command, row);
@@ -202,7 +202,7 @@ namespace DataDevelop.Data
 			}
 		}
 
-		public int NonQuery(string commandText, Dictionary<string, object> parameters)
+		public int Execute(string commandText, Dictionary<string, object> parameters)
 		{
 			using (var command = DbCommandParser.Parse(this, commandText)) {
 				DbCommandParser.BindParameters(command, parameters);
@@ -229,11 +229,11 @@ namespace DataDevelop.Data
 		{
 			return CreateAdapter(table, new TableFilter(table));
 		}
-		
+
 		public abstract DbDataAdapter CreateAdapter(Table table, TableFilter filter);
-		
+
 		public abstract DbCommand CreateCommand();
-		
+
 		public abstract DbTransaction BeginTransaction();
 
 		public abstract void ChangeConnectionString(string newConnectionString);
@@ -261,7 +261,7 @@ namespace DataDevelop.Data
 		protected abstract void DoConnect();
 
 		protected abstract void DoDisconnect();
-		
+
 		protected abstract void PopulateTables(DbObjectCollection<Table> tablesCollection);
 
 		protected abstract void PopulateStoredProcedures(DbObjectCollection<StoredProcedure> storedProceduresCollection);

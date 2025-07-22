@@ -155,7 +155,7 @@ class Database:
 			yield Row(dataRow)
 
 	def Execute(self, command, *values):
-		return self.base.NonQuery(command, *values)
+		return self.base.Execute(command, *values)
 
 	def NonQuery(self, command, *values):
 		self.Execute(command, *values)

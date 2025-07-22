@@ -192,7 +192,7 @@ namespace DataDevelop.Scripting
 
 			public int Execute(string command, params object[] values)
 			{
-				return database.NonQuery(command, values);
+				return database.Execute(command, values);
 			}
 
 			public object Scalar(string command, params object[] values)
