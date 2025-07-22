@@ -15,5 +15,10 @@ namespace DataDevelop.Data.Access
 		{
 			return new AccessTable(this) { Name = name };
 		}
+
+		public override Database Clone()
+		{
+			return new AccessDatabase(Name, ConnectionString);
+		}
 	}
 }

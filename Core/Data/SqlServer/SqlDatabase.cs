@@ -114,9 +114,14 @@ namespace DataDevelop.Data.SqlServer
 			}
 		}
 
+		public override Database Clone()
+		{
+			return new SqlDatabase(Name, ConnectionString);
+		}
+
 		#region IDisposable Members
 
-		public void Dispose()
+		public override void Dispose()
 		{
 			if (Connection != null) {
 				Connection.Dispose();

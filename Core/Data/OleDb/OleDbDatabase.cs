@@ -24,6 +24,11 @@ namespace DataDevelop.Data.OleDb
 
 		public override string ConnectionString => Connection.ConnectionString;
 
+		public override Database Clone()
+		{
+			return new OleDbDatabase(Name, ConnectionString);
+		}
+
 		public override DbDataAdapter CreateAdapter(Table table, TableFilter filter)
 		{
 			var oleDbTable = (OleDbTable)table;
@@ -88,7 +93,7 @@ namespace DataDevelop.Data.OleDb
 
 		#region IDisposable Members
 
-		public void Dispose()
+		public override void Dispose()
 		{
 			Dispose(true);
 			GC.SuppressFinalize(this);

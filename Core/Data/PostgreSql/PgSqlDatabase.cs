@@ -82,7 +82,12 @@ namespace DataDevelop.Data.PostgreSql
 			return Connection.BeginTransaction();
 		}
 
-		public void Dispose()
+		public override Database Clone()
+		{
+			return new PgSqlDatabase(Name, ConnectionString);
+		}
+
+		public override void Dispose()
 		{
 			if (Connection != null) {
 				Connection.Dispose();

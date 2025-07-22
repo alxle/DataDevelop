@@ -34,7 +34,12 @@ namespace DataDevelop.Data.Firebird
 
 		internal FbConnection Connection => connection;
 
-		public void Dispose()
+		public override Database Clone()
+		{
+			return new FbDatabase(Name, ConnectionString);
+		}
+
+		public override void Dispose()
 		{
 			connection?.Dispose();
 			GC.SuppressFinalize(this);

@@ -20,7 +20,7 @@ namespace DataDevelop.Data.Odbc
 
 		public override string Name => name;
 
-		public override DbProvider Provider =>OdbcProvider.Instance;
+		public override DbProvider Provider => OdbcProvider.Instance;
 
 		public override string ConnectionString => Connection.ConnectionString;
 
@@ -86,9 +86,14 @@ namespace DataDevelop.Data.Odbc
 			}
 		}
 
+		public override Database Clone()
+		{
+			return new OdbcDatabase(Name, ConnectionString);
+		}
+
 		#region IDisposable Members
 
-		public void Dispose()
+		public override void Dispose()
 		{
 			Dispose(true);
 			GC.SuppressFinalize(this);

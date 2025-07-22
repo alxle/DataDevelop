@@ -87,7 +87,12 @@ namespace DataDevelop.Data.MySql
 			return Connection.BeginTransaction();
 		}
 
-		public void Dispose()
+		public override Database Clone()
+		{
+			return new MySqlDatabase(Name, ConnectionString);
+		}
+
+		public override void Dispose()
 		{
 			if (Connection != null) {
 				Connection.Dispose();

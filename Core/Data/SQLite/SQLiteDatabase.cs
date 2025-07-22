@@ -119,7 +119,12 @@ namespace DataDevelop.Data.SQLite
 			}
 		}
 
-		public void Dispose()
+		public override Database Clone()
+		{
+			return new SQLiteDatabase(Name, ConnectionString);
+		}
+
+		public override void Dispose()
 		{
 			if (Connection != null) {
 				Connection.Dispose();

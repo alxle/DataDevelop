@@ -5,7 +5,7 @@ using System.Data.Common;
 
 namespace DataDevelop.Data
 {
-	public abstract class Database
+	public abstract class Database : ICloneable, IDisposable
 	{
 		private int connectionCount;
 		private DbObjectCollection<Table> tablesCollection;
@@ -68,6 +68,12 @@ namespace DataDevelop.Data
 		public virtual bool SupportUserDefinedFunctions => false;
 
 		public bool IsConnected => connectionCount > 0;
+
+		public abstract Database Clone();
+
+		public abstract void Dispose();
+
+		object ICloneable.Clone() => Clone();
 
 		public void Connect()
 		{

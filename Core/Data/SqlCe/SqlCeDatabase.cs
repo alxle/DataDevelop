@@ -98,9 +98,14 @@ namespace DataDevelop.Data.SqlCe
 			}
 		}
 
+		public override Database Clone()
+		{
+			return new SqlCeDatabase(Name, ConnectionString);
+		}
+
 		#region IDisposable Members
 
-		public void Dispose()
+		public override void Dispose()
 		{
 			if (Connection != null) {
 				Connection.Dispose();
