@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
 namespace DataDevelop
@@ -24,6 +27,7 @@ namespace DataDevelop
 			if (MainForm.DarkMode) {
 				SetDarkMode();
 			}
+
 			FormExtensions.TrySetSize(this, Settings.Default.FilterDialogSize);
 		}
 
@@ -56,13 +60,11 @@ namespace DataDevelop
 
 			BackColor = VisualStyles.DarkThemeColors.Background;
 			ForeColor = VisualStyles.DarkThemeColors.TextColor;
-			
-			clearButton.FlatStyle = FlatStyle.Flat;
-			clearButton.BackColor = VisualStyles.DarkThemeColors.Control;
-			okButton.FlatStyle = FlatStyle.Flat;
-			okButton.BackColor = VisualStyles.DarkThemeColors.Control;
-			cancelButton.FlatStyle = FlatStyle.Flat;
-			cancelButton.BackColor = VisualStyles.DarkThemeColors.Control;
+
+			foreach (var button in new[] { clearButton, copyButton, pasteButton, okButton, cancelButton }) {
+				button.FlatStyle = FlatStyle.Flat;
+				button.BackColor = VisualStyles.DarkThemeColors.Control;
+			}
 		}
 
 		private void ClearButton_Click(object sender, EventArgs e)
@@ -119,6 +121,41 @@ namespace DataDevelop
 		private void FilterDialog_FormClosed(object sender, FormClosedEventArgs e)
 		{
 			Settings.Default.FilterDialogSize = Size;
+		}
+
+		private void CopyButton_Click(object sender, EventArgs e)
+		{
+			var builder = new StringBuilder();
+			builder.AppendLine("DataDevelop-ColumnFilter");
+			columnFilterBindingSource.EndEdit();
+			foreach (var i in filter.ColumnFilters) {
+				if (!i.IsEmpty) {
+					builder.AppendLine($"{i.ColumnName}|{i.Filter}");
+				}
+			}
+			Clipboard.SetText(builder.ToString());
+		}
+
+		private void PasteButton_Click(object sender, EventArgs e)
+		{
+			if (!Clipboard.ContainsText()) return;
+			var lines = Clipboard.GetText().Split(['\n', '\r'], StringSplitOptions.RemoveEmptyEntries);
+			if (lines.Length == 0) return;
+			if (lines[0] != "DataDevelop-ColumnFilter") return;
+			var dict = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+			foreach (var line in lines.Skip(1)) {
+				var fields = line.Split('|');
+				if (fields.Length != 2) continue;
+				dict[fields[0]] = fields[1];
+			}
+			columnFilterBindingSource.CancelEdit();
+			foreach (var columnFilter in filter.ColumnFilters) {
+				columnFilter.Clear();
+				if (dict.ContainsKey(columnFilter.ColumnName)) {
+					columnFilter.Filter = dict[columnFilter.ColumnName];
+				}
+			}
+			dataGridView.Refresh();
 		}
 	}
 }

@@ -28,8 +28,8 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.okButton = new System.Windows.Forms.Button();
 			this.cancelButton = new System.Windows.Forms.Button();
 			this.dataGridView = new System.Windows.Forms.DataGridView();
@@ -39,6 +39,8 @@
 			this.columnFilterBindingSource = new System.Windows.Forms.BindingSource(this.components);
 			this.clearButton = new System.Windows.Forms.Button();
 			this.selectAllCheckBox = new System.Windows.Forms.CheckBox();
+			this.copyButton = new System.Windows.Forms.Button();
+			this.pasteButton = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.columnFilterBindingSource)).BeginInit();
 			this.SuspendLayout();
@@ -97,10 +99,10 @@
 			// outputColumn
 			// 
 			this.outputColumn.DataPropertyName = "Output";
-			dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-			dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle1.NullValue = false;
-			this.outputColumn.DefaultCellStyle = dataGridViewCellStyle1;
+			dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+			dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle7.NullValue = false;
+			this.outputColumn.DefaultCellStyle = dataGridViewCellStyle7;
 			this.outputColumn.Frozen = true;
 			this.outputColumn.HeaderText = "";
 			this.outputColumn.Name = "outputColumn";
@@ -111,8 +113,8 @@
 			// columnName
 			// 
 			this.columnName.DataPropertyName = "ColumnName";
-			dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-			this.columnName.DefaultCellStyle = dataGridViewCellStyle2;
+			dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Control;
+			this.columnName.DefaultCellStyle = dataGridViewCellStyle8;
 			this.columnName.Frozen = true;
 			this.columnName.HeaderText = "Column";
 			this.columnName.Name = "columnName";
@@ -132,7 +134,7 @@
 			// clearButton
 			// 
 			this.clearButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.clearButton.Location = new System.Drawing.Point(114, 298);
+			this.clearButton.Location = new System.Drawing.Point(100, 298);
 			this.clearButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
 			this.clearButton.Name = "clearButton";
 			this.clearButton.Size = new System.Drawing.Size(88, 27);
@@ -157,6 +159,28 @@
 			this.selectAllCheckBox.UseVisualStyleBackColor = true;
 			this.selectAllCheckBox.Click += new System.EventHandler(this.SelectAllCheckBox_Click);
 			// 
+			// copyButton
+			// 
+			this.copyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.copyButton.Image = global::DataDevelop.Properties.Resources.Copy_16x;
+			this.copyButton.Location = new System.Drawing.Point(195, 300);
+			this.copyButton.Name = "copyButton";
+			this.copyButton.Size = new System.Drawing.Size(29, 23);
+			this.copyButton.TabIndex = 5;
+			this.copyButton.UseVisualStyleBackColor = true;
+			this.copyButton.Click += new System.EventHandler(this.CopyButton_Click);
+			// 
+			// pasteButton
+			// 
+			this.pasteButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.pasteButton.Image = global::DataDevelop.Properties.Resources.Paste_16x;
+			this.pasteButton.Location = new System.Drawing.Point(230, 300);
+			this.pasteButton.Name = "pasteButton";
+			this.pasteButton.Size = new System.Drawing.Size(29, 23);
+			this.pasteButton.TabIndex = 6;
+			this.pasteButton.UseVisualStyleBackColor = true;
+			this.pasteButton.Click += new System.EventHandler(this.PasteButton_Click);
+			// 
 			// FilterDialog
 			// 
 			this.AcceptButton = this.okButton;
@@ -165,6 +189,8 @@
 			this.CancelButton = this.cancelButton;
 			this.ClientSize = new System.Drawing.Size(541, 328);
 			this.ControlBox = false;
+			this.Controls.Add(this.pasteButton);
+			this.Controls.Add(this.copyButton);
 			this.Controls.Add(this.selectAllCheckBox);
 			this.Controls.Add(this.clearButton);
 			this.Controls.Add(this.dataGridView);
@@ -174,7 +200,7 @@
 			this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
-			this.MinimumSize = new System.Drawing.Size(347, 228);
+			this.MinimumSize = new System.Drawing.Size(480, 240);
 			this.Name = "FilterDialog";
 			this.ShowInTaskbar = false;
 			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
@@ -198,5 +224,7 @@
 		private System.Windows.Forms.DataGridViewCheckBoxColumn outputColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn columnName;
 		private System.Windows.Forms.DataGridViewTextBoxColumn filterColumn;
+		private System.Windows.Forms.Button copyButton;
+		private System.Windows.Forms.Button pasteButton;
 	}
 }
