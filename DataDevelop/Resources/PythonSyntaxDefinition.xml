@@ -20,6 +20,11 @@
         <End>*/</End>
       </Span>
 
+      <Span name="MultilineString" bold="false" italic="false" color="DarkRed" stopateol="false">
+        <Begin>"""</Begin>
+        <End>"""</End>
+      </Span>
+
       <Span name="String" bold="false" italic="false" color="DarkRed" stopateol="false" escapecharacter="\">
         <Begin>"</Begin>
         <End>"</End>
