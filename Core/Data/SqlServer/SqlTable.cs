@@ -370,7 +370,10 @@ namespace DataDevelop.Data.SqlServer
 					return select.ExecuteScalar() as string;
 				}
 			} else {
-				return null;
+				var sql = new StringBuilder();
+				sql.AppendLine("-- Script for Reference only");
+				sql.Append(SqlProvider.GenerateCreateTableScript(SchemaName, TableName, Columns.ToArray()));
+				return sql.ToString();
 			}
 		}
 	}
