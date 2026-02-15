@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using Npgsql;
+using System.Linq;
 
 namespace DataDevelop.Data.PostgreSql
 {
@@ -175,6 +177,26 @@ namespace DataDevelop.Data.PostgreSql
 					}
 				}
 			}
+		}
+
+		public override Table GetTable(string name)
+		{
+			if (Tables.Contains(name)) {
+				return Tables[name];
+			}
+			if (Tables.Contains("public." + name)) {
+				return Tables["public." + name];
+			}
+			var matches = Tables.Cast<PgSqlTable>()
+				.Where(t => string.Equals(t.TableName, name, StringComparison.OrdinalIgnoreCase))
+				.ToArray();
+			if (matches.Length == 1) {
+				return matches[0];
+			}
+			if (matches.Length > 1) {
+				throw new ApplicationException("Ambiguous table name");
+			}
+			return null;
 		}
 	}
 }
